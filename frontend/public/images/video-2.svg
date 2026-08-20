@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d0d10"/>
+      <stop offset="1" stop-color="#050506"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1200" fill="url(#bg)"/>
+  <g fill="none" stroke="#ffffff">
+    <rect x="300" y="330" width="700" height="394" rx="10" stroke-opacity="0.28" stroke-width="2.5"/>
+    <rect x="600" y="470" width="700" height="394" rx="10" stroke-opacity="0.55" stroke-width="3"/>
+    <line x1="600" y1="540" x2="1300" y2="540" stroke-opacity="0.2" stroke-width="2"/>
+  </g>
+  <circle cx="950" cy="700" r="34" fill="none" stroke="#ffffff" stroke-opacity="0.6" stroke-width="2.5"/>
+  <path d="M938 678 L938 722 L978 700 Z" fill="#ffffff" fill-opacity="0.7"/>
+  <text x="90" y="150" font-family="Verdana, sans-serif" font-size="17" letter-spacing="7" fill="#7a7a82">VIDEO / SERIES 02</text>
+  <text x="90" y="1100" font-family="Verdana, sans-serif" font-size="42" letter-spacing="16" fill="#ffffff" fill-opacity="0.9">LATIOS</text>
+</svg>

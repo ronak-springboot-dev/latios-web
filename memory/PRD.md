@@ -20,6 +20,11 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-20, update 6 — brand cleanup)
+- Replaced ALL third-party-branded imagery: MSI renders/photos swapped for the user's real Latios product photo (cropped into latios-mt.jpg / latios-sff.jpg / latios-pair.jpg) across model cards, 360° turntables, heroes and feature chapters
+- Laptops/Audio/Video pages: removed all third-party stock photos (Apple/JBL/Marshall/Canon etc.) and replaced with custom brand-neutral dark SVG artwork (waveform, EQ bars, speaker rings, keyboard grid, chip, play frame, pixel mosaic) bearing the LATIOS wordmark
+- Deleted 16 unused MSI/pexels image files from public/images
+
 ## Implemented (2026-08-20, update 5)
 - Individual rich model pages at /towers/:slug for all 15 desktop+workstation SKUs: parallax hero w/ kinetic name + spec chips, key-stats grid, drag-to-rotate 360° turntable (gallery frames), 3-4 animated feature chapters, full grouped spec tables (from datasheets), "more from the range" rail, enquire CTA
 - Model data centralized in src/data/models.js (TOWERS_FAMILIES); ProductPage cards are now links (datasheet download buttons removed per user request)

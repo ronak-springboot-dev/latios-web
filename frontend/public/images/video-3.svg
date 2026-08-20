@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0d0d10"/>
+      <stop offset="1" stop-color="#050506"/>
+    </linearGradient>
+  </defs>
+  <rect width="1600" height="1200" fill="url(#bg)"/>
+  <g fill="#ffffff">
+    <rect x="440" y="330" width="90" height="90" fill-opacity="0.08"/><rect x="550" y="330" width="90" height="90" fill-opacity="0.2"/><rect x="660" y="330" width="90" height="90" fill-opacity="0.1"/><rect x="770" y="330" width="90" height="90" fill-opacity="0.3"/><rect x="880" y="330" width="90" height="90" fill-opacity="0.12"/><rect x="990" y="330" width="90" height="90" fill-opacity="0.22"/>
+    <rect x="440" y="440" width="90" height="90" fill-opacity="0.24"/><rect x="550" y="440" width="90" height="90" fill-opacity="0.1"/><rect x="660" y="440" width="90" height="90" fill-opacity="0.34"/><rect x="770" y="440" width="90" height="90" fill-opacity="0.14"/><rect x="880" y="440" width="90" height="90" fill-opacity="0.4"/><rect x="990" y="440" width="90" height="90" fill-opacity="0.08"/>
+    <rect x="440" y="550" width="90" height="90" fill-opacity="0.12"/><rect x="550" y="550" width="90" height="90" fill-opacity="0.38"/><rect x="660" y="550" width="90" height="90" fill-opacity="0.16"/><rect x="770" y="550" width="90" height="90" fill-opacity="0.75"/><rect x="880" y="550" width="90" height="90" fill-opacity="0.2"/><rect x="990" y="550" width="90" height="90" fill-opacity="0.3"/>
+    <rect x="440" y="660" width="90" height="90" fill-opacity="0.28"/><rect x="550" y="660" width="90" height="90" fill-opacity="0.1"/><rect x="660" y="660" width="90" height="90" fill-opacity="0.26"/><rect x="770" y="660" width="90" height="90" fill-opacity="0.12"/><rect x="880" y="660" width="90" height="90" fill-opacity="0.32"/><rect x="990" y="660" width="90" height="90" fill-opacity="0.14"/>
+    <rect x="440" y="770" width="90" height="90" fill-opacity="0.1"/><rect x="550" y="770" width="90" height="90" fill-opacity="0.22"/><rect x="660" y="770" width="90" height="90" fill-opacity="0.08"/><rect x="770" y="770" width="90" height="90" fill-opacity="0.3"/><rect x="880" y="770" width="90" height="90" fill-opacity="0.14"/><rect x="990" y="770" width="90" height="90" fill-opacity="0.24"/>
+  </g>
+  <text x="90" y="150" font-family="Verdana, sans-serif" font-size="17" letter-spacing="7" fill="#7a7a82">VIDEO / SERIES 03</text>
+  <text x="90" y="1100" font-family="Verdana, sans-serif" font-size="42" letter-spacing="16" fill="#ffffff" fill-opacity="0.9">LATIOS</text>
+</svg>
