@@ -20,6 +20,9 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-20, update 13)
+- REVERTED homepage 3D hero per user feedback: hardware scene (chip/RAM/fan) removed, original wireframe torus-knot sculpture restored
+
 ## Implemented (2026-08-20, update 12 — Gemini + tech hero)
 - LATI chatbot is LIVE: Gemini streaming via /api/chat (SSE), user's own GEMINI_API_KEY in backend/.env, product knowledge base in backend/knowledge.py (all 28 products + company), chat history persisted in MongoDB chat_messages
 - NOTE: user asked for gemini-2.5-flash-lite; Google API returned "no longer available to new users" — using gemini-3.5-flash-lite (API-recommended successor) instead
