@@ -20,6 +20,13 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-20, update 10)
+- Rich enterprise backgrounds: layered fixed ambient radial gradients on body, diagonal gradient on cards, vertical gradient on marquee/footer, and a masked blueprint grid texture (.grid-bg) on the home hero + all spec sections; light theme verified compatible
+
+## Implemented (2026-08-20, update 9)
+- Laptops page now uses real logo-free laptop photos (laptop-real-1/2/3.jpg) — verified no brand logos visible
+- latios-web.vercel.app is behind Cloudflare bot protection (crawler, browser and reader-proxy all blocked) — audio/visual product data could NOT be extracted; awaiting user to share data directly or whitelist
+
 ## Implemented (2026-08-20, update 8)
 - Laptops page de-Apple'd: all MacBook photos replaced with Latios-branded SVG artwork (laptop-1/2/3.svg)
 - Scroll animations upgraded site-wide: fixed scroll-progress bar (ScrollProgress) + scroll-linked ParallaxImage on all ProductPage chapters and ModelPage feature sections (techy parallax drift while scrolling)

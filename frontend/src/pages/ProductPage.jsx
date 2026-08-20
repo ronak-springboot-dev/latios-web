@@ -118,7 +118,8 @@ export default function ProductPage() {
       <EditorialMarquee items={[data.name.toUpperCase(), data.model.toUpperCase()]} />
 
       {/* SPECS */}
-      <section className="max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-36" data-testid="specs-section">
+      <section className="relative max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-36" data-testid="specs-section">
+        <div className="grid-bg absolute inset-0 pointer-events-none" aria-hidden="true" />
         <Reveal>
           <p className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">Specifications</p>
           <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-14">

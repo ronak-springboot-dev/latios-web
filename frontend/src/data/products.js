@@ -11,7 +11,7 @@ export const CATEGORIES = [
     model: "Latios Book 16",
     title: ["WORK,", "UNPLUGGED."],
     tagline: "Flagship compute that disappears into a carry-on.",
-    hero: "/images/laptop-1.svg",
+    hero: "/images/laptop-real-1.jpg",
     intro:
       "A 16-inch mobile workstation milled from a single billet of aluminium. Desktop-class silicon, all-day silence, and a display that tells the truth.",
     chapters: [
@@ -20,21 +20,21 @@ export const CATEGORIES = [
         kicker: "Chassis",
         heading: "CNC-milled, not assembled",
         body: "Every Book 16 begins as a solid block of 6000-series aluminium. Two hours of machining leave a unibody with zero flex, invisible seams, and a finish that shrugs off a decade of travel.",
-        image: "/images/laptop-2.svg",
+        image: "/images/laptop-real-2.jpg",
       },
       {
         n: "02",
         kicker: "Thermals",
         heading: "Silence under full load",
         body: "A full-width vapor chamber and dual counter-rotating fans move heat without moving air you can hear. Sustained 55W CPU load at under 24 decibels — quieter than the room you're sitting in.",
-        image: "/images/laptop-3.svg",
+        image: "/images/laptop-real-3.jpg",
       },
       {
         n: "03",
         kicker: "Display",
         heading: "A screen that tells the truth",
         body: "4K OLED at 120Hz, factory-calibrated to ΔE < 1 across 100% of DCI-P3. What you grade in the field is what ships. No surprises in the edit suite.",
-        image: "/images/laptop-1.svg",
+        image: "/images/laptop-real-1.jpg",
       },
     ],
     specs: [

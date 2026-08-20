@@ -151,6 +151,50 @@
     animation: ambient-glow 9s ease-in-out infinite;
 }
 
+/* ---------- Rich enterprise depth ---------- */
+body {
+    background-color: #050505;
+    background-image:
+        radial-gradient(1200px 600px at 80% -10%, rgba(255, 255, 255, 0.045), transparent 60%),
+        radial-gradient(900px 520px at -12% 32%, rgba(130, 150, 190, 0.05), transparent 60%);
+    background-attachment: fixed;
+}
+
+.bg-\[\#0A0A0A\] {
+    background: linear-gradient(165deg, #121215 0%, #0a0a0b 62%);
+}
+
+.bg-\[\#050505\] {
+    background: linear-gradient(180deg, #08080a 0%, #050505 55%);
+}
+
+.grid-bg {
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    background-size: 88px 88px;
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 25%, transparent 78%);
+    mask-image: radial-gradient(ellipse 90% 80% at 50% 40%, black 25%, transparent 78%);
+}
+
+html.light .grid-bg {
+    background-image:
+        linear-gradient(rgba(10, 10, 10, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(10, 10, 10, 0.05) 1px, transparent 1px);
+}
+
+html.light body {
+    background-image: none;
+}
+
+html.light .bg-\[\#0A0A0A\] {
+    background: #ffffff !important;
+}
+
+html.light .bg-\[\#050505\] {
+    background: #f4f4f2 !important;
+}
+
 /* ---------- Light theme (dark is default) ---------- */
 html.light {
     color-scheme: light;

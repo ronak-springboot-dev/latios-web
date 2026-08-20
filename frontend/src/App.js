@@ -38,7 +38,7 @@ const AnimatedRoutes = () => {
 
 function App() {
   return (
-    <div className="App bg-[#050505] min-h-screen">
+    <div className="App min-h-screen">
       <BrowserRouter>
         <ReactLenis root options={{ lerp: 0.09, smoothWheel: true }}>
           <ScrollReset />

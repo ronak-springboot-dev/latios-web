@@ -142,8 +142,9 @@ export default function ModelPage() {
       </section>
 
       {/* SPECS */}
-      <section className="border-t border-white/10" data-testid="model-specs">
-        <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-32">
+      <section className="relative border-t border-white/10" data-testid="model-specs">
+        <div className="grid-bg absolute inset-0 pointer-events-none" aria-hidden="true" />
+        <div className="relative max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-32">
           <Reveal>
             <p className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">Full Specifications</p>
             <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-14">
