@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { KineticText } from "@/components/KineticText";
 import { Reveal } from "@/components/Reveal";
+import { ParallaxImage } from "@/components/ParallaxImage";
 import { EditorialMarquee } from "@/components/EditorialMarquee";
 import { SpecGrid } from "@/components/SpecGrid";
 import { getCategory, nextCategory } from "@/data/products";
@@ -99,14 +100,7 @@ export default function ProductPage() {
               {ch.n}
             </span>
             <Reveal className="relative md:w-3/5 w-full">
-              <div className="group overflow-hidden border border-white/10">
-                <img
-                  src={ch.image}
-                  alt={ch.heading}
-                  loading="lazy"
-                  className="spotlight-img w-full aspect-[4/3] object-cover"
-                />
-              </div>
+              <ParallaxImage src={ch.image} alt={ch.heading} aspect="aspect-[4/3]" />
             </Reveal>
             <Reveal delay={0.12} className="relative md:w-2/5 w-full">
               <p className="text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-5">

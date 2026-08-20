@@ -20,6 +20,11 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-20, update 8)
+- Laptops page de-Apple'd: all MacBook photos replaced with Latios-branded SVG artwork (laptop-1/2/3.svg)
+- Scroll animations upgraded site-wide: fixed scroll-progress bar (ScrollProgress) + scroll-linked ParallaxImage on all ProductPage chapters and ModelPage feature sections (techy parallax drift while scrolling)
+- LATI chatbot widget (Latios AI Assistant): floating button on all pages; opens panel with 5 greyed-out product FAQs, "Coming soon" badge, disabled input. MOCKED UI only, no LLM backend yet
+
 ## Implemented (2026-08-20, update 7 — user-directed revert)
 - REVERTED the MSI→real-photo swap per user: MSI imagery restored everywhere on Towers (cards, turntables, heroes, features) and original laptop/video photos restored
 - KEPT brand-free custom SVG artwork ONLY on the Audio page (user requirement: no JBL/other brands in audio)

@@ -4,6 +4,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { KineticText } from "@/components/KineticText";
 import { Reveal } from "@/components/Reveal";
+import { ParallaxImage } from "@/components/ParallaxImage";
 import { ModelTurntable } from "@/components/ModelTurntable";
 import { getModel, TOWERS_FAMILIES } from "@/data/models";
 
@@ -127,14 +128,7 @@ export default function ModelPage() {
             data-testid={`model-feature-${i}`}
           >
             <Reveal className="md:w-3/5 w-full">
-              <div className="group overflow-hidden border border-white/10">
-                <img
-                  src={f.image}
-                  alt={f.heading}
-                  loading="lazy"
-                  className="spotlight-img w-full aspect-[16/10] object-cover"
-                />
-              </div>
+              <ParallaxImage src={f.image} alt={f.heading} aspect="aspect-[16/10]" />
             </Reveal>
             <Reveal delay={0.12} className="md:w-2/5 w-full">
               <p className="text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-5">{f.kicker}</p>
