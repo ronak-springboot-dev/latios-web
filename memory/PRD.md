@@ -20,6 +20,13 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-20, update 5)
+- Individual rich model pages at /towers/:slug for all 15 desktop+workstation SKUs: parallax hero w/ kinetic name + spec chips, key-stats grid, drag-to-rotate 360° turntable (gallery frames), 3-4 animated feature chapters, full grouped spec tables (from datasheets), "more from the range" rail, enquire CTA
+- Model data centralized in src/data/models.js (TOWERS_FAMILIES); ProductPage cards are now links (datasheet download buttons removed per user request)
+- Added 5 new SKUs from latest datasheets: Pro MT H610 DDR5, Pro AI SFF AM5, Pro AI SFF B860 (128GB/TB4), Pro AI SFF H810, plus refreshed AM4 MT
+- Downloaded 16 more MSI feature images (perf, I/O, upgrade, chassis, speaker, RTX, DDR5, display, versatile, KVs, triple-display, cable organizer) used in model heroes/features
+- Family 1 now: 11 business desktops (MT/SFF/MFF); Family 2: 4 PROMAX workstations
+
 ## Implemented (2026-08-20, update 4)
 - Real product imagery: downloaded 13 assets from the xlsx MSI source pages (DP180/DP80/DP10 gallery renders + office/home/ops lifestyle shots) into /public/images; every model card now shows the real Latios unit on a light panel; towers chapters use real lifestyle photos
 - Added 7th desktop model: Latios Pro MFF DP10 A14MG (1.1L mini PC) from xlsx data

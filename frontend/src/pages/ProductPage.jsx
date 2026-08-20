@@ -149,8 +149,9 @@ export default function ProductPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
                 {fam.models.map((m, i) => (
                   <Reveal key={m.name} delay={i * 0.06}>
-                    <div
-                      className="group border border-white/10 bg-[#0A0A0A] hover:border-white/25 transition-colors duration-500 p-8 md:p-10 flex flex-col h-full"
+                    <Link
+                      to={`/towers/${m.slug}`}
+                      className="group border border-white/10 bg-[#0A0A0A] hover:border-white/25 transition-colors duration-500 p-8 md:p-10 flex flex-col h-full focus:ring-2 focus:ring-white/50 focus:outline-none"
                       data-testid={`model-card-${fi}-${i}`}
                     >
                       {m.image && (
@@ -175,19 +176,14 @@ export default function ProductPage() {
                           </li>
                         ))}
                       </ul>
-                      {m.datasheet && (
-                        <a
-                          href={m.datasheet}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          data-testid={`datasheet-download-${fi}-${i}`}
-                          className="mt-8 inline-flex items-center gap-2 self-start border border-white/20 rounded-full px-6 py-3 text-[10px] uppercase tracking-[0.25em] text-white hover:bg-white hover:text-black transition-colors duration-300 focus:ring-2 focus:ring-white/50 focus:outline-none"
-                        >
-                          Download datasheet
-                          <ArrowUpRight className="w-3.5 h-3.5" />
-                        </a>
-                      )}
-                    </div>
+                      <span
+                        data-testid={`model-explore-${fi}-${i}`}
+                        className="mt-8 inline-flex items-center gap-2 self-start border border-white/20 rounded-full px-6 py-3 text-[10px] uppercase tracking-[0.25em] text-white group-hover:bg-white group-hover:text-black transition-colors duration-300"
+                      >
+                        Explore model
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </span>
+                    </Link>
                   </Reveal>
                 ))}
               </div>
