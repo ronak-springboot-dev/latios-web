@@ -33,7 +33,7 @@ export default function ProductPage() {
       data-testid={`product-page-${data.slug}`}
     >
       {/* HERO with parallax */}
-      <section ref={heroRef} className="relative h-[92vh] overflow-hidden flex items-end">
+      <section ref={heroRef} className="keep-dark relative h-[92vh] overflow-hidden flex items-end">
         <motion.img
           src={data.hero}
           alt={data.name}
@@ -153,6 +153,16 @@ export default function ProductPage() {
                       className="group border border-white/10 bg-[#0A0A0A] hover:border-white/25 transition-colors duration-500 p-8 md:p-10 flex flex-col h-full"
                       data-testid={`model-card-${fi}-${i}`}
                     >
+                      {m.image && (
+                        <div className="mb-7 rounded-lg bg-[#f2f2f0] px-8 py-6 flex items-center justify-center aspect-[16/9] overflow-hidden">
+                          <img
+                            src={m.image}
+                            alt={m.name}
+                            loading="lazy"
+                            className="max-h-full w-auto object-contain transition-transform duration-700 group-hover:scale-105"
+                          />
+                        </div>
+                      )}
                       <span className="text-[10px] uppercase tracking-[0.35em] text-zinc-500">{m.tag}</span>
                       <h3 className="mt-4 font-display text-2xl md:text-3xl font-black tracking-tighter text-white">
                         {m.name}
@@ -165,16 +175,18 @@ export default function ProductPage() {
                           </li>
                         ))}
                       </ul>
-                      <a
-                        href={m.datasheet}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        data-testid={`datasheet-download-${fi}-${i}`}
-                        className="mt-8 inline-flex items-center gap-2 self-start border border-white/20 rounded-full px-6 py-3 text-[10px] uppercase tracking-[0.25em] text-white hover:bg-white hover:text-black transition-colors duration-300 focus:ring-2 focus:ring-white/50 focus:outline-none"
-                      >
-                        Download datasheet
-                        <ArrowUpRight className="w-3.5 h-3.5" />
-                      </a>
+                      {m.datasheet && (
+                        <a
+                          href={m.datasheet}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          data-testid={`datasheet-download-${fi}-${i}`}
+                          className="mt-8 inline-flex items-center gap-2 self-start border border-white/20 rounded-full px-6 py-3 text-[10px] uppercase tracking-[0.25em] text-white hover:bg-white hover:text-black transition-colors duration-300 focus:ring-2 focus:ring-white/50 focus:outline-none"
+                        >
+                          Download datasheet
+                          <ArrowUpRight className="w-3.5 h-3.5" />
+                        </a>
+                      )}
                     </div>
                   </Reveal>
                 ))}

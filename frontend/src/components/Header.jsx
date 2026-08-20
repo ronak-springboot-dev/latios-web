@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const LINKS = [
   { to: "/laptops", label: "Laptops" },
@@ -22,15 +23,13 @@ export const Header = () => {
       className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-black/70 border-b border-white/10"
     >
       <div className="max-w-[1600px] mx-auto px-6 md:px-12 h-16 md:h-20 flex items-center justify-between">
-        <Link
-          to="/"
-          data-testid="header-logo"
-          className="font-display font-black tracking-tighter text-xl md:text-2xl text-white"
-        >
-          LATIOS<span className="text-zinc-500">.</span>
+        <Link to="/" data-testid="header-logo" className="flex items-center">
+          <span className="logo-chip bg-white rounded-md px-3 py-1.5 inline-flex items-center">
+            <img src="/images/latios-logo.png" alt="Latios" className="h-6 md:h-7 w-auto" />
+          </span>
         </Link>
 
-        <nav className="hidden md:flex items-center gap-10" data-testid="desktop-nav">
+        <nav className="hidden md:flex items-center gap-8" data-testid="desktop-nav">
           {LINKS.map((l) => (
             <NavLink
               key={l.to}
@@ -45,6 +44,7 @@ export const Header = () => {
               {l.label}
             </NavLink>
           ))}
+          <ThemeToggle />
           <button
             onClick={goContact}
             data-testid="nav-enquire-button"
@@ -55,14 +55,17 @@ export const Header = () => {
           </button>
         </nav>
 
-        <button
-          className="md:hidden text-white p-2 focus:ring-2 focus:ring-white/50 focus:outline-none"
-          onClick={() => setOpen(!open)}
-          data-testid="mobile-menu-toggle"
-          aria-label="Toggle menu"
-        >
-          {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-        </button>
+        <div className="md:hidden flex items-center gap-3">
+          <ThemeToggle />
+          <button
+            className="text-white p-2 focus:ring-2 focus:ring-white/50 focus:outline-none"
+            onClick={() => setOpen(!open)}
+            data-testid="mobile-menu-toggle"
+            aria-label="Toggle menu"
+          >
+            {open ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>

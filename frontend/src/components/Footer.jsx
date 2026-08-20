@@ -41,16 +41,26 @@ export const Footer = () => {
             Volume pricing, custom imaging, and white-glove deployment for teams of
             ten to ten thousand.
           </p>
-          <div className="mt-12 flex flex-col gap-3 text-sm">
+          <p className="mt-8 text-[10px] uppercase tracking-[0.35em] text-zinc-500">
+            Proudly Indian. Boldly Innovative.
+          </p>
+          <div className="mt-8 flex flex-col gap-3 text-sm">
             <a
-              href="mailto:sales@latios.com"
+              href="mailto:sales@latios.in"
               data-testid="footer-email-link"
               className="group inline-flex items-center gap-2 text-white hover:text-zinc-300 transition-colors duration-300"
             >
-              sales@latios.com
+              sales@latios.in
               <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
-            <span className="text-zinc-500">Mon–Fri, 08:00–20:00 UTC</span>
+            <a
+              href="tel:+918238140787"
+              data-testid="footer-phone-link"
+              className="text-white hover:text-zinc-300 transition-colors duration-300"
+            >
+              +91 82381 40787
+            </a>
+            <span className="text-zinc-500">Ahmedabad, Gujarat, India</span>
           </div>
         </div>
 
@@ -103,8 +113,8 @@ export const Footer = () => {
 
       <div className="border-t border-white/10">
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
-          <span className="font-display font-black tracking-tighter text-white">
-            LATIOS<span className="text-zinc-500">.</span>
+          <span className="logo-chip bg-white rounded-md px-3 py-1.5 inline-flex items-center">
+            <img src="/images/latios-logo.png" alt="Latios" className="h-6 w-auto" data-testid="footer-logo" />
           </span>
           <nav className="flex flex-wrap gap-6" data-testid="footer-nav">
             {CATEGORIES.map((c) => (

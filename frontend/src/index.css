@@ -150,3 +150,119 @@
 .ambient-glow {
     animation: ambient-glow 9s ease-in-out infinite;
 }
+
+/* ---------- Light theme (dark is default) ---------- */
+html.light {
+    color-scheme: light;
+}
+html.light body {
+    background: #f4f4f2;
+    color: #0a0a0a;
+}
+html.light .App,
+html.light .bg-\[\#050505\] {
+    background-color: #f4f4f2 !important;
+}
+html.light .bg-\[\#0A0A0A\] {
+    background-color: #ffffff !important;
+}
+html.light .bg-black\/70 {
+    background-color: rgba(255, 255, 255, 0.78) !important;
+}
+html.light .bg-black\/90 {
+    background-color: rgba(255, 255, 255, 0.94) !important;
+}
+html.light .text-white {
+    color: #0a0a0a !important;
+}
+html.light .text-zinc-300 {
+    color: #3f3f46 !important;
+}
+html.light .text-zinc-400 {
+    color: #52525b !important;
+}
+html.light .text-zinc-500 {
+    color: #6b6b72 !important;
+}
+html.light .text-zinc-600 {
+    color: #9d9da6 !important;
+}
+html.light .text-zinc-700 {
+    color: #d4d4d8 !important;
+}
+html.light .border-white\/10 {
+    border-color: rgba(10, 10, 10, 0.1) !important;
+}
+html.light .border-white\/15 {
+    border-color: rgba(10, 10, 10, 0.15) !important;
+}
+html.light .border-white\/20 {
+    border-color: rgba(10, 10, 10, 0.2) !important;
+}
+html.light .border-white\/25 {
+    border-color: rgba(10, 10, 10, 0.25) !important;
+}
+html.light .bg-white {
+    background-color: #0a0a0a !important;
+}
+html.light .bg-white.text-black {
+    color: #ffffff !important;
+}
+html.light .hover\:bg-white:hover {
+    background-color: #0a0a0a !important;
+}
+html.light .hover\:text-black:hover {
+    color: #ffffff !important;
+}
+html.light .hover\:bg-zinc-300:hover {
+    background-color: #27272a !important;
+}
+html.light .hover\:border-white\/25:hover,
+html.light .hover\:border-white\/60:hover {
+    border-color: rgba(10, 10, 10, 0.4) !important;
+}
+html.light .text-outline {
+    -webkit-text-stroke-color: rgba(10, 10, 10, 0.2);
+}
+html.light .text-white\/\[0\.04\] {
+    color: rgba(10, 10, 10, 0.05) !important;
+}
+html.light .ambient-glow {
+    background-color: rgba(10, 10, 10, 0.05);
+}
+html.light .hover\:bg-white\/\[0\.03\]:hover {
+    background-color: rgba(10, 10, 10, 0.04) !important;
+}
+html.light .from-\[\#050505\] {
+    --tw-gradient-from: #f4f4f2 var(--tw-gradient-from-position);
+    --tw-gradient-to: rgb(244 244 242 / 0) var(--tw-gradient-to-position);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+html.light .nav-link::after {
+    background: #0a0a0a;
+}
+html.light ::selection {
+    background: #0a0a0a;
+    color: #ffffff;
+}
+html.light ::-webkit-scrollbar-track {
+    background: #f4f4f2;
+}
+html.light ::-webkit-scrollbar-thumb {
+    background: #d4d4d8;
+}
+/* Logo chip stays white in both themes */
+html.light .logo-chip {
+    background-color: #ffffff !important;
+}
+/* Hero sections keep their dark cinematic treatment in both themes */
+html.light .keep-dark .text-white {
+    color: #ffffff !important;
+    text-shadow: 0 2px 30px rgba(0, 0, 0, 0.55);
+}
+html.light .keep-dark .text-zinc-300 {
+    color: #e4e4e7 !important;
+}
+html.light .keep-dark .text-zinc-400 {
+    color: #d4d4d8 !important;
+}

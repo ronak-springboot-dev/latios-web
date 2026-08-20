@@ -20,6 +20,12 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-20, update 4)
+- Real product imagery: downloaded 13 assets from the xlsx MSI source pages (DP180/DP80/DP10 gallery renders + office/home/ops lifestyle shots) into /public/images; every model card now shows the real Latios unit on a light panel; towers chapters use real lifestyle photos
+- Added 7th desktop model: Latios Pro MFF DP10 A14MG (1.1L mini PC) from xlsx data
+- Latios logo chip (white pill) in header + footer; real contact block: sales@latios.in, +91 82381 40787, Ahmedabad Gujarat India, "Proudly Indian. Boldly Innovative."
+- Light/dark theme toggle (sun/moon in header, desktop + mobile): dark default, persists via localStorage, full light-theme CSS override layer in index.css; product heroes stay cinematic dark in both themes
+
 ## Implemented (2026-08-20, update 3)
 - Towers page restructured into two real families rendered from datasheet data: Business Desktops (6 models: 5 MT + Latios Pro SFF 9.3L) and PROMAX AI Workstations (4 models: Q870 128GB, T2 W880 256GB ECC, T2 W680 256GB, T4 Plus W780 Xeon W 2TB ECC)
 - All 10 model cards have datasheet PDF download buttons — every link verified 200 OK

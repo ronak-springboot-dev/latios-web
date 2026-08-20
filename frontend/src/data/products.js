@@ -62,21 +62,21 @@ export const CATEGORIES = [
         kicker: "Compute",
         heading: "From Ryzen 3 to Core i9",
         body: "Choose AMD AM4 with Ryzen 5000G graphics onboard, Intel H610 or Q670 with up to 14th Gen Core i9, or the Pro AI edition on AM5 with Ryzen 8000G neural processing. One chassis, five ways to work.",
-        image: U("photo-1587202372775-e229f172b9d7"),
+        image: "/images/office.png",
       },
       {
         n: "02",
         kicker: "Connectivity",
         heading: "Every port you'll ever need",
         body: "Two front USB-C Gen 2, USB-A and mic-in up front. HDMI 2.1 with 4K@60, DisplayPort 1.4, optional VGA, gigabit LAN, PS/2 and triple audio jacks at the back — plus Wi-Fi 6E for cable-free fleets.",
-        image: U("photo-1613258176465-eb77f3a050d2"),
+        image: "/images/ops.jpg",
       },
       {
         n: "03",
         kicker: "Security & Software",
         heading: "TPM 2.0 meets Latios Center",
         body: "Firmware TPM 2.0 encryption, Kensington and padlock points, military-grade certified durability. Latios Center monitors hardware, frees memory and recovers the system; Latios Cloud Center syncs and shares files across your team.",
-        image: U("photo-1624705002806-5d72df19c3ad"),
+        image: "/images/home-setup.png",
       },
     ],
     specs: [
@@ -94,11 +94,12 @@ export const CATEGORIES = [
         kicker: "Business Desktops",
         title: "The MT & SFF family.",
         blurb:
-          "Six micro-tower and small-form-factor configurations for the modern office — from Ryzen 3 to Core i9, with Wi-Fi 6E, TPM 2.0 and tool-friendly upgrade paths.",
+          "Seven configurations spanning micro-tower, small-form-factor and a 1.1-litre mini PC — from Ryzen 3 to Core i9, with Wi-Fi 6E, TPM 2.0 and tool-friendly upgrade paths.",
         models: [
           {
             name: "Latios MT — AMD AM4",
             tag: "Ryzen 5000 · DDR4",
+            image: "/images/dp180-3.webp",
             highlights: [
               "AMD Ryzen 7 5700G / 5 5600G / 3 5305G",
               "AMD Pro 500 chipset",
@@ -111,6 +112,7 @@ export const CATEGORIES = [
           {
             name: "Latios MT — Intel H610 DDR4",
             tag: "12th–14th Gen · DDR4",
+            image: "/images/dp180-1.webp",
             highlights: [
               "Up to Intel Core i9-14900",
               "Intel H610 chipset",
@@ -123,6 +125,7 @@ export const CATEGORIES = [
           {
             name: "Latios MT — Intel H610 DDR5",
             tag: "12th–14th Gen · DDR5",
+            image: "/images/dp180-2.webp",
             highlights: [
               "Up to Intel Core i9-14900",
               "Intel H610 chipset",
@@ -135,6 +138,7 @@ export const CATEGORIES = [
           {
             name: "Latios MT — Intel Q670 DDR5",
             tag: "12th–14th Gen · Q670",
+            image: "/images/dp180-4.webp",
             highlights: [
               "Up to Intel Core i9-14900",
               "Intel Q670 chipset",
@@ -147,6 +151,7 @@ export const CATEGORIES = [
           {
             name: "Latios Pro SFF — Intel H610",
             tag: "14th Gen · 9.3 litres",
+            image: "/images/dp80-1.webp",
             highlights: [
               "Up to Intel Core i7-14700",
               "Intel H610 chipset",
@@ -159,6 +164,7 @@ export const CATEGORIES = [
           {
             name: "Latios Pro AI MT — AMD AM5",
             tag: "Ryzen 8000G AI · DDR5",
+            image: "/images/dp180-1.webp",
             highlights: [
               "AMD Ryzen 7 8700G with Ryzen AI",
               "AMD Pro 600 chipset",
@@ -167,6 +173,17 @@ export const CATEGORIES = [
             ],
             datasheet:
               "https://customer-assets-agu9un31.emergentagent.net/job_tech-gallery-14/artifacts/ijdspbfh_Latios%20Pro%20AI%20Desktop%20Computer%20MT%20AMD%20AM5_Chipset%20DDR5%2064GB%2025072026.pdf",
+          },
+          {
+            name: "Latios Pro MFF — DP10 A14MG",
+            tag: "1.1L Mini PC · VESA",
+            image: "/images/dp10-1.webp",
+            highlights: [
+              "Up to Intel Core i7-14700",
+              "1.1-litre, VESA-mountable design",
+              "Triple display · dual 2.5G LAN",
+              "8× USB Type-A + 1× USB Type-C",
+            ],
           },
         ],
       },
@@ -179,6 +196,7 @@ export const CATEGORIES = [
           {
             name: "PROMAX AI — Intel Q870",
             tag: "Core Ultra · NPU · 128GB",
+            image: "/images/dp180-2.webp",
             highlights: [
               "Intel Core Ultra 9 285 with AI Boost NPU",
               "Intel Q870 chipset",
@@ -191,6 +209,7 @@ export const CATEGORIES = [
           {
             name: "PROMAX T2 AI — Intel W880",
             tag: "Core Ultra K · ECC",
+            image: "/images/dp180-3.webp",
             highlights: [
               "Up to Core Ultra 9 285K, unlocked",
               "Intel W880 chipset",
@@ -203,6 +222,7 @@ export const CATEGORIES = [
           {
             name: "PROMAX T2 — Intel W680",
             tag: "14th Gen K · 256GB",
+            image: "/images/dp180-4.webp",
             highlights: [
               "Up to Intel Core i9-14900K",
               "Intel W680 chipset",
@@ -215,6 +235,7 @@ export const CATEGORIES = [
           {
             name: "PROMAX T4 Plus — Intel W780",
             tag: "Xeon W · 2TB ECC",
+            image: "/images/dp180-1.webp",
             highlights: [
               "Intel Xeon W-2400 / 3400 series",
               "8× DIMM DDR5 ECC, up to 2TB",
