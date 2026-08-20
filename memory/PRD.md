@@ -20,6 +20,12 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-20, update 3)
+- Towers page restructured into two real families rendered from datasheet data: Business Desktops (6 models: 5 MT + Latios Pro SFF 9.3L) and PROMAX AI Workstations (4 models: Q870 128GB, T2 W880 256GB ECC, T2 W680 256GB, T4 Plus W780 Xeon W 2TB ECC)
+- All 10 model cards have datasheet PDF download buttons — every link verified 200 OK
+- ProductPage now renders data.families (kicker/title/blurb + model card grids) instead of flat models list
+- Towers intro and spec grid updated to span the full desktop+workstation range
+
 ## Implemented (2026-08-20, update 2)
 - Rebranded entire site from placeholder "VANTA/SYSTEMS" to LATIOS (header, footer, kicker, model names, copyright Latios Infosystem Pvt. Ltd.)
 - Replaced fictional towers content with real Latios MT family: 5 datasheet-derived models (AMD AM4 DDR4, Intel H610 DDR4, Intel H610 DDR5, Intel Q670 DDR5, Pro AI AMD AM5) with verified PDF datasheet download buttons (all 200 OK)

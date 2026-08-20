@@ -55,7 +55,7 @@ export const CATEGORIES = [
     tagline: "Be your window to the world.",
     hero: P("7858769"),
     intro:
-      "The Latios MT family: five micro-tower configurations spanning AMD Ryzen 5000/8000G and Intel 12th–14th Gen platforms, up to 64GB of memory and RTX A4000-class graphics — all in a 312 × 166 × 354 mm chassis built to be opened, not replaced.",
+      "The Latios desktop range: six business MT and SFF configurations from Ryzen 3 to Core i9, and four PROMAX AI workstations scaling up to Xeon W with 2TB of ECC memory — every one tool-friendly, TPM-secured and built to be opened, not replaced.",
     chapters: [
       {
         n: "01",
@@ -80,75 +80,151 @@ export const CATEGORIES = [
       },
     ],
     specs: [
-      ["Processors", "Up to Core i9-14900 / Ryzen 7 8700G"],
-      ["Chipsets", "Intel H610 / Q670 · AMD Pro 500/600"],
-      ["Memory", "Up to 64GB DDR4 / DDR5 5600"],
-      ["Graphics", "Up to NVIDIA RTX A4000"],
-      ["Storage", 'M.2 SSD + 2.5" + 3.5" bays'],
-      ["Wireless", "Wi-Fi 6E"],
-      ["Power", "Up to 500W 80+ Bronze"],
-      ["Chassis", "312 × 166 × 354 mm MT"],
+      ["Desktops", "MT + SFF · Ryzen 3 → Core i9"],
+      ["Workstations", "PROMAX · Core Ultra → Xeon W"],
+      ["Memory", "Up to 2TB DDR5 ECC (T4 Plus)"],
+      ["Graphics", "Up to RTX A6000 / Blackwell"],
+      ["Storage", "Gen5 NVMe + RAID options"],
+      ["Network", "Wi-Fi 6E · Dual 2.5G LAN"],
+      ["Power", "300W → 2700W redundant"],
+      ["Security", "HW TPM 2.0 · Kensington"],
     ],
-    models: [
+    families: [
       {
-        name: "Latios MT — AMD AM4",
-        tag: "Ryzen 5000 · DDR4",
-        highlights: [
-          "AMD Ryzen 7 5700G / 5 5600G / 3 5305G",
-          "AMD Pro 500 chipset",
-          "2× DDR4 3200MHz, up to 64GB",
-          "Up to 16GB Radeon RX graphics",
+        kicker: "Business Desktops",
+        title: "The MT & SFF family.",
+        blurb:
+          "Six micro-tower and small-form-factor configurations for the modern office — from Ryzen 3 to Core i9, with Wi-Fi 6E, TPM 2.0 and tool-friendly upgrade paths.",
+        models: [
+          {
+            name: "Latios MT — AMD AM4",
+            tag: "Ryzen 5000 · DDR4",
+            highlights: [
+              "AMD Ryzen 7 5700G / 5 5600G / 3 5305G",
+              "AMD Pro 500 chipset",
+              "2× DDR4 3200MHz, up to 64GB",
+              "Up to 16GB Radeon RX graphics",
+            ],
+            datasheet:
+              "https://customer-assets-agu9un31.emergentagent.net/job_tech-gallery-14/artifacts/5ieip2my_Latios%20Desktop%20Computer%20MT%20AMD%20AM4_Chipset%20DDR4%2064GB%2025072026.pdf",
+          },
+          {
+            name: "Latios MT — Intel H610 DDR4",
+            tag: "12th–14th Gen · DDR4",
+            highlights: [
+              "Up to Intel Core i9-14900",
+              "Intel H610 chipset",
+              "2× DDR4 3200MHz, up to 64GB",
+              "Up to NVIDIA RTX A4000",
+            ],
+            datasheet:
+              "https://customer-assets-agu9un31.emergentagent.net/job_tech-gallery-14/artifacts/cpvue3ja_Latios%20Desktop%20Computer%20MT%20Intel%20H610%20DDR4%2064GB%2025072026.pdf",
+          },
+          {
+            name: "Latios MT — Intel H610 DDR5",
+            tag: "12th–14th Gen · DDR5",
+            highlights: [
+              "Up to Intel Core i9-14900",
+              "Intel H610 chipset",
+              "2× DDR5 5600MHz, up to 64GB",
+              "TPM 2.0 · military-grade certified",
+            ],
+            datasheet:
+              "https://customer-assets-agu9un31.emergentagent.net/job_tech-gallery-14/artifacts/2hhajq9k_Latios%20Desktop%20Computer%20MT%20Intel%20H610%20DDR5%2064GB%2025072026.pdf",
+          },
+          {
+            name: "Latios MT — Intel Q670 DDR5",
+            tag: "12th–14th Gen · Q670",
+            highlights: [
+              "Up to Intel Core i9-14900",
+              "Intel Q670 chipset",
+              "2× DDR5 5600MHz, up to 64GB",
+              "Up to NVIDIA RTX A4000",
+            ],
+            datasheet:
+              "https://customer-assets-agu9un31.emergentagent.net/job_tech-gallery-14/artifacts/zzjxskf1_Latios%20Desktop%20Computer%20MT%20Intel%20Q670%20DDR5%2064GB%2025072026.pdf",
+          },
+          {
+            name: "Latios Pro SFF — Intel H610",
+            tag: "14th Gen · 9.3 litres",
+            highlights: [
+              "Up to Intel Core i7-14700",
+              "Intel H610 chipset",
+              "2× DDR5, up to 64GB",
+              "95 × 296 × 330 mm small form factor",
+            ],
+            datasheet:
+              "https://customer-assets-agu9un31.emergentagent.net/job_tech-gallery-14/artifacts/xg8yezhd_Latios%20Pro%20Desktop%20Computer%20SFF%20Intel%20H610%20DDR5%2064GB%2025072026.pdf",
+          },
+          {
+            name: "Latios Pro AI MT — AMD AM5",
+            tag: "Ryzen 8000G AI · DDR5",
+            highlights: [
+              "AMD Ryzen 7 8700G with Ryzen AI",
+              "AMD Pro 600 chipset",
+              "2× DDR5 5200MHz, up to 64GB",
+              "dTPM 2.0 · Wi-Fi 6E",
+            ],
+            datasheet:
+              "https://customer-assets-agu9un31.emergentagent.net/job_tech-gallery-14/artifacts/ijdspbfh_Latios%20Pro%20AI%20Desktop%20Computer%20MT%20AMD%20AM5_Chipset%20DDR5%2064GB%2025072026.pdf",
+          },
         ],
-        datasheet:
-          "https://customer-assets-agu9un31.emergentagent.net/job_tech-gallery-14/artifacts/5ieip2my_Latios%20Desktop%20Computer%20MT%20AMD%20AM4_Chipset%20DDR4%2064GB%2025072026.pdf",
       },
       {
-        name: "Latios MT — Intel H610 DDR4",
-        tag: "12th–14th Gen · DDR4",
-        highlights: [
-          "Up to Intel Core i9-14900",
-          "Intel H610 chipset",
-          "2× DDR4 3200MHz, up to 64GB",
-          "Up to NVIDIA RTX A4000",
+        kicker: "PROMAX AI Workstations",
+        title: "When the work gets heavy.",
+        blurb:
+          "Four towers for engineering, AI and content creation — scaling from Core Ultra with a built-in NPU to Xeon W with 2TB of ECC memory and redundant 2700W power.",
+        models: [
+          {
+            name: "PROMAX AI — Intel Q870",
+            tag: "Core Ultra · NPU · 128GB",
+            highlights: [
+              "Intel Core Ultra 9 285 with AI Boost NPU",
+              "Intel Q870 chipset",
+              "4× DDR5, up to 128GB",
+              "Up to NVIDIA RTX A6000",
+            ],
+            datasheet:
+              "https://customer-assets-agu9un31.emergentagent.net/job_tech-gallery-14/artifacts/rr859wfc_Latios%20PROMAX%20AI%20Workstation%20MT%20Intel%20Q870%20DDR5%20128GB%2027072026.pdf",
+          },
+          {
+            name: "PROMAX T2 AI — Intel W880",
+            tag: "Core Ultra K · ECC",
+            highlights: [
+              "Up to Core Ultra 9 285K, unlocked",
+              "Intel W880 chipset",
+              "4× DDR5 5600 ECC/non-ECC, up to 256GB",
+              "Dual 2.5G LAN · 40G USB-C",
+            ],
+            datasheet:
+              "https://customer-assets-agu9un31.emergentagent.net/job_tech-gallery-14/artifacts/h9b1xnao_Latios%20PROMAX%20T2%20AI%20Workstation%20MT%20Intel%20W880%20DDR5%20256GB%2027072026.pdf",
+          },
+          {
+            name: "PROMAX T2 — Intel W680",
+            tag: "14th Gen K · 256GB",
+            highlights: [
+              "Up to Intel Core i9-14900K",
+              "Intel W680 chipset",
+              "4× DDR5 5600 ECC/non-ECC, up to 256GB",
+              "Up to NVIDIA RTX A6000",
+            ],
+            datasheet:
+              "https://customer-assets-agu9un31.emergentagent.net/job_tech-gallery-14/artifacts/f9nd29y4_Latios%20PROMAX%20T2%20Workstation%20MT%20Intel%20W680%20DDR5%20256GB%2027072026.pdf",
+          },
+          {
+            name: "PROMAX T4 Plus — Intel W780",
+            tag: "Xeon W · 2TB ECC",
+            highlights: [
+              "Intel Xeon W-2400 / 3400 series",
+              "8× DIMM DDR5 ECC, up to 2TB",
+              "NVIDIA Blackwell / RTX A6000 ready",
+              "1600–2700W redundant PSU",
+            ],
+            datasheet:
+              "https://customer-assets-agu9un31.emergentagent.net/job_tech-gallery-14/artifacts/elz4wjri_Latios%20PROMAX%20T4%20Plus%20Workstation%20MT%20Intel%20W780%20DDR5%202TB%2027072026.pdf",
+          },
         ],
-        datasheet:
-          "https://customer-assets-agu9un31.emergentagent.net/job_tech-gallery-14/artifacts/cpvue3ja_Latios%20Desktop%20Computer%20MT%20Intel%20H610%20DDR4%2064GB%2025072026.pdf",
-      },
-      {
-        name: "Latios MT — Intel H610 DDR5",
-        tag: "12th–14th Gen · DDR5",
-        highlights: [
-          "Up to Intel Core i9-14900",
-          "Intel H610 chipset",
-          "2× DDR5 5600MHz, up to 64GB",
-          "TPM 2.0 · military-grade certified",
-        ],
-        datasheet:
-          "https://customer-assets-agu9un31.emergentagent.net/job_tech-gallery-14/artifacts/2hhajq9k_Latios%20Desktop%20Computer%20MT%20Intel%20H610%20DDR5%2064GB%2025072026.pdf",
-      },
-      {
-        name: "Latios MT — Intel Q670 DDR5",
-        tag: "12th–14th Gen · Q670",
-        highlights: [
-          "Up to Intel Core i9-14900",
-          "Intel Q670 chipset",
-          "2× DDR5 5600MHz, up to 64GB",
-          "Up to NVIDIA RTX A4000",
-        ],
-        datasheet:
-          "https://customer-assets-agu9un31.emergentagent.net/job_tech-gallery-14/artifacts/zzjxskf1_Latios%20Desktop%20Computer%20MT%20Intel%20Q670%20DDR5%2064GB%2025072026.pdf",
-      },
-      {
-        name: "Latios Pro AI MT — AMD AM5",
-        tag: "Ryzen 8000G AI · DDR5",
-        highlights: [
-          "AMD Ryzen 7 8700G with Ryzen AI",
-          "AMD Pro 600 chipset",
-          "2× DDR5 5200MHz, up to 64GB",
-          "dTPM 2.0 · Wi-Fi 6E",
-        ],
-        datasheet:
-          "https://customer-assets-agu9un31.emergentagent.net/job_tech-gallery-14/artifacts/ijdspbfh_Latios%20Pro%20AI%20Desktop%20Computer%20MT%20AMD%20AM5_Chipset%20DDR5%2064GB%2025072026.pdf",
       },
     ],
   },
