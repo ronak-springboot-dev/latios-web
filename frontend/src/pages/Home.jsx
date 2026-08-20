@@ -60,7 +60,7 @@ export default function Home() {
             className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-8"
             data-testid="hero-kicker"
           >
-            Enterprise Hardware — Est. 2026
+            Business & Productivity PCs — Est. 2026
           </motion.p>
           <KineticText
             testId="hero-title"

@@ -43,11 +43,11 @@ export const Footer = () => {
           </p>
           <div className="mt-12 flex flex-col gap-3 text-sm">
             <a
-              href="mailto:sales@vantasystems.com"
+              href="mailto:sales@latios.com"
               data-testid="footer-email-link"
               className="group inline-flex items-center gap-2 text-white hover:text-zinc-300 transition-colors duration-300"
             >
-              sales@vantasystems.com
+              sales@latios.com
               <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
             </a>
             <span className="text-zinc-500">Mon–Fri, 08:00–20:00 UTC</span>
@@ -104,7 +104,7 @@ export const Footer = () => {
       <div className="border-t border-white/10">
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <span className="font-display font-black tracking-tighter text-white">
-            VANTA<span className="text-zinc-500">/</span>SYSTEMS
+            LATIOS<span className="text-zinc-500">.</span>
           </span>
           <nav className="flex flex-wrap gap-6" data-testid="footer-nav">
             {CATEGORIES.map((c) => (
@@ -119,7 +119,7 @@ export const Footer = () => {
             ))}
           </nav>
           <span className="text-[10px] uppercase tracking-[0.3em] text-zinc-600">
-            © 2026 Vanta Systems
+            © 2026 Latios Infosystem Pvt. Ltd.
           </span>
         </div>
       </div>

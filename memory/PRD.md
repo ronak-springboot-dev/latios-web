@@ -1,4 +1,4 @@
-# PRD — Vanta Systems Enterprise Hardware Showcase
+# PRD — Latios Enterprise Hardware Showcase
 
 ## Original Problem Statement
 User wants an online enterprise web app for laptop/towers/audio/video and other devices. New product line; separate intuitive, animated pages per product. Reference: MSI PRO DP80 product page. User confirmed: all four categories, marketing/showcase site, built-in content (no admin), dark premium tech aesthetic. Art-direction mandate: Awwwards-level — kinetic hero with masked line reveal, spotlighted product photography, numbered manifesto chapters, slow editorial marquee, framer-motion reveals, lenis smooth scrolling, subtle 3D hero moment.
@@ -19,6 +19,12 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Home: 3D hero, kinetic headline, lineup bento, marquee, manifesto, CTA
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
+
+## Implemented (2026-08-20, update 2)
+- Rebranded entire site from placeholder "VANTA/SYSTEMS" to LATIOS (header, footer, kicker, model names, copyright Latios Infosystem Pvt. Ltd.)
+- Replaced fictional towers content with real Latios MT family: 5 datasheet-derived models (AMD AM4 DDR4, Intel H610 DDR4, Intel H610 DDR5, Intel Q670 DDR5, Pro AI AMD AM5) with verified PDF datasheet download buttons (all 200 OK)
+- Towers chapters/specs rewritten from real datasheet data (Core i9-14900 / Ryzen 7 8700G, H610/Q670/Pro 500/600, DDR4/DDR5 64GB, RTX A4000, Wi-Fi 6E, TPM 2.0, Latios Center / Cloud Center)
+- Laptops/Audio/Video pages remain MOCKED sample content awaiting real Latios datasheets
 
 ## Implemented (2026-08-20)
 - Home: R3F wireframe torus-knot hero w/ mouse parallax, masked line-by-line kinetic H1, stats strip, asymmetric bento lineup, editorial outline-text marquee, 3-chapter manifesto w/ giant ghost numerals, CTA band

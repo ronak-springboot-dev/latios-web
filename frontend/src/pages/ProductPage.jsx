@@ -134,6 +134,51 @@ export default function ProductPage() {
         <SpecGrid specs={data.specs} />
       </section>
 
+      {/* MODELS (when a category has real SKUs) */}
+      {data.models && (
+        <section className="max-w-[1600px] mx-auto px-6 md:px-12 pb-24 md:pb-36" data-testid="models-section">
+          <Reveal>
+            <p className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">The MT Family</p>
+            <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-14">
+              Five configurations. One standard.
+            </h2>
+          </Reveal>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
+            {data.models.map((m, i) => (
+              <Reveal key={m.name} delay={i * 0.06}>
+                <div
+                  className="group border border-white/10 bg-[#0A0A0A] hover:border-white/25 transition-colors duration-500 p-8 md:p-10 flex flex-col h-full"
+                  data-testid={`model-card-${i}`}
+                >
+                  <span className="text-[10px] uppercase tracking-[0.35em] text-zinc-500">{m.tag}</span>
+                  <h3 className="mt-4 font-display text-2xl md:text-3xl font-black tracking-tighter text-white">
+                    {m.name}
+                  </h3>
+                  <ul className="mt-6 space-y-2.5 flex-1">
+                    {m.highlights.map((h) => (
+                      <li key={h} className="text-sm text-zinc-400 flex gap-3">
+                        <span className="text-zinc-600">—</span>
+                        {h}
+                      </li>
+                    ))}
+                  </ul>
+                  <a
+                    href={m.datasheet}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-testid={`datasheet-download-${i}`}
+                    className="mt-8 inline-flex items-center gap-2 self-start border border-white/20 rounded-full px-6 py-3 text-[10px] uppercase tracking-[0.25em] text-white hover:bg-white hover:text-black transition-colors duration-300 focus:ring-2 focus:ring-white/50 focus:outline-none"
+                  >
+                    Download datasheet
+                    <ArrowUpRight className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      )}
+
       {/* NEXT CATEGORY */}
       <section className="border-t border-white/10" data-testid="next-category">
         <Link

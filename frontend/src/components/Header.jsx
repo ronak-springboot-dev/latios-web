@@ -27,7 +27,7 @@ export const Header = () => {
           data-testid="header-logo"
           className="font-display font-black tracking-tighter text-xl md:text-2xl text-white"
         >
-          VANTA<span className="text-zinc-500">/</span>SYSTEMS
+          LATIOS<span className="text-zinc-500">.</span>
         </Link>
 
         <nav className="hidden md:flex items-center gap-10" data-testid="desktop-nav">
