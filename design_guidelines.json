@@ -1,0 +1,106 @@
+{
+  "theme": "dark",
+  "archetype": "LUXURY_TECH",
+  "typography": {
+    "headings": {
+      "font_family": "Outfit",
+      "style_instructions": "Do NOT use Inter or generic sans for headings. Use tracking-tighter for all headers. Mix font-light and font-black weights for high contrast."
+    },
+    "body": {
+      "font_family": "Manrope",
+      "style_instructions": "Clean, highly readable, tracking-normal, leading-relaxed."
+    },
+    "scale": {
+      "h1": "text-5xl md:text-6xl tracking-tighter",
+      "h2": "text-4xl md:text-5xl tracking-tight",
+      "h3": "text-2xl md:text-3xl",
+      "h4": "text-xl",
+      "body": "text-base text-zinc-400",
+      "labels": "text-xs uppercase tracking-[0.2em] text-zinc-500"
+    }
+  },
+  "colors": {
+    "background": "#050505",
+    "surface": "#0A0A0A",
+    "surface_glass": "rgba(10, 10, 10, 0.7)",
+    "border": "rgba(255, 255, 255, 0.08)",
+    "text_primary": "#FFFFFF",
+    "text_secondary": "#888888",
+    "accent": "#F8FAFC",
+    "glow": "rgba(255, 255, 255, 0.15)",
+    "instructions": "Maintain a strict monochrome premium hardware aesthetic. Avoid any SaaS Blue. Use pure whites for primary text and tinted blacks for backgrounds."
+  },
+  "visual_enhancers": {
+    "glassmorphism": "backdrop-blur-xl bg-black/70 border-b border-white/10. CRITICAL: Never use a fully transparent header over page content.",
+    "textures": "Use a subtle noise overlay (SVG filter or background image pattern) on the main body to remove digital flatness.",
+    "borders": "1px solid rgba(255, 255, 255, 0.05). Use the 'Grid Borders' pattern for technical specification tables (borders on right and bottom of cells).",
+    "shadows": "Minimal ambient glow. No generic CSS drop-shadows. Use soft drop-shadow-[0_0_30px_rgba(255,255,255,0.05)] for emphasis."
+  },
+  "grids_and_layouts": {
+    "bento_grid": "MODE A: TETRIS GRID for product showcases. Base grid-cols-1 md:grid-cols-12 with wide gap-8. Mix col-span-8 and col-span-4 shapes to create asymmetry.",
+    "spacing": "Generous Spacing Philosophy. Use p-12, p-24, p-32. The layout should feel luxurious and spacious.",
+    "chapters": "Numbered manifesto sections (e.g., 01, 02) with massive tracking-tighter numbers overlapping text blocks.",
+    "hero": "Hero overlay MUST NOT exceed bg-black/50. If image isn't clear, overlay is too heavy."
+  },
+  "motion": {
+    "scrolling": "MANDATORY: Use 'lenis' (@studio-freight/react-lenis) for smooth momentum scrolling.",
+    "page_transitions": "Use framer-motion AnimatePresence. Pages should fade in and translate-y from 20px.",
+    "kinetic_text": "Line-by-line masked text reveal for H1s using framer-motion. Wrap words in overflow-hidden divs and animate inner text from y:100% to y:0%.",
+    "scroll_reveal": "Section entrance animations triggered on scroll using framer-motion whileInView.",
+    "marquee": "Slow editorial marquee. The 'Kinetic Texture' variant: Use react-fast-marquee with massive text-8xl text-transparent border-white/10 outline text."
+  },
+  "3d_libraries": {
+    "hero_moment": "Use @react-three/fiber and @react-three/drei to render a subtle rotating abstract 3D TorusKnot or Icosahedron in the background of the Home page hero.",
+    "parallax": "Use framer-motion useScroll and useTransform for subtle parallax effects on large product images."
+  },
+  "accessibility": {
+    "contrast": "Ensure all text meets APCA standards against backgrounds.",
+    "data_testid": "CRITICAL: All interactive and key informational elements MUST include a data-testid attribute.",
+    "focus": "Focus states must have high contrast: focus:ring-2 focus:ring-white/50 focus:outline-none."
+  },
+  "media": {
+    "image_rules": "No placeholder URLs. Max mobile image height 80vh. Apply optical alignment.",
+    "image_urls": {
+      "laptop_hero": {
+        "url": "https://images.pexels.com/photos/15940010/pexels-photo-15940010.jpeg",
+        "description": "Sleek modern laptop on dark background for Laptops page."
+      },
+      "laptop_alt": {
+        "url": "https://images.unsplash.com/photo-1611078489935-0cb964de46d6",
+        "description": "MacBook Pro on black table."
+      },
+      "tower_hero": {
+        "url": "https://images.pexels.com/photos/7858769/pexels-photo-7858769.jpeg",
+        "description": "Dark close-up of gaming PC cooling system for Towers page."
+      },
+      "tower_alt": {
+        "url": "https://images.unsplash.com/photo-1613258176465-eb77f3a050d2",
+        "description": "Internal components of computer tower."
+      },
+      "audio_hero": {
+        "url": "https://images.pexels.com/photos/9154411/pexels-photo-9154411.jpeg",
+        "description": "Sleek wireless headphones dark background for Audio page."
+      },
+      "video_hero": {
+        "url": "https://images.pexels.com/photos/16027815/pexels-photo-16027815.jpeg",
+        "description": "Curved monitor dark background for Video page."
+      },
+      "abstract_tech": {
+        "url": "https://images.unsplash.com/photo-1638184984605-af1f05249a56",
+        "description": "Overlapping dark grey abstract geometric shapes for general backgrounds/hero sections."
+      }
+    }
+  },
+  "instructions_to_main_agent": [
+    "NOTE: You have .js files not .tsx files. Write all components and logic using pure JavaScript and JSX (e.g., App.js, Main.js, Laptops.js). Do not use TypeScript.",
+    "Set up React Router DOM for client-side routing across Home, Laptops, Towers, Audio, Video pages.",
+    "Wrap routes with Framer Motion AnimatePresence for smooth page transitions.",
+    "Install required dependencies using yarn: framer-motion @studio-freight/react-lenis react-fast-marquee @react-three/fiber @react-three/drei three lucide-react react-router-dom.",
+    "Do not rely heavily on Shadcn HTML-based generic cards. Use pure custom HTML/Tailwind for the heavily art-directed layouts.",
+    "Implement the fixed Header with backdrop-blur-xl and bg-black/70. Ensure content does not cut off under the transparent header by adding top padding to the main wrapper.",
+    "Home page structure: 3D R3F abstract hero, Kinetic text reveal, 4-bento grid linking to product categories, Marquee, Footer.",
+    "Product page structure: Large hero image with framer-motion parallax, Numbered manifesto chapters, Technical specs with Grid Borders.",
+    "Implement Kinetic Text Reveal: Split heading text into words, wrap each in an overflow-hidden span, and use framer-motion to slide inner text up from 100% to 0%."
+  ],
+  "UNIVERSAL_GUIDELINES_FOR_MAIN_AGENT": "You tend to converge toward generic, 'on distribution' outputs. In frontend design, this creates what users call the 'AI slop' aesthetic. Avoid this: make creative, distinctive frontends that surprise and delight. Create depth through layered design elements with z-index hierarchy. DO NOT use dark colors as gradients. Do not apply universal transitions (e.g. transition: all). Do not center align the app container. NEVER use emoji characters for icons. All interactive elements MUST include data-testid attributes."
+}
