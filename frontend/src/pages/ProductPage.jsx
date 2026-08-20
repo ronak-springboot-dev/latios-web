@@ -145,7 +145,7 @@ export default function ProductPage() {
                 {fam.models.map((m, i) => (
                   <Reveal key={m.name} delay={i * 0.06}>
                     <Link
-                      to={`/towers/${m.slug}`}
+                      to={`/${data.slug}/${m.slug}`}
                       className="group border border-white/10 bg-[#0A0A0A] hover:border-white/25 transition-colors duration-500 p-8 md:p-10 flex flex-col h-full focus:ring-2 focus:ring-white/50 focus:outline-none"
                       data-testid={`model-card-${fi}-${i}`}
                     >

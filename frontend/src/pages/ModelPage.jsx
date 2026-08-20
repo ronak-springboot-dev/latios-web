@@ -6,7 +6,7 @@ import { KineticText } from "@/components/KineticText";
 import { Reveal } from "@/components/Reveal";
 import { ParallaxImage } from "@/components/ParallaxImage";
 import { ModelTurntable } from "@/components/ModelTurntable";
-import { getModel, TOWERS_FAMILIES } from "@/data/models";
+import { getModel, getCategoryModels } from "@/data/models";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -21,11 +21,9 @@ export default function ModelPage() {
   const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
   const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0.2]);
 
-  if (!model) return <Navigate to="/towers" replace />;
+  if (!model) return <Navigate to="/" replace />;
 
-  const others = TOWERS_FAMILIES.flatMap((f) =>
-    f.models.map((m) => ({ ...m, family: f.kicker }))
-  ).filter((m) => m.slug !== model.slug);
+  const others = getCategoryModels(model.category).filter((m) => m.slug !== model.slug);
 
   return (
     <motion.main
@@ -51,11 +49,11 @@ export default function ModelPage() {
           className="relative z-10 max-w-[1600px] mx-auto px-6 md:px-12 pb-16 md:pb-24 w-full"
         >
           <Link
-            to="/towers"
+            to={`/${model.category}`}
             data-testid="back-to-towers"
             className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-zinc-400 hover:text-white transition-colors duration-300 mb-8"
           >
-            <ArrowLeft className="w-3.5 h-3.5" /> Towers
+            <ArrowLeft className="w-3.5 h-3.5" /> {model.category[0].toUpperCase() + model.category.slice(1)}
           </Link>
           <KineticText
             testId="model-title"
@@ -186,7 +184,7 @@ export default function ModelPage() {
             {others.map((m) => (
               <Link
                 key={m.slug}
-                to={`/towers/${m.slug}`}
+                to={`/${m.category}/${m.slug}`}
                 data-testid={`other-model-${m.slug}`}
                 className="group shrink-0 w-56 border border-white/10 bg-[#0A0A0A] hover:border-white/25 transition-colors duration-500 p-5 focus:ring-2 focus:ring-white/50 focus:outline-none"
               >
@@ -198,7 +196,7 @@ export default function ModelPage() {
                     className="max-h-[80%] w-auto object-contain transition-transform duration-500 group-hover:scale-105"
                   />
                 </div>
-                <span className="text-[9px] uppercase tracking-[0.3em] text-zinc-500">{m.family}</span>
+                <span className="text-[9px] uppercase tracking-[0.3em] text-zinc-500">{m.tag}</span>
                 <div className="mt-2 font-display text-sm font-bold tracking-tight text-white leading-snug">
                   {m.name}
                 </div>
@@ -227,11 +225,11 @@ export default function ModelPage() {
                 <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </button>
               <Link
-                to="/towers"
+                to={`/${model.category}`}
                 data-testid="model-back-button"
                 className="flex items-center gap-3 border border-white/20 text-white rounded-full px-8 py-4 text-xs uppercase tracking-[0.25em] hover:border-white/60 transition-colors duration-300"
               >
-                All towers
+                All {model.category}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

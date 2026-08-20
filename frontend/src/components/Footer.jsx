@@ -60,7 +60,19 @@ export const Footer = () => {
             >
               +91 82381 40787
             </a>
-            <span className="text-zinc-500">Ahmedabad, Gujarat, India</span>
+            <span className="text-zinc-500">
+              208, Palak Prime, Opp. Hotel Double Tree by Hilton, ISCON–Ambali Road,
+              Ahmedabad 380058, Gujarat, India
+            </span>
+            <a
+              href="https://www.latios.in"
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="footer-website-link"
+              className="text-white hover:text-zinc-300 transition-colors duration-300"
+            >
+              www.latios.in
+            </a>
           </div>
         </div>
 

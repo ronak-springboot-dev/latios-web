@@ -20,6 +20,14 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-20, update 11 — company profile integration)
+- Extracted all 20 pages of the Latios company profile PDF; cropped 20 real product/facility images from it
+- Laptops, Audio, Video categories now REAL: 13 new model pages (PRO AI 14 LTB244X, Rugged 14 MIL-STD-810H/IP65, Archer LTG540Z gaming; SP-50 speakerphone, 2 video soundbars, HPS conference system; web camera, PTZ camera, PRO monitors, IN-Series LFD 43-110", interactive panels 55-110", Active LED) — all spec'd from profile
+- Category heroes now use real profile scenes (rugged lineup, AV family, display wall); chapters rewritten to real product stories
+- Home: real stats (2023/15+ families/12+ certs/GeM), new "The Company" section with SMT factory photo + certification chips; footer now has full Palak Prime Ahmedabad address + latios.in
+- ModelPage generalized to all categories (/:category/:modelSlug)
+- Scroll: removed background-attachment:fixed (mobile jank source); lenis momentum intact
+
 ## Implemented (2026-08-20, update 10)
 - Rich enterprise backgrounds: layered fixed ambient radial gradients on body, diagonal gradient on cards, vertical gradient on marquee/footer, and a masked blueprint grid texture (.grid-bg) on the home hero + all spec sections; light theme verified compatible
 

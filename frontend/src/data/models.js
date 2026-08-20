@@ -1084,5 +1084,620 @@ export const TOWERS_FAMILIES = [
   },
 ];
 
+const LAPTOP_FEATURES = [
+  {
+    kicker: "AI Performance",
+    heading: "Core Ultra, with an NPU inside",
+    body: "Every Latios laptop runs Intel Core Ultra with a dedicated AI engine — acceleration for the apps you already use, without draining the battery.",
+    image: "/images/laptop-real-1.jpg",
+  },
+  {
+    kicker: "Endurance",
+    heading: "Rugged when it needs to be",
+    body: "The Rugged series carries MIL-STD-810H and IP65 certification with sunlight-readable touchscreens — rail-ready, field-ready, monsoon-ready.",
+    image: "/images/laptop-rugged.jpg",
+  },
+  {
+    kicker: "Gaming",
+    heading: "Archer: 300Hz of overkill",
+    body: "The LTG540Z pairs Core Ultra 9 200HX with up to RTX 5080 graphics and a 2.5K Mini LED panel — 270W of OverBoost Ultra power, unleashed.",
+    image: "/images/laptop-archer.jpg",
+  },
+];
+
+const AUDIO_FEATURES = [
+  {
+    kicker: "Voice",
+    heading: "Hear everyone. Clearly.",
+    body: "Full-duplex HD voice with echo and noise cancellation and 360° microphone arrays — every seat at the table is heard.",
+    image: "/images/av-sp50.jpg",
+  },
+  {
+    kicker: "All-in-one",
+    heading: "Camera, mics and speaker in one bar",
+    body: "Video soundbars with 4K optics, 5X zoom, AI framing and beamforming mic arrays — one cable turns any screen into a conference room.",
+    image: "/images/av-soundbar.jpg",
+  },
+  {
+    kicker: "Scale",
+    heading: "From huddle room to boardroom",
+    body: "The HPS host-participant system scales to 200 units with capacitive touch controls and 5-band EQ — structured discussion, zero chaos.",
+    image: "/images/av-hps.jpg",
+  },
+];
+
+const VIDEO_FEATURES = [
+  {
+    kicker: "Clarity",
+    heading: "4K as the baseline",
+    body: "From 19.5-inch desk monitors to 110-inch large-format walls, every Latios panel is anti-glare, wide-viewing and colour-honest.",
+    image: "/images/av-monitor.jpg",
+  },
+  {
+    kicker: "Intelligence",
+    heading: "Cameras that follow the room",
+    body: "PTZ cameras with AI tracking and auto-framing keep the speaker centred — HDMI, SDI, USB and LAN outputs drop into any rig.",
+    image: "/images/av-ptz.jpg",
+  },
+  {
+    kicker: "Interaction",
+    heading: "Touch. Share. Create.",
+    body: "Interactive flat panels with wireless screen sharing, toughened anti-glare glass and Windows / Android / OPS flexibility.",
+    image: "/images/av-ifp.jpg",
+  },
+];
+
+export const LAPTOPS_FAMILY = {
+  kicker: "Mobile Computing",
+  title: "Laptops that earn their keep.",
+  blurb:
+    "Three machines for three kinds of days — the PRO AI for business, the Rugged for the field, and the Archer for everything that needs 300 frames per second.",
+  models: [
+    {
+      slug: "pro-ai-laptop-14",
+      name: "Latios PRO AI Laptop — 14\u2033",
+      tag: "LTB244X · Core Ultra AI",
+      image: "/images/laptop-pro14.jpg",
+      gallery: ["/images/laptop-pro14.jpg", "/images/laptops-hero.jpg"],
+      heroImage: "/images/laptops-hero.jpg",
+      chips: ["Core Ultra AI", "64GB DDR5", "Thunderbolt"],
+      stats: [
+        ["14\u2033", "Business display"],
+        ["64GB", "Max DDR5 memory"],
+        ["150W", "USB-C PD charging"],
+      ],
+      intro:
+        "The everyday flagship: lightweight design, heavy performance — Core Ultra AI processing, up to 64GB of DDR5 and dual SSDs in a 14-inch frame.",
+      highlights: [
+        "Intel Core Ultra AI power",
+        "Windows 11 ready",
+        "Up to 64GB DDR5 memory",
+        "Dual SSD — up to 2TB storage",
+      ],
+      features: LAPTOP_FEATURES,
+      specGroups: [
+        {
+          group: "Performance",
+          items: [
+            ["Processor", "Intel Core Ultra with AI NPU"],
+            ["Memory", "Up to 64GB DDR5"],
+            ["Storage", "Dual SSD, up to 2TB"],
+          ],
+        },
+        {
+          group: "Connectivity & Power",
+          items: [
+            ["Charging", "USB-C PD up to 150W"],
+            ["Ports", "Thunderbolt · USB-C · USB-A"],
+            ["OS", "Windows 11 ready"],
+          ],
+        },
+      ],
+    },
+    {
+      slug: "rugged-laptop-14",
+      name: "Latios Rugged Laptop — 14\u2033",
+      tag: "MIL-STD-810H · IP65",
+      image: "/images/laptop-rugged.jpg",
+      gallery: ["/images/laptop-rugged.jpg", "/images/laptops-hero.jpg"],
+      heroImage: "/images/laptops-hero.jpg",
+      chips: ["Core Ultra", "IP65", "Touchscreen"],
+      stats: [
+        ["810H", "MIL-STD certified"],
+        ["IP65", "Dust & water proof"],
+        ["14\u2033", "FHD touchscreen"],
+      ],
+      intro:
+        "AI power, rail-ready tough: a Windows AI laptop certified to MIL-STD-810H and IP65, built for sites, plants and fields — not just desks.",
+      highlights: [
+        "Intel Core Ultra AI processor",
+        "Windows 11 Pro",
+        "MIL-STD-810H | IP65 certified",
+        "14\u2033 / 15.6\u2033 FHD touchscreen",
+      ],
+      features: LAPTOP_FEATURES,
+      specGroups: [
+        {
+          group: "Performance",
+          items: [
+            ["Processor", "Intel Core Ultra AI"],
+            ["Graphics", "Intel Arc / Xe"],
+            ["OS", "Windows 11 Pro"],
+          ],
+        },
+        {
+          group: "Durability",
+          items: [
+            ["Certification", "MIL-STD-810H · IP65"],
+            ["Display", '14" / 15.6" FHD touchscreen'],
+            ["Use case", "Rail, field and industrial sites"],
+          ],
+        },
+      ],
+    },
+    {
+      slug: "archer-ltg540z",
+      name: "Latios Archer — LTG540Z",
+      tag: "16\u2033 2.5K 300Hz · up to RTX 5080",
+      image: "/images/laptop-archer.jpg",
+      gallery: ["/images/laptop-archer.jpg", "/images/laptops-hero.jpg"],
+      heroImage: "/images/laptop-archer.jpg",
+      chips: ["Ultra 9 200HX", "RTX 5080", "300Hz Mini LED"],
+      stats: [
+        ["300Hz", "2.5K Mini LED"],
+        ["270W", "OverBoost Ultra"],
+        ["5080", "Max RTX graphics"],
+      ],
+      intro:
+        "Unleash absolute power: Intel Core Ultra 9 200HX, up to NVIDIA RTX 5080 and a 16-inch 2.5K Mini LED at 300Hz — 270W of combined OverBoost Ultra muscle.",
+      highlights: [
+        "Intel Core Ultra 9 200HX series",
+        "NVIDIA RTX 5050 → 5080 options",
+        '16" 2.5K Mini LED · 300Hz · 500 nits',
+        "Max 270W CPU+GPU OverBoost Ultra",
+      ],
+      features: LAPTOP_FEATURES,
+      specGroups: [
+        {
+          group: "Performance",
+          items: [
+            ["Processor", "Intel Core Ultra 9 200HX series"],
+            ["Graphics", "NVIDIA RTX 5050 / 5060 / 5070 / 5070 Ti / 5080"],
+            ["Power", "Max 270W CPU + GPU (OverBoost Ultra)"],
+          ],
+        },
+        {
+          group: "Display & OS",
+          items: [
+            ["Panel", '16" 2.5K Mini LED, 300Hz, 500 nits'],
+            ["OS", "Windows 11 (Pro recommended)"],
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const AUDIO_FAMILY = {
+  kicker: "Smart Audio & Collaboration",
+  title: "Every voice, crystal clear.",
+  blurb:
+    "Speakerphones, video soundbars and full discussion systems — conference audio that makes remote feel local.",
+  models: [
+    {
+      slug: "sp50-speakerphone",
+      name: "Latios PRO SP-50 — Speakerphone",
+      tag: "360° mic · 5400mAh",
+      image: "/images/av-sp50.jpg",
+      gallery: ["/images/av-sp50.jpg", "/images/audio-hero.jpg"],
+      heroImage: "/images/audio-hero.jpg",
+      chips: ["Full-duplex HD", "360° mic array", "Bluetooth"],
+      stats: [
+        ["360°", "Microphone array"],
+        ["5400", "mAh battery"],
+        ["HD", "Full-duplex voice"],
+      ],
+      intro:
+        "Hear everyone, clearly: a full-duplex HD speakerphone with echo and noise cancellation, a 360° mic array and a battery that outlasts the longest offsite.",
+      highlights: [
+        "Full-duplex HD voice",
+        "Echo & noise cancellation",
+        "5400mAh battery",
+        "USB · Bluetooth · LINE IN/OUT",
+      ],
+      features: AUDIO_FEATURES,
+      specGroups: [
+        {
+          group: "Audio",
+          items: [
+            ["Voice", "Full-duplex HD"],
+            ["Processing", "Echo & noise cancellation"],
+            ["Microphones", "360° mic array"],
+          ],
+        },
+        {
+          group: "Connectivity & Power",
+          items: [
+            ["Interfaces", "USB · Bluetooth · LINE IN/OUT"],
+            ["Battery", "5400mAh"],
+          ],
+        },
+      ],
+    },
+    {
+      slug: "pro-video-soundbar",
+      name: "Latios PRO — Video Soundbar",
+      tag: "4K · Speaker tracking",
+      image: "/images/av-soundbar.jpg",
+      gallery: ["/images/av-soundbar.jpg", "/images/audio-hero.jpg"],
+      heroImage: "/images/audio-hero.jpg",
+      chips: ["4K UHD", "120° FOV", "5X zoom"],
+      stats: [
+        ["4K", "Ultra HD camera"],
+        ["120°", "Field of view"],
+        ["4", "Mic array"],
+      ],
+      intro:
+        "See it, hear it, feel it: a 4K conference bar with speaker tracking, a 4-mic beamforming array and a room-filling speaker in one elegant bar.",
+      highlights: [
+        "4K Ultra HD camera",
+        "120° FOV · 5X zoom",
+        "Speaker tracking",
+        "Built-in 4-mic array & speaker",
+      ],
+      features: AUDIO_FEATURES,
+      specGroups: [
+        {
+          group: "Video",
+          items: [
+            ["Camera", "4K Ultra HD"],
+            ["Optics", "120° FOV · 5X zoom"],
+            ["Intelligence", "Speaker tracking"],
+          ],
+        },
+        {
+          group: "Audio",
+          items: [
+            ["Microphones", "Built-in 4-mic array"],
+            ["Speaker", "Integrated, room-filling"],
+          ],
+        },
+      ],
+    },
+    {
+      slug: "video-soundbar-4k",
+      name: "Latios 4K — Video Soundbar",
+      tag: "4K · AI auto framing",
+      image: "/images/av-soundbar4k.jpg",
+      gallery: ["/images/av-soundbar4k.jpg", "/images/audio-hero.jpg"],
+      heroImage: "/images/audio-hero.jpg",
+      chips: ["4K UHD", "AI framing", "120° FOV"],
+      stats: [
+        ["4K", "Ultra HD camera"],
+        ["AI", "Auto framing"],
+        ["5X", "Zoom"],
+      ],
+      intro:
+        "4K vision, immersive sound: AI auto framing keeps everyone in the shot while the 4-mic array keeps everyone in the conversation.",
+      highlights: [
+        "4K Ultra HD camera",
+        "5X zoom · AI auto framing",
+        "Built-in 4-mic array & speaker",
+        "120° field of view",
+      ],
+      features: AUDIO_FEATURES,
+      specGroups: [
+        {
+          group: "Video",
+          items: [
+            ["Camera", "4K Ultra HD"],
+            ["Optics", "5X zoom · 120° FOV"],
+            ["Intelligence", "AI auto framing"],
+          ],
+        },
+        {
+          group: "Audio",
+          items: [
+            ["Microphones", "Built-in 4-mic array"],
+            ["Speaker", "Integrated"],
+          ],
+        },
+      ],
+    },
+    {
+      slug: "hps-controller",
+      name: "Latios HPS — Conference System",
+      tag: "Host-participant · 200 units",
+      image: "/images/av-hps.jpg",
+      gallery: ["/images/av-hps.jpg", "/images/audio-hero.jpg"],
+      heroImage: "/images/audio-hero.jpg",
+      chips: ["200 units", "5-band EQ", "Touch control"],
+      stats: [
+        ["200", "Max units"],
+        ["5", "Band EQ"],
+        ["Touch", "Capacitive controls"],
+      ],
+      intro:
+        "The boardroom conductor: a host-participant discussion system with a built-in loudspeaker, 5-band EQ and capacitive touch — scaling to 200 units.",
+      highlights: [
+        "Up to 60 units supported",
+        "Up to 200 with ext. processor",
+        "5-band EQ adjustment",
+        "Built-in loudspeaker · touch buttons",
+      ],
+      features: AUDIO_FEATURES,
+      specGroups: [
+        {
+          group: "System",
+          items: [
+            ["Capacity", "60 units · 200 with ext. processor"],
+            ["Controls", "Capacitive touch buttons"],
+          ],
+        },
+        {
+          group: "Audio",
+          items: [
+            ["EQ", "5-band adjustment"],
+            ["Speaker", "Built-in loudspeaker"],
+          ],
+        },
+      ],
+    },
+  ],
+};
+
+export const VIDEO_FAMILY = {
+  kicker: "Smart Display & Visual",
+  title: "Pixels with purpose.",
+  blurb:
+    "Desk monitors, boardroom panels, 110-inch walls and the cameras that tie the room together.",
+  models: [
+    {
+      slug: "pro-web-camera",
+      name: "Latios PRO — Web Camera",
+      tag: "1080p · Plug & play",
+      image: "/images/av-webcam.jpg",
+      gallery: ["/images/av-webcam.jpg", "/images/video-hero.jpg"],
+      heroImage: "/images/video-hero.jpg",
+      chips: ["1080p30", "85° wide", "USB plug & play"],
+      stats: [
+        ["1080p", "30fps video"],
+        ["85°", "Wide-angle lens"],
+        ["USB", "Plug & play"],
+      ],
+      intro:
+        "Clear video, simple setup: Full HD optics, a high-quality CMOS sensor and a built-in stereo mic — plug in one USB cable and look professional.",
+      highlights: [
+        "Full HD 1080p @ 30fps",
+        "High-quality CMOS sensor",
+        "Built-in stereo mic",
+        "85° wide-angle · USB 2.0 plug & play",
+      ],
+      features: VIDEO_FEATURES,
+      specGroups: [
+        {
+          group: "Video",
+          items: [
+            ["Resolution", "Full HD 1080p @ 30fps"],
+            ["Sensor", "High-quality CMOS"],
+            ["Lens", "85° wide-angle with zoom"],
+          ],
+        },
+        {
+          group: "Audio & Connectivity",
+          items: [
+            ["Microphone", "Built-in stereo"],
+            ["Interface", "USB 2.0 plug & play"],
+          ],
+        },
+      ],
+    },
+    {
+      slug: "pro-ptz-camera",
+      name: "Latios PRO — PTZ Camera",
+      tag: "AI tracking · 1080p60",
+      image: "/images/av-ptz.jpg",
+      gallery: ["/images/av-ptz.jpg", "/images/video-hero.jpg"],
+      heroImage: "/images/video-hero.jpg",
+      chips: ["1080p60", "AI tracking", "HDMI · SDI · LAN"],
+      stats: [
+        ["60fps", "Full HD video"],
+        ["AI", "Tracking & framing"],
+        ["4", "Output interfaces"],
+      ],
+      intro:
+        "Intelligent tracking, broadcast precision: a 1/2.8-inch CMOS PTZ with AI framing that follows the speaker — HDMI, SDI, USB and LAN onboard.",
+      highlights: [
+        "Full HD 1080p @ 60fps",
+        '1/2.8" CMOS image sensor',
+        "AI tracking & framing",
+        "HDMI · SDI · USB · LAN",
+      ],
+      features: VIDEO_FEATURES,
+      specGroups: [
+        {
+          group: "Video",
+          items: [
+            ["Resolution", "Full HD 1080p @ 60fps"],
+            ["Sensor", '1/2.8" CMOS'],
+            ["Intelligence", "AI tracking & framing"],
+          ],
+        },
+        {
+          group: "Connectivity",
+          items: [
+            ["Outputs", "HDMI · SDI · USB · LAN"],
+            ["Audio", "External audio input"],
+          ],
+        },
+      ],
+    },
+    {
+      slug: "pro-monitor",
+      name: "Latios PRO — Monitor",
+      tag: '19.5\u2033 – 32\u2033 · up to 4K',
+      image: "/images/av-monitor.jpg",
+      gallery: ["/images/av-monitor.jpg", "/images/video-hero.jpg"],
+      heroImage: "/images/video-hero.jpg",
+      chips: ["Up to 4K", "IPS / VA", "High refresh"],
+      stats: [
+        ["4K", "Max resolution"],
+        ['32\u2033', "Max size"],
+        ["IPS", "Panel options"],
+      ],
+      intro:
+        "Designed for everyday performance: from 19.5 to 32 inches, FHD to 4K, IPS or VA — a Latios PRO monitor for every desk in the building.",
+      highlights: [
+        "19.5 / 21.5 / 23.8 / 27 / 32 inch",
+        "Full HD / QHD / 4K resolution",
+        "IPS / VA panel options",
+        "HDMI · DP · USB connectivity",
+      ],
+      features: VIDEO_FEATURES,
+      specGroups: [
+        {
+          group: "Panel",
+          items: [
+            ["Sizes", '19.5" · 21.5" · 23.8" · 27" · 32"'],
+            ["Resolution", "FHD / QHD / 4K"],
+            ["Technology", "IPS / VA · high refresh rate"],
+          ],
+        },
+        {
+          group: "Connectivity",
+          items: [["Inputs", "HDMI · DisplayPort · USB"]],
+        },
+      ],
+    },
+    {
+      slug: "in-series-lfd",
+      name: "Latios IN-Series — Large Format",
+      tag: '43\u2033 – 110\u2033 · 4K UHD',
+      image: "/images/av-lfd.jpg",
+      gallery: ["/images/av-lfd.jpg", "/images/video-hero.jpg"],
+      heroImage: "/images/video-hero.jpg",
+      chips: ['110\u2033 max', "4K UHD", "Anti-glare"],
+      stats: [
+        ['110\u2033', "Max panel size"],
+        ["4K", "Ultra HD"],
+        ["24/7", "Signage ready"],
+      ],
+      intro:
+        "Big screens, bigger impact: ultra-large 4K UHD panels with anti-glare wide viewing in a slim industrial design — built for digital signage and venues.",
+      highlights: [
+        "43 / 55 / 65 / 75 / 86 / 98 / 110 inch",
+        "Ultra-large 4K UHD panel",
+        "Anti-glare wide viewing",
+        "Ideal for digital signage",
+      ],
+      features: VIDEO_FEATURES,
+      specGroups: [
+        {
+          group: "Panel",
+          items: [
+            ["Sizes", '43" → 110"'],
+            ["Resolution", "4K UHD"],
+            ["Surface", "Anti-glare · wide viewing angle"],
+          ],
+        },
+        {
+          group: "Deployment",
+          items: [
+            ["Design", "Slim industrial"],
+            ["Use case", "Digital signage · venues"],
+          ],
+        },
+      ],
+    },
+    {
+      slug: "pro-ifp",
+      name: "Latios PRO — Interactive Panel",
+      tag: '55\u2033 – 110\u2033 · Touch',
+      image: "/images/av-ifp.jpg",
+      gallery: ["/images/av-ifp.jpg", "/images/video-hero.jpg"],
+      heroImage: "/images/video-hero.jpg",
+      chips: ["Touch UHD", "Wireless share", "Win / Android / OPS"],
+      stats: [
+        ["Touch", "UHD interactive"],
+        ["20", "Point multi-touch"],
+        ["OPS", "Slot ready"],
+      ],
+      intro:
+        "Touch, collaborate, create: an Ultra HD interactive panel with wireless screen sharing and toughened anti-glare glass — Windows, Android or OPS.",
+      highlights: [
+        "55 / 65 / 75 / 86 / 98 / 110 inch",
+        "Ultra HD interactive display",
+        "Wireless screen sharing",
+        "Windows / Android / OPS ready",
+      ],
+      features: VIDEO_FEATURES,
+      specGroups: [
+        {
+          group: "Panel",
+          items: [
+            ["Sizes", '55" → 110"'],
+            ["Resolution", "Ultra HD interactive"],
+            ["Glass", "Anti-glare toughened"],
+          ],
+        },
+        {
+          group: "Collaboration",
+          items: [
+            ["Sharing", "Wireless screen sharing"],
+            ["Platform", "Windows / Android / OPS"],
+          ],
+        },
+      ],
+    },
+    {
+      slug: "active-led",
+      name: "Latios Active LED — Display",
+      tag: "Seamless · Modular",
+      image: "/images/av-led.jpg",
+      gallery: ["/images/av-led.jpg", "/images/video-hero.jpg"],
+      heroImage: "/images/video-hero.jpg",
+      chips: ["Seamless", "High refresh", "Modular"],
+      stats: [
+        ["0", "Visible bezels"],
+        ["HDR", "Deep contrast"],
+        ["Modular", "Any size"],
+      ],
+      intro:
+        "Brilliance without borders: seamless large-scale LED with high refresh visuals and vivid contrast — modular panels for auditoriums and venues.",
+      highlights: [
+        "Seamless large-scale display",
+        "High refresh rate visuals",
+        "Vivid colors & deep contrast",
+        "Modular, flexible design",
+      ],
+      features: VIDEO_FEATURES,
+      specGroups: [
+        {
+          group: "Panel",
+          items: [
+            ["Design", "Seamless · modular · flexible"],
+            ["Visuals", "High refresh · vivid colors · deep contrast"],
+          ],
+        },
+        {
+          group: "Deployment",
+          items: [["Use case", "Auditoriums · venues · large venues"]],
+        },
+      ],
+    },
+  ],
+};
+
+const ALL_FAMILIES = [...TOWERS_FAMILIES, LAPTOPS_FAMILY, AUDIO_FAMILY, VIDEO_FAMILY];
+[
+  [TOWERS_FAMILIES, "towers"],
+  [[LAPTOPS_FAMILY], "laptops"],
+  [[AUDIO_FAMILY], "audio"],
+  [[VIDEO_FAMILY], "video"],
+].forEach(([fams, cat]) => fams.forEach((f) => f.models.forEach((m) => (m.category = cat))));
+
 export const getModel = (slug) =>
-  TOWERS_FAMILIES.flatMap((f) => f.models).find((m) => m.slug === slug);
+  ALL_FAMILIES.flatMap((f) => f.models).find((m) => m.slug === slug);
+
+export const getCategoryModels = (cat) =>
+  ALL_FAMILIES.flatMap((f) => f.models).filter((m) => m.category === cat);

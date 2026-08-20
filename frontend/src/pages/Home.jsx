@@ -31,10 +31,10 @@ const MANIFESTO = [
 ];
 
 const STATS = [
-  ["99.99%", "Fleet uptime SLA"],
-  ["40+", "Countries served"],
-  ["24/7", "Engineer support"],
-  ["5 yr", "On-site warranty"],
+  ["2023", "Founded in India"],
+  ["15+", "Product families"],
+  ["12+", "Certifications"],
+  ["GeM", "Registered OEM"],
 ];
 
 const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -61,7 +61,7 @@ export default function Home() {
             className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-8"
             data-testid="hero-kicker"
           >
-            Business & Productivity PCs — Est. 2026
+            Proudly Indian · Boldly Innovative — Est. 2023
           </motion.p>
           <KineticText
             testId="hero-title"
@@ -223,6 +223,43 @@ export default function Home() {
               </div>
             </Reveal>
           ))}
+        </div>
+      </section>
+
+      {/* ABOUT / COMPANY */}
+      <section className="border-t border-white/10" data-testid="about-section">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-28 md:py-40 grid grid-cols-1 lg:grid-cols-2 gap-14 items-center">
+          <Reveal>
+            <div className="group overflow-hidden border border-white/10">
+              <img
+                src="/images/factory.jpg"
+                alt="Latios SMT manufacturing facility"
+                loading="lazy"
+                className="spotlight-img w-full aspect-[4/3] object-cover"
+              />
+            </div>
+          </Reveal>
+          <Reveal delay={0.12}>
+            <p className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">The Company</p>
+            <h2 className="font-display text-4xl md:text-5xl font-black tracking-tighter text-white leading-[1.03]">
+              Proudly Indian. Boldly Innovative.
+            </h2>
+            <p className="mt-6 text-base md:text-lg text-zinc-400 leading-relaxed">
+              Founded in 2023, Latios designs and manufactures electronics entirely in
+              India — from initial design and PCB assembly to end-of-life management.
+              Every product ships under one promise: Make in India, without shortcuts.
+            </p>
+            <div className="mt-8 flex flex-wrap gap-2.5" data-testid="cert-chips">
+              {["ISO 9001", "ISO 14001", "ISO 45001", "ISO 27001", "BIS", "RoHS", "CE", "GeM Registered"].map((c) => (
+                <span
+                  key={c}
+                  className="border border-white/15 rounded-full px-4 py-1.5 text-[10px] uppercase tracking-[0.2em] text-zinc-400"
+                >
+                  {c}
+                </span>
+              ))}
+            </div>
+          </Reveal>
         </div>
       </section>
 
