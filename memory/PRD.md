@@ -20,6 +20,12 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-20, update 7 — user-directed revert)
+- REVERTED the MSI→real-photo swap per user: MSI imagery restored everywhere on Towers (cards, turntables, heroes, features) and original laptop/video photos restored
+- KEPT brand-free custom SVG artwork ONLY on the Audio page (user requirement: no JBL/other brands in audio)
+- Removed the floating Latios tower from the homepage hero (added then removed at user request)
+- Real Latios photo crops remain in /public/images (unused, available on request)
+
 ## Implemented (2026-08-20, update 6 — brand cleanup)
 - Replaced ALL third-party-branded imagery: MSI renders/photos swapped for the user's real Latios product photo (cropped into latios-mt.jpg / latios-sff.jpg / latios-pair.jpg) across model cards, 360° turntables, heroes and feature chapters
 - Laptops/Audio/Video pages: removed all third-party stock photos (Apple/JBL/Marshall/Canon etc.) and replaced with custom brand-neutral dark SVG artwork (waveform, EQ bars, speaker rings, keyboard grid, chip, play frame, pixel mosaic) bearing the LATIOS wordmark

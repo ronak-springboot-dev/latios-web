@@ -1,13 +1,18 @@
-const MT_GALLERY = ["/images/latios-mt.jpg", "/images/latios-pair.jpg", "/images/latios-sff.jpg"];
-const SFF_GALLERY = ["/images/latios-sff.jpg", "/images/latios-pair.jpg"];
-const MFF_GALLERY = ["/images/latios-pair.jpg", "/images/latios-sff.jpg"];
+const MT_GALLERY = [
+  "/images/dp180-1.webp",
+  "/images/dp180-2.webp",
+  "/images/dp180-3.webp",
+  "/images/dp180-4.webp",
+];
+const SFF_GALLERY = ["/images/dp80-1.webp", "/images/dp80-2.webp"];
+const MFF_GALLERY = ["/images/dp10-1.webp", "/images/dp10-2.webp"];
 
 const MT_FEATURES = [
   {
     kicker: "Performance",
     heading: "Performance that keeps up with you",
     body: "Latest-generation processors, dual-channel memory and NVMe storage keep heavy multitasking instant — from sprawling spreadsheets to overnight render queues.",
-    image: "/images/latios-pair.jpg",
+    image: "/images/perf.png",
   },
   {
     kicker: "Connectivity",
@@ -19,13 +24,13 @@ const MT_FEATURES = [
     kicker: "Serviceability",
     heading: "Easy to upgrade design",
     body: "Quick access to memory, M.2, 2.5-inch and 3.5-inch bays means upgrades and servicing take minutes — keeping fleets current for years, not cycles.",
-    image: "/images/latios-mt.jpg",
+    image: "/images/easy.png",
   },
   {
     kicker: "Security",
     heading: "Secure inside and out",
     body: "Hardware TPM 2.0 encryption, Kensington and padlock points, and Latios Center keeping hardware health visible to IT at all times.",
-    image: "/images/io-left.png",
+    image: "/images/chassis.png",
   },
 ];
 
@@ -34,25 +39,25 @@ const SFF_FEATURES = [
     kicker: "Design",
     heading: "Compact. Sleek. Powerful.",
     body: "Eight litres that disappear into any workspace — under the desk, behind the monitor, or standing slim beside it.",
-    image: "/images/latios-sff.jpg",
+    image: "/images/office.png",
   },
   {
     kicker: "Placement",
     heading: "Versatile placement",
     body: "Position it vertically or horizontally; the chassis is designed to look deliberate either way, with thermals that cope with both.",
-    image: "/images/latios-pair.jpg",
+    image: "/images/versatile.png",
   },
   {
     kicker: "Everyday",
     heading: "Speaker and card reader, built in",
     body: "Clear audio for calls and notifications, plus SD and microSD support up front — no dongles, no desk clutter.",
-    image: "/images/io-left.png",
+    image: "/images/speaker.png",
   },
   {
     kicker: "Security",
     heading: "Secure inside and out",
     body: "Hardware TPM 2.0, chassis lock points and Latios Center diagnostics — small footprint, enterprise posture.",
-    image: "/images/io-left.png",
+    image: "/images/chassis.png",
   },
 ];
 
@@ -61,19 +66,19 @@ const MFF_FEATURES = [
     kicker: "Size",
     heading: "Power in the palm of your hand",
     body: "A full Windows 11 Pro PC in 1.1 litres. VESA-mount it behind a monitor and the desk is yours again.",
-    image: "/images/latios-pair.jpg",
+    image: "/images/palm.jpg",
   },
   {
     kicker: "Displays",
     heading: "Triple display support",
     body: "Drive up to three monitors through HDMI, DisplayPort and the configurable port — a control-room layout from something pocketable.",
-    image: "/images/display.jpg",
+    image: "/images/triple.png",
   },
   {
     kicker: "Detail",
     heading: "Cable organizer design",
     body: "The included cable organizer keeps connections locked and tidy, even in tight or vibration-prone installations.",
-    image: "/images/io-right.png",
+    image: "/images/cable.png",
   },
 ];
 
@@ -98,9 +103,9 @@ const PROMAX_FEATURES = [
   },
 ];
 
-const MT_HERO = "/images/latios-pair.jpg";
-const SFF_HERO = "/images/latios-sff.jpg";
-const MFF_HERO = "/images/latios-pair.jpg";
+const MT_HERO = "/images/ops.jpg";
+const SFF_HERO = "/images/dp80kv.jpg";
+const MFF_HERO = "/images/dp10kv.jpg";
 const PROMAX_HERO = "/images/rtx.jpg";
 
 export const TOWERS_FAMILIES = [
@@ -114,7 +119,7 @@ export const TOWERS_FAMILIES = [
         slug: "mt-amd-am4",
         name: "Latios MT — AMD AM4",
         tag: "Ryzen 5000 · DDR4",
-        image: "/images/latios-mt.jpg",
+        image: "/images/dp180-3.webp",
         gallery: MT_GALLERY,
         heroImage: MT_HERO,
         chips: ["Ryzen 7 5700G", "64GB DDR4", "Wi-Fi 6E"],
@@ -180,7 +185,7 @@ export const TOWERS_FAMILIES = [
         slug: "mt-h610-ddr4",
         name: "Latios MT — Intel H610 DDR4",
         tag: "12th–14th Gen · DDR4",
-        image: "/images/latios-mt.jpg",
+        image: "/images/dp180-1.webp",
         gallery: MT_GALLERY,
         heroImage: MT_HERO,
         chips: ["Core i9-14900", "64GB DDR4", "RTX A4000"],
@@ -246,7 +251,7 @@ export const TOWERS_FAMILIES = [
         slug: "mt-h610-ddr5",
         name: "Latios MT — Intel H610 DDR5",
         tag: "12th–14th Gen · DDR5",
-        image: "/images/latios-mt.jpg",
+        image: "/images/dp180-2.webp",
         gallery: MT_GALLERY,
         heroImage: MT_HERO,
         chips: ["Core i9-14900", "64GB DDR5", "TPM 2.0"],
@@ -312,7 +317,7 @@ export const TOWERS_FAMILIES = [
         slug: "mt-pro-h610-ddr5",
         name: "Latios Pro MT — Intel H610 DDR5",
         tag: "14th Gen · DDR5 · Pro",
-        image: "/images/latios-mt.jpg",
+        image: "/images/dp180-4.webp",
         gallery: MT_GALLERY,
         heroImage: MT_HERO,
         chips: ["Core i7-14700", "64GB DDR5", "RTX A4000"],
@@ -378,7 +383,7 @@ export const TOWERS_FAMILIES = [
         slug: "mt-q670-ddr5",
         name: "Latios MT — Intel Q670 DDR5",
         tag: "12th–14th Gen · Q670",
-        image: "/images/latios-mt.jpg",
+        image: "/images/dp180-4.webp",
         gallery: MT_GALLERY,
         heroImage: MT_HERO,
         chips: ["Core i9-14900", "Intel Q670", "RTX A4000"],
@@ -444,7 +449,7 @@ export const TOWERS_FAMILIES = [
         slug: "sff-h610-ddr5",
         name: "Latios Pro SFF — Intel H610",
         tag: "14th Gen · 9.3 litres",
-        image: "/images/latios-sff.jpg",
+        image: "/images/dp80-1.webp",
         gallery: SFF_GALLERY,
         heroImage: SFF_HERO,
         chips: ["Core i7-14700", "64GB DDR5", "8 litres"],
@@ -510,7 +515,7 @@ export const TOWERS_FAMILIES = [
         slug: "mt-am5-pro-ai",
         name: "Latios Pro AI MT — AMD AM5",
         tag: "Ryzen 8000G AI · DDR5",
-        image: "/images/latios-mt.jpg",
+        image: "/images/dp180-1.webp",
         gallery: MT_GALLERY,
         heroImage: MT_HERO,
         chips: ["Ryzen 7 8700G", "Ryzen AI", "Wi-Fi 6E"],
@@ -576,7 +581,7 @@ export const TOWERS_FAMILIES = [
         slug: "sff-am5-pro-ai",
         name: "Latios Pro AI SFF — AMD AM5",
         tag: "Ryzen 8000G AI · 8 litres",
-        image: "/images/latios-sff.jpg",
+        image: "/images/dp80-2.webp",
         gallery: SFF_GALLERY,
         heroImage: SFF_HERO,
         chips: ["Ryzen 7 8700G", "Ryzen AI", "8 litres"],
@@ -642,7 +647,7 @@ export const TOWERS_FAMILIES = [
         slug: "sff-b860-pro-ai",
         name: "Latios Pro AI SFF — Intel B860",
         tag: "Core Ultra · NPU · 128GB",
-        image: "/images/latios-sff.jpg",
+        image: "/images/dp80-1.webp",
         gallery: SFF_GALLERY,
         heroImage: SFF_HERO,
         chips: ["Core Ultra 9 285", "128GB DDR5", "Thunderbolt 4"],
@@ -708,7 +713,7 @@ export const TOWERS_FAMILIES = [
         slug: "sff-h810-pro-ai",
         name: "Latios Pro AI SFF — Intel H810",
         tag: "Core Ultra · NPU · 64GB",
-        image: "/images/latios-sff.jpg",
+        image: "/images/dp80-2.webp",
         gallery: SFF_GALLERY,
         heroImage: SFF_HERO,
         chips: ["Core Ultra 9 285", "64GB DDR5", "Dual 2.5G LAN"],
@@ -774,7 +779,7 @@ export const TOWERS_FAMILIES = [
         slug: "mff-dp10",
         name: "Latios Pro MFF — DP10 A14MG",
         tag: "1.1L Mini PC · VESA",
-        image: "/images/latios-sff.jpg",
+        image: "/images/dp10-1.webp",
         gallery: MFF_GALLERY,
         heroImage: MFF_HERO,
         chips: ["Core i7-14700", "1.1 litres", "Triple display"],
@@ -848,7 +853,7 @@ export const TOWERS_FAMILIES = [
         slug: "promax-q870",
         name: "PROMAX AI — Intel Q870",
         tag: "Core Ultra · NPU · 128GB",
-        image: "/images/latios-mt.jpg",
+        image: "/images/dp180-2.webp",
         gallery: MT_GALLERY,
         heroImage: PROMAX_HERO,
         chips: ["Core Ultra 9 285", "128GB DDR5", "RTX A6000"],
@@ -906,7 +911,7 @@ export const TOWERS_FAMILIES = [
         slug: "promax-t2-w880",
         name: "PROMAX T2 AI — Intel W880",
         tag: "Core Ultra K · ECC",
-        image: "/images/latios-mt.jpg",
+        image: "/images/dp180-3.webp",
         gallery: MT_GALLERY,
         heroImage: PROMAX_HERO,
         chips: ["Core Ultra 9 285K", "256GB ECC", "Dual 2.5G LAN"],
@@ -964,7 +969,7 @@ export const TOWERS_FAMILIES = [
         slug: "promax-t2-w680",
         name: "PROMAX T2 — Intel W680",
         tag: "14th Gen K · 256GB",
-        image: "/images/latios-mt.jpg",
+        image: "/images/dp180-4.webp",
         gallery: MT_GALLERY,
         heroImage: PROMAX_HERO,
         chips: ["Core i9-14900K", "256GB ECC", "RTX A6000"],
@@ -1022,7 +1027,7 @@ export const TOWERS_FAMILIES = [
         slug: "promax-t4-plus",
         name: "PROMAX T4 Plus — Intel W780",
         tag: "Xeon W · 2TB ECC",
-        image: "/images/latios-mt.jpg",
+        image: "/images/dp180-1.webp",
         gallery: MT_GALLERY,
         heroImage: PROMAX_HERO,
         chips: ["Xeon W-3400", "2TB ECC", "2700W redundant"],
