@@ -95,6 +95,62 @@ async def list_enquiries():
             item['created_at'] = datetime.fromisoformat(item['created_at'])
     return items
 
+# LATI chatbot — Gemini powered, streaming SSE
+class ChatRequest(BaseModel):
+    session_id: str
+    message: str
+
+@api_router.post("/chat")
+async def chat(req: ChatRequest):
+    import json
+    from fastapi.responses import StreamingResponse
+    from emergentintegrations.llm.chat import LlmChat, UserMessage, TextDelta, StreamDone
+    from knowledge import LATIOS_KNOWLEDGE
+
+    ts = datetime.now(timezone.utc).isoformat()
+    await db.chat_messages.insert_one(
+        {"session_id": req.session_id, "role": "user", "content": req.message, "ts": ts}
+    )
+    history = await db.chat_messages.find(
+        {"session_id": req.session_id}, {"_id": 0}
+    ).sort("ts", 1).to_list(30)
+    prior = "\n".join(f"{m['role']}: {m['content']}" for m in history[:-1])
+    system = LATIOS_KNOWLEDGE + (f"\n\nConversation so far:\n{prior}" if prior else "")
+
+    llm = LlmChat(
+        api_key=os.environ["GEMINI_API_KEY"],
+        session_id=req.session_id,
+        system_message=system,
+    ).with_model("gemini", "gemini-3.5-flash-lite")
+
+    async def gen():
+        full = ""
+        try:
+            async for ev in llm.stream_message(UserMessage(text=req.message)):
+                if isinstance(ev, TextDelta):
+                    full += ev.content
+                    yield f"data: {json.dumps({'delta': ev.content})}\n\n"
+                elif isinstance(ev, StreamDone):
+                    break
+        except Exception as e:
+            logger.error(f"LATI chat error: {e}")
+            yield f"data: {json.dumps({'error': 'unavailable'})}\n\n"
+        await db.chat_messages.insert_one(
+            {
+                "session_id": req.session_id,
+                "role": "assistant",
+                "content": full,
+                "ts": datetime.now(timezone.utc).isoformat(),
+            }
+        )
+        yield "data: [DONE]\n\n"
+
+    return StreamingResponse(
+        gen(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
+
 # Include the router in the main app
 app.include_router(api_router)
 

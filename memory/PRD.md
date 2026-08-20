@@ -20,6 +20,12 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-20, update 12 — Gemini + tech hero)
+- LATI chatbot is LIVE: Gemini streaming via /api/chat (SSE), user's own GEMINI_API_KEY in backend/.env, product knowledge base in backend/knowledge.py (all 28 products + company), chat history persisted in MongoDB chat_messages
+- NOTE: user asked for gemini-2.5-flash-lite; Google API returned "no longer available to new users" — using gemini-3.5-flash-lite (API-recommended successor) instead
+- Chat UI: welcome message, clickable FAQ chips, streaming responses, bold markdown rendering, per-visitor session in localStorage
+- Homepage 3D hero replaced: torus knot → hardware scene (CPU chip with gold pins, 2 RAM sticks, spinning fan, port hub block) + particle dust, mouse parallax
+
 ## Implemented (2026-08-20, update 11 — company profile integration)
 - Extracted all 20 pages of the Latios company profile PDF; cropped 20 real product/facility images from it
 - Laptops, Audio, Video categories now REAL: 13 new model pages (PRO AI 14 LTB244X, Rugged 14 MIL-STD-810H/IP65, Archer LTG540Z gaming; SP-50 speakerphone, 2 video soundbars, HPS conference system; web camera, PTZ camera, PRO monitors, IN-Series LFD 43-110", interactive panels 55-110", Active LED) — all spec'd from profile
