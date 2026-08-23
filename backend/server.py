@@ -10,6 +10,7 @@ from typing import List, Optional
 import uuid
 import re
 import hmac
+import httpx
 from datetime import datetime, timezone
 from emailer import send_enquiry_alert
 
@@ -48,13 +49,15 @@ class Enquiry(BaseModel):
     email: str
     company: Optional[str] = None
     message: str
+    replied: bool = False
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class EnquiryCreate(BaseModel):
-    name: str
+    name: str = Field(min_length=1, max_length=100)
     email: str
     company: Optional[str] = None
-    message: str
+    message: str = Field(min_length=1, max_length=5000)
+    turnstile_token: str = Field(min_length=1, max_length=2048)
 
 # Add your routes to the router instead of directly to app
 @api_router.get("/")
@@ -82,8 +85,27 @@ async def get_status_checks():
 
     return status_checks
 
+TURNSTILE_URL = "https://challenges.cloudflare.com/turnstile/v0/siteverify"
+
+async def verify_turnstile(token: str):
+    try:
+        async with httpx.AsyncClient(timeout=5.0) as http:
+            resp = await http.post(
+                TURNSTILE_URL,
+                json={"secret": os.environ["TURNSTILE_SECRET_KEY"], "response": token},
+            )
+            result = resp.json()
+    except Exception:
+        raise HTTPException(status_code=503, detail="Security verification temporarily unavailable — please retry")
+    if not result.get("success"):
+        logger.warning(f"Turnstile rejected token: {result.get('error-codes')}")
+        raise HTTPException(status_code=400, detail="Security check failed — please retry")
+    if result.get("action") not in (None, "enquiry"):
+        raise HTTPException(status_code=400, detail="Security check failed")
+
 @api_router.post("/enquiries", response_model=Enquiry)
 async def create_enquiry(input: EnquiryCreate):
+    await verify_turnstile(input.turnstile_token)
     enquiry = Enquiry(**input.model_dump())
     doc = enquiry.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
@@ -120,6 +142,17 @@ async def list_enquiries(request: Request):
         if isinstance(item['created_at'], str):
             item['created_at'] = datetime.fromisoformat(item['created_at'])
     return items
+
+class RepliedUpdate(BaseModel):
+    replied: bool
+
+@api_router.patch("/enquiries/{enquiry_id}/replied")
+async def mark_enquiry_replied(enquiry_id: str, input: RepliedUpdate, request: Request):
+    require_admin(request)
+    res = await db.enquiries.update_one({"id": enquiry_id}, {"$set": {"replied": input.replied}})
+    if res.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Enquiry not found")
+    return {"ok": True, "id": enquiry_id, "replied": input.replied}
 
 # LATI chatbot — Gemini powered, streaming SSE
 class ChatRequest(BaseModel):

@@ -20,6 +20,12 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 22 — read receipts + Cloudflare Turnstile)
+- Read receipts: enquiries now carry replied flag; PATCH /api/enquiries/{id}/replied (admin-key protected, 401/404 verified); admin inbox shows emerald "Replied" badge + Mark replied/Unmark toggle, replied rows dimmed (UI verified end-to-end)
+- Cloudflare Turnstile: TurnstileWidget.jsx (explicit render, dark/light theme aware, token reset after every submit, error fallback message); footer enquiry form + LATI lead form both require a valid token; backend verifies via siteverify (TURNSTILE_SECRET_KEY in backend/.env, site key in frontend/.env REACT_APP_TURNSTILE_SITE_KEY); 422 without token, 400 bad token, tokens single-use
+- BLOCKER (user action): widget shows "Unable to connect to website" on preview — user's Cloudflare widget hostnames must include tech-gallery-14.preview.emergentagent.com AND the production hostname (Cloudflare Dashboard → Turnstile → widget → Hostnames). Secret key verified valid via siteverify. Until hostnames are added, enquiry forms stay disabled by design
+- Reply mailto body now truncates quoted message at 500 chars (mailto URL limit)
+
 ## Implemented (2026-08-24, update 21 — verified fixes + admin Reply)
 - TESTING AGENT VERIFIED (iteration_2, 8/8 pass): all iteration_1 light-mode failures fixed — LATI FAB icon (dark-on-white via higher-specificity chat-fab rule), chat panel stays dark in light mode (keep-dark bg/border/hover protection rules), search overlay popular-machine cards readable, theme toggle icon visible (utility bar now keep-dark), hero accordion text contrast (panels now keep-dark), LATI markdown bullets render as •
 - NEW: one-click Reply button in admin enquiry inbox — mailto link pre-filled with "Re: Your Latios enquiry" subject + body quoting the enquirer's message (truncated at 500 chars to stay within mailto URL limits)

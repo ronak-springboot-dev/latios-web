@@ -1,7 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { MessageSquare, Users, TrendingUp, Lock, LogOut, Inbox, Reply } from "lucide-react";
+import { MessageSquare, Users, TrendingUp, Lock, LogOut, Inbox, Reply, Check, Undo2 } from "lucide-react";
+import { toast } from "sonner";
 import { Reveal } from "@/components/Reveal";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
@@ -178,7 +179,7 @@ export default function AdminPage() {
                   <div
                     key={q.id}
                     data-testid={`inbox-item-${q.id}`}
-                    className="py-5 border-b border-white/10 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6"
+                    className={`py-5 border-b border-white/10 grid grid-cols-1 md:grid-cols-12 gap-2 md:gap-6 transition-opacity duration-300 ${q.replied ? "opacity-50" : ""}`}
                   >
                     <div className="md:col-span-3">
                       <div className="text-sm font-semibold text-white">{q.name}</div>
@@ -204,6 +205,36 @@ export default function AdminPage() {
                       >
                         <Reply className="w-3 h-3" /> Reply
                       </a>
+                      {q.replied && (
+                        <span
+                          data-testid={`inbox-replied-badge-${q.id}`}
+                          className="inline-flex items-center gap-1 text-[9px] uppercase tracking-[0.2em] border border-emerald-500/50 text-emerald-400 rounded-full px-2.5 py-1"
+                        >
+                          <Check className="w-3 h-3" /> Replied
+                        </span>
+                      )}
+                      <button
+                        onClick={async () => {
+                          try {
+                            await axios.patch(
+                              `${API}/api/enquiries/${q.id}/replied`,
+                              { replied: !q.replied },
+                              { headers: { "X-Admin-Key": key } }
+                            );
+                            setEnquiries((list) =>
+                              list.map((it) => (it.id === q.id ? { ...it, replied: !q.replied } : it))
+                            );
+                            toast.success(q.replied ? "Marked as not replied." : "Marked as replied.");
+                          } catch {
+                            toast.error("Could not update — try again.");
+                          }
+                        }}
+                        data-testid={`inbox-replied-toggle-${q.id}`}
+                        className="inline-flex items-center gap-1.5 text-[9px] uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors duration-300"
+                      >
+                        {q.replied ? <Undo2 className="w-3 h-3" /> : <Check className="w-3 h-3" />}
+                        {q.replied ? "Unmark" : "Mark replied"}
+                      </button>
                     </div>
                   </div>
                 ))}

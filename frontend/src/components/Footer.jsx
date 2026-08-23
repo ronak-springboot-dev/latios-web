@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
 import { ArrowUpRight } from "lucide-react";
 import { CATEGORIES } from "@/data/products";
+import { TurnstileWidget } from "@/components/TurnstileWidget";
 
 const EMPTY = { name: "", email: "", company: "", message: "" };
 
@@ -13,17 +14,33 @@ const inputCls =
 export const Footer = () => {
   const [form, setForm] = useState(EMPTY);
   const [sending, setSending] = useState(false);
+  const [token, setToken] = useState(null);
+  const [resetSignal, setResetSignal] = useState(0);
+  const onToken = useCallback((t) => setToken(t), []);
 
   const submit = async (e) => {
     e.preventDefault();
+    if (!token) {
+      toast.error("Please complete the security check first.");
+      return;
+    }
     setSending(true);
     try {
-      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/enquiries`, form);
+      await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/enquiries`, {
+        ...form,
+        turnstile_token: token,
+      });
       toast.success("Enquiry received — our team replies within one business day.");
       setForm(EMPTY);
-    } catch {
-      toast.error("Could not send your enquiry. Please try again.");
+    } catch (err) {
+      toast.error(
+        err.response?.status === 400
+          ? "Security check failed — please verify again."
+          : "Could not send your enquiry. Please try again."
+      );
     } finally {
+      setToken(null);
+      setResetSignal((s) => s + 1);
       setSending(false);
     }
   };
@@ -112,9 +129,10 @@ export const Footer = () => {
             data-testid="enquiry-message-input"
             className={`${inputCls} resize-none`}
           />
+          <TurnstileWidget onToken={onToken} resetSignal={resetSignal} testid="turnstile-footer" />
           <button
             type="submit"
-            disabled={sending}
+            disabled={sending || !token}
             data-testid="enquiry-submit-button"
             className="self-start bg-white text-black rounded-full px-10 py-4 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-zinc-300 disabled:opacity-50 transition-colors duration-300 focus:ring-2 focus:ring-white/50 focus:outline-none"
           >

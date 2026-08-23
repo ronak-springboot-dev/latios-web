@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Bot, SendHorizonal, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { TurnstileWidget } from "@/components/TurnstileWidget";
 
 const FAQS = [
   "Which laptop is best for gaming?",
@@ -62,6 +63,9 @@ export const ChatWidget = () => {
   const [leadDone, setLeadDone] = useState(() => localStorage.getItem("lati-lead-done") === "1");
   const [leadName, setLeadName] = useState("");
   const [leadEmail, setLeadEmail] = useState("");
+  const [leadToken, setLeadToken] = useState(null);
+  const [leadReset, setLeadReset] = useState(0);
+  const onLeadToken = useCallback((t) => setLeadToken(t), []);
   const lastQuery = useRef("");
   const [sessionId] = useState(getSessionId);
   const scrollRef = useRef(null);
@@ -138,6 +142,10 @@ export const ChatWidget = () => {
 
   const submitLead = async (e) => {
     e.preventDefault();
+    if (!leadToken) {
+      toast.error("Please complete the security check first.");
+      return;
+    }
     try {
       await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/enquiries`, {
         method: "POST",
@@ -147,6 +155,7 @@ export const ChatWidget = () => {
           email: leadEmail,
           company: "",
           message: `LATI chat lead — asked about: "${lastQuery.current}"`,
+          turnstile_token: leadToken,
         }),
       });
       localStorage.setItem("lati-lead-done", "1");
@@ -162,6 +171,9 @@ export const ChatWidget = () => {
       toast.success("Details received — our sales team will contact you.");
     } catch {
       toast.error("Could not save your details — please email sales@latios.in directly.");
+    } finally {
+      setLeadToken(null);
+      setLeadReset((r) => r + 1);
     }
   };
 
@@ -258,10 +270,12 @@ export const ChatWidget = () => {
                   data-testid="lati-lead-email"
                   className="w-full bg-white/5 border border-white/10 rounded-full px-4 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#1a56e8] transition-colors duration-300"
                 />
+                <TurnstileWidget onToken={onLeadToken} resetSignal={leadReset} testid="turnstile-chat" />
                 <button
                   type="submit"
+                  disabled={!leadToken}
                   data-testid="lati-lead-submit"
-                  className="w-full btn-blue rounded-full px-4 py-2.5 text-xs uppercase tracking-[0.2em] font-semibold transition-colors duration-300 focus:ring-2 focus:ring-[#1a56e8]/50 focus:outline-none"
+                  className="w-full btn-blue rounded-full px-4 py-2.5 text-xs uppercase tracking-[0.2em] font-semibold disabled:opacity-40 transition-colors duration-300 focus:ring-2 focus:ring-[#1a56e8]/50 focus:outline-none"
                 >
                   Get pricing
                 </button>
