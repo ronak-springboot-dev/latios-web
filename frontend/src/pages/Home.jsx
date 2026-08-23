@@ -1,8 +1,7 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowDown, ArrowUpRight, Cpu, ShieldCheck, Wrench } from "lucide-react";
-import { Hero3D } from "@/components/Hero3D";
-import { KineticText } from "@/components/KineticText";
+import { ArrowUpRight, Cpu, ShieldCheck, Wrench } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { EditorialMarquee } from "@/components/EditorialMarquee";
 import { CATEGORIES } from "@/data/products";
@@ -40,6 +39,7 @@ const STATS = [
 const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
 export default function Home() {
+  const [active, setActive] = useState(0);
   return (
     <motion.main
       initial={{ opacity: 0, y: 20 }}
@@ -49,74 +49,101 @@ export default function Home() {
       data-testid="home-page"
     >
       {/* HERO */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        <div className="grid-bg absolute inset-0 z-0 pointer-events-none" aria-hidden="true" />
-        <Hero3D />
-        <div className="ambient-glow absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] h-[60vw] rounded-full bg-white/[0.04] blur-[120px] pointer-events-none" />
-        <div className="relative z-10 max-w-[1600px] mx-auto px-6 md:px-12 w-full pt-24">
-          <motion.p
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-8"
-            data-testid="hero-kicker"
-          >
-            Proudly Indian · Boldly Innovative — Est. 2023
-          </motion.p>
-          <KineticText
-            testId="hero-title"
-            lines={["PRECISION MACHINES", "FOR THE MODERN", "ENTERPRISE."]}
-            className="font-display font-black tracking-tighter text-white leading-[0.95] text-[13vw] md:text-[7.5vw]"
-            delay={0.35}
-          />
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.9, ease: EASE }}
-            className="mt-10 max-w-xl text-base md:text-lg text-zinc-400 leading-relaxed"
-            data-testid="hero-subtitle"
-          >
-            Laptops, towers, audio and video — four instrument-grade product lines,
-            one obsession: hardware that never gets in the way of the work.
-          </motion.p>
+      {/* HERO — category accordion */}
+      <section className="relative pt-28 md:pt-36 pb-14 md:pb-20" data-testid="hero-section">
+        <div className="grid-bg absolute inset-0 pointer-events-none" aria-hidden="true" />
+        <div className="relative max-w-[1600px] mx-auto px-6 md:px-12">
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.15, duration: 0.9, ease: EASE }}
-            className="mt-12 flex flex-wrap items-center gap-5"
+            transition={{ duration: 0.9, ease: EASE }}
+            className="text-center"
           >
-            <button
-              onClick={() => go("lineup")}
-              data-testid="hero-explore-button"
-              className="group flex items-center gap-3 bg-white text-black rounded-full px-8 py-4 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-zinc-300 transition-colors duration-300 focus:ring-2 focus:ring-white/50 focus:outline-none"
+            <p className="kicker-sq justify-center text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-6" data-testid="hero-kicker">
+              Proudly Indian · Boldly Innovative
+            </p>
+            <h1
+              className="font-display font-medium tracking-tight text-white text-3xl md:text-5xl lg:text-[3.4rem] leading-[1.15] max-w-4xl mx-auto"
+              data-testid="hero-title"
             >
-              Explore the lineup
-              <ArrowDown className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5" />
-            </button>
-            <button
-              onClick={() => go("contact")}
-              data-testid="hero-contact-button"
-              className="flex items-center gap-3 border border-white/20 text-white rounded-full px-8 py-4 text-xs uppercase tracking-[0.25em] hover:border-white/60 transition-colors duration-300 focus:ring-2 focus:ring-white/50 focus:outline-none"
-            >
-              Talk to sales
-            </button>
+              Empowering modern enterprise with precision-engineered hardware
+            </h1>
+            <p className="mt-5 text-sm md:text-base text-zinc-400 max-w-2xl mx-auto" data-testid="hero-subtitle">
+              Laptops, towers, audio and video — designed, manufactured and supported
+              end-to-end in India.
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.25, duration: 0.9, ease: EASE }}
+            className="mt-12 md:mt-16"
+          >
+            <div className="hidden md:flex gap-2 h-[60vh] min-h-[440px]" data-testid="hero-accordion">
+              {CATEGORIES.map((cat, i) => (
+                <Link
+                  key={cat.slug}
+                  to={`/${cat.slug}`}
+                  onMouseEnter={() => setActive(i)}
+                  data-testid={`hero-panel-${cat.slug}`}
+                  className="accordion-panel relative overflow-hidden border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/40"
+                  style={{ flexGrow: i === active ? 3.4 : 1, flexBasis: 0 }}
+                >
+                  <img
+                    src={cat.hero}
+                    alt={cat.name}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                  <div
+                    className={`absolute inset-0 transition-colors duration-700 ${
+                      i === active ? "bg-black/30" : "bg-black/55"
+                    }`}
+                  />
+                  {i === active ? (
+                    <div className="absolute bottom-0 left-0 right-0 p-8">
+                      <span className="kicker-sq text-[10px] uppercase tracking-[0.3em] text-zinc-200">
+                        {cat.index} — {cat.model}
+                      </span>
+                      <h3 className="mt-3 font-display text-4xl font-black tracking-tighter text-white">
+                        {cat.name}
+                      </h3>
+                      <p className="mt-2 text-sm text-zinc-300 max-w-sm">{cat.tagline}</p>
+                      <span className="mt-5 inline-flex items-center gap-2 btn-blue px-5 py-2.5 text-[10px] uppercase tracking-[0.25em]">
+                        Explore
+                        <ArrowUpRight className="w-3.5 h-3.5" />
+                      </span>
+                    </div>
+                  ) : (
+                    <div className="absolute inset-0 flex items-end justify-center pb-8">
+                      <span className="vertical-title font-display text-xl font-bold tracking-tight text-white/90">
+                        {cat.name}
+                      </span>
+                    </div>
+                  )}
+                </Link>
+              ))}
+            </div>
+
+            <div className="md:hidden grid gap-3" data-testid="hero-accordion-mobile">
+              {CATEGORIES.map((cat) => (
+                <Link
+                  key={cat.slug}
+                  to={`/${cat.slug}`}
+                  data-testid={`hero-panel-mobile-${cat.slug}`}
+                  className="relative block overflow-hidden border border-white/10 aspect-[16/9]"
+                >
+                  <img src={cat.hero} alt={cat.name} className="absolute inset-0 w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-black/40" />
+                  <div className="absolute bottom-0 left-0 p-5">
+                    <span className="kicker-sq text-[9px] uppercase tracking-[0.3em] text-zinc-200">{cat.model}</span>
+                    <h3 className="mt-1 font-display text-2xl font-black tracking-tighter text-white">{cat.name}</h3>
+                  </div>
+                </Link>
+              ))}
+            </div>
           </motion.div>
         </div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.6, duration: 1 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3 text-zinc-600"
-          data-testid="hero-scroll-indicator"
-        >
-          <span className="text-[10px] uppercase tracking-[0.4em]">Scroll</span>
-          <motion.span
-            animate={{ y: [0, 8, 0] }}
-            transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <ArrowDown className="w-4 h-4" />
-          </motion.span>
-        </motion.div>
       </section>
 
       {/* STATS STRIP */}
@@ -143,7 +170,7 @@ export default function Home() {
       {/* LINEUP BENTO */}
       <section id="lineup" className="max-w-[1600px] mx-auto px-6 md:px-12 py-28 md:py-40" data-testid="lineup-section">
         <Reveal>
-          <p className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">The Lineup</p>
+          <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">The Lineup</p>
           <h2 className="font-display text-4xl md:text-6xl font-black tracking-tighter text-white max-w-3xl leading-[1.02]">
             Four instruments. One standard.
           </h2>
@@ -194,7 +221,7 @@ export default function Home() {
       {/* MANIFESTO CHAPTERS */}
       <section className="max-w-[1600px] mx-auto px-6 md:px-12 py-28 md:py-40" data-testid="manifesto-section">
         <Reveal>
-          <p className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">The Manifesto</p>
+          <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">The Manifesto</p>
         </Reveal>
         <div className="space-y-24 md:space-y-36 mt-16">
           {MANIFESTO.map((ch, i) => (
@@ -240,7 +267,7 @@ export default function Home() {
             </div>
           </Reveal>
           <Reveal delay={0.12}>
-            <p className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">The Company</p>
+            <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">The Company</p>
             <h2 className="font-display text-4xl md:text-5xl font-black tracking-tighter text-white leading-[1.03]">
               Proudly Indian. Boldly Innovative.
             </h2>

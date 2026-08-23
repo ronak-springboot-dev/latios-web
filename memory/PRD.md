@@ -20,6 +20,11 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 14 — JWIPC-style redesign)
+- Homepage redesigned after jwipc.com: centered corporate headline + horizontal hover-accordion of the 4 categories (collapsed panels show vertical titles; expanded panel shows image, kicker, tagline, blue Explore button); mobile gets stacked cards
+- Corporate accent system: Latios blue (#1a56e8) — square-accent section kickers, blue sharp-edged Enquire/Explore buttons
+- 3D torus hero removed from home (replaced by accordion); theme toggle (dark default + light) and LATI assistant retained and verified in both modes
+
 ## Implemented (2026-08-20, update 13)
 - REVERTED homepage 3D hero per user feedback: hardware scene (chip/RAM/fan) removed, original wireframe torus-knot sculpture restored
 

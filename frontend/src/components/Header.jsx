@@ -48,7 +48,7 @@ export const Header = () => {
           <button
             onClick={goContact}
             data-testid="nav-enquire-button"
-            className="group flex items-center gap-2 text-xs uppercase tracking-[0.25em] border border-white/20 rounded-full px-5 py-2.5 text-white hover:bg-white hover:text-black transition-colors duration-300 focus:ring-2 focus:ring-white/50 focus:outline-none"
+            className="group flex items-center gap-2 text-xs uppercase tracking-[0.25em] btn-blue px-6 py-3 transition-colors duration-300 focus:ring-2 focus:ring-[#1a56e8]/50 focus:outline-none"
           >
             Enquire
             <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
