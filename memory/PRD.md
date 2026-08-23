@@ -20,6 +20,12 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 24 — Turnstile e2e verified with real keys)
+- Applications carousel cards now keep-dark — titles/blurbs white and readable over photos in light mode (user-reported; verified rgb(255,255,255) both themes)
+- CRITICAL FIX: testing agent had swapped in Cloudflare DUMMY always-pass keys; restored user's real keys in both .env files — forged tokens now rejected 400 (proved via curl), widget renders on preview hostname with no "For testing only" banner
+- Hardening: EnquiryCreate.email now EmailStr (422 on invalid, Footer shows "Please enter a valid work email"); chat session verification expires after 24h; TurnstileWidget error-callback now distinguishes retryable challenge failures (6xxxxx → "Verification failed — try again" with working retry) from config/load failures (domain message), error state clears on success/reset
+- iteration_4: backend 22/22 pytest, chat gate + streaming + lead-form gating + admin all pass with real keys. NOTE: footer/lead happy-path submit not automatable — Cloudflare 600010 blocks headless browsers (protection working as intended); needs one manual human submission to confirm
+
 ## Implemented (2026-08-23, update 23 — Turnstile chat protection)
 - /api/chat now gated by Turnstile: first message per session requires turnstile_token (403 without, 400 fake — both verified); verified sessions recorded in db.chat_sessions so subsequent messages skip the check
 - ChatWidget: security-check block above input when unverified (action "chat", forced dark theme), send button + FAQ chips gated until token, 403/400 responses re-show the widget; verified flag persisted in localStorage (backend DB is source of truth)

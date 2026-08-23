@@ -1,0 +1,50 @@
+{
+  "summary": "RETEST after the real-Cloudflare-keys config fix. CRITICAL RETEST PASSED: forged Turnstile tokens are now rejected (POST /api/enquiries and POST /api/chat both return 400 with turnstile_token='XXXX.DUMMY.TOKEN.XXXX'; backend logs show 'Turnstile rejected token: [invalid-input-response]'). Email validation now returns 422 on 'notanemail'. Chat session 24h freshness verified (fresh=200, 25h-old=403, 23h-old=200). Backend pytest rewritten for the real-key state: 22/22 pass. Frontend: the widget renders on the preview hostname with the real sitekey and NO 'For testing only' banner and NO 'Unable to connect' error — hostname allowlist is correct. HOWEVER, the interactive challenge cannot be solved from headless Playwright: Cloudflare returns client error 600010 (generic challenge failure / automation detected), so E2E 1 (footer submit success) and E2E 4 (invalid email via UI) could NOT be completed end-to-end. That is expected/desired behaviour of real bot protection, not an app defect. Chat E2E (2) and lead-form E2E (3) were fully exercised by seeding a server-side-verified chat session in Mongo: 3 messages streamed 200 from Gemini, gate hidden when verified, lead form appears on a pricing question with its own Turnstile widget, submit correctly stays disabled until a token exists. Admin regression: /admin login (wrong pw -> 'Wrong password — try again.', correct pw -> 200 + inbox/analytics), replied toggle round-trip all pass.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "POST /api/enquiries", "issue": "A 422 (invalid email) is surfaced in Footer.jsx as the generic 'Could not send your enquiry. Please try again.' — the user gets no hint that the email is malformed. Add a 422 branch to the catch block."},
+      {"endpoint": "verify_turnstile()", "issue": "Still no remoteip passed to siteverify and the returned 'hostname' claim is not asserted against the expected host (carried over from iteration_3, low risk)."},
+      {"endpoint": "POST /api/chat", "issue": "Session freshness relies on a client-supplied session_id; within the 24h window a leaked session_id is still Turnstile-exempt. Acceptable, but consider binding the session to an IP/UA hash."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "TurnstileWidget error-callback", "issue": "MISLEADING COPY: any Turnstile error-callback (including retryable challenge failures like code 600010) renders the permanent red message 'Security check could not load on this domain — please email sales@latios.in directly.' The domain is NOT the problem for 6xxxxx codes — those are transient/challenge failures that Cloudflare allows retrying. Real users on VPNs/corporate networks/older browsers will be told to give up and email instead of retrying. Fix: capture the error code arg in error-callback, only show the domain/load message for 1xxxxx/4xxxxx codes, and for 6xxxxx show 'Verification failed — please try again' plus a retry that calls turnstile.reset().", "selector": "[data-testid=\"turnstile-footer-error\"]", "priority": "HIGH"},
+      {"component": "TurnstileWidget", "issue": "After the error state is entered, `failed` is never cleared and no reset is triggered, so the red message persists for the rest of the page session even if the widget later succeeds. Clear `failed` inside the success callback and on resetSignal.", "selector": "[data-testid=\"turnstile-footer\"]", "priority": "MEDIUM"}
+    ],
+    "integration_issues": [
+      {"flow": "Footer enquiry submit (E2E 1) and invalid-email submit (E2E 4)", "issue": "NOT VERIFIABLE BY AUTOMATION with the real keys — the Turnstile interactive challenge fails with Cloudflare client error 600010 for the headless Playwright browser, so no token is ever issued and [data-testid=enquiry-submit-button] stays disabled. No 'Real Key E2E' / 'Real Key Lead' rows therefore exist in the admin inbox. Needs a manual human check in a normal browser to confirm the happy path; all server-side pieces for it are verified green.", "affected_selectors": ["[data-testid=\"turnstile-footer\"]", "[data-testid=\"enquiry-submit-button\"]", "[data-testid=\"turnstile-chat\"]", "[data-testid=\"lati-lead-submit\"]"]}
+    ],
+    "design_issues": [
+      {"screen": "Admin enquiry inbox", "issues": ["'MARK REPLIED' / 'UNMARK' toggle label is very low contrast (dim grey on near-black) compared to the adjacent bordered REPLY button — easy to miss."]},
+      {"screen": "Header / theme toggle", "issues": ["Unchanged from iteration_3: header is not sticky and Lenis blocks programmatic scroll, so the theme toggle is only reachable at the top of the page."]}
+    ]
+  },
+  "test_report_links": [
+    "/app/backend/tests/backend_test.py",
+    "/app/test_reports/pytest/pytest_results.xml"
+  ],
+  "action_items": [
+    "Fix the TurnstileWidget error-callback copy + add a retry: distinguish Cloudflare 6xxxxx (retryable challenge failure, e.g. 600010) from 1xxxxx/4xxxxx (load/config failure). Current copy wrongly blames the domain and dead-ends the user.",
+    "Clear the widget's `failed` state on a later success/reset so the red banner is not sticky.",
+    "Add a 422 branch to Footer.jsx's error toast so invalid emails produce 'Please enter a valid work email'.",
+    "MANUAL VERIFY (human, real browser): footer enquiry happy path + lead form happy path. Automation cannot solve the real challenge (600010), and everything server-side for these flows is already verified."
+  ],
+  "critical_code_review_comments": [
+    "Real keys confirmed active: frontend sitekey 0x4AAAAAAD0Wk..., backend secret 0x4... — dummy-key regression is closed and siteverify now rejects forged tokens (400).",
+    "The chat 24h freshness check swallows all parse errors into session_fresh=False, which is fail-closed and correct; legacy sessions without a 'ts' field will simply re-challenge once.",
+    "ChatWidget correctly disables [data-testid=chat-send] until verified (stronger than the toast-only guard) and lead submit stays disabled without a token — good client-side gating that matches the server gate.",
+    "TurnstileWidget's error-callback discards Cloudflare's error-code argument, which is why the app cannot tell a config failure from a challenge failure. Capture it (also useful for logging)."
+  ],
+  "updated_files": [
+    "/app/backend/tests/backend_test.py"
+  ],
+  "success_rate": {"backend": "100% (22/22 pytest)", "frontend": "70% (chat gate, chat streaming, follow-up w/o token, lead-form render+gating, admin login/inbox/replied-toggle all pass; footer enquiry happy path + UI email validation blocked by real bot protection)"},
+  "seed_data_creation": "Temporarily inserted a verified chat_sessions doc 'E2E4_verified_session' to exercise the chat/lead UI without a browser token; deleted afterwards along with its 6 chat_messages. All TEST_ prefixed enquiries/sessions cleaned up. Iteration_3's 'Turnstile E2E' / 'E2E Lead' rows remain in the inbox (no DELETE endpoint exists).",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "test_credentials": "Admin /admin password Latios@2026 — verified working (401 on wrong password with visible [data-testid=admin-login-error]).",
+  "context_for_next_testing_agent": "Real Cloudflare keys are in place and working. Consequence for all future frontend testing: any flow behind a Turnstile widget (footer enquiry, chat first-message verify, LATI lead form) CANNOT be completed from Playwright — clicking the checkbox inside the widget yields console '[Cloudflare Turnstile] Error: 600010.' and the app's error-callback fires. Workaround used successfully: seed db.chat_sessions with {session_id, verified:true, ts:<now iso>} and set localStorage 'lati-session'=<that id> + 'lati-verified'='1', which lets you drive the whole chat + lead-form UI. For the footer enquiry there is no equivalent bypass, so verify it via the backend tests only. Playwright notes: page.wait_for_load_state('networkidle') times out on this site (persistent media/animation traffic) — use wait_for_selector instead; the Turnstile widget lives in a shadow DOM so document.querySelector('input[name=cf-turnstile-response]') returns null (use the submit button's disabled state as the token indicator); the CF iframe DOM is not queryable, use page.mouse.click at widget box x+21, y+height/2.",
+  "rca_of_the_issue": "Iteration_3's critical dummy-key defect is fully resolved. Proof: identical curl that previously returned 200 now returns 400 for both /api/enquiries and /api/chat, and backend logs record 'invalid-input-response' from Cloudflare. The widget rendering on this preview hostname with the real sitekey and no 'Invalid domain' (110200) error proves the user's hostname allowlist entry is live. The only remaining automation failure is Cloudflare error 600010 — a generic, retryable challenge failure raised because the client is an automated headless browser; per Cloudflare's client-side error-code docs this is bot-behaviour detection, i.e. the protection working as intended, not a misconfiguration. The actionable fallout is purely UX: the app maps every error-callback to a domain-blaming, non-retryable message."
+}

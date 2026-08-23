@@ -367,7 +367,7 @@ export default function Home() {
                 key={a.slug}
                 to={`/applications/${a.slug}`}
                 data-testid={`app-card-${i}`}
-                className="group shrink-0 w-[300px] md:w-[400px] relative block overflow-hidden border border-white/10 aspect-[4/3] hover:border-[#1a56e8]/60 transition-colors duration-500 focus:ring-2 focus:ring-[#1a56e8]/50 focus:outline-none"
+                className="keep-dark group shrink-0 w-[300px] md:w-[400px] relative block overflow-hidden border border-white/10 aspect-[4/3] hover:border-[#1a56e8]/60 transition-colors duration-500 focus:ring-2 focus:ring-[#1a56e8]/50 focus:outline-none"
               >
                 <img
                   src={a.image}

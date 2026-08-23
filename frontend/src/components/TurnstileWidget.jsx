@@ -23,7 +23,7 @@ const loadTurnstile = () => {
 export const TurnstileWidget = ({ onToken, resetSignal = 0, testid = "turnstile-widget", action = "enquiry", theme }) => {
   const containerRef = useRef(null);
   const widgetIdRef = useRef(null);
-  const [failed, setFailed] = useState(false);
+  const [errorCode, setErrorCode] = useState(null);
   const onTokenRef = useRef(onToken);
   onTokenRef.current = onToken;
 
@@ -37,18 +37,21 @@ export const TurnstileWidget = ({ onToken, resetSignal = 0, testid = "turnstile-
           sitekey: process.env.REACT_APP_TURNSTILE_SITE_KEY,
           theme: widgetTheme,
           action,
-          callback: (token) => onTokenRef.current(token),
+          callback: (token) => {
+            setErrorCode(null);
+            onTokenRef.current(token);
+          },
           "expired-callback": () => onTokenRef.current(null),
           "timeout-callback": () => onTokenRef.current(null),
-          "error-callback": () => {
+          "error-callback": (code) => {
             onTokenRef.current(null);
-            setFailed(true);
+            setErrorCode(String(code || "unknown"));
           },
         });
       })
       .catch(() => {
         onTokenRef.current(null);
-        setFailed(true);
+        setErrorCode("load");
       });
     return () => {
       cancelled = true;
@@ -64,16 +67,41 @@ export const TurnstileWidget = ({ onToken, resetSignal = 0, testid = "turnstile-
   useEffect(() => {
     if (resetSignal > 0 && window.turnstile && widgetIdRef.current !== null) {
       window.turnstile.reset(widgetIdRef.current);
+      setErrorCode(null);
       onTokenRef.current(null);
     }
   }, [resetSignal]);
 
+  const retry = () => {
+    setErrorCode(null);
+    if (window.turnstile && widgetIdRef.current !== null) {
+      window.turnstile.reset(widgetIdRef.current);
+    }
+  };
+
+  const isConfigError = errorCode && /^[14]/.test(errorCode);
+
   return (
     <div>
       <div ref={containerRef} data-testid={testid} aria-label="Security verification" />
-      {failed && (
+      {errorCode && (
         <p data-testid={`${testid}-error`} className="mt-2 text-xs text-red-400">
-          Security check could not load on this domain — please email sales@latios.in directly.
+          {isConfigError || errorCode === "load" ? (
+            "Security check could not load on this domain — please email sales@latios.in directly."
+          ) : (
+            <>
+              Verification failed —{" "}
+              <button
+                type="button"
+                onClick={retry}
+                data-testid={`${testid}-retry`}
+                className="underline underline-offset-2 hover:text-red-300 transition-colors duration-200"
+              >
+                try again
+              </button>
+              .
+            </>
+          )}
         </p>
       )}
     </div>

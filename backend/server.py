@@ -5,7 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 import os
 import logging
 from pathlib import Path
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, EmailStr
 from typing import List, Optional
 import uuid
 import re
@@ -54,7 +54,7 @@ class Enquiry(BaseModel):
 
 class EnquiryCreate(BaseModel):
     name: str = Field(min_length=1, max_length=100)
-    email: str
+    email: EmailStr
     company: Optional[str] = None
     message: str = Field(min_length=1, max_length=5000)
     turnstile_token: str = Field(min_length=1, max_length=2048)
@@ -168,7 +168,14 @@ async def chat(req: ChatRequest):
     from knowledge import LATIOS_KNOWLEDGE
 
     session = await db.chat_sessions.find_one({"session_id": req.session_id})
-    if not session or not session.get("verified"):
+    session_fresh = False
+    if session and session.get("verified"):
+        try:
+            age = datetime.now(timezone.utc) - datetime.fromisoformat(str(session.get("ts")))
+            session_fresh = age.total_seconds() < 86400
+        except Exception:
+            session_fresh = False
+    if not session_fresh:
         if not req.turnstile_token:
             raise HTTPException(status_code=403, detail="Security check required")
         await verify_turnstile(req.turnstile_token)

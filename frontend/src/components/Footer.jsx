@@ -34,7 +34,9 @@ export const Footer = () => {
       setForm(EMPTY);
     } catch (err) {
       toast.error(
-        err.response?.status === 400
+        err.response?.status === 422
+          ? "Please enter a valid work email."
+          : err.response?.status === 400
           ? "Security check failed — please verify again."
           : "Could not send your enquiry. Please try again."
       );
