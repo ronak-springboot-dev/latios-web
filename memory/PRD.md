@@ -20,6 +20,14 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 29 — JWIPC header/nav parity)
+- Removed homepage "Four instruments. One standard." lineup bento section (hero accordion banner kept, per user)
+- Header rewritten to JWIPC nav: PRODUCTS (mega trigger), APPLICATIONS (scroll), ABOUT LATIOS, DESIGN & MANUFACTURING (/about#design-manufacturing anchor added), SUPPORT, NEWS, CONTACT US (scroll)
+- Mega menu rebuilt JWIPC-style: in-menu product search with results, 4 category columns with subcategory trees, featured applications rail (6 sectors with blurbs), bottom quick links (Compare/Support/About/News/Contact) + contact info + theme toggle; works on mobile (stacked)
+- NEW /news index page (7 article cards) — fixed routing bug where /news collided with /:category and redirected home
+- Testing agent iteration_6: 24/25 pass; fixed the one bug (applications-section missing DOM id) — verified APPLICATIONS nav now scrolls correctly
+- SUBCATS moved to products.js (shared by Home + Header); footer News link now → /news
+
 ## Implemented (2026-08-23, update 28 — favicon + range strip scroll)
 - Favicon set generated from the official Latios eagle: favicon.ico (16/32/48), favicon-32/192/512.png, apple-touch-icon.png (solid dark tile) — all wired in index.html; og:image now points to the wordmark
 - "More from the range" strip on model pages: prev/next arrow buttons (smooth scroll ~2 cards), scroll-snap per card, snap-mandatory; verified scrolling works and text contrast passes in BOTH themes (dark: white titles; light: near-black titles on white cards)

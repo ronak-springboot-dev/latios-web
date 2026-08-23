@@ -7,7 +7,7 @@ import { NEWS } from "@/data/news";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { APPLICATIONS } from "@/data/applications";
 import { EditorialMarquee } from "@/components/EditorialMarquee";
-import { CATEGORIES } from "@/data/products";
+import { CATEGORIES, SUBCATS } from "@/data/products";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -59,13 +59,6 @@ const Carousel = ({ testId, children }) => {
       </div>
     </div>
   );
-};
-
-const SUBCATS = {
-  laptops: ["PRO AI 14", "Rugged 14", "Archer Gaming"],
-  towers: ["Business Desktops", "PROMAX Workstations", "Mini PC"],
-  audio: ["Speakerphones", "Video Soundbars", "HPS Systems"],
-  video: ["Cameras", "Monitors", "Large Format", "Interactive", "Active LED"],
 };
 
 const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -225,55 +218,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* LINEUP BENTO */}
-      <section id="lineup" className="max-w-[1600px] mx-auto px-6 md:px-12 py-28 md:py-40" data-testid="lineup-section">
-        <Reveal>
-          <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">The Lineup</p>
-          <h2 className="font-display text-4xl md:text-6xl font-black tracking-tighter text-white max-w-3xl leading-[1.02]">
-            Four instruments. One standard.
-          </h2>
-        </Reveal>
-        <div className="mt-16 md:mt-24 grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8">
-          {CATEGORIES.map((cat, i) => (
-            <Reveal
-              key={cat.slug}
-              delay={i * 0.08}
-              className={i % 2 === 0 ? "md:col-span-7" : "md:col-span-5"}
-            >
-              <Link
-                to={`/${cat.slug}`}
-                data-testid={`lineup-tile-${cat.slug}`}
-                className="group relative block overflow-hidden border border-white/10 bg-[#0A0A0A] hover:border-white/25 transition-colors duration-500 focus:ring-2 focus:ring-white/50 focus:outline-none"
-              >
-                <div className="relative aspect-[16/10] overflow-hidden">
-                  <img
-                    src={cat.hero}
-                    alt={cat.name}
-                    loading="lazy"
-                    className="spotlight-img absolute inset-0 w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-black/25 group-hover:bg-black/5 transition-colors duration-700" />
-                </div>
-                <div className="flex items-end justify-between p-8 md:p-10">
-                  <div>
-                    <span className="text-[10px] uppercase tracking-[0.35em] text-zinc-500">
-                      {cat.index} — {cat.model}
-                    </span>
-                    <h3 className="mt-3 font-display text-3xl md:text-4xl font-black tracking-tighter text-white">
-                      {cat.name}
-                    </h3>
-                    <p className="mt-2 text-sm text-zinc-400 max-w-sm">{cat.tagline}</p>
-                  </div>
-                  <span className="shrink-0 ml-6 w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white group-hover:bg-white group-hover:text-black transition-colors duration-500">
-                    <ArrowUpRight className="w-5 h-5 transition-transform duration-500 group-hover:rotate-45" />
-                  </span>
-                </div>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-
       <EditorialMarquee items={["LAPTOPS", "TOWERS", "AUDIO", "VIDEO"]} />
 
       {/* MANIFESTO CHAPTERS */}
@@ -370,7 +314,7 @@ export default function Home() {
       </section>
 
       {/* APPLICATIONS CAROUSEL */}
-      <section className="border-t border-white/10" data-testid="applications-section">
+      <section className="border-t border-white/10" id="applications-section" data-testid="applications-section">
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-32">
           <Reveal>
             <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">Applications</p>

@@ -4,17 +4,22 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Search, ArrowUpRight, ArrowRight, Mail, Phone } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ALL_MODELS } from "@/data/models";
-
-const LINKS = [
-  { to: "/laptops", label: "Laptops" },
-  { to: "/towers", label: "Towers" },
-  { to: "/audio", label: "Audio" },
-  { to: "/video", label: "Video" },
-  { to: "/compare", label: "Compare" },
-  { to: "/support", label: "Support" },
-];
+import { CATEGORIES, SUBCATS } from "@/data/products";
+import { APPLICATIONS } from "@/data/applications";
 
 const EASE = [0.16, 1, 0.3, 1];
+
+const NAV = [
+  { label: "Products", mega: true },
+  { label: "Applications", section: "applications-section" },
+  { label: "About Latios", to: "/about" },
+  { label: "Design & Manufacturing", to: "/about", anchor: "design-manufacturing" },
+  { label: "Support", to: "/support" },
+  { label: "News", to: "/news" },
+  { label: "Contact Us", section: "contact" },
+];
+
+const navId = (label) => `nav-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 
 const POPULAR = ["Archer", "RTX 5080", "2TB ECC", "Speakerphone", "PTZ", "Interactive Panel"];
 
@@ -26,6 +31,7 @@ export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [menuQuery, setMenuQuery] = useState("");
   const [hidden, setHidden] = useState(false);
   const lastY = useRef(0);
   const navigate = useNavigate();
@@ -46,9 +52,32 @@ export const Header = () => {
       ).slice(0, 8)
     : [];
 
-  const goContact = () => {
+  const menuResults = menuQuery.trim()
+    ? ALL_MODELS.filter((m) =>
+        `${m.name} ${m.tag}`.toLowerCase().includes(menuQuery.trim().toLowerCase())
+      ).slice(0, 6)
+    : [];
+
+  const goSection = (id) => {
     setMenuOpen(false);
-    document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+    setSearchOpen(false);
+    navigate("/");
+    setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }), 450);
+  };
+
+  const goPage = (to, anchor) => {
+    setMenuOpen(false);
+    setSearchOpen(false);
+    navigate(to);
+    if (anchor) {
+      setTimeout(() => document.getElementById(anchor)?.scrollIntoView({ behavior: "smooth" }), 1000);
+    }
+  };
+
+  const openModel = (m) => {
+    setMenuOpen(false);
+    setMenuQuery("");
+    navigate(`/${m.category}/${m.slug}`);
   };
 
   return (
@@ -100,21 +129,61 @@ export const Header = () => {
               </span>
             </Link>
 
-            <nav className="hidden lg:flex items-center gap-9" data-testid="desktop-nav">
-              {LINKS.map((l) => (
-                <NavLink
-                  key={l.to}
-                  to={l.to}
-                  data-testid={`nav-${l.label.toLowerCase()}`}
-                  className={({ isActive }) =>
-                    `nav-link text-xs uppercase tracking-[0.25em] transition-colors duration-300 ${
-                      isActive ? "text-white nav-link-active" : "text-zinc-400 hover:text-white"
-                    }`
-                  }
-                >
-                  {l.label}
-                </NavLink>
-              ))}
+            <nav className="hidden lg:flex items-center gap-7" data-testid="desktop-nav">
+              {NAV.map((item) => {
+                const testid = navId(item.label);
+                if (item.mega) {
+                  return (
+                    <button
+                      key={item.label}
+                      onClick={() => {
+                        setMenuOpen(!menuOpen);
+                        setSearchOpen(false);
+                      }}
+                      data-testid={testid}
+                      className={`nav-link text-[11px] uppercase tracking-[0.2em] transition-colors duration-300 ${
+                        menuOpen ? "text-white nav-link-active" : "text-zinc-400 hover:text-white"
+                      }`}
+                    >
+                      {item.label}
+                    </button>
+                  );
+                }
+                if (item.section) {
+                  return (
+                    <button
+                      key={item.label}
+                      onClick={() => goSection(item.section)}
+                      data-testid={testid}
+                      className="nav-link text-[11px] uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors duration-300"
+                    >
+                      {item.label}
+                    </button>
+                  );
+                }
+                return (
+                  <NavLink
+                    key={item.label}
+                    to={item.to}
+                    data-testid={testid}
+                    onClick={
+                      item.anchor
+                        ? (e) => {
+                            e.preventDefault();
+                            goPage(item.to, item.anchor);
+                          }
+                        : undefined
+                    }
+                    className={({ isActive }) =>
+                      `nav-link text-[11px] uppercase tracking-[0.2em] transition-colors duration-300 ${
+                        isActive && !item.anchor ? "text-white nav-link-active" : "text-zinc-400 hover:text-white"
+                      }`
+                    }
+                  >
+                    {item.label}
+                  </NavLink>
+                );
+              })}
             </nav>
 
             <div className="flex items-center gap-2.5">
@@ -149,6 +218,7 @@ export const Header = () => {
         </div>
       </header>
 
+      {/* MEGA MENU — JWIPC style: search + product tree + featured applications */}
       <AnimatePresence>
         {menuOpen && (
           <motion.div
@@ -156,96 +226,154 @@ export const Header = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: EASE }}
-            className="keep-dark fixed inset-0 z-40 bg-[#050505]/[0.98] backdrop-blur-xl pt-28 md:pt-40 overflow-y-auto"
+            className="keep-dark fixed inset-0 z-40 bg-[#050505]/[0.98] backdrop-blur-xl pt-24 md:pt-32 overflow-y-auto"
             data-lenis-prevent
             data-testid="mega-menu"
           >
-            <div className="max-w-[1600px] mx-auto px-6 md:px-12 pb-16 grid grid-cols-1 lg:grid-cols-2 gap-14">
-              <nav className="flex flex-col" data-testid="mega-nav">
-                {LINKS.map((l, i) => (
-                  <motion.div
-                    key={l.to}
-                    initial={{ opacity: 0, x: -24 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.08 + i * 0.06, duration: 0.5, ease: EASE }}
+            <div className="max-w-[1600px] mx-auto px-6 md:px-12 pb-16">
+              {/* search row */}
+              <div className="relative max-w-xl mb-12" data-testid="mega-search">
+                <Search className="absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
+                <input
+                  value={menuQuery}
+                  onChange={(e) => setMenuQuery(e.target.value)}
+                  placeholder="Search for product name"
+                  data-testid="mega-search-input"
+                  className="w-full bg-transparent border-b border-white/20 focus:border-[#1a56e8] transition-colors duration-300 pl-8 py-3.5 text-sm text-white placeholder:text-zinc-600 focus:outline-none"
+                />
+                {menuResults.length > 0 && (
+                  <div
+                    className="absolute top-full left-0 right-0 mt-2 border border-white/10 bg-[#0A0A0A] z-10"
+                    data-testid="mega-search-results"
                   >
-                    <Link
-                      to={l.to}
-                      onClick={() => setMenuOpen(false)}
-                      data-testid={`mega-link-${l.label.toLowerCase()}`}
-                      className="group flex items-center justify-between py-5 border-b border-white/10 font-display text-3xl md:text-5xl font-black tracking-tighter text-white hover:text-[#6f93f2] transition-colors duration-300"
+                    {menuResults.map((m) => (
+                      <button
+                        key={m.slug}
+                        onClick={() => openModel(m)}
+                        data-testid={`mega-search-result-${m.slug}`}
+                        className="w-full flex items-center gap-4 px-4 py-3 hover:bg-white/5 text-left transition-colors duration-200"
+                      >
+                        <span className="w-12 h-9 rounded bg-[#f2f2f0] flex items-center justify-center shrink-0 overflow-hidden">
+                          <img src={m.image} alt="" loading="lazy" className="max-h-[80%] w-auto object-contain" />
+                        </span>
+                        <span className="min-w-0">
+                          <span className="block text-sm text-white truncate">{m.name}</span>
+                          <span className="block text-[10px] uppercase tracking-[0.2em] text-zinc-500">{m.tag}</span>
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* product tree + featured applications */}
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-10">
+                {CATEGORIES.map((cat, i) => (
+                  <motion.div
+                    key={cat.slug}
+                    initial={{ opacity: 0, y: 16 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.06 + i * 0.05, duration: 0.5, ease: EASE }}
+                    data-testid={`mega-col-${cat.slug}`}
+                  >
+                    <button
+                      onClick={() => goPage(`/${cat.slug}`)}
+                      data-testid={`mega-cat-${cat.slug}`}
+                      className="group flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-white hover:text-[#6f93f2] transition-colors duration-300"
                     >
-                      {l.label}
-                      <ArrowRight className="w-6 h-6 md:w-8 md:h-8 text-zinc-600 group-hover:text-[#6f93f2] group-hover:translate-x-2 transition-all duration-300" />
-                    </Link>
+                      {cat.name}
+                      <ArrowRight className="w-3.5 h-3.5 text-zinc-600 group-hover:text-[#6f93f2] group-hover:translate-x-1 transition-all duration-300" />
+                    </button>
+                    <div className="mt-5 flex flex-col gap-3">
+                      {(SUBCATS[cat.slug] || []).map((s, si) => (
+                        <button
+                          key={s}
+                          onClick={() => goPage(`/${cat.slug}`)}
+                          data-testid={`mega-sub-${cat.slug}-${si}`}
+                          className="text-left text-sm text-zinc-400 hover:text-white transition-colors duration-300"
+                        >
+                          {s}
+                        </button>
+                      ))}
+                      <button
+                        onClick={() => goPage(`/${cat.slug}`)}
+                        data-testid={`mega-viewall-${cat.slug}`}
+                        className="text-left text-[10px] uppercase tracking-[0.2em] text-[#6f93f2] hover:text-white transition-colors duration-300 mt-1"
+                      >
+                        View all →
+                      </button>
+                    </div>
                   </motion.div>
                 ))}
-              </nav>
-              <motion.div
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.25, duration: 0.6, ease: EASE }}
-                className="lg:pt-2"
-              >
-                <p className="kicker-sq text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-6">
-                  Get in touch
-                </p>
-                <p className="text-zinc-400 leading-relaxed max-w-sm">
-                  Volume pricing, custom imaging and white-glove deployment for teams of
-                  ten to ten thousand.
-                </p>
-                <button
-                  onClick={goContact}
-                  data-testid="mega-enquire-button"
-                  className="group mt-7 inline-flex items-center gap-3 btn-blue px-8 py-4 text-xs uppercase tracking-[0.25em] font-semibold transition-colors duration-300 focus:ring-2 focus:ring-[#1a56e8]/50 focus:outline-none"
+
+                <motion.div
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3, duration: 0.5, ease: EASE }}
+                  className="col-span-2 md:col-span-4 lg:col-span-2 lg:border-l lg:border-white/10 lg:pl-10"
+                  data-testid="mega-featured-apps"
                 >
-                  Enquire now
-                  <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </button>
-                <div className="mt-10 space-y-2.5 text-sm">
-                  <a href="mailto:sales@latios.in" className="block text-white hover:text-zinc-300 transition-colors duration-300">
-                    sales@latios.in
-                  </a>
-                  <a href="tel:+918238140787" className="block text-white hover:text-zinc-300 transition-colors duration-300">
-                    +91 82381 40787
-                  </a>
-                  <span className="block text-zinc-500">Ahmedabad, Gujarat, India</span>
-                </div>
-                <div className="mt-8 flex flex-wrap gap-2.5" data-testid="mega-quick-links">
-                  <button
-                    onClick={() => {
-                      setMenuOpen(false);
-                      navigate("/about");
-                    }}
-                    data-testid="mega-quick-about"
-                    className="text-[10px] uppercase tracking-[0.2em] border border-white/15 rounded-full px-4 py-2 text-zinc-400 hover:border-[#1a56e8] hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
-                  >
-                    About Latios
-                  </button>
-                  {[
-                    ["Applications", "applications-section"],
-                    ["News & Updates", "news-section"],
-                  ].map(([label, id]) => (
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-4">
+                    Featured Applications
+                  </p>
+                  {APPLICATIONS.map((a) => (
                     <button
-                      key={id}
-                      onClick={() => {
-                        setMenuOpen(false);
-                        setTimeout(
-                          () => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }),
-                          350
-                        );
-                      }}
-                      data-testid={`mega-quick-${id}`}
-                      className="text-[10px] uppercase tracking-[0.2em] border border-white/15 rounded-full px-4 py-2 text-zinc-400 hover:border-[#1a56e8] hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+                      key={a.slug}
+                      onClick={() => goPage(`/applications/${a.slug}`)}
+                      data-testid={`mega-app-${a.slug}`}
+                      className="group w-full text-left py-4 border-b border-white/10 last:border-b-0"
                     >
-                      {label}
+                      <div className="flex items-center justify-between gap-3">
+                        <span className="text-xs font-semibold text-white uppercase tracking-[0.2em]">
+                          {a.title}
+                        </span>
+                        <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-[#6f93f2] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+                      </div>
+                      <p className="mt-1.5 text-xs text-zinc-500 leading-relaxed">{a.blurb}</p>
                     </button>
                   ))}
+                </motion.div>
+              </div>
+
+              {/* bottom quick links */}
+              <div
+                className="mt-12 pt-8 border-t border-white/10 flex flex-wrap items-center gap-2.5"
+                data-testid="mega-quick-links"
+              >
+                {[
+                  ["Compare Models", "/compare"],
+                  ["Support Center", "/support"],
+                  ["About Latios", "/about"],
+                  ["News", "/news"],
+                ].map(([label, to]) => (
+                  <button
+                    key={to}
+                    onClick={() => goPage(to)}
+                    data-testid={`mega-quick-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+                    className="text-[10px] uppercase tracking-[0.2em] border border-white/15 rounded-full px-4 py-2 text-zinc-400 hover:border-[#1a56e8] hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+                  >
+                    {label}
+                  </button>
+                ))}
+                <button
+                  onClick={() => goSection("contact")}
+                  data-testid="mega-quick-contact"
+                  className="text-[10px] uppercase tracking-[0.2em] border border-white/15 rounded-full px-4 py-2 text-zinc-400 hover:border-[#1a56e8] hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+                >
+                  Contact Us
+                </button>
+                <div className="ml-auto flex items-center gap-6">
+                  <a href="mailto:sales@latios.in" className="hidden sm:block text-sm text-white hover:text-zinc-300 transition-colors duration-300">
+                    sales@latios.in
+                  </a>
+                  <a href="tel:+918238140787" className="hidden sm:block text-sm text-white hover:text-zinc-300 transition-colors duration-300">
+                    +91 82381 40787
+                  </a>
+                  <div className="hidden md:block">
+                    <ThemeToggle />
+                  </div>
                 </div>
-                <div className="mt-10 hidden md:block">
-                  <ThemeToggle />
-                </div>
-              </motion.div>
+              </div>
             </div>
           </motion.div>
         )}
@@ -353,4 +481,3 @@ export const Header = () => {
     </>
   );
 };
-

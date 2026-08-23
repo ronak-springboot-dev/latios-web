@@ -3,6 +3,13 @@ import { TOWERS_FAMILIES, LAPTOPS_FAMILY, AUDIO_FAMILY, VIDEO_FAMILY } from "./m
 const U = (id) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1600&q=80`;
 const P = (id) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=1600`;
 
+export const SUBCATS = {
+  laptops: ["PRO AI 14", "Rugged 14", "Archer Gaming"],
+  towers: ["Business Desktops", "PROMAX Workstations", "Mini PC"],
+  audio: ["Speakerphones", "Video Soundbars", "HPS Systems"],
+  video: ["Cameras", "Monitors", "Large Format", "Interactive", "Active LED"],
+};
+
 export const CATEGORIES = [
   {
     slug: "laptops",

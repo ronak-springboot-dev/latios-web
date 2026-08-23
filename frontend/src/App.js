@@ -12,6 +12,7 @@ import Home from "@/pages/Home";
 import ProductPage from "@/pages/ProductPage";
 import ModelPage from "@/pages/ModelPage";
 import NewsPage from "@/pages/NewsPage";
+import NewsIndexPage from "@/pages/NewsIndexPage";
 import ApplicationPage from "@/pages/ApplicationPage";
 import ComparePage from "@/pages/ComparePage";
 import AdminPage from "@/pages/AdminPage";
@@ -38,6 +39,7 @@ const AnimatedRoutes = () => {
         <Route path="/support" element={<SupportPage />} />
         <Route path="/compare" element={<ComparePage />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/news" element={<NewsIndexPage />} />
         <Route path="/news/:slug" element={<NewsPage />} />
         <Route path="/applications/:slug" element={<ApplicationPage />} />
         <Route path="/:category/:modelSlug" element={<ModelPage />} />

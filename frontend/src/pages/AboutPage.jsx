@@ -131,7 +131,7 @@ export default function AboutPage() {
       </section>
 
       {/* WHAT MAKES US DIFFERENT */}
-      <section className="border-t border-white/10" data-testid="about-different">
+      <section className="border-t border-white/10" id="design-manufacturing" data-testid="about-different">
         <div className="max-w-[1200px] mx-auto px-6 md:px-12 py-20 md:py-28">
           <Reveal>
             <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">What Makes Us Different</p>

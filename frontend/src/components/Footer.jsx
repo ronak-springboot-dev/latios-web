@@ -168,7 +168,6 @@ export const Footer = () => {
               </Link>
               {[
                 ["Applications", "applications-section"],
-                ["News & Updates", "news-section"],
               ].map(([label, id]) => (
                 <button
                   key={id}
@@ -183,6 +182,9 @@ export const Footer = () => {
                   {label}
                 </button>
               ))}
+              <Link to="/news" data-testid="footer-news" className="text-sm text-zinc-400 hover:text-white transition-colors duration-300">
+                News & Updates
+              </Link>
               <Link to="/admin" className="text-sm text-zinc-400 hover:text-white transition-colors duration-300">
                 Team Login
               </Link>
