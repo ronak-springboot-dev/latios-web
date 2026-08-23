@@ -54,7 +54,7 @@ export const ModelTurntable = ({ frames, name }) => {
             aria-label={`View ${i + 1}`}
             data-testid={`turntable-dot-${i}`}
             className={`h-1.5 rounded-full transition-all duration-300 ${
-              i === idx ? "w-8 bg-white" : "w-1.5 bg-zinc-600 hover:bg-zinc-400"
+              i === idx ? "w-8 bg-[#1a56e8]" : "w-1.5 bg-zinc-600 hover:bg-zinc-400"
             }`}
           />
         ))}

@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
@@ -10,6 +10,52 @@ import { SpecGrid } from "@/components/SpecGrid";
 import { getCategory, nextCategory } from "@/data/products";
 
 const EASE = [0.16, 1, 0.3, 1];
+
+const FamilyAccordion = ({ families }) => {
+  const [active, setActive] = useState(0);
+  return (
+    <div className="hidden md:flex gap-2 h-[52vh] min-h-[380px] mb-20" data-testid="family-accordion">
+      {families.map((fam, i) => (
+        <button
+          key={fam.kicker}
+          onMouseEnter={() => setActive(i)}
+          onClick={() => document.getElementById(`family-${i}`)?.scrollIntoView({ behavior: "smooth" })}
+          data-testid={`family-panel-${i}`}
+          className="accordion-panel relative overflow-hidden border border-white/10 text-left focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+          style={{ flexGrow: i === active ? 3.2 : 1, flexBasis: 0 }}
+        >
+          <img src={fam.image} alt={fam.kicker} className="absolute inset-0 w-full h-full object-cover" />
+          <div
+            className={`absolute inset-0 transition-colors duration-700 ${
+              i === active ? "bg-black/35" : "bg-black/60"
+            }`}
+          />
+          {i === active ? (
+            <div className="absolute bottom-0 left-0 right-0 p-8">
+              <span className="kicker-sq text-[10px] uppercase tracking-[0.3em] text-zinc-200">
+                {fam.kicker}
+              </span>
+              <h3 className="mt-3 font-display text-3xl font-black tracking-tighter text-white">
+                {fam.title}
+              </h3>
+              <p className="mt-2 text-sm text-zinc-300 max-w-md">{fam.blurb}</p>
+              <span className="mt-4 inline-flex items-center gap-2 btn-blue px-5 py-2.5 text-[10px] uppercase tracking-[0.25em]">
+                View models
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </span>
+            </div>
+          ) : (
+            <div className="absolute inset-0 flex items-end justify-center pb-8">
+              <span className="vertical-title font-display text-lg font-bold tracking-tight text-white/90">
+                {fam.kicker}
+              </span>
+            </div>
+          )}
+        </button>
+      ))}
+    </div>
+  );
+};
 
 export default function ProductPage() {
   const { category } = useParams();
@@ -103,7 +149,7 @@ export default function ProductPage() {
               <ParallaxImage src={ch.image} alt={ch.heading} aspect="aspect-[4/3]" />
             </Reveal>
             <Reveal delay={0.12} className="relative md:w-2/5 w-full">
-              <p className="text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-5">
+              <p className="kicker-sq text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-5">
                 Chapter {ch.n} — {ch.kicker}
               </p>
               <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white leading-[1.03]">
@@ -121,7 +167,7 @@ export default function ProductPage() {
       <section className="relative max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-36" data-testid="specs-section">
         <div className="grid-bg absolute inset-0 pointer-events-none" aria-hidden="true" />
         <Reveal>
-          <p className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">Specifications</p>
+          <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">Specifications</p>
           <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-14">
             The numbers, in full.
           </h2>
@@ -132,10 +178,11 @@ export default function ProductPage() {
       {/* MODEL FAMILIES (when a category has real SKUs) */}
       {data.families && (
         <section className="max-w-[1600px] mx-auto px-6 md:px-12 pb-24 md:pb-36" data-testid="models-section">
+          {data.families.length > 1 && <FamilyAccordion families={data.families} />}
           {data.families.map((fam, fi) => (
-            <div key={fam.title} className={fi > 0 ? "mt-24 md:mt-32" : ""}>
+            <div key={fam.title} id={`family-${fi}`} className={`scroll-mt-28 ${fi > 0 ? "mt-24 md:mt-32" : ""}`}>
               <Reveal>
-                <p className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">{fam.kicker}</p>
+                <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">{fam.kicker}</p>
                 <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-5">
                   {fam.title}
                 </h2>
@@ -173,7 +220,7 @@ export default function ProductPage() {
                       </ul>
                       <span
                         data-testid={`model-explore-${fi}-${i}`}
-                        className="mt-8 inline-flex items-center gap-2 self-start border border-white/20 rounded-full px-6 py-3 text-[10px] uppercase tracking-[0.25em] text-white group-hover:bg-white group-hover:text-black transition-colors duration-300"
+                        className="mt-8 inline-flex items-center gap-2 self-start btn-blue px-6 py-3 text-[10px] uppercase tracking-[0.25em] transition-colors duration-300"
                       >
                         Explore model
                         <ArrowUpRight className="w-3.5 h-3.5" />
@@ -194,7 +241,7 @@ export default function ProductPage() {
           data-testid={`next-category-${next.slug}`}
           className="group block max-w-[1600px] mx-auto px-6 md:px-12 py-20 md:py-32 focus:ring-2 focus:ring-white/50 focus:outline-none"
         >
-          <p className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">
+          <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">
             Next — {next.index} / {next.model}
           </p>
           <div className="flex items-center justify-between gap-8">

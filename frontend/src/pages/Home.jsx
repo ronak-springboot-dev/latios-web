@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Cpu, ShieldCheck, Wrench } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, Cpu, ShieldCheck, Wrench } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { EditorialMarquee } from "@/components/EditorialMarquee";
 import { CATEGORIES } from "@/data/products";
@@ -35,6 +35,45 @@ const STATS = [
   ["12+", "Certifications"],
   ["GeM", "Registered OEM"],
 ];
+
+const NEWS = [
+  { tag: "Laptops", date: "July 2026", title: "Latios Archer LTG540Z debuts with RTX 5080 and a 300Hz Mini LED panel" },
+  { tag: "Company", date: "July 2026", title: "Latios expands GeM-registered portfolio for public sector procurement" },
+  { tag: "Workstations", date: "June 2026", title: "PROMAX T4 Plus workstations now shipping with up to 2TB ECC memory" },
+  { tag: "Audio & Visual", date: "June 2026", title: "Smart Audio & Visual range launched for modern boardrooms" },
+  { tag: "Manufacturing", date: "May 2026", title: "New SMT line commissioned at the Ahmedabad facility" },
+];
+
+const APPLICATIONS = [
+  { title: "Education", blurb: "Interactive panels and AI PCs for digital classrooms", image: "/images/av-ifp.jpg" },
+  { title: "Government", blurb: "GeM-registered OEM for public sector fleets", image: "/images/laptop-rugged.jpg" },
+  { title: "Enterprise", blurb: "Secure MT / SFF desktops with TPM 2.0 at scale", image: "/images/ops.jpg" },
+  { title: "Healthcare", blurb: "Dependable terminals and displays for critical care", image: "/images/av-monitor.jpg" },
+  { title: "Manufacturing", blurb: "Rugged computing for the shop floor, made in-house", image: "/images/factory.jpg" },
+  { title: "Boardrooms", blurb: "Audio-visual systems that make remote feel local", image: "/images/audio-hero.jpg" },
+];
+
+const Carousel = ({ testId, children }) => {
+  const ref = useRef(null);
+  const scroll = (dir) => ref.current?.scrollBy({ left: dir * 400, behavior: "smooth" });
+  const btn =
+    "w-11 h-11 border border-white/20 flex items-center justify-center text-white hover:border-[#1a56e8] hover:text-[#1a56e8] transition-colors duration-300 focus:ring-2 focus:ring-[#1a56e8]/50 focus:outline-none";
+  return (
+    <div>
+      <div className="flex justify-end gap-2 mb-8">
+        <button onClick={() => scroll(-1)} data-testid={`${testId}-prev`} aria-label="Previous" className={btn}>
+          <ArrowLeft className="w-4 h-4" />
+        </button>
+        <button onClick={() => scroll(1)} data-testid={`${testId}-next`} aria-label="Next" className={btn}>
+          <ArrowRight className="w-4 h-4" />
+        </button>
+      </div>
+      <div ref={ref} className="scroll-row flex gap-5 overflow-x-auto pb-2" data-testid={`${testId}-row`}>
+        {children}
+      </div>
+    </div>
+  );
+};
 
 const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
 
@@ -287,6 +326,70 @@ export default function Home() {
               ))}
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      {/* APPLICATIONS CAROUSEL */}
+      <section className="border-t border-white/10" data-testid="applications-section">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-32">
+          <Reveal>
+            <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">Applications</p>
+            <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-5">
+              Built for every sector.
+            </h2>
+            <p className="text-zinc-400 max-w-2xl mb-12 leading-relaxed">
+              From digital classrooms to government fleets — Latios hardware is deployed
+              where reliability is non-negotiable.
+            </p>
+          </Reveal>
+          <Carousel testId="apps-carousel">
+            {APPLICATIONS.map((a, i) => (
+              <div
+                key={a.title}
+                data-testid={`app-card-${i}`}
+                className="group shrink-0 w-[300px] md:w-[400px] relative overflow-hidden border border-white/10 aspect-[4/3] hover:border-[#1a56e8]/60 transition-colors duration-500"
+              >
+                <img
+                  src={a.image}
+                  alt={a.title}
+                  loading="lazy"
+                  className="spotlight-img absolute inset-0 w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-6">
+                  <h3 className="font-display text-2xl font-black tracking-tighter text-white">{a.title}</h3>
+                  <p className="mt-1.5 text-sm text-zinc-300">{a.blurb}</p>
+                </div>
+              </div>
+            ))}
+          </Carousel>
+        </div>
+      </section>
+
+      {/* NEWS CAROUSEL */}
+      <section className="border-t border-white/10" data-testid="news-section">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-32">
+          <Reveal>
+            <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">News & Updates</p>
+            <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-12">
+              The latest from Latios.
+            </h2>
+          </Reveal>
+          <Carousel testId="news-carousel">
+            {NEWS.map((n, i) => (
+              <article
+                key={n.title}
+                data-testid={`news-card-${i}`}
+                className="shrink-0 w-[320px] md:w-[380px] border border-white/10 bg-[#0A0A0A] p-7 flex flex-col hover:border-[#1a56e8]/60 transition-colors duration-500"
+              >
+                <span className="text-[9px] uppercase tracking-[0.3em] text-[#6f93f2]">{n.tag}</span>
+                <h3 className="mt-4 font-display text-xl font-bold tracking-tight text-white leading-snug flex-1">
+                  {n.title}
+                </h3>
+                <span className="mt-6 text-xs text-zinc-500">{n.date}</span>
+              </article>
+            ))}
+          </Carousel>
         </div>
       </section>
 

@@ -342,3 +342,23 @@ html.light .keep-dark .text-zinc-400 {
 .btn-blue:hover {
     background: #1240b8;
 }
+
+/* ---------- Blue accent pass ---------- */
+.nav-link::after {
+    background: var(--latios-blue);
+}
+html.light .nav-link::after {
+    background: var(--latios-blue);
+}
+[data-testid^="spec-"]:hover {
+    box-shadow: inset 3px 0 0 var(--latios-blue);
+}
+[data-testid^="model-card-"]:hover {
+    box-shadow: inset 0 0 0 1px rgba(26, 86, 232, 0.55);
+}
+.scroll-row {
+    scrollbar-width: none;
+}
+.scroll-row::-webkit-scrollbar {
+    display: none;
+}

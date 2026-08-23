@@ -83,7 +83,7 @@ export default function ModelPage() {
       {/* INTRO + STATS */}
       <section className="max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-32 grid grid-cols-1 lg:grid-cols-2 gap-14 items-end">
         <Reveal>
-          <p className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">{model.tag}</p>
+          <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">{model.tag}</p>
           <p className="font-display text-2xl md:text-4xl font-light tracking-tight text-white leading-snug" data-testid="model-intro">
             {model.intro}
           </p>
@@ -103,7 +103,7 @@ export default function ModelPage() {
       {/* TURNTABLE */}
       <section className="max-w-[1600px] mx-auto px-6 md:px-12 pb-24 md:pb-36" data-testid="turntable-section">
         <Reveal>
-          <p className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">360° View</p>
+          <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">360° View</p>
           <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-12">
             Take it for a spin.
           </h2>
@@ -129,7 +129,7 @@ export default function ModelPage() {
               <ParallaxImage src={f.image} alt={f.heading} aspect="aspect-[16/10]" />
             </Reveal>
             <Reveal delay={0.12} className="md:w-2/5 w-full">
-              <p className="text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-5">{f.kicker}</p>
+              <p className="kicker-sq text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-5">{f.kicker}</p>
               <h2 className="font-display text-3xl md:text-4xl font-black tracking-tighter text-white leading-[1.05]">
                 {f.heading}
               </h2>
@@ -144,7 +144,7 @@ export default function ModelPage() {
         <div className="grid-bg absolute inset-0 pointer-events-none" aria-hidden="true" />
         <div className="relative max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-32">
           <Reveal>
-            <p className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">Full Specifications</p>
+            <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">Full Specifications</p>
             <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-14">
               Every number that matters.
             </h2>
@@ -178,7 +178,7 @@ export default function ModelPage() {
       <section className="border-t border-white/10" data-testid="other-models">
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-20 md:py-28">
           <Reveal>
-            <p className="text-xs uppercase tracking-[0.35em] text-zinc-500 mb-10">More from the range</p>
+            <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-10">More from the range</p>
           </Reveal>
           <div className="flex gap-5 overflow-x-auto pb-4 -mx-6 px-6 md:mx-0 md:px-0">
             {others.map((m) => (
@@ -219,7 +219,7 @@ export default function ModelPage() {
               <button
                 onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
                 data-testid="model-enquire-button"
-                className="group flex items-center gap-3 bg-white text-black rounded-full px-8 py-4 text-xs uppercase tracking-[0.25em] font-semibold hover:bg-zinc-300 transition-colors duration-300 focus:ring-2 focus:ring-white/50 focus:outline-none"
+                className="group flex items-center gap-3 btn-blue px-8 py-4 text-xs uppercase tracking-[0.25em] font-semibold transition-colors duration-300 focus:ring-2 focus:ring-[#1a56e8]/50 focus:outline-none"
               >
                 Enquire now
                 <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />

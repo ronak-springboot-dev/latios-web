@@ -111,6 +111,7 @@ const PROMAX_HERO = "/images/rtx.jpg";
 export const TOWERS_FAMILIES = [
   {
     kicker: "Business Desktops",
+    image: "/images/ops.jpg",
     title: "The MT · SFF · MFF family.",
     blurb:
       "Eleven configurations spanning micro-tower, small-form-factor and a 1.1-litre mini PC — from Ryzen 3 to Core Ultra 9, with Wi-Fi 6E/7, TPM 2.0 and tool-friendly upgrade paths.",
@@ -845,6 +846,7 @@ export const TOWERS_FAMILIES = [
   },
   {
     kicker: "PROMAX AI Workstations",
+    image: "/images/rtx.jpg",
     title: "When the work gets heavy.",
     blurb:
       "Four towers for engineering, AI and content creation — scaling from Core Ultra with a built-in NPU to Xeon W with 2TB of ECC memory and redundant 2700W power.",
