@@ -1,7 +1,7 @@
 import { Fragment, useRef, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowLeft, ArrowRight, ArrowUpRight, FileDown } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, FileDown } from "lucide-react";
 import { KineticText } from "@/components/KineticText";
 import { Reveal } from "@/components/Reveal";
 import { ParallaxImage } from "@/components/ParallaxImage";
@@ -21,6 +21,8 @@ export default function ModelPage() {
     model ? model.intro : ""
   );
   const heroRef = useRef(null);
+  const stripRef = useRef(null);
+  const scrollStrip = (dir) => stripRef.current?.scrollBy({ left: dir * 472, behavior: "smooth" });
   const { scrollYProgress } = useScroll({
     target: heroRef,
     offset: ["start start", "end start"],
@@ -365,15 +367,41 @@ export default function ModelPage() {
       <section className="border-t border-white/10" data-testid="other-models">
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-20 md:py-28">
           <Reveal>
-            <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-10">More from the range</p>
+            <div className="flex items-end justify-between gap-6 mb-10">
+              <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500">More from the range</p>
+              {others.length > 3 && (
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => scrollStrip(-1)}
+                    data-testid="range-strip-prev"
+                    aria-label="Scroll models left"
+                    className="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-zinc-400 hover:text-white hover:border-[#1a56e8] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={() => scrollStrip(1)}
+                    data-testid="range-strip-next"
+                    aria-label="Scroll models right"
+                    className="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-zinc-400 hover:text-white hover:border-[#1a56e8] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+              )}
+            </div>
           </Reveal>
-          <div className="flex gap-5 overflow-x-auto pb-4 -mx-6 px-6 md:mx-0 md:px-0">
+          <div
+            ref={stripRef}
+            className="flex gap-5 overflow-x-auto pb-4 -mx-6 px-6 md:mx-0 md:px-0 snap-x snap-mandatory scroll-smooth"
+            data-testid="range-strip"
+          >
             {others.map((m) => (
               <Link
                 key={m.slug}
                 to={`/${m.category}/${m.slug}`}
                 data-testid={`other-model-${m.slug}`}
-                className="group shrink-0 w-56 border border-white/10 bg-[#0A0A0A] hover:border-white/25 transition-colors duration-500 p-5 focus:ring-2 focus:ring-white/50 focus:outline-none"
+                className="group shrink-0 w-56 snap-start border border-white/10 bg-[#0A0A0A] hover:border-white/25 transition-colors duration-500 p-5 focus:ring-2 focus:ring-white/50 focus:outline-none"
               >
                 <div className="rounded-md bg-[#f2f2f0] aspect-[4/3] flex items-center justify-center overflow-hidden mb-4">
                   <img

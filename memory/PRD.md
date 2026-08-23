@@ -20,6 +20,11 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 28 — favicon + range strip scroll)
+- Favicon set generated from the official Latios eagle: favicon.ico (16/32/48), favicon-32/192/512.png, apple-touch-icon.png (solid dark tile) — all wired in index.html; og:image now points to the wordmark
+- "More from the range" strip on model pages: prev/next arrow buttons (smooth scroll ~2 cards), scroll-snap per card, snap-mandatory; verified scrolling works and text contrast passes in BOTH themes (dark: white titles; light: near-black titles on white cards)
+- DEPLOYED PRODUCTION: https://laptoptrek.com — user must REDEPLOY to push these changes live. REMINDER for user: add laptoptrek.com (+www) to the Cloudflare Turnstile widget hostnames or production forms/chat stay locked
+
 ## Implemented (2026-08-23, update 27 — MSI-style multi-configuration spec sheet)
 - Specification tab upgraded to true MSI parity: models sharing a chassis name (family = name prefix before " — ") now render as side-by-side configuration columns — MT family = 4 columns (AMD AM4 / H610 DDR4 / H610 DDR5 / Q670 DDR5), Pro AI SFF = 3 columns, Archer laptops = 3 columns
 - Each column header shows the configuration name + per-config PDF datasheet icon + "View" link to that model's page; current model's column highlighted with blue top border
