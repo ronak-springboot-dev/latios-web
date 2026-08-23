@@ -5,12 +5,17 @@ import { KineticText } from "@/components/KineticText";
 import { Reveal } from "@/components/Reveal";
 import { getApplication } from "@/data/applications";
 import { getModel } from "@/data/models";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 const EASE = [0.16, 1, 0.3, 1];
 
 export default function ApplicationPage() {
   const { slug } = useParams();
   const app = getApplication(slug);
+  usePageMeta(
+    app ? `Latios for ${app.title} | Applications` : "Latios Applications",
+    app ? `${app.blurb}. ${app.intro.slice(0, 120)}` : ""
+  );
   if (!app) return <Navigate to="/" replace />;
   const products = app.products.map(getModel).filter(Boolean);
 

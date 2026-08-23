@@ -9,6 +9,7 @@ const LINKS = [
   { to: "/towers", label: "Towers" },
   { to: "/audio", label: "Audio" },
   { to: "/video", label: "Video" },
+  { to: "/compare", label: "Compare" },
 ];
 
 const goContact = () =>

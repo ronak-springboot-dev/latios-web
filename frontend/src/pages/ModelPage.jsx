@@ -7,12 +7,17 @@ import { Reveal } from "@/components/Reveal";
 import { ParallaxImage } from "@/components/ParallaxImage";
 import { ModelTurntable } from "@/components/ModelTurntable";
 import { getModel, getCategoryModels } from "@/data/models";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 const EASE = [0.16, 1, 0.3, 1];
 
 export default function ModelPage() {
   const { modelSlug } = useParams();
   const model = getModel(modelSlug);
+  usePageMeta(
+    model ? `${model.name} | Latios` : "Latios",
+    model ? model.intro : ""
+  );
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,

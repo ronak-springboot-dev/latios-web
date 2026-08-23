@@ -4,12 +4,17 @@ import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { KineticText } from "@/components/KineticText";
 import { Reveal } from "@/components/Reveal";
 import { getNews, NEWS } from "@/data/news";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 const EASE = [0.16, 1, 0.3, 1];
 
 export default function NewsPage() {
   const { slug } = useParams();
   const item = getNews(slug);
+  usePageMeta(
+    item ? `${item.title} | Latios News` : "Latios News",
+    item ? item.body[0].slice(0, 155) : "News and updates from Latios."
+  );
   if (!item) return <Navigate to="/" replace />;
   const others = NEWS.filter((n) => n.slug !== item.slug).slice(0, 3);
 

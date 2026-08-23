@@ -13,6 +13,7 @@ import ProductPage from "@/pages/ProductPage";
 import ModelPage from "@/pages/ModelPage";
 import NewsPage from "@/pages/NewsPage";
 import ApplicationPage from "@/pages/ApplicationPage";
+import ComparePage from "@/pages/ComparePage";
 
 const ScrollReset = () => {
   const { pathname } = useLocation();
@@ -30,6 +31,7 @@ const AnimatedRoutes = () => {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
+        <Route path="/compare" element={<ComparePage />} />
         <Route path="/news/:slug" element={<NewsPage />} />
         <Route path="/applications/:slug" element={<ApplicationPage />} />
         <Route path="/:category/:modelSlug" element={<ModelPage />} />

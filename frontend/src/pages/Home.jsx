@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Cpu, ShieldCheck, Wrench } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { NEWS } from "@/data/news";
+import { usePageMeta } from "@/hooks/usePageMeta";
 import { APPLICATIONS } from "@/data/applications";
 import { EditorialMarquee } from "@/components/EditorialMarquee";
 import { CATEGORIES } from "@/data/products";
@@ -64,6 +65,10 @@ const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smoo
 
 export default function Home() {
   const [active, setActive] = useState(0);
+  usePageMeta(
+    "Latios — Enterprise Hardware, Made in India",
+    "Laptops, towers, workstations, audio and video hardware designed and manufactured in India. Proudly Indian. Boldly Innovative."
+  );
   return (
     <motion.main
       initial={{ opacity: 0, y: 20 }}

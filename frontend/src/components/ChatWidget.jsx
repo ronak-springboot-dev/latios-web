@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, X, Bot, SendHorizonal, Loader2 } from "lucide-react";
+import { toast } from "sonner";
 
 const FAQS = [
   "Which laptop is best for gaming?",
@@ -56,6 +57,11 @@ export const ChatWidget = () => {
   const [messages, setMessages] = useState([WELCOME]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
+  const [showLead, setShowLead] = useState(false);
+  const [leadDone, setLeadDone] = useState(() => localStorage.getItem("lati-lead-done") === "1");
+  const [leadName, setLeadName] = useState("");
+  const [leadEmail, setLeadEmail] = useState("");
+  const lastQuery = useRef("");
   const [sessionId] = useState(getSessionId);
   const scrollRef = useRef(null);
 
@@ -83,6 +89,7 @@ export const ChatWidget = () => {
     if (!msg || busy) return;
     setInput("");
     setBusy(true);
+    lastQuery.current = msg;
     setMessages((m) => [...m, { role: "user", content: msg }, { role: "assistant", content: "" }]);
     try {
       const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/chat`, {
@@ -108,6 +115,7 @@ export const ChatWidget = () => {
             if (j.delta) appendLast(j.delta);
             if (j.error)
               failLast("LATI is momentarily unavailable — please try again, or email sales@latios.in.");
+            if (j.lead && !leadDone) setShowLead(true);
           } catch {}
         }
       }
@@ -124,6 +132,35 @@ export const ChatWidget = () => {
       failLast("Connection issue — please check your network and try again.");
     } finally {
       setBusy(false);
+    }
+  };
+
+  const submitLead = async (e) => {
+    e.preventDefault();
+    try {
+      await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/enquiries`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name: leadName,
+          email: leadEmail,
+          company: "",
+          message: `LATI chat lead — asked about: "${lastQuery.current}"`,
+        }),
+      });
+      localStorage.setItem("lati-lead-done", "1");
+      setLeadDone(true);
+      setShowLead(false);
+      setMessages((m) => [
+        ...m,
+        {
+          role: "assistant",
+          content: `Thanks ${leadName.split(" ")[0]} — our sales team will reach out at ${leadEmail} shortly. Anything else about the range meanwhile?`,
+        },
+      ]);
+      toast.success("Details received — our sales team will contact you.");
+    } catch {
+      toast.error("Could not save your details — please email sales@latios.in directly.");
     }
   };
 
@@ -192,6 +229,42 @@ export const ChatWidget = () => {
                 </div>
               ))}
             </div>
+
+            {showLead && !leadDone && (
+              <form
+                onSubmit={submitLead}
+                data-testid="lati-lead-form"
+                className="px-4 pb-3 pt-4 space-y-2.5 shrink-0 border-t border-white/10"
+              >
+                <p className="text-xs text-zinc-400 leading-relaxed">
+                  Want pricing or a quote? Leave your details and our sales team will reach out.
+                </p>
+                <input
+                  required
+                  value={leadName}
+                  onChange={(e) => setLeadName(e.target.value)}
+                  placeholder="Your name"
+                  data-testid="lati-lead-name"
+                  className="w-full bg-white/5 border border-white/10 rounded-full px-4 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#1a56e8] transition-colors duration-300"
+                />
+                <input
+                  required
+                  type="email"
+                  value={leadEmail}
+                  onChange={(e) => setLeadEmail(e.target.value)}
+                  placeholder="Work email"
+                  data-testid="lati-lead-email"
+                  className="w-full bg-white/5 border border-white/10 rounded-full px-4 py-2.5 text-sm text-white placeholder:text-zinc-600 focus:outline-none focus:border-[#1a56e8] transition-colors duration-300"
+                />
+                <button
+                  type="submit"
+                  data-testid="lati-lead-submit"
+                  className="w-full btn-blue rounded-full px-4 py-2.5 text-xs uppercase tracking-[0.2em] font-semibold transition-colors duration-300 focus:ring-2 focus:ring-[#1a56e8]/50 focus:outline-none"
+                >
+                  Get pricing
+                </button>
+              </form>
+            )}
 
             {messages.length <= 1 && (
               <div className="px-4 pb-3 flex flex-wrap gap-2 shrink-0" data-testid="chat-faqs">

@@ -20,6 +20,11 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 17)
+- LATI lead capture: pricing-intent questions (price/quote/buy/bulk/demo etc.) trigger an in-chat name+email form; submissions save to enquiries DB tagged "LATI chat lead — asked about: ..." with confirmation message + toast; once-per-visitor
+- /compare page: pick up to 3 machines (grouped selectors, all 28 models), side-by-side grid with images, links, and union of grouped spec rows; added "Compare" to header nav
+- SEO: usePageMeta hook sets per-page document.title + meta description on Home/Product/Model/News/Application/Compare pages; index.html now has Latios title, description, OG tags
+
 ## Implemented (2026-08-23, update 16)
 - News detail pages: /news/:slug — full article pages with hero photo, kinetic title, body, more-news rail (5 articles in src/data/news.js); home news cards are now links with image thumbs
 - Application sector pages: /applications/:slug — hero, sector intro, capability points, recommended Latios products grid (real model links) for education/government/enterprise/healthcare/manufacturing/boardrooms

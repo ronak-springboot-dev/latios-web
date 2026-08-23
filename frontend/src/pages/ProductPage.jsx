@@ -8,6 +8,7 @@ import { ParallaxImage } from "@/components/ParallaxImage";
 import { EditorialMarquee } from "@/components/EditorialMarquee";
 import { SpecGrid } from "@/components/SpecGrid";
 import { getCategory, nextCategory } from "@/data/products";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -60,6 +61,10 @@ const FamilyAccordion = ({ families }) => {
 export default function ProductPage() {
   const { category } = useParams();
   const data = getCategory(category);
+  usePageMeta(
+    data ? `${data.name} — ${data.model} | Latios` : "Latios",
+    data ? `${data.tagline} Explore the ${data.name} range from Latios.` : ""
+  );
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
     target: heroRef,

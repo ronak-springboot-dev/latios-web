@@ -143,6 +143,9 @@ async def chat(req: ChatRequest):
                 "ts": datetime.now(timezone.utc).isoformat(),
             }
         )
+        lead_words = ("price", "pricing", "cost", "quote", "buy", "purchase", "bulk", "order", "demo")
+        if any(w in req.message.lower() for w in lead_words):
+            yield 'data: {"lead": true}\n\n'
         yield "data: [DONE]\n\n"
 
     return StreamingResponse(

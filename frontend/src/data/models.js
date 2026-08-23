@@ -1703,3 +1703,5 @@ export const getModel = (slug) =>
 
 export const getCategoryModels = (cat) =>
   ALL_FAMILIES.flatMap((f) => f.models).filter((m) => m.category === cat);
+
+export const ALL_MODELS = ALL_FAMILIES.flatMap((f) => f.models);
