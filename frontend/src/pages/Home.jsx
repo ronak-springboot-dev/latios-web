@@ -344,6 +344,27 @@ export default function Home() {
                 </span>
               ))}
             </div>
+            <div className="mt-10 flex flex-wrap items-center gap-6">
+              <span className="inline-block bg-white rounded-md px-5 py-3" data-testid="home-partners-strip">
+                <img
+                  src="/images/Group-29.png"
+                  alt="Powered by Intel, AMD, Windows — Make in India"
+                  loading="lazy"
+                  className="h-6 md:h-7 w-auto"
+                />
+              </span>
+              <Link
+                to="/about"
+                data-testid="home-about-link"
+                className="group inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-zinc-400 hover:text-white transition-colors duration-300"
+              >
+                More about Latios
+                <ArrowUpRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+              </Link>
+            </div>
+            <p className="mt-4 text-[9px] text-zinc-600 max-w-sm leading-relaxed">
+              All third-party trademarks, logos, and brand names displayed are the property of their respective owners.
+            </p>
           </Reveal>
         </div>
       </section>

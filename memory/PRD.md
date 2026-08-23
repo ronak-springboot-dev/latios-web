@@ -20,6 +20,14 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 25 — latios.in content extraction)
+- New /about page (AboutPage.jsx): real About Us content from latios.in — "Proudly Indian. Boldly Innovative." hero, founded-2023 story, Vision (compass image) + Mission (blocks image, 5 bullets), "What Makes Us Different" 3 blocks, Technology Partners strip (Powered by Intel/AMD/Windows/Make in India — Group-29.png from latios.in) with trademark disclaimer, closing CTA to contact
+- Real news: 2 genuine latios.in press articles added to news.js (IT TechExpo 2026 — "Strengthening Digital India Through Innovation" + "Showcasing India's Indigenous IT Manufacturing Capabilities") with their real images; 5 sample articles kept below them
+- Contact info enriched: footer Support column now has sales@/support@/partnerships@latios.in + Mon–Sat 10:00–6:30 IST hours; footer Company "About Latios" and header mega-menu About now route to /about
+- Home company section: partners strip + "More about Latios" link + disclaimer
+- Images downloaded from latios.in to /public/images: our-vision.jpg, our-mission.jpg, Group-29.png, news-techexpo-1/2.jpg, about-powering.jpg, tech-boy-1.jpg
+- NOTE: latios.in /partners page is 404 (no partner detail content exists there); their "Hiring" link also 404 — skipped. Their newsletter text mentions "Jimo" (template leftover on their site) — deliberately NOT copied
+
 ## Implemented (2026-08-23, update 24 — Turnstile e2e verified with real keys)
 - Applications carousel cards now keep-dark — titles/blurbs white and readable over photos in light mode (user-reported; verified rgb(255,255,255) both themes)
 - CRITICAL FIX: testing agent had swapped in Cloudflare DUMMY always-pass keys; restored user's real keys in both .env files — forged tokens now rejected 400 (proved via curl), widget renders on preview hostname with no "For testing only" banner

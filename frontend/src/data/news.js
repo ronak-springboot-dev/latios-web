@@ -1,5 +1,29 @@
 export const NEWS = [
   {
+    slug: "strengthening-digital-india-through-innovation",
+    tag: "Events",
+    date: "IT TechExpo 2026",
+    title: "Strengthening Digital India Through Innovation",
+    image: "/images/news-techexpo-1.jpg",
+    body: [
+      "Participation in IT TechExpo 2026 reflects Latios Infosystem's commitment to strengthening India's digital ecosystem by delivering secure, reliable, and cost-effective computing solutions. The company continues to invest in R&D, local manufacturing, and quality-driven processes to meet both national and global standards.",
+      "The exhibition provides an excellent opportunity for Latios to engage with government departments and PSUs, channel partners and system integrators, enterprises and institutional buyers, and technology enthusiasts and industry experts.",
+      "Visit the Latios stall to experience our indigenously designed laptops, desktops, servers and AV solutions first-hand — and to discuss how Made-in-India hardware can power your organisation's next chapter.",
+    ],
+  },
+  {
+    slug: "showcasing-indias-indigenous-it-manufacturing-capabilities",
+    tag: "Events",
+    date: "IT TechExpo 2026",
+    title: "Showcasing India's Indigenous IT Manufacturing Capabilities",
+    image: "/images/news-techexpo-2.jpg",
+    body: [
+      "At IT TechExpo 2026, Latios Infosystem Pvt. Ltd. will showcase its indigenously designed and manufactured IT hardware solutions, aligned with the vision of \"Made in India\" and Atmanirbhar Bharat.",
+      "Visitors to the Latios stall will get an opportunity to explore laptops and desktops designed for enterprise, education, and government use; servers and storage solutions built for performance, scalability, and reliability; and customized IT hardware solutions tailored to institutional and enterprise requirements.",
+      "Our end-to-end capabilities cover design, development, manufacturing, and lifecycle support — every stage delivered from our Ahmedabad facility by a team that believes Indian engineering can stand shoulder to shoulder with global giants.",
+    ],
+  },
+  {
     slug: "archer-ltg540z-launch",
     tag: "Laptops",
     date: "July 2026",

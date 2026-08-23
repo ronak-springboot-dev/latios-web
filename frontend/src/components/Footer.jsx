@@ -172,8 +172,10 @@ export const Footer = () => {
           <div>
             <p className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-5">Company</p>
             <div className="flex flex-col gap-3">
+              <Link to="/about" data-testid="footer-about" className="text-sm text-zinc-400 hover:text-white transition-colors duration-300">
+                About Latios
+              </Link>
               {[
-                ["About Latios", "about-section"],
                 ["Applications", "applications-section"],
                 ["News & Updates", "news-section"],
               ].map(([label, id]) => (
@@ -199,8 +201,11 @@ export const Footer = () => {
             <p className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-5">Support</p>
             <div className="flex flex-col gap-3 text-sm text-zinc-400">
               <a href="mailto:sales@latios.in" className="hover:text-white transition-colors duration-300">sales@latios.in</a>
+              <a href="mailto:support@latios.in" className="hover:text-white transition-colors duration-300">support@latios.in</a>
+              <a href="mailto:partnerships@latios.in" className="hover:text-white transition-colors duration-300">partnerships@latios.in</a>
               <a href="tel:+918238140787" className="hover:text-white transition-colors duration-300">+91 82381 40787</a>
               <a href="https://www.latios.in" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300">www.latios.in</a>
+              <span className="text-zinc-500 text-xs">Support: Mon–Sat · 10:00 AM – 6:30 PM IST</span>
               <span className="text-zinc-500 text-xs leading-relaxed">208, Palak Prime, ISCON–Ambali Road, Ahmedabad 380058</span>
             </div>
           </div>

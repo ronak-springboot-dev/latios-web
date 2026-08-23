@@ -211,10 +211,19 @@ export const Header = () => {
                   <span className="block text-zinc-500">Ahmedabad, Gujarat, India</span>
                 </div>
                 <div className="mt-8 flex flex-wrap gap-2.5" data-testid="mega-quick-links">
+                  <button
+                    onClick={() => {
+                      setMenuOpen(false);
+                      navigate("/about");
+                    }}
+                    data-testid="mega-quick-about"
+                    className="text-[10px] uppercase tracking-[0.2em] border border-white/15 rounded-full px-4 py-2 text-zinc-400 hover:border-[#1a56e8] hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+                  >
+                    About Latios
+                  </button>
                   {[
                     ["Applications", "applications-section"],
                     ["News & Updates", "news-section"],
-                    ["About Latios", "about-section"],
                   ].map(([label, id]) => (
                     <button
                       key={id}
