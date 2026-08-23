@@ -20,6 +20,12 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 15)
+- Towers page: JWIPC-style family accordion (Business Desktops vs PROMAX AI Workstations) with hover expansion, vertical collapsed titles, blue View Models button, smooth-scrolls to the family grid
+- Blue accent pass: nav underlines, all section kickers (blue square), Explore-model and Enquire buttons now Latios blue, spec-cell hover blue inset, model-card blue hover ring, turntable active dot blue
+- Homepage: Applications carousel (Education/Government/Enterprise/Healthcare/Manufacturing/Boardrooms, square arrow buttons) + News & Updates carousel (5 sample items — MOCKED content)
+- Custom images: /public/custom-images/ directory with README.txt + src/data/customImages.js reference map of every image slot for manual swaps
+
 ## Implemented (2026-08-23, update 14 — JWIPC-style redesign)
 - Homepage redesigned after jwipc.com: centered corporate headline + horizontal hover-accordion of the 4 categories (collapsed panels show vertical titles; expanded panel shows image, kicker, tagline, blue Explore button); mobile gets stacked cards
 - Corporate accent system: Latios blue (#1a56e8) — square-accent section kickers, blue sharp-edged Enquire/Explore buttons
