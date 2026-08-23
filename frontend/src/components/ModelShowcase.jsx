@@ -170,6 +170,46 @@ export const ModelShowcase = ({ model, data, datasheet, tabs, onViewSpecs, onEnq
         </div>
       </section>
 
+      {/* IN MOTION — autoplay video loop, Minisforum cooling-section style */}
+      {data.videoSrc && (
+        <section className="border-t border-white/10" data-testid="showcase-video">
+          <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-20 md:py-28">
+            <Reveal>
+              <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white text-center mb-4 leading-[1.05]">
+                See it in motion.
+              </h2>
+              <p className="text-center text-sm text-zinc-500 mb-14 max-w-xl mx-auto">
+                Every panel, port and edge — engineered, assembled and finished in Ahmedabad.
+              </p>
+            </Reveal>
+            <Reveal delay={0.08}>
+              <div className="relative overflow-hidden border border-white/10">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
+                  preload="metadata"
+                  data-testid="showcase-video-player"
+                  className="w-full aspect-video object-cover"
+                >
+                  <source src={data.videoSrc} type="video/mp4" />
+                </video>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
+                <div className="keep-dark absolute bottom-0 left-0 right-0 p-6 md:p-10 flex flex-col md:flex-row md:items-end md:justify-between gap-4 pointer-events-none">
+                  <p className="text-[10px] uppercase tracking-[0.35em] text-zinc-300">
+                    Latios MT — AMD AM4
+                  </p>
+                  <p className="text-[10px] uppercase tracking-[0.35em] text-zinc-300">
+                    Designed · Manufactured · Supported in India
+                  </p>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
+
       {/* FEATURE ICON GRID */}
       <section className="max-w-[1600px] mx-auto px-6 md:px-12 py-20 md:py-28" data-testid="showcase-features">
         <Reveal>

@@ -1,6 +1,7 @@
 export const SHOWCASE = {
   "mt-amd-am4": {
     bannerImage: "/images/banner/banner-amd-1.jpg",
+    videoSrc: "/videos/mt-amd-am4-loop.mp4",
     bannerHeadline: "Engineered for the everyday enterprise.",
     bannerSubline:
       "AMD Ryzen 5000G processing with Radeon graphics, wrapped in an 18-litre chassis your IT team can open in seconds.",
