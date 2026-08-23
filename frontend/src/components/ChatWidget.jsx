@@ -66,6 +66,10 @@ export const ChatWidget = () => {
   const [leadToken, setLeadToken] = useState(null);
   const [leadReset, setLeadReset] = useState(0);
   const onLeadToken = useCallback((t) => setLeadToken(t), []);
+  const [verified, setVerified] = useState(() => localStorage.getItem("lati-verified") === "1");
+  const [chatToken, setChatToken] = useState(null);
+  const [chatReset, setChatReset] = useState(0);
+  const onChatToken = useCallback((t) => setChatToken(t), []);
   const lastQuery = useRef("");
   const [sessionId] = useState(getSessionId);
   const scrollRef = useRef(null);
@@ -92,6 +96,10 @@ export const ChatWidget = () => {
   const send = async (text) => {
     const msg = (text ?? input).trim();
     if (!msg || busy) return;
+    if (!verified && !chatToken) {
+      toast.error("Please complete the security check first.");
+      return;
+    }
     setInput("");
     setBusy(true);
     lastQuery.current = msg;
@@ -100,8 +108,29 @@ export const ChatWidget = () => {
       const res = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/chat`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ session_id: sessionId, message: msg }),
+        body: JSON.stringify({
+          session_id: sessionId,
+          message: msg,
+          ...(verified ? {} : { turnstile_token: chatToken }),
+        }),
       });
+      if (!res.ok) {
+        if (res.status === 403 || res.status === 400) {
+          setVerified(false);
+          localStorage.removeItem("lati-verified");
+          setChatToken(null);
+          setChatReset((r) => r + 1);
+          failLast("Please complete the security check below, then send again.");
+        } else {
+          failLast("LATI is momentarily unavailable — please try again, or email sales@latios.in.");
+        }
+        return;
+      }
+      if (!verified) {
+        setVerified(true);
+        localStorage.setItem("lati-verified", "1");
+        setChatToken(null);
+      }
       const reader = res.body.getReader();
       const dec = new TextDecoder();
       let buf = "";
@@ -297,6 +326,21 @@ export const ChatWidget = () => {
               </div>
             )}
 
+            {!verified && (
+              <div className="px-3 pt-3 border-t border-white/10 shrink-0" data-testid="chat-verify">
+                <p className="mb-2 text-[10px] uppercase tracking-[0.25em] text-zinc-500">
+                  Quick security check to start chatting
+                </p>
+                <TurnstileWidget
+                  onToken={onChatToken}
+                  resetSignal={chatReset}
+                  testid="turnstile-chat-verify"
+                  action="chat"
+                  theme="dark"
+                />
+              </div>
+            )}
+
             <form
               onSubmit={(e) => {
                 e.preventDefault();
@@ -314,7 +358,7 @@ export const ChatWidget = () => {
               />
               <button
                 type="submit"
-                disabled={busy || !input.trim()}
+                disabled={busy || !input.trim() || (!verified && !chatToken)}
                 data-testid="chat-send"
                 aria-label="Send message"
                 className="w-11 h-11 rounded-full bg-white text-black flex items-center justify-center hover:bg-zinc-300 disabled:opacity-40 transition-colors duration-300 focus:ring-2 focus:ring-white/50 focus:outline-none shrink-0"

@@ -100,7 +100,7 @@ async def verify_turnstile(token: str):
     if not result.get("success"):
         logger.warning(f"Turnstile rejected token: {result.get('error-codes')}")
         raise HTTPException(status_code=400, detail="Security check failed — please retry")
-    if result.get("action") not in (None, "enquiry"):
+    if result.get("action") not in (None, "enquiry", "chat"):
         raise HTTPException(status_code=400, detail="Security check failed")
 
 @api_router.post("/enquiries", response_model=Enquiry)
@@ -158,6 +158,7 @@ async def mark_enquiry_replied(enquiry_id: str, input: RepliedUpdate, request: R
 class ChatRequest(BaseModel):
     session_id: str
     message: str
+    turnstile_token: Optional[str] = None
 
 @api_router.post("/chat")
 async def chat(req: ChatRequest):
@@ -165,6 +166,17 @@ async def chat(req: ChatRequest):
     from fastapi.responses import StreamingResponse
     from emergentintegrations.llm.chat import LlmChat, UserMessage, TextDelta, StreamDone
     from knowledge import LATIOS_KNOWLEDGE
+
+    session = await db.chat_sessions.find_one({"session_id": req.session_id})
+    if not session or not session.get("verified"):
+        if not req.turnstile_token:
+            raise HTTPException(status_code=403, detail="Security check required")
+        await verify_turnstile(req.turnstile_token)
+        await db.chat_sessions.update_one(
+            {"session_id": req.session_id},
+            {"$set": {"verified": True, "ts": datetime.now(timezone.utc).isoformat()}},
+            upsert=True,
+        )
 
     ts = datetime.now(timezone.utc).isoformat()
     await db.chat_messages.insert_one(

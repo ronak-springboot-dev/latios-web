@@ -20,7 +20,7 @@ const loadTurnstile = () => {
   return scriptPromise;
 };
 
-export const TurnstileWidget = ({ onToken, resetSignal = 0, testid = "turnstile-widget" }) => {
+export const TurnstileWidget = ({ onToken, resetSignal = 0, testid = "turnstile-widget", action = "enquiry", theme }) => {
   const containerRef = useRef(null);
   const widgetIdRef = useRef(null);
   const [failed, setFailed] = useState(false);
@@ -32,11 +32,11 @@ export const TurnstileWidget = ({ onToken, resetSignal = 0, testid = "turnstile-
     loadTurnstile()
       .then((t) => {
         if (cancelled || !containerRef.current || widgetIdRef.current !== null) return;
-        const theme = document.documentElement.classList.contains("light") ? "light" : "dark";
+        const widgetTheme = theme || (document.documentElement.classList.contains("light") ? "light" : "dark");
         widgetIdRef.current = t.render(containerRef.current, {
           sitekey: process.env.REACT_APP_TURNSTILE_SITE_KEY,
-          theme,
-          action: "enquiry",
+          theme: widgetTheme,
+          action,
           callback: (token) => onTokenRef.current(token),
           "expired-callback": () => onTokenRef.current(null),
           "timeout-callback": () => onTokenRef.current(null),

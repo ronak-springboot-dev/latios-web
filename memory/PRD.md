@@ -20,6 +20,12 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 23 — Turnstile chat protection)
+- /api/chat now gated by Turnstile: first message per session requires turnstile_token (403 without, 400 fake — both verified); verified sessions recorded in db.chat_sessions so subsequent messages skip the check
+- ChatWidget: security-check block above input when unverified (action "chat", forced dark theme), send button + FAQ chips gated until token, 403/400 responses re-show the widget; verified flag persisted in localStorage (backend DB is source of truth)
+- TurnstileWidget gained action + theme props
+- STILL BLOCKED (user action): Cloudflare widget still shows "Unable to connect to website" — hostnames not yet added in user's Cloudflare dashboard; full e2e submission test (footer/lead/chat) pending until then. Note: chat is now also intentionally locked until hostnames are added
+
 ## Implemented (2026-08-23, update 22 — read receipts + Cloudflare Turnstile)
 - Read receipts: enquiries now carry replied flag; PATCH /api/enquiries/{id}/replied (admin-key protected, 401/404 verified); admin inbox shows emerald "Replied" badge + Mark replied/Unmark toggle, replied rows dimmed (UI verified end-to-end)
 - Cloudflare Turnstile: TurnstileWidget.jsx (explicit render, dark/light theme aware, token reset after every submit, error fallback message); footer enquiry form + LATI lead form both require a valid token; backend verifies via siteverify (TURNSTILE_SECRET_KEY in backend/.env, site key in frontend/.env REACT_APP_TURNSTILE_SITE_KEY); 422 without token, 400 bad token, tokens single-use
