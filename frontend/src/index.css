@@ -233,6 +233,9 @@ html.light .text-zinc-600 {
 html.light .text-zinc-700 {
     color: #d4d4d8 !important;
 }
+html.light .text-\[\#6f93f2\] {
+    color: #1240b8 !important;
+}
 html.light .border-white\/10 {
     border-color: rgba(10, 10, 10, 0.1) !important;
 }

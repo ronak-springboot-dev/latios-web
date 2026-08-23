@@ -1705,3 +1705,19 @@ export const getCategoryModels = (cat) =>
   ALL_FAMILIES.flatMap((f) => f.models).filter((m) => m.category === cat);
 
 export const ALL_MODELS = ALL_FAMILIES.flatMap((f) => f.models);
+export const DATASHEETS = {
+  "mt-amd-am4": "/datasheets/mt-amd-am4.pdf",
+  "mt-h610-ddr4": "/datasheets/mt-h610-ddr4.pdf",
+  "mt-h610-ddr5": "/datasheets/mt-h610-ddr5.pdf",
+  "mt-pro-h610-ddr5": "/datasheets/mt-pro-h610-ddr5.pdf",
+  "mt-q670-ddr5": "/datasheets/mt-q670-ddr5.pdf",
+  "sff-h610-ddr5": "/datasheets/sff-h610-ddr5.pdf",
+  "mt-am5-pro-ai": "/datasheets/mt-am5-pro-ai.pdf",
+  "sff-am5-pro-ai": "/datasheets/sff-am5-pro-ai.pdf",
+  "sff-b860-pro-ai": "/datasheets/sff-b860-pro-ai.pdf",
+  "sff-h810-pro-ai": "/datasheets/sff-h810-pro-ai.pdf",
+  "promax-q870": "/datasheets/promax-q870.pdf",
+  "promax-t2-w880": "/datasheets/promax-t2-w880.pdf",
+  "promax-t2-w680": "/datasheets/promax-t2-w680.pdf",
+  "promax-t4-plus": "/datasheets/promax-t4-plus.pdf",
+};

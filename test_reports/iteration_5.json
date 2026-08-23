@@ -1,0 +1,28 @@
+{
+  "summary": "Frontend-only regression of the new batch (spec tabs + datasheets, /support page, logo wordmark, footer latios.in removal, light-theme readability). 6/6 requested areas PASS. Executed 4 Playwright suites against the public preview URL. Verified: MSI-style Overview/Specification tab bar on /towers/promax-t4-plus (4 spec groups) and /towers/mt-amd-am4 (5 groups) with blue Download-datasheet button href = /datasheets/<slug>.pdf and in-page fetch returning 200 application/pdf; Overview tab restores intro/turntable/features and unmounts spec sheet; /laptops/archer-ltg540z renders the spec table (2 groups) with ZERO datasheet anchors anywhere. /support: search 'archer' returns a result link that navigates to /laptops/archer-ltg540z, 4 product tiles href /laptops /towers /audio /video (tile click navigates), all 6 service tiles present (downloads+location = buttons, warranty/registration/technical/repair = mailto: anchors), service-downloads scrolls to #support-downloads with exactly 14 rows, 3 spot-checked download buttons return 200 application/pdf, contact-lati dispatches lati:open and the LATI chat panel opens (chat-panel/chat-input/chat-send rendered), support-map-link -> maps.google.com. Header nav-support present and navigates. Footer DOM grep: zero non-mailto latios.in hrefs (document-wide) and zero 'www.latios.in' text; Support Center -> /support. Logo /images/latios-wordmark.png loads (naturalWidth 450) in header + BOTH footer spots in dark AND light themes on a white chip (chipBg rgb(255,255,255)). Light-theme /support and light-theme spec tab are fully readable (contrast 4.8:1 to 18:1, no white-on-white). No console/page errors captured.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Model page tab bar (LIGHT theme)", "issues": ["The secondary 'Datasheet (PDF)' link in the tab bar uses text-[#6f93f2] which sits on the light background (#f4f4f2) at ~2.7:1 contrast — fails WCAG AA for 10px small text. Only cosmetic; the primary blue 'Download datasheet' button in the spec sheet is fine at 5.93:1. Consider a darker blue (e.g. #1a56e8) for that link in light mode."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Optional (minor): darken the tab-bar 'Datasheet (PDF)' link colour in light theme for AA contrast."
+  ],
+  "critical_code_review_comments": [
+    "/app/frontend/src/data/models.js is 1723 lines — exceeds the 700-line guideline. Consider splitting per-category (laptops/towers/audio/video) plus a datasheets module.",
+    "SupportPage.jsx recreates SERVICE_TILES (with inline closures) on every render; harmless at this size but could be hoisted with the action ids resolved at click time.",
+    "Tab state in ModelPage is component-local only — deep-linking to the spec sheet (e.g. ?tab=specification) is not supported and the tab resets on back/forward. Consider syncing to a query param if shareable spec links are desired."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not tested (frontend-only request)", "frontend": "100% (all 6 requested areas passed)"},
+  "seed_data_creation": "None — all flows are public and read-only.",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "test_credentials": "Not required for this batch (no auth flows touched). Admin /admin not exercised.",
+  "context_for_next_testing_agent": "Iteration 5 covered ONLY the new batch: spec tabs + 14 datasheet PDFs, /support page, wordmark logo, footer latios.in removal, light-theme regression — all green. Still do-not-retest: Turnstile submit flows (Cloudflare 600010 in headless), admin inbox, chat gating (iterations 1-4). Playwright notes that held true again: header is fixed but hides on scroll-down and Lenis hijacks scroll — call page.evaluate('window.scrollTo(0,0)') + a ~400ms wait before clicking header/theme-toggle; never use wait_until='networkidle' (never settles) — use wait_for_selector. PDFs are served from the React public dir and are fetchable in-page (200, application/pdf). Datasheets exist only for the 14 tower/SFF slugs; laptops/audio/video models intentionally have no datasheet button.",
+  "rca_of_the_issue": "No defects reproduced in this batch. The single low-contrast link is a light-theme colour-token choice (#6f93f2 accent reused from the dark theme without a light-mode variant), not a functional bug."
+}

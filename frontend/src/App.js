@@ -16,6 +16,7 @@ import ApplicationPage from "@/pages/ApplicationPage";
 import ComparePage from "@/pages/ComparePage";
 import AdminPage from "@/pages/AdminPage";
 import AboutPage from "@/pages/AboutPage";
+import SupportPage from "@/pages/SupportPage";
 
 const ScrollReset = () => {
   const { pathname } = useLocation();
@@ -34,6 +35,7 @@ const AnimatedRoutes = () => {
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
         <Route path="/about" element={<AboutPage />} />
+        <Route path="/support" element={<SupportPage />} />
         <Route path="/compare" element={<ComparePage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/news/:slug" element={<NewsPage />} />

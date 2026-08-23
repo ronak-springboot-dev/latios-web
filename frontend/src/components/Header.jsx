@@ -11,6 +11,7 @@ const LINKS = [
   { to: "/audio", label: "Audio" },
   { to: "/video", label: "Video" },
   { to: "/compare", label: "Compare" },
+  { to: "/support", label: "Support" },
 ];
 
 const EASE = [0.16, 1, 0.3, 1];
@@ -95,7 +96,7 @@ export const Header = () => {
               }}
             >
               <span className="logo-chip bg-white rounded-md px-3 py-1.5 inline-flex items-center">
-                <img src="/images/latios-logo.png" alt="Latios" className="h-6 md:h-7 w-auto" />
+                <img src="/images/latios-wordmark.png" alt="Latios" className="h-6 md:h-7 w-auto" />
               </span>
             </Link>
 

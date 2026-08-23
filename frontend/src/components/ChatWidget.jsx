@@ -75,6 +75,12 @@ export const ChatWidget = () => {
   const scrollRef = useRef(null);
 
   useEffect(() => {
+    const openChat = () => setOpen(true);
+    window.addEventListener("lati:open", openChat);
+    return () => window.removeEventListener("lati:open", openChat);
+  }, []);
+
+  useEffect(() => {
     if (scrollRef.current)
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
   }, [messages, open]);

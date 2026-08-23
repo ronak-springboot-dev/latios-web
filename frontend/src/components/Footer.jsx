@@ -83,15 +83,6 @@ export const Footer = () => {
               208, Palak Prime, Opp. Hotel Double Tree by Hilton, ISCON–Ambali Road,
               Ahmedabad 380058, Gujarat, India
             </span>
-            <a
-              href="https://www.latios.in"
-              target="_blank"
-              rel="noopener noreferrer"
-              data-testid="footer-website-link"
-              className="text-white hover:text-zinc-300 transition-colors duration-300"
-            >
-              www.latios.in
-            </a>
           </div>
         </div>
 
@@ -147,7 +138,7 @@ export const Footer = () => {
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-14 grid grid-cols-2 md:grid-cols-4 gap-10">
           <div>
             <span className="logo-chip bg-white rounded-md px-3 py-1.5 inline-flex items-center">
-              <img src="/images/latios-logo.png" alt="Latios" className="h-6 w-auto" />
+              <img src="/images/latios-wordmark.png" alt="Latios" className="h-6 w-auto" />
             </span>
             <p className="mt-5 text-xs text-zinc-500 leading-relaxed max-w-[220px]">
               Proudly Indian. Boldly Innovative. Designed and manufactured in Ahmedabad, India.
@@ -204,7 +195,7 @@ export const Footer = () => {
               <a href="mailto:support@latios.in" className="hover:text-white transition-colors duration-300">support@latios.in</a>
               <a href="mailto:partnerships@latios.in" className="hover:text-white transition-colors duration-300">partnerships@latios.in</a>
               <a href="tel:+918238140787" className="hover:text-white transition-colors duration-300">+91 82381 40787</a>
-              <a href="https://www.latios.in" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300">www.latios.in</a>
+              <Link to="/support" data-testid="footer-support-center" className="text-white hover:text-zinc-300 transition-colors duration-300">Support Center</Link>
               <span className="text-zinc-500 text-xs">Support: Mon–Sat · 10:00 AM – 6:30 PM IST</span>
               <span className="text-zinc-500 text-xs leading-relaxed">208, Palak Prime, ISCON–Ambali Road, Ahmedabad 380058</span>
             </div>
@@ -215,7 +206,7 @@ export const Footer = () => {
       <div className="border-t border-white/10">
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <span className="logo-chip bg-white rounded-md px-3 py-1.5 inline-flex items-center">
-            <img src="/images/latios-logo.png" alt="Latios" className="h-6 w-auto" data-testid="footer-logo" />
+            <img src="/images/latios-wordmark.png" alt="Latios" className="h-6 w-auto" data-testid="footer-logo" />
           </span>
           <nav className="flex flex-wrap gap-6" data-testid="footer-nav">
             {CATEGORIES.map((c) => (

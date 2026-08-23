@@ -20,6 +20,13 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 26 — spec tabs, datasheets, support page, official logo)
+- Model pages now have MSI-style Overview/Specification tabs: Specification shows a clean grouped spec sheet (group header rows + label/value table) with a blue Download datasheet button + a "Datasheet (PDF)" link in the tab bar; models without a datasheet (laptops/audio/video) hide the button
+- 14 original user-provided datasheet PDFs recovered from the job asset store and hosted locally at /datasheets/<slug>.pdf (all verified valid PDFs, 200 OK); DATASHEETS map in models.js
+- New /support page modeled on MSI support: hero + product search (links to model pages), 4 product tiles, 6 service tiles (Downloads, Warranty Check, Product Registration, Technical Support, Find Service Location, Check Repair Status — mailto/on-page), datasheet downloads section (14 rows), Ahmedabad service location + Google Maps link, contact tiles (Web Ticket/Hotline/Email/Ask LATI — chat opens via lati:open window event); "Support" added to header nav + footer
+- Official Latios wordmark logo (from latios.in) replaces the old logo in header + footer — on the white chip it reads rich in both themes; www.latios.in website references removed from footer
+- Testing agent iteration_5: 6/6 areas pass incl. light-theme regression; fixed the one cosmetic note (accent link contrast in light mode)
+
 ## Implemented (2026-08-23, update 25 — latios.in content extraction)
 - New /about page (AboutPage.jsx): real About Us content from latios.in — "Proudly Indian. Boldly Innovative." hero, founded-2023 story, Vision (compass image) + Mission (blocks image, 5 bullets), "What Makes Us Different" 3 blocks, Technology Partners strip (Powered by Intel/AMD/Windows/Make in India — Group-29.png from latios.in) with trademark disclaimer, closing CTA to contact
 - Real news: 2 genuine latios.in press articles added to news.js (IT TechExpo 2026 — "Strengthening Digital India Through Innovation" + "Showcasing India's Indigenous IT Manufacturing Capabilities") with their real images; 5 sample articles kept below them

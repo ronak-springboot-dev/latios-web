@@ -1,12 +1,12 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, ArrowUpRight, FileDown } from "lucide-react";
 import { KineticText } from "@/components/KineticText";
 import { Reveal } from "@/components/Reveal";
 import { ParallaxImage } from "@/components/ParallaxImage";
 import { ModelTurntable } from "@/components/ModelTurntable";
-import { getModel, getCategoryModels } from "@/data/models";
+import { getModel, getCategoryModels, DATASHEETS } from "@/data/models";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
 const EASE = [0.16, 1, 0.3, 1];
@@ -14,6 +14,7 @@ const EASE = [0.16, 1, 0.3, 1];
 export default function ModelPage() {
   const { modelSlug } = useParams();
   const model = getModel(modelSlug);
+  const [tab, setTab] = useState("overview");
   usePageMeta(
     model ? `${model.name} | Latios` : "Latios",
     model ? model.intro : ""
@@ -29,6 +30,7 @@ export default function ModelPage() {
   if (!model) return <Navigate to="/" replace />;
 
   const others = getCategoryModels(model.category).filter((m) => m.slug !== model.slug);
+  const datasheet = DATASHEETS[model.slug];
 
   return (
     <motion.main
@@ -85,99 +87,160 @@ export default function ModelPage() {
         </motion.div>
       </section>
 
-      {/* INTRO + STATS */}
-      <section className="max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-32 grid grid-cols-1 lg:grid-cols-2 gap-14 items-end">
-        <Reveal>
-          <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">{model.tag}</p>
-          <p className="font-display text-2xl md:text-4xl font-light tracking-tight text-white leading-snug" data-testid="model-intro">
-            {model.intro}
-          </p>
-        </Reveal>
-        <Reveal delay={0.12}>
-          <div className="grid grid-cols-3 border-t border-l border-white/10" data-testid="model-stats">
-            {model.stats.map(([v, l]) => (
-              <div key={l} className="border-r border-b border-white/10 p-6 md:p-8">
-                <div className="font-display text-2xl md:text-4xl font-black tracking-tighter text-white">{v}</div>
-                <div className="mt-2 text-[10px] uppercase tracking-[0.25em] text-zinc-500">{l}</div>
+      {/* TAB BAR — MSI style */}
+      <section className="border-b border-white/10" data-testid="model-tabs">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12 flex items-center gap-8 md:gap-12">
+          {[
+            ["overview", "Overview"],
+            ["specification", "Specification"],
+          ].map(([id, label]) => (
+            <button
+              key={id}
+              onClick={() => setTab(id)}
+              data-testid={`model-tab-${id}`}
+              className={`py-5 text-xs uppercase tracking-[0.3em] border-b-2 transition-colors duration-300 focus:outline-none ${
+                tab === id
+                  ? "text-white border-[#1a56e8]"
+                  : "text-zinc-500 border-transparent hover:text-white"
+              }`}
+            >
+              {label}
+            </button>
+          ))}
+          {datasheet && (
+            <a
+              href={datasheet}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-testid="datasheet-download"
+              className="ml-auto hidden sm:inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-[#6f93f2] hover:text-white transition-colors duration-300"
+            >
+              <FileDown className="w-4 h-4" /> Datasheet (PDF)
+            </a>
+          )}
+        </div>
+      </section>
+
+      {tab === "overview" ? (
+        <>
+          {/* INTRO + STATS */}
+          <section className="max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-32 grid grid-cols-1 lg:grid-cols-2 gap-14 items-end">
+            <Reveal>
+              <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">{model.tag}</p>
+              <p className="font-display text-2xl md:text-4xl font-light tracking-tight text-white leading-snug" data-testid="model-intro">
+                {model.intro}
+              </p>
+            </Reveal>
+            <Reveal delay={0.12}>
+              <div className="grid grid-cols-3 border-t border-l border-white/10" data-testid="model-stats">
+                {model.stats.map(([v, l]) => (
+                  <div key={l} className="border-r border-b border-white/10 p-6 md:p-8">
+                    <div className="font-display text-2xl md:text-4xl font-black tracking-tighter text-white">{v}</div>
+                    <div className="mt-2 text-[10px] uppercase tracking-[0.25em] text-zinc-500">{l}</div>
+                  </div>
+                ))}
+              </div>
+            </Reveal>
+          </section>
+
+          {/* TURNTABLE */}
+          <section className="max-w-[1600px] mx-auto px-6 md:px-12 pb-24 md:pb-36" data-testid="turntable-section">
+            <Reveal>
+              <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">360° View</p>
+              <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-12">
+                Take it for a spin.
+              </h2>
+            </Reveal>
+            <Reveal delay={0.1}>
+              <div className="max-w-4xl mx-auto">
+                <ModelTurntable frames={model.gallery} name={model.name} />
+              </div>
+            </Reveal>
+          </section>
+
+          {/* FEATURE CHAPTERS */}
+          <section className="max-w-[1600px] mx-auto px-6 md:px-12 space-y-24 md:space-y-36 pb-24 md:pb-36" data-testid="model-features">
+            {model.features.map((f, i) => (
+              <div
+                key={f.heading}
+                className={`flex flex-col md:flex-row items-center gap-10 md:gap-20 ${
+                  i % 2 === 1 ? "md:flex-row-reverse" : ""
+                }`}
+                data-testid={`model-feature-${i}`}
+              >
+                <Reveal className="md:w-3/5 w-full">
+                  <ParallaxImage src={f.image} alt={f.heading} aspect="aspect-[16/10]" />
+                </Reveal>
+                <Reveal delay={0.12} className="md:w-2/5 w-full">
+                  <p className="kicker-sq text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-5">{f.kicker}</p>
+                  <h2 className="font-display text-3xl md:text-4xl font-black tracking-tighter text-white leading-[1.05]">
+                    {f.heading}
+                  </h2>
+                  <p className="mt-5 text-base text-zinc-400 leading-relaxed">{f.body}</p>
+                </Reveal>
               </div>
             ))}
-          </div>
-        </Reveal>
-      </section>
-
-      {/* TURNTABLE */}
-      <section className="max-w-[1600px] mx-auto px-6 md:px-12 pb-24 md:pb-36" data-testid="turntable-section">
-        <Reveal>
-          <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">360° View</p>
-          <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-12">
-            Take it for a spin.
-          </h2>
-        </Reveal>
-        <Reveal delay={0.1}>
-          <div className="max-w-4xl mx-auto">
-            <ModelTurntable frames={model.gallery} name={model.name} />
-          </div>
-        </Reveal>
-      </section>
-
-      {/* FEATURE CHAPTERS */}
-      <section className="max-w-[1600px] mx-auto px-6 md:px-12 space-y-24 md:space-y-36 pb-24 md:pb-36" data-testid="model-features">
-        {model.features.map((f, i) => (
-          <div
-            key={f.heading}
-            className={`flex flex-col md:flex-row items-center gap-10 md:gap-20 ${
-              i % 2 === 1 ? "md:flex-row-reverse" : ""
-            }`}
-            data-testid={`model-feature-${i}`}
-          >
-            <Reveal className="md:w-3/5 w-full">
-              <ParallaxImage src={f.image} alt={f.heading} aspect="aspect-[16/10]" />
+          </section>
+        </>
+      ) : (
+        /* SPECIFICATION — MSI-style spec sheet */
+        <section className="relative" data-testid="model-specs">
+          <div className="grid-bg absolute inset-0 pointer-events-none" aria-hidden="true" />
+          <div className="relative max-w-[1100px] mx-auto px-6 md:px-12 py-16 md:py-24">
+            <Reveal>
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-10">
+                <div>
+                  <p className="kicker-sq text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-3">
+                    Specification
+                  </p>
+                  <h2 className="font-display text-2xl md:text-4xl font-black tracking-tighter text-white" data-testid="spec-sheet-title">
+                    {model.name}
+                  </h2>
+                </div>
+                {datasheet && (
+                  <a
+                    href={datasheet}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    data-testid="spec-datasheet-button"
+                    className="group shrink-0 inline-flex items-center gap-3 btn-blue px-7 py-3.5 text-xs uppercase tracking-[0.25em] font-semibold transition-colors duration-300"
+                  >
+                    <FileDown className="w-4 h-4 transition-transform duration-300 group-hover:translate-y-0.5" />
+                    Download datasheet
+                  </a>
+                )}
+              </div>
             </Reveal>
-            <Reveal delay={0.12} className="md:w-2/5 w-full">
-              <p className="kicker-sq text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-5">{f.kicker}</p>
-              <h2 className="font-display text-3xl md:text-4xl font-black tracking-tighter text-white leading-[1.05]">
-                {f.heading}
-              </h2>
-              <p className="mt-5 text-base text-zinc-400 leading-relaxed">{f.body}</p>
-            </Reveal>
-          </div>
-        ))}
-      </section>
 
-      {/* SPECS */}
-      <section className="relative border-t border-white/10" data-testid="model-specs">
-        <div className="grid-bg absolute inset-0 pointer-events-none" aria-hidden="true" />
-        <div className="relative max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-32">
-          <Reveal>
-            <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">Full Specifications</p>
-            <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-14">
-              Every number that matters.
-            </h2>
-          </Reveal>
-          <div className="space-y-14">
-            {model.specGroups.map((g, gi) => (
-              <Reveal key={g.group} delay={0.05}>
-                <div data-testid={`spec-group-${gi}`}>
-                  <h3 className="text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-5">
-                    {String(gi + 1).padStart(2, "0")} — {g.group}
-                  </h3>
-                  <div className="border-t border-white/10">
+            <Reveal delay={0.08}>
+              <div className="border border-white/10" data-testid="spec-sheet-table">
+                {model.specGroups.map((g, gi) => (
+                  <div key={g.group} data-testid={`spec-group-${gi}`}>
+                    <div className="bg-white/5 px-5 md:px-7 py-3.5 text-[10px] uppercase tracking-[0.3em] text-zinc-400 border-b border-white/10">
+                      {g.group}
+                    </div>
                     {g.items.map(([k, v]) => (
                       <div
                         key={k}
-                        className="grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-8 py-4 border-b border-white/10"
+                        className="grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-8 px-5 md:px-7 py-4 border-b border-white/10 last:border-b-0"
                       >
                         <span className="text-sm text-zinc-500">{k}</span>
-                        <span className="md:col-span-2 text-sm md:text-base text-white">{v}</span>
+                        <span className="md:col-span-2 text-sm text-white leading-relaxed">{v}</span>
                       </div>
                     ))}
                   </div>
-                </div>
-              </Reveal>
-            ))}
+                ))}
+              </div>
+            </Reveal>
+
+            <p className="mt-8 text-[10px] text-zinc-600 leading-relaxed max-w-2xl">
+              Product specification, functions and appearance may vary by configuration. All
+              specifications are subject to change without notice — check with our sales team for
+              the exact offer and detailed specifications for your region.
+            </p>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* OTHER MODELS */}
       <section className="border-t border-white/10" data-testid="other-models">
