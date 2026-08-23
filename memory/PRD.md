@@ -20,6 +20,18 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-24, update 21 — verified fixes + admin Reply)
+- TESTING AGENT VERIFIED (iteration_2, 8/8 pass): all iteration_1 light-mode failures fixed — LATI FAB icon (dark-on-white via higher-specificity chat-fab rule), chat panel stays dark in light mode (keep-dark bg/border/hover protection rules), search overlay popular-machine cards readable, theme toggle icon visible (utility bar now keep-dark), hero accordion text contrast (panels now keep-dark), LATI markdown bullets render as •
+- NEW: one-click Reply button in admin enquiry inbox — mailto link pre-filled with "Re: Your Latios enquiry" subject + body quoting the enquirer's message (truncated at 500 chars to stay within mailto URL limits)
+- Added data-testid to sub-category pills (subcat-pill-{slug}-{i})
+- test_credentials.md confirmed accurate (admin password Latios@2026 works)
+
+## Implemented (2026-08-23, update 20 — bug fixes + JWIPC content parity)
+- BUG FIX: mega menu + search overlay text was invisible in light mode (light overrides recolored white text on dark overlays) — overlays now marked keep-dark with extended zinc/bg coverage
+- BUG FIX: LATI chat button icon went black-on-black in light mode (bg-white override) — chat-fab exemption class keeps it white with dark icon in both themes
+- BUG FIX: LATI message area couldn't scroll (lenis hijacked wheel) — data-lenis-prevent added to chat messages + both overlays
+- JWIPC parity: sub-category pills inside expanded accordion panels; "What makes Latios unique" stat blocks with descriptions; mega menu quick links (Applications/News/About); footer link columns (Products/Company/Support) with GeM badge
+
 ## Implemented (2026-08-23, update 19)
 - Search overlay: popular-search chips + "Popular machines" thumbnail grid when empty; results now show product thumbnails
 - /admin locked behind team password (ADMIN_PASSWORD=Latios@2026 in backend/.env; POST /api/admin/login; X-Admin-Key header protects /api/chat-analytics + /api/enquiries; 401 without). Frontend gate with sessionStorage + sign out

@@ -362,3 +362,47 @@ html.light .nav-link::after {
 .scroll-row::-webkit-scrollbar {
     display: none;
 }
+
+/* ---------- keep-dark coverage + LATI icon fix ---------- */
+html.light .keep-dark .text-zinc-500 {
+    color: #a1a1aa !important;
+}
+html.light .keep-dark .text-zinc-600 {
+    color: #8a8a93 !important;
+}
+html.light .keep-dark .bg-white {
+    background-color: #ffffff !important;
+}
+html.light .keep-dark .bg-white.text-black {
+    color: #0a0a0a !important;
+}
+html.light .chat-fab,
+html.light .chat-fab.bg-white.text-black {
+    background-color: #ffffff !important;
+    color: #0a0a0a !important;
+    border: 1px solid rgba(0, 0, 0, 0.14);
+}
+html.light .chat-fab.hover\:bg-zinc-300:hover {
+    background-color: #d4d4d8 !important;
+}
+/* keep-dark: protect dark surfaces, borders and hover states from light inversion */
+html.light .keep-dark.bg-\[\#0A0A0A\],
+html.light .keep-dark .bg-\[\#0A0A0A\] {
+    background-color: #0a0a0a !important;
+}
+html.light .keep-dark.bg-\[\#050505\],
+html.light .keep-dark .bg-\[\#050505\] {
+    background-color: #050505 !important;
+}
+html.light .keep-dark .border-white\/10 {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+html.light .keep-dark .border-white\/15 {
+    border-color: rgba(255, 255, 255, 0.15) !important;
+}
+html.light .keep-dark .border-white\/20 {
+    border-color: rgba(255, 255, 255, 0.2) !important;
+}
+html.light .keep-dark .hover\:bg-zinc-300:hover {
+    background-color: #d4d4d8 !important;
+}

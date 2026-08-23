@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
-import { MessageSquare, Users, TrendingUp, Lock, LogOut, Inbox } from "lucide-react";
+import { MessageSquare, Users, TrendingUp, Lock, LogOut, Inbox, Reply } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
@@ -55,6 +55,13 @@ export default function AdminPage() {
   };
 
   const maxCount = data?.top_keywords?.[0]?.count || 1;
+
+  const replyHref = (q) =>
+    `mailto:${q.email}?subject=${encodeURIComponent(
+      "Re: Your Latios enquiry"
+    )}&body=${encodeURIComponent(
+      `Hi ${q.name.split(" ")[0]},\n\nThank you for reaching out to Latios.\n\nRegarding your message:\n"${q.message.length > 500 ? q.message.slice(0, 500) + "…" : q.message}"\n\n\nBest regards,\nLatios Sales Team\nsales@latios.in · +91 82381 40787`
+    )}`;
 
   if (!key)
     return (
@@ -190,6 +197,13 @@ export default function AdminPage() {
                           via LATI
                         </span>
                       )}
+                      <a
+                        href={replyHref(q)}
+                        data-testid={`inbox-reply-${q.id}`}
+                        className="mt-1 inline-flex items-center gap-1.5 border border-white/15 rounded-full px-3.5 py-1.5 text-[9px] uppercase tracking-[0.2em] text-zinc-300 hover:text-white hover:border-[#1a56e8] hover:bg-[#1a56e8]/10 transition-colors duration-300"
+                      >
+                        <Reply className="w-3 h-3" /> Reply
+                      </a>
                     </div>
                   </div>
                 ))}

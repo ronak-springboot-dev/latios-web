@@ -1,0 +1,38 @@
+{
+  "summary": "Frontend-only verification of 3 previously-untested bug fixes + JWIPC homepage/footer additions + LATI chat & enquiry regressions on https://tech-gallery-14.preview.emergentagent.com (desktop 1920x1080). RESULTS: Bug fix 1 (chat scroll) PASSED. Bug fix 2 (LATI icon in light mode) FAILED — FAB icon is white-on-white/invisible. Bug fix 3 (light-mode dark overlays) PARTIALLY FAILED — mega menu + search text OK, but 'Popular machines' cards inside the search overlay are white-bg with white text (invisible). NEW: the entire LATI chat panel is unreadable in light mode (panel background inverts to white while text stays white). New homepage sections (accordion + sub-category pills, 'What makes Latios unique' stat blocks, footer link columns + GeM badge) all present. LATI Gemini streaming and footer enquiry form both work.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "ChatWidget FAB (light mode)", "issue": "BUG FIX 2 NOT FIXED. In light mode computed styles are backgroundColor rgb(255,255,255) AND color/icon stroke rgb(255,255,255) -> white icon on white circle, icon invisible (only becomes visible on hover because html.light .hover\\:bg-zinc-300:hover turns bg #27272a). Repro: load home, click [data-testid=theme-toggle], move mouse away, look at bottom-right FAB. Root cause: specificity — 'html.light .bg-white.text-black { color:#ffffff !important }' (3 classes) in index.css:251 beats 'html.light .chat-fab { color:#0a0a0a !important }' (2 classes) at index.css:379. Fix: raise specificity, e.g. 'html.light .chat-fab, html.light .chat-fab.text-black, html.light .chat-fab svg { color:#0a0a0a !important; }'", "selector": "[data-testid=\"chat-toggle\"]", "priority": "HIGH"},
+      {"component": "ChatWidget panel (light mode)", "issue": "NEW/REGRESSION: in light mode the panel background inverts to white (computed panelBg rgb(255,255,255) because html.light .bg-\\[\\#0A0A0A\\] inverts) while .keep-dark rules keep all text light (msgColor rgb(228,228,231), faqColor rgb(212,212,216), input color rgb(255,255,255), msg bubble bg rgba(255,255,255,0.05)). Result: LATI header, welcome message, FAQ chips and typed input text are near-invisible. Repro: switch to light mode, open chat.", "selector": "[data-testid=\"chat-panel\"]", "priority": "HIGH"},
+      {"component": "Header search overlay - popular machine cards (light mode)", "issue": "BUG FIX 3 partially broken: card computed backgroundColor rgb(255,255,255) with label color rgb(255,255,255) -> product names invisible on the light card sitting on the dark overlay. Repro: light mode -> click search-toggle (empty query) -> 'Popular machines' grid. Root cause: .keep-dark/overlay handling overrides text colours but bg-[#0A0A0A] is still inverted to white.", "selector": "[data-testid^=\"popular-model-\"]", "priority": "HIGH"},
+      {"component": "ThemeToggle button (light mode)", "issue": "Moon/Sun icon appears blank in light mode (button uses text-white which is inverted/washed out against the light utility bar) — see top-right of light-mode screenshots.", "selector": "[data-testid=\"theme-toggle\"]", "priority": "MEDIUM"},
+      {"component": "ChatWidget message renderer", "issue": "Markdown bullet lists from Gemini are rendered literally: replies show raw '*' asterisks before each model name instead of list bullets (renderText only handles links and **bold**).", "selector": "[data-testid^=\"chat-msg-\"]", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "Home hero accordion (light mode)", "issues": ["Panel overlay stays dark-on-photo but text-white is inverted to dark, so 'Laptops' title, tagline and sub-category pills have poor contrast over the light product photo (hero is not marked .keep-dark)"]},
+      {"screen": "Search overlay (light mode)", "issues": ["Light white cards on a near-black overlay looks visually inconsistent even after the contrast bug is fixed"]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Fix light-mode LATI FAB icon colour with a higher-specificity rule (chat-fab.text-black / chat-fab svg).",
+    "Keep the whole chat panel dark in light mode: add 'html.light .keep-dark, html.light .keep-dark .bg-\\[\\#0A0A0A\\], html.light .keep-dark .bg-\\[\\#050505\\] { background-color:#0A0A0A !important }' (or exclude keep-dark subtrees from the light inversion rules).",
+    "Fix white-on-white 'Popular machines' cards in the light-mode search overlay (same keep-dark background inversion issue).",
+    "Make ThemeToggle icon visible in light mode.",
+    "Optional: render markdown bullet lists in LATI replies; review light-mode hero text contrast."
+  ],
+  "critical_code_review_comments": [
+    "index.css light-theme strategy is a stack of !important class-inversion overrides; the .keep-dark escape hatch only covers text colours (text-white/zinc-300/400/500/600) and not backgrounds, so every dark-surface component (chat panel, overlay cards) breaks in light mode. Prefer CSS variables/tokens or 'html.light :not(.keep-dark *)' scoping instead of per-utility overrides.",
+    "Sub-category pills in Home.jsx (line ~150) and footer column headings have no data-testid, making them hard to assert on."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not tested (frontend-only request); POST /api/chat and POST /api/enquiries both returned 200 during UI flows", "frontend": "4/6 scenarios pass (bug fix 1 pass, bug fix 2 fail, bug fix 3 partial, new sections pass, LATI regression pass, enquiry regression pass)"},
+  "seed_data_creation": "One enquiry submitted via footer form: name 'Test Verify', email 'testverify@example.com', company 'QA Co' (POST /api/enquiries -> 200). Also 2 LATI chat messages persisted for an anonymous session id.",
+  "should_call_test_agent_after_fix": true,
+  "should_main_agent_self_test": false,
+  "test_credentials": "/app/memory/test_credentials.md not read — no auth flows in scope (public site); admin password provided but not exercised.",
+  "context_for_next_testing_agent": "Verified: chat message container with data-lenis-prevent scrolls internally (scrollHeight 1662 / clientHeight 497, wheel over panel moved scrollTop 0->300 with window.scrollY unchanged) and page scroll still works with chat open. LATI Gemini streaming works (1098-char reply for 'Tell me about your laptops'). Footer enquiry form -> 200 + success toast + form reset. Homepage: 8 accordion panels, expanded panel shows 3 sub-category pills, 4 stat blocks with descriptions under 'What makes Latios unique', footer has PRODUCTS/COMPANY/SUPPORT columns (uppercase via CSS — use case-insensitive text assertions) and 'GeM Registered OEM' badge. Remaining failures are all light-mode CSS inversion issues (FAB icon, chat panel, search overlay popular-model cards). Re-test light mode with computed-style assertions (getComputedStyle bg vs color) after fixes.",
+  "rca_of_the_issue": "All light-mode failures share one root cause: index.css applies global !important inversions to utility classes (.bg-white -> #0a0a0a, .bg-[#0A0A0A] -> light, .bg-white.text-black -> white text) under html.light, while the .keep-dark opt-out only re-forces text colours. Components that must stay dark (chat panel, overlay cards) get inverted backgrounds with un-inverted light text, and the .chat-fab colour override loses the specificity battle against html.light .bg-white.text-black."
+}

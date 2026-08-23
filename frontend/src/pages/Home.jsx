@@ -33,10 +33,10 @@ const MANIFESTO = [
 ];
 
 const STATS = [
-  ["2023", "Founded in India"],
-  ["15+", "Product families"],
-  ["12+", "Certifications"],
-  ["GeM", "Registered OEM"],
+  ["2023", "Founded in India", "Designed, manufactured and supported end-to-end at our Ahmedabad facility."],
+  ["15+", "Product families", "Laptops, desktops, workstations, audio-visual systems and displays."],
+  ["12+", "Certifications", "ISO 9001, 14001, 45001, 27001, BIS, RoHS, CE and more."],
+  ["GeM", "Registered OEM", "Listed for direct government and public-sector procurement."],
 ];
 
 const Carousel = ({ testId, children }) => {
@@ -59,6 +59,13 @@ const Carousel = ({ testId, children }) => {
       </div>
     </div>
   );
+};
+
+const SUBCATS = {
+  laptops: ["PRO AI 14", "Rugged 14", "Archer Gaming"],
+  towers: ["Business Desktops", "PROMAX Workstations", "Mini PC"],
+  audio: ["Speakerphones", "Video Soundbars", "HPS Systems"],
+  video: ["Cameras", "Monitors", "Large Format", "Interactive", "Active LED"],
 };
 
 const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -116,7 +123,7 @@ export default function Home() {
                   to={`/${cat.slug}`}
                   onMouseEnter={() => setActive(i)}
                   data-testid={`hero-panel-${cat.slug}`}
-                  className="accordion-panel relative overflow-hidden border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/40"
+                  className="keep-dark accordion-panel relative overflow-hidden border border-white/10 focus:outline-none focus:ring-2 focus:ring-white/40"
                   style={{ flexGrow: i === active ? 3.4 : 1, flexBasis: 0 }}
                 >
                   <img
@@ -138,6 +145,17 @@ export default function Home() {
                         {cat.name}
                       </h3>
                       <p className="mt-2 text-sm text-zinc-300 max-w-sm">{cat.tagline}</p>
+                      <span className="mt-4 flex flex-wrap gap-2">
+                        {(SUBCATS[cat.slug] || []).map((s, si) => (
+                          <span
+                            key={s}
+                            data-testid={`subcat-pill-${cat.slug}-${si}`}
+                            className="text-[10px] uppercase tracking-[0.15em] border border-white/30 rounded-full px-3 py-1.5 text-white/90 bg-black/25"
+                          >
+                            {s}
+                          </span>
+                        ))}
+                      </span>
                       <span className="mt-5 inline-flex items-center gap-2 btn-blue px-5 py-2.5 text-[10px] uppercase tracking-[0.25em]">
                         Explore
                         <ArrowUpRight className="w-3.5 h-3.5" />
@@ -160,7 +178,7 @@ export default function Home() {
                   key={cat.slug}
                   to={`/${cat.slug}`}
                   data-testid={`hero-panel-mobile-${cat.slug}`}
-                  className="relative block overflow-hidden border border-white/10 aspect-[16/9]"
+                  className="keep-dark relative block overflow-hidden border border-white/10 aspect-[16/9]"
                 >
                   <img src={cat.hero} alt={cat.name} className="absolute inset-0 w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-black/40" />
@@ -177,8 +195,18 @@ export default function Home() {
 
       {/* STATS STRIP */}
       <section className="border-y border-white/10" data-testid="stats-strip">
-        <div className="max-w-[1600px] mx-auto grid grid-cols-2 md:grid-cols-4">
-          {STATS.map(([value, label], i) => (
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12 pt-20 md:pt-24">
+          <Reveal>
+            <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">
+              What makes Latios unique
+            </p>
+            <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-14 max-w-2xl leading-[1.05]">
+              Your trusted partner in enterprise hardware.
+            </h2>
+          </Reveal>
+        </div>
+        <div className="max-w-[1600px] mx-auto grid grid-cols-2 md:grid-cols-4 pb-16 md:pb-20">
+          {STATS.map(([value, label, desc], i) => (
             <Reveal key={label} delay={i * 0.08}>
               <div
                 className={`p-10 md:p-14 ${i < 3 ? "md:border-r" : ""} border-white/10 ${
@@ -189,7 +217,8 @@ export default function Home() {
                 <div className="font-display text-4xl md:text-5xl font-black tracking-tighter text-white">
                   {value}
                 </div>
-                <div className="mt-3 text-xs uppercase tracking-[0.25em] text-zinc-500">{label}</div>
+                <div className="mt-3 text-xs uppercase tracking-[0.25em] text-[#6f93f2]">{label}</div>
+                <p className="mt-3 text-xs text-zinc-500 leading-relaxed">{desc}</p>
               </div>
             </Reveal>
           ))}

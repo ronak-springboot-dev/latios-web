@@ -123,6 +123,70 @@ export const Footer = () => {
         </form>
       </div>
 
+      <div className="border-t border-white/10" data-testid="footer-links">
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-14 grid grid-cols-2 md:grid-cols-4 gap-10">
+          <div>
+            <span className="logo-chip bg-white rounded-md px-3 py-1.5 inline-flex items-center">
+              <img src="/images/latios-logo.png" alt="Latios" className="h-6 w-auto" />
+            </span>
+            <p className="mt-5 text-xs text-zinc-500 leading-relaxed max-w-[220px]">
+              Proudly Indian. Boldly Innovative. Designed and manufactured in Ahmedabad, India.
+            </p>
+            <span className="mt-4 inline-block text-[9px] uppercase tracking-[0.25em] border border-white/15 rounded-full px-3 py-1.5 text-zinc-500">
+              GeM Registered OEM
+            </span>
+          </div>
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-5">Products</p>
+            <div className="flex flex-col gap-3">
+              {CATEGORIES.map((c) => (
+                <Link key={c.slug} to={`/${c.slug}`} className="text-sm text-zinc-400 hover:text-white transition-colors duration-300">
+                  {c.name}
+                </Link>
+              ))}
+              <Link to="/compare" className="text-sm text-zinc-400 hover:text-white transition-colors duration-300">
+                Compare Machines
+              </Link>
+            </div>
+          </div>
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-5">Company</p>
+            <div className="flex flex-col gap-3">
+              {[
+                ["About Latios", "about-section"],
+                ["Applications", "applications-section"],
+                ["News & Updates", "news-section"],
+              ].map(([label, id]) => (
+                <button
+                  key={id}
+                  onClick={() => {
+                    const el = document.getElementById(id);
+                    if (el) el.scrollIntoView({ behavior: "smooth" });
+                    else window.location.href = "/";
+                  }}
+                  data-testid={`footer-${id}`}
+                  className="text-left text-sm text-zinc-400 hover:text-white transition-colors duration-300"
+                >
+                  {label}
+                </button>
+              ))}
+              <Link to="/admin" className="text-sm text-zinc-400 hover:text-white transition-colors duration-300">
+                Team Login
+              </Link>
+            </div>
+          </div>
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-5">Support</p>
+            <div className="flex flex-col gap-3 text-sm text-zinc-400">
+              <a href="mailto:sales@latios.in" className="hover:text-white transition-colors duration-300">sales@latios.in</a>
+              <a href="tel:+918238140787" className="hover:text-white transition-colors duration-300">+91 82381 40787</a>
+              <a href="https://www.latios.in" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors duration-300">www.latios.in</a>
+              <span className="text-zinc-500 text-xs leading-relaxed">208, Palak Prime, ISCON–Ambali Road, Ahmedabad 380058</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="border-t border-white/10">
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-8 flex flex-col md:flex-row items-start md:items-center justify-between gap-6">
           <span className="logo-chip bg-white rounded-md px-3 py-1.5 inline-flex items-center">

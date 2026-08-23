@@ -20,6 +20,7 @@ const WELCOME = {
 const renderText = (t) =>
   t
     .replace(/\*\*(\[[^\]]+\]\([^)]+\))\*\*/g, "$1")
+    .replace(/(^|\n)\s*[*-]\s+/g, "$1• ")
     .split(/(\[[^\]]+\]\([^)]+\))/g).map((part, i) => {
     const link = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
     if (link)
@@ -175,7 +176,7 @@ export const ChatWidget = () => {
         transition={{ delay: 1.8, duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
         whileHover={{ scale: 1.08 }}
         whileTap={{ scale: 0.94 }}
-        className="fixed bottom-6 right-6 z-[80] w-14 h-14 rounded-full bg-white text-black flex items-center justify-center shadow-2xl shadow-black/50 hover:bg-zinc-300 transition-colors duration-300 focus:ring-2 focus:ring-white/50 focus:outline-none"
+        className="chat-fab fixed bottom-6 right-6 z-[80] w-14 h-14 rounded-full bg-white text-black flex items-center justify-center shadow-2xl shadow-black/50 hover:bg-zinc-300 transition-colors duration-300 focus:ring-2 focus:ring-white/50 focus:outline-none"
       >
         {open ? <X className="w-5 h-5" /> : <MessageCircle className="w-5 h-5" />}
       </motion.button>
@@ -187,11 +188,11 @@ export const ChatWidget = () => {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 28, scale: 0.96 }}
             transition={{ duration: 0.35, ease: [0.16, 1, 0.3, 1] }}
-            className="fixed bottom-24 right-6 z-[80] w-[92vw] max-w-sm rounded-2xl border border-white/15 bg-[#0A0A0A] shadow-2xl shadow-black/60 overflow-hidden flex flex-col"
+            className="keep-dark fixed bottom-24 right-6 z-[80] w-[92vw] max-w-sm rounded-2xl border border-white/15 bg-[#0A0A0A] shadow-2xl shadow-black/60 overflow-hidden flex flex-col"
             data-testid="chat-panel"
           >
             <div className="p-4 border-b border-white/10 flex items-center gap-3 shrink-0">
-              <span className="w-10 h-10 rounded-full bg-white flex items-center justify-center shrink-0">
+              <span className="chat-fab w-10 h-10 rounded-full bg-white flex items-center justify-center shrink-0">
                 <Bot className="w-5 h-5 text-black" />
               </span>
               <div>
@@ -208,6 +209,7 @@ export const ChatWidget = () => {
 
             <div
               ref={scrollRef}
+              data-lenis-prevent
               className="p-4 space-y-3 overflow-y-auto max-h-[46vh] min-h-[180px]"
               data-testid="chat-messages"
             >

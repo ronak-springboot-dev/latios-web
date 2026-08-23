@@ -58,7 +58,7 @@ export const Header = () => {
           hidden && !menuOpen && !searchOpen ? "-translate-y-full" : "translate-y-0"
         }`}
       >
-        <div className="hidden md:flex items-center justify-between bg-[#0b1226] h-9 px-6 md:px-12 text-[11px] text-zinc-400">
+        <div className="keep-dark hidden md:flex items-center justify-between bg-[#0b1226] h-9 px-6 md:px-12 text-[11px] text-zinc-400">
           <div className="flex items-center gap-6">
             <a
               href="mailto:sales@latios.in"
@@ -155,7 +155,8 @@ export const Header = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: EASE }}
-            className="fixed inset-0 z-40 bg-[#050505]/[0.98] backdrop-blur-xl pt-28 md:pt-40 overflow-y-auto"
+            className="keep-dark fixed inset-0 z-40 bg-[#050505]/[0.98] backdrop-blur-xl pt-28 md:pt-40 overflow-y-auto"
+            data-lenis-prevent
             data-testid="mega-menu"
           >
             <div className="max-w-[1600px] mx-auto px-6 md:px-12 pb-16 grid grid-cols-1 lg:grid-cols-2 gap-14">
@@ -209,6 +210,28 @@ export const Header = () => {
                   </a>
                   <span className="block text-zinc-500">Ahmedabad, Gujarat, India</span>
                 </div>
+                <div className="mt-8 flex flex-wrap gap-2.5" data-testid="mega-quick-links">
+                  {[
+                    ["Applications", "applications-section"],
+                    ["News & Updates", "news-section"],
+                    ["About Latios", "about-section"],
+                  ].map(([label, id]) => (
+                    <button
+                      key={id}
+                      onClick={() => {
+                        setMenuOpen(false);
+                        setTimeout(
+                          () => document.getElementById(id)?.scrollIntoView({ behavior: "smooth" }),
+                          350
+                        );
+                      }}
+                      data-testid={`mega-quick-${id}`}
+                      className="text-[10px] uppercase tracking-[0.2em] border border-white/15 rounded-full px-4 py-2 text-zinc-400 hover:border-[#1a56e8] hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
                 <div className="mt-10 hidden md:block">
                   <ThemeToggle />
                 </div>
@@ -225,7 +248,8 @@ export const Header = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.35, ease: EASE }}
-            className="fixed inset-0 z-40 bg-[#050505]/[0.98] backdrop-blur-xl pt-28 md:pt-40 overflow-y-auto"
+            className="keep-dark fixed inset-0 z-40 bg-[#050505]/[0.98] backdrop-blur-xl pt-28 md:pt-40 overflow-y-auto"
+            data-lenis-prevent
             data-testid="search-overlay"
           >
             <div className="max-w-[900px] mx-auto px-6 md:px-12 pb-16">
