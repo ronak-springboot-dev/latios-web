@@ -103,7 +103,7 @@ const PROMAX_FEATURES = [
   },
 ];
 
-const MT_HERO = "/images/ops.jpg";
+const MT_HERO = "/images/banner/banner-board-1.jpg";
 const SFF_HERO = "/images/dp80kv.jpg";
 const MFF_HERO = "/images/dp10kv.jpg";
 const PROMAX_HERO = "/images/rtx.jpg";

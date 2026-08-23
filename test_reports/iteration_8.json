@@ -1,0 +1,35 @@
+{
+  "summary": "Frontend-only testing of the new Minisforum-style showcase PDP on /towers/mt-amd-am4 (desktop 1920, mobile 390, light+dark themes) plus regression check that /towers/promax-t4-plus keeps the old parallax hero. 20/21 functional checks passed. Verified: showcase-hero + breadcrumb + stage + 5 thumbs (4 images + 360), thumb click swaps stage image, 360 thumb renders draggable ModelTurntable (drag advances frame - confirmed via active dot), buy box (title/3 chips/intro/3 stats/CTAs/assurance), Enquire scrolls to footer enquiry form (scrollY 0 -> 5674, #contact + Cloudflare Turnstile form visible), Datasheet href=/datasheets/mt-amd-am4.pdf returns HTTP 200 application/pdf (156KB), Full-specification CTA + spec teaser button + model-tab-specification all open the 4-column MSI-style family sheet (4 spec-col-* columns), model-tab-overview restores the showcase, model-hero-image absent on showcase page and present exactly once on promax-t4-plus (which still has turntable-section + model-features, i.e. unchanged), banner image loads (naturalWidth 3198) with headline, 8 feature cards with 8 lucide icons, 4 audience tabs each swapping heading + 3 bullets, showcase-bleed-0/1 images load (naturalWidth 1280 / 630). Mobile 390x844: no document-level horizontal overflow in overview or specification tab, thumbs strip internally scrollable (scrollWidth 448 > clientWidth 342), audience tabs wrap to 2 rows, spec table scrolls inside its container. ONE REAL DEFECT: in light mode the full-bleed banner overlay headline renders near-black (rgb(10,10,10)) over the photo instead of white - unreadable.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {
+    "ui_bugs": [
+      {"component": "ModelShowcase full-bleed banner", "issue": "LIGHT MODE: banner headline color computes to rgb(10,10,10) (near-black) over the dark photo => illegible. Root cause: the h2/p carry BOTH `keep-dark` and `text-white`/`text-zinc-200` on the SAME element, but index.css only defines descendant rules (`html.light .keep-dark .text-white`), so the generic `html.light .text-white { color:#0a0a0a }` wins. Fix: either wrap the overlay content in a `keep-dark` parent div, or add self-selectors `html.light .keep-dark.text-white, html.light .keep-dark.text-zinc-200 { color:#fff !important }`.", "selector": "[data-testid=\"showcase-banner-headline\"]", "priority": "HIGH"},
+      {"component": "ModelShowcase banner kicker", "issue": "Class `keep-dark-text` used on the 'Engineering the future' kicker is not defined anywhere in index.css/App.css (dead class). Currently it happens to look right only because no light-mode rule targets text-zinc-200 - fragile. Use the same keep-dark fix.", "selector": "[data-testid=\"showcase-banner\"] p.keep-dark-text", "priority": "LOW"}
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "/towers/mt-amd-am4 (light mode)", "issues": ["Banner overlay headline dark-on-photo (see ui_bugs, HIGH)", "PDP hero title, feature grid (white cards, #0a0a0a headings, #52525b body) and audience panel all have good contrast - PASS"]},
+      {"screen": "/towers/mt-amd-am4 tab switching", "issues": ["Minor UX: switching to the Specification tab keeps the previous scroll position (scrollY ~1613), so the user lands mid-table instead of at the top of the spec sheet. Consider scrolling the tab bar / spec section into view on tab change."]},
+      {"screen": "Gallery data", "issues": ["Minor/cosmetic: MT AMD AM4 gallery assets are named /images/dp180-1..4.webp (legacy DP180 naming) although the rendered images are the correct tower. Consider renaming for maintainability."]}
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "HIGH: Fix light-mode banner overlay text on ModelShowcase - keep-dark must apply when it is on the same element as text-white (wrap overlay in a keep-dark container or add self-selector CSS rules).",
+    "LOW: Remove/define the unused `keep-dark-text` class in ModelShowcase.jsx line 161.",
+    "LOW (optional): Scroll to top of spec sheet when switching to the Specification tab."
+  ],
+  "critical_code_review_comments": [
+    "index.css keep-dark rules are all descendant-only (`.keep-dark .text-white`); every consumer must put keep-dark on an ancestor. Add matching self-element selectors (`.keep-dark.text-white`) to make the utility safe to use inline - this exact mismatch caused the banner bug.",
+    "ModelShowcase.jsx declares `const stageCount = model.gallery.length + 1;` but never uses it (dead variable).",
+    "ModelShowcase feature cards use data-testid `showcase-feature-N` while the wrapper section uses `showcase-feature-grid`; a `[data-testid^=showcase-feature-]` query matches 9 nodes. Consider renaming the section testid (e.g. showcase-features) to keep prefix queries clean."
+  ],
+  "updated_files": [],
+  "success_rate": {"backend": "not tested (frontend-only request)", "frontend": "95% (20/21 functional checks; 1 light-mode contrast defect)"},
+  "seed_data_creation": "none",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "test_credentials": "not required (no auth on this flow)",
+  "context_for_next_testing_agent": "Showcase PDP (/towers/mt-amd-am4) is functionally complete and verified on desktop + mobile: gallery/thumbs/360 turntable, all 3 CTAs, tab bar both directions, 8 feature cards, 4 audience tabs, 2 full-bleed sections, spec teaser. Only open item is the light-mode banner headline color. Playwright notes: turntable stacks ALL frames as absolutely-positioned imgs with opacity toggling - do NOT assert on the stage img src to detect frame change; use the active `turntable-dot-N` width/class instead. `[data-testid^=showcase-feature-]` also matches showcase-feature-grid (9 not 8). Lenis smooth scroll: use page.evaluate(window.scrollTo(0,0)) + ~600ms before clicking header/hero elements; networkidle never settles - use wait_for_selector. Avoid backslashes inside f-strings in the automation script (tool-level syntax error).",
+  "rca_of_the_issue": "Light-mode banner text: ModelShowcase.jsx lines 161-168 put `keep-dark` on the same element as the color utility (`keep-dark ... text-white`). index.css (lines ~320-345) defines only `html.light .keep-dark .text-white` (descendant combinator), so in light theme the earlier generic override `html.light .text-white { color:#0a0a0a !important }` applies and the headline renders near-black over the dark hero photo. Reproduce: open /towers/mt-amd-am4, click [data-testid=theme-toggle], scroll to [data-testid=showcase-banner] - computed color is rgb(10,10,10)."
+}

@@ -403,6 +403,17 @@ html.light .chat-fab.bg-white.text-black {
 html.light .chat-fab.hover\:bg-zinc-300:hover {
     background-color: #d4d4d8 !important;
 }
+/* keep-dark self-selectors: allow keep-dark on the same element as the color utility */
+html.light .keep-dark.text-white {
+    color: #ffffff !important;
+    text-shadow: 0 1px 16px rgba(0, 0, 0, 0.35);
+}
+html.light .keep-dark.text-zinc-200 {
+    color: #e4e4e7 !important;
+}
+html.light .keep-dark.text-zinc-300 {
+    color: #e4e4e7 !important;
+}
 /* keep-dark: protect dark surfaces, borders and hover states from light inversion */
 html.light .keep-dark.bg-\[\#0A0A0A\],
 html.light .keep-dark .bg-\[\#0A0A0A\] {

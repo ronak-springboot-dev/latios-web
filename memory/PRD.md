@@ -20,6 +20,12 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 33 — Minisforum-style product showcase for mt-amd-am4)
+- /towers/mt-amd-am4 rebuilt as a Minisforum MS-02-Ultra-style PDP (this model only, per user): PDP hero with breadcrumb + image gallery (4 thumbs + 360° turntable thumb with drag) + buy box (title, chips, intro, 3 stats, Enquire/Datasheet/Full-specification CTAs, Made-in-India assurance line) → Overview/Specification tabs → full-bleed banner with headline → 8-card feature icon grid → "One platform. Every team." audience tab switcher (Enterprise IT / Education / Government / Front Office & SMB, animated panel swap) → 2 full-bleed split story sections → spec teaser → existing range strip + CTA
+- New files: /data/showcase.js (SHOWCASE content map — add per-model entries to roll out), /components/ModelShowcase.jsx; ModelPage branches on SHOWCASE[slug]
+- Testing agent iteration_8: 20/21 pass; fixed the light-mode banner headline (keep-dark self-selector rules added to index.css), removed dead class/var, renamed grid testid, tab switch now scrolls to the tab bar
+- Also swapped the MSI-branded ops.jpg hero for logo-free imagery: MT_HERO now banner-board-1.jpg (generic PCB macro), showcase banner uses banner-amd-1.jpg (AMD Ryzen macro)
+
 ## Implemented (2026-08-23, update 32 — random rich banner imagery)
 - Homepage banner carousel now uses a pool of 9 rich high-res chip/GPU images (AMD Ryzen macros, Intel LGA socket, NVIDIA GTX/RTX/GeForce shots, PCB/board macros) sourced from Unsplash, vetted for no competitor logos (MSI/Alienware/HP/Apple shots rejected), hosted locally at /public/images/banner/
 - Images are randomly shuffled per page load (Fisher-Yates, no repeats across the 4 slides) — verified: reload produced a different assignment
