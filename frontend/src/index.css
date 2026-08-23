@@ -236,6 +236,21 @@ html.light .text-zinc-700 {
 html.light .text-\[\#6f93f2\] {
     color: #1240b8 !important;
 }
+/* theme-aware full-screen overlays (mega menu, search) */
+.overlay-panel {
+    background-color: rgba(5, 5, 5, 0.98);
+}
+html.light .overlay-panel {
+    background-color: rgba(244, 244, 242, 0.98);
+}
+/* theme-aware top utility bar */
+.utility-bar {
+    background-color: #0b1226;
+}
+html.light .utility-bar {
+    background-color: #ffffff;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+}
 html.light .border-white\/10 {
     border-color: rgba(10, 10, 10, 0.1) !important;
 }

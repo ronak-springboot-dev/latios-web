@@ -88,7 +88,7 @@ export const Header = () => {
           hidden && !menuOpen && !searchOpen ? "-translate-y-full" : "translate-y-0"
         }`}
       >
-        <div className="keep-dark hidden md:flex items-center justify-between bg-[#0b1226] h-9 px-6 md:px-12 text-[11px] text-zinc-400">
+        <div className="utility-bar hidden md:flex items-center justify-between h-9 px-6 md:px-12 text-[11px] text-zinc-400">
           <div className="flex items-center gap-6">
             <a
               href="mailto:sales@latios.in"
@@ -226,7 +226,7 @@ export const Header = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.4, ease: EASE }}
-            className="keep-dark fixed inset-0 z-40 bg-[#050505]/[0.98] backdrop-blur-xl pt-24 md:pt-32 overflow-y-auto"
+            className="overlay-panel fixed inset-0 z-40 backdrop-blur-xl pt-24 md:pt-32 overflow-y-auto"
             data-lenis-prevent
             data-testid="mega-menu"
           >
@@ -386,7 +386,7 @@ export const Header = () => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
             transition={{ duration: 0.35, ease: EASE }}
-            className="keep-dark fixed inset-0 z-40 bg-[#050505]/[0.98] backdrop-blur-xl pt-28 md:pt-40 overflow-y-auto"
+            className="overlay-panel fixed inset-0 z-40 backdrop-blur-xl pt-28 md:pt-40 overflow-y-auto"
             data-lenis-prevent
             data-testid="search-overlay"
           >

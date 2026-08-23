@@ -20,6 +20,11 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 31 — light-theme overlay fix)
+- USER BUG FIXED: mega menu + search overlay no longer stay black in light theme — new theme-aware .overlay-panel class (dark rgba(5,5,5,0.98) / light rgba(244,244,242,0.98)); keep-dark pin removed so all inner text inverts. Testing agent iteration_7: 100% pass (computed colors asserted in both themes, navigation regression green)
+- Top utility bar also made theme-aware (.utility-bar: navy in dark, white + hairline border in light) for a fully clean JWIPC-style light theme
+- LATI chat panel intentionally stays dark in both themes (design decision from earlier fix)
+
 ## Implemented (2026-08-23, update 30 — JWIPC hero carousel homepage)
 - Homepage hero rebuilt as JWIPC-style full-width banner carousel: one auto-rotating slide per category (6s crossfade + scale), left-aligned headline + subline + "LEARN MORE" pill → category page, bottom-left dash indicators (clickable), per-category Latios headlines ("Power That Travels.", "Efficiency, Reliability, and Quality.", "Every Voice, Heard Clearly.", "Clarity at Any Scale.")
 - The old centered header (with the overlapping-text artifact the user flagged) is gone; the accordion survives as an "Our Products" section right below the hero
