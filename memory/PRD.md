@@ -20,6 +20,11 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 19)
+- Search overlay: popular-search chips + "Popular machines" thumbnail grid when empty; results now show product thumbnails
+- /admin locked behind team password (ADMIN_PASSWORD=Latios@2026 in backend/.env; POST /api/admin/login; X-Admin-Key header protects /api/chat-analytics + /api/enquiries; 401 without). Frontend gate with sessionStorage + sign out
+- /admin is now "Sales command center": enquiry inbox (name/email/company/message/date, "via LATI" badge on chatbot leads) + analytics stats, top-topic bars, recent questions
+
 ## Implemented (2026-08-23, update 18)
 - Email alerts: every enquiry + LATI lead triggers a transactional email to sales@latios.in via Emergent-managed Resend (emailer.py with guardrail gate; from_name "Latios", reply-to sales@latios.in; verified — email id 793e695a logged on test send)
 - Chat analytics: GET /api/chat-analytics (totals, sessions, top keywords, recent questions) + /admin team page "What buyers ask LATI" with stat cards, animated topic bars, recent questions list (no auth — public URL)

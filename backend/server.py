@@ -1,4 +1,4 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, Request, HTTPException
 from dotenv import load_dotenv
 from starlette.middleware.cors import CORSMiddleware
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -9,6 +9,7 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 import uuid
 import re
+import hmac
 from datetime import datetime, timezone
 from emailer import send_enquiry_alert
 
@@ -94,8 +95,26 @@ async def create_enquiry(input: EnquiryCreate):
         logger.error(f"Enquiry email alert failed: {e}")
     return enquiry
 
+def require_admin(request: Request):
+    key = request.headers.get("X-Admin-Key", "")
+    if not hmac.compare_digest(key, os.environ["ADMIN_PASSWORD"]):
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+
+class AdminLogin(BaseModel):
+    password: str
+
+
+@api_router.post("/admin/login")
+async def admin_login(input: AdminLogin):
+    if not hmac.compare_digest(input.password, os.environ["ADMIN_PASSWORD"]):
+        raise HTTPException(status_code=401, detail="Wrong password")
+    return {"ok": True}
+
+
 @api_router.get("/enquiries", response_model=List[Enquiry])
-async def list_enquiries():
+async def list_enquiries(request: Request):
+    require_admin(request)
     items = await db.enquiries.find({}, {"_id": 0}).to_list(1000)
     for item in items:
         if isinstance(item['created_at'], str):
@@ -162,7 +181,8 @@ async def chat(req: ChatRequest):
     )
 
 @api_router.get("/chat-analytics")
-async def chat_analytics():
+async def chat_analytics(request: Request):
+    require_admin(request)
     from collections import Counter
 
     msgs = await db.chat_messages.find({"role": "user"}, {"_id": 0}).sort("ts", -1).to_list(500)

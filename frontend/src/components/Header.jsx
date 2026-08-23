@@ -15,6 +15,12 @@ const LINKS = [
 
 const EASE = [0.16, 1, 0.3, 1];
 
+const POPULAR = ["Archer", "RTX 5080", "2TB ECC", "Speakerphone", "PTZ", "Interactive Panel"];
+
+const POPULAR_MODELS = ["archer-ltg540z", "promax-t4-plus", "sp50-speakerphone", "pro-ifp"]
+  .map((s) => ALL_MODELS.find((m) => m.slug === s))
+  .filter(Boolean);
+
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -242,6 +248,10 @@ export const Header = () => {
                     data-testid={`search-result-${m.slug}`}
                     className="w-full flex items-center justify-between gap-6 py-4 border-b border-white/10 text-left group focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
                   >
+                    <div className="flex items-center gap-4 min-w-0">
+                      <span className="w-16 h-11 rounded bg-[#f2f2f0] flex items-center justify-center shrink-0 overflow-hidden">
+                        <img src={m.image} alt="" loading="lazy" className="max-h-[80%] w-auto object-contain" />
+                      </span>
                     <div>
                       <div className="font-display text-lg font-bold tracking-tight text-white group-hover:text-[#6f93f2] transition-colors duration-300">
                         {m.name}
@@ -249,6 +259,7 @@ export const Header = () => {
                       <div className="text-[10px] uppercase tracking-[0.25em] text-zinc-500 mt-1">
                         {m.tag}
                       </div>
+                    </div>
                     </div>
                     <ArrowUpRight className="w-4 h-4 text-zinc-600 group-hover:text-[#6f93f2] shrink-0 transition-colors duration-300" />
                   </button>
@@ -259,9 +270,46 @@ export const Header = () => {
                   </p>
                 )}
                 {!query.trim() && (
-                  <p className="py-10 text-zinc-600 text-sm">
-                    Try "Archer", "PTZ", "2TB", "speakerphone"…
-                  </p>
+                  <div className="pt-8">
+                    <div className="flex flex-wrap gap-2" data-testid="popular-searches">
+                      {POPULAR.map((p) => (
+                        <button
+                          key={p}
+                          onClick={() => setQuery(p)}
+                          data-testid={`popular-${p.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+                          className="text-xs text-zinc-400 border border-white/15 rounded-full px-4 py-2 hover:border-[#1a56e8] hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+                        >
+                          {p}
+                        </button>
+                      ))}
+                    </div>
+                    <p className="mt-10 mb-5 text-[10px] uppercase tracking-[0.3em] text-zinc-500">
+                      Popular machines
+                    </p>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4" data-testid="popular-machines">
+                      {POPULAR_MODELS.map((m) => (
+                        <button
+                          key={m.slug}
+                          onClick={() => {
+                            setSearchOpen(false);
+                            navigate(`/${m.category}/${m.slug}`);
+                          }}
+                          data-testid={`popular-model-${m.slug}`}
+                          className="group border border-white/10 bg-[#0A0A0A] hover:border-[#1a56e8]/60 transition-colors duration-300 p-3 text-left focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+                        >
+                          <div className="rounded-md bg-[#f2f2f0] aspect-[4/3] flex items-center justify-center overflow-hidden mb-3">
+                            <img
+                              src={m.image}
+                              alt={m.name}
+                              loading="lazy"
+                              className="max-h-[78%] w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+                            />
+                          </div>
+                          <div className="text-sm font-semibold text-white leading-snug">{m.name}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 )}
               </div>
             </div>
