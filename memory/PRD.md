@@ -20,6 +20,11 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 32 — random rich banner imagery)
+- Homepage banner carousel now uses a pool of 9 rich high-res chip/GPU images (AMD Ryzen macros, Intel LGA socket, NVIDIA GTX/RTX/GeForce shots, PCB/board macros) sourced from Unsplash, vetted for no competitor logos (MSI/Alienware/HP/Apple shots rejected), hosted locally at /public/images/banner/
+- Images are randomly shuffled per page load (Fisher-Yates, no repeats across the 4 slides) — verified: reload produced a different assignment
+- Headline/subline/CTA remain readable over every image (dark gradient overlay); the products accordion below still uses category product photos
+
 ## Implemented (2026-08-23, update 31 — light-theme overlay fix)
 - USER BUG FIXED: mega menu + search overlay no longer stay black in light theme — new theme-aware .overlay-panel class (dark rgba(5,5,5,0.98) / light rgba(244,244,242,0.98)); keep-dark pin removed so all inner text inverts. Testing agent iteration_7: 100% pass (computed colors asserted in both themes, navigation regression green)
 - Top utility bar also made theme-aware (.utility-bar: navy in dark, white + hairline border in light) for a fully clean JWIPC-style light theme

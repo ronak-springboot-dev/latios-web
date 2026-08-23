@@ -39,6 +39,18 @@ const STATS = [
   ["GeM", "Registered OEM", "Listed for direct government and public-sector procurement."],
 ];
 
+const BANNER_POOL = [
+  "/images/banner/banner-amd-1.jpg",
+  "/images/banner/banner-amd-2.jpg",
+  "/images/banner/banner-amd-3.jpg",
+  "/images/banner/banner-intel-1.jpg",
+  "/images/banner/banner-nvidia-1.jpg",
+  "/images/banner/banner-nvidia-2.jpg",
+  "/images/banner/banner-nvidia-3.jpg",
+  "/images/banner/banner-board-1.jpg",
+  "/images/banner/banner-board-2.jpg",
+];
+
 const HERO_SLIDES = {
   laptops: {
     headline: "Power That Travels.",
@@ -85,6 +97,15 @@ const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smoo
 export default function Home() {
   const [active, setActive] = useState(0);
   const [slide, setSlide] = useState(0);
+  // random rich banner image per slide, shuffled once per page load (no repeats)
+  const [slideImages] = useState(() => {
+    const pool = [...BANNER_POOL];
+    for (let i = pool.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pool[i], pool[j]] = [pool[j], pool[i]];
+    }
+    return pool.slice(0, CATEGORIES.length);
+  });
   useEffect(() => {
     const t = setInterval(() => setSlide((s) => (s + 1) % CATEGORIES.length), 6000);
     return () => clearInterval(t);
@@ -113,7 +134,7 @@ export default function Home() {
             className="absolute inset-0"
           >
             <img
-              src={CATEGORIES[slide].hero}
+              src={slideImages[slide]}
               alt={CATEGORIES[slide].name}
               className="absolute inset-0 w-full h-full object-cover"
               data-testid="hero-slide-image"
