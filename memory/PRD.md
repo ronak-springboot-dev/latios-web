@@ -20,6 +20,11 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 30 — JWIPC hero carousel homepage)
+- Homepage hero rebuilt as JWIPC-style full-width banner carousel: one auto-rotating slide per category (6s crossfade + scale), left-aligned headline + subline + "LEARN MORE" pill → category page, bottom-left dash indicators (clickable), per-category Latios headlines ("Power That Travels.", "Efficiency, Reliability, and Quality.", "Every Voice, Heard Clearly.", "Clarity at Any Scale.")
+- The old centered header (with the overlapping-text artifact the user flagged) is gone; the accordion survives as an "Our Products" section right below the hero
+- Verified: auto-advance, dot navigation, Learn More routing, light-theme readability (hero keeps white text via keep-dark), lineup section still removed
+
 ## Implemented (2026-08-23, update 29 — JWIPC header/nav parity)
 - Removed homepage "Four instruments. One standard." lineup bento section (hero accordion banner kept, per user)
 - Header rewritten to JWIPC nav: PRODUCTS (mega trigger), APPLICATIONS (scroll), ABOUT LATIOS, DESIGN & MANUFACTURING (/about#design-manufacturing anchor added), SUPPORT, NEWS, CONTACT US (scroll)

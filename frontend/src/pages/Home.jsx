@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Cpu, ShieldCheck, Wrench } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
@@ -39,6 +39,25 @@ const STATS = [
   ["GeM", "Registered OEM", "Listed for direct government and public-sector procurement."],
 ];
 
+const HERO_SLIDES = {
+  laptops: {
+    headline: "Power That Travels.",
+    subline: "Explore AI-ready and rugged laptops — designed, manufactured and supported in India.",
+  },
+  towers: {
+    headline: "Efficiency, Reliability, and Quality.",
+    subline: "Explore business desktops and PROMAX workstations engineered for every workload.",
+  },
+  audio: {
+    headline: "Every Voice, Heard Clearly.",
+    subline: "Explore professional conferencing audio for the modern meeting room.",
+  },
+  video: {
+    headline: "Clarity at Any Scale.",
+    subline: "Explore monitors, interactive panels and active LED displays.",
+  },
+};
+
 const Carousel = ({ testId, children }) => {
   const ref = useRef(null);
   const scroll = (dir) => ref.current?.scrollBy({ left: dir * 400, behavior: "smooth" });
@@ -65,6 +84,11 @@ const go = (id) => document.getElementById(id)?.scrollIntoView({ behavior: "smoo
 
 export default function Home() {
   const [active, setActive] = useState(0);
+  const [slide, setSlide] = useState(0);
+  useEffect(() => {
+    const t = setInterval(() => setSlide((s) => (s + 1) % CATEGORIES.length), 6000);
+    return () => clearInterval(t);
+  }, []);
   usePageMeta(
     "Latios — Enterprise Hardware, Made in India",
     "Laptops, towers, workstations, audio and video hardware designed and manufactured in India. Proudly Indian. Boldly Innovative."
@@ -77,37 +101,97 @@ export default function Home() {
       transition={{ duration: 0.5, ease: EASE }}
       data-testid="home-page"
     >
-      {/* HERO */}
-      {/* HERO — category accordion */}
-      <section className="relative pt-28 md:pt-36 pb-14 md:pb-20" data-testid="hero-section">
+      {/* HERO — JWIPC-style banner carousel */}
+      <section className="keep-dark relative h-[92vh] min-h-[560px] overflow-hidden" data-testid="hero-section">
+        <AnimatePresence mode="sync">
+          <motion.div
+            key={slide}
+            initial={{ opacity: 0, scale: 1.05 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.1, ease: EASE }}
+            className="absolute inset-0"
+          >
+            <img
+              src={CATEGORIES[slide].hero}
+              alt={CATEGORIES[slide].name}
+              className="absolute inset-0 w-full h-full object-cover"
+              data-testid="hero-slide-image"
+            />
+            <div className="absolute inset-0 bg-black/45" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/25 to-transparent" />
+          </motion.div>
+        </AnimatePresence>
+
+        <div className="relative z-10 max-w-[1600px] mx-auto px-6 md:px-12 h-full flex items-center">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={slide}
+              initial={{ opacity: 0, y: 26 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -14 }}
+              transition={{ duration: 0.7, ease: EASE }}
+              className="max-w-2xl"
+            >
+              <p
+                className="kicker-sq text-[10px] uppercase tracking-[0.35em] text-zinc-300 mb-6"
+                data-testid="hero-kicker"
+              >
+                {CATEGORIES[slide].index} — {CATEGORIES[slide].name}
+              </p>
+              <h1
+                className="font-display font-black tracking-tighter text-white leading-[1.02] text-4xl md:text-6xl lg:text-7xl"
+                data-testid="hero-title"
+              >
+                {HERO_SLIDES[CATEGORIES[slide].slug].headline}
+              </h1>
+              <p className="mt-5 text-sm md:text-base text-zinc-200 max-w-xl" data-testid="hero-subtitle">
+                {HERO_SLIDES[CATEGORIES[slide].slug].subline}
+              </p>
+              <Link
+                to={`/${CATEGORIES[slide].slug}`}
+                data-testid="hero-learn-more"
+                className="group mt-9 inline-flex items-center gap-3 rounded-full border border-white/40 px-8 py-3.5 text-[11px] uppercase tracking-[0.3em] text-white hover:bg-white hover:text-black transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-white/50"
+              >
+                Learn More
+                <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
+              </Link>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+
+        <div className="absolute bottom-10 left-6 md:left-12 z-10 flex items-center gap-3" data-testid="hero-indicators">
+          {CATEGORIES.map((c, i) => (
+            <button
+              key={c.slug}
+              onClick={() => setSlide(i)}
+              data-testid={`hero-dot-${i}`}
+              aria-label={`Show ${c.name} slide`}
+              className={`h-0.5 transition-all duration-500 focus:outline-none ${
+                i === slide ? "w-12 bg-[#1a56e8]" : "w-8 bg-white/30 hover:bg-white/60"
+              }`}
+            />
+          ))}
+        </div>
+      </section>
+
+      {/* PRODUCTS — category accordion */}
+      <section className="relative pt-20 md:pt-28 pb-14 md:pb-20" data-testid="products-accordion">
         <div className="grid-bg absolute inset-0 pointer-events-none" aria-hidden="true" />
         <div className="relative max-w-[1600px] mx-auto px-6 md:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, ease: EASE }}
-            className="text-center"
-          >
-            <p className="kicker-sq justify-center text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-6" data-testid="hero-kicker">
-              Proudly Indian · Boldly Innovative
-            </p>
-            <h1
-              className="font-display font-medium tracking-tight text-white text-3xl md:text-5xl lg:text-[3.4rem] leading-[1.15] max-w-4xl mx-auto"
-              data-testid="hero-title"
+          <Reveal>
+            <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">Our Products</p>
+            <h2
+              className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-12 max-w-2xl leading-[1.05]"
+              data-testid="products-title"
             >
-              Empowering modern enterprise with precision-engineered hardware
-            </h1>
-            <p className="mt-5 text-sm md:text-base text-zinc-400 max-w-2xl mx-auto" data-testid="hero-subtitle">
-              Laptops, towers, audio and video — designed, manufactured and supported
-              end-to-end in India.
-            </p>
-          </motion.div>
-
+              One partner. Every instrument.
+            </h2>
+          </Reveal>
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.25, duration: 0.9, ease: EASE }}
-            className="mt-12 md:mt-16"
           >
             <div className="hidden md:flex gap-2 h-[60vh] min-h-[440px]" data-testid="hero-accordion">
               {CATEGORIES.map((cat, i) => (
