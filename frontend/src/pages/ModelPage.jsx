@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { Fragment, useRef, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, FileDown } from "lucide-react";
@@ -6,7 +6,7 @@ import { KineticText } from "@/components/KineticText";
 import { Reveal } from "@/components/Reveal";
 import { ParallaxImage } from "@/components/ParallaxImage";
 import { ModelTurntable } from "@/components/ModelTurntable";
-import { getModel, getCategoryModels, DATASHEETS } from "@/data/models";
+import { getModel, getCategoryModels, DATASHEETS, ALL_MODELS } from "@/data/models";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
 const EASE = [0.16, 1, 0.3, 1];
@@ -15,6 +15,7 @@ export default function ModelPage() {
   const { modelSlug } = useParams();
   const model = getModel(modelSlug);
   const [tab, setTab] = useState("overview");
+  const [diffsOnly, setDiffsOnly] = useState(false);
   usePageMeta(
     model ? `${model.name} | Latios` : "Latios",
     model ? model.intro : ""
@@ -31,6 +32,31 @@ export default function ModelPage() {
 
   const others = getCategoryModels(model.category).filter((m) => m.slug !== model.slug);
   const datasheet = DATASHEETS[model.slug];
+
+  // MSI-style multi-configuration spec sheet: family = models sharing the same chassis name
+  const familyKey = (m) => m.name.split(" — ")[0];
+  const family = ALL_MODELS.filter((m) => familyKey(m) === familyKey(model));
+  const specSheetGroups = (() => {
+    const groupNames = [...new Set(family.flatMap((m) => m.specGroups.map((g) => g.group)))];
+    return groupNames.map((gname) => {
+      const keys = [];
+      family.forEach((m) => {
+        m.specGroups.find((g) => g.group === gname)?.items.forEach(([k]) => {
+          if (!keys.includes(k)) keys.push(k);
+        });
+      });
+      return {
+        name: gname,
+        rows: keys.map((k) => ({
+          key: k,
+          values: family.map((m) => {
+            const item = m.specGroups.find((g) => g.group === gname)?.items.find(([ik]) => ik === k);
+            return item ? item[1] : null;
+          }),
+        })),
+      };
+    });
+  })();
 
   return (
     <motion.main
@@ -183,12 +209,12 @@ export default function ModelPage() {
           </section>
         </>
       ) : (
-        /* SPECIFICATION — MSI-style spec sheet */
+        /* SPECIFICATION — MSI-style multi-configuration spec sheet */
         <section className="relative" data-testid="model-specs">
           <div className="grid-bg absolute inset-0 pointer-events-none" aria-hidden="true" />
-          <div className="relative max-w-[1100px] mx-auto px-6 md:px-12 py-16 md:py-24">
+          <div className="relative max-w-[1200px] mx-auto px-6 md:px-12 py-16 md:py-24">
             <Reveal>
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-10">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
                 <div>
                   <p className="kicker-sq text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-3">
                     Specification
@@ -212,24 +238,117 @@ export default function ModelPage() {
               </div>
             </Reveal>
 
+            {family.length > 1 && (
+              <Reveal delay={0.04}>
+                <label
+                  className="mb-6 flex w-fit items-center gap-3 text-[10px] uppercase tracking-[0.25em] text-zinc-400 cursor-pointer select-none"
+                  data-testid="spec-diff-toggle-label"
+                >
+                  <input
+                    type="checkbox"
+                    checked={diffsOnly}
+                    onChange={(e) => setDiffsOnly(e.target.checked)}
+                    data-testid="spec-diff-toggle"
+                    className="w-4 h-4 accent-[#1a56e8]"
+                  />
+                  Show the differences
+                </label>
+              </Reveal>
+            )}
+
             <Reveal delay={0.08}>
-              <div className="border border-white/10" data-testid="spec-sheet-table">
-                {model.specGroups.map((g, gi) => (
-                  <div key={g.group} data-testid={`spec-group-${gi}`}>
-                    <div className="bg-white/5 px-5 md:px-7 py-3.5 text-[10px] uppercase tracking-[0.3em] text-zinc-400 border-b border-white/10">
-                      {g.group}
-                    </div>
-                    {g.items.map(([k, v]) => (
-                      <div
-                        key={k}
-                        className="grid grid-cols-1 md:grid-cols-3 gap-1 md:gap-8 px-5 md:px-7 py-4 border-b border-white/10 last:border-b-0"
-                      >
-                        <span className="text-sm text-zinc-500">{k}</span>
-                        <span className="md:col-span-2 text-sm text-white leading-relaxed">{v}</span>
-                      </div>
-                    ))}
-                  </div>
-                ))}
+              <div className="overflow-x-auto border border-white/10" data-testid="spec-sheet-table">
+                <table className="w-full min-w-[640px] border-collapse text-left">
+                  <thead>
+                    <tr className="bg-white/5 border-b border-white/10">
+                      <th className="px-5 md:px-7 py-4 w-52 align-bottom text-[10px] uppercase tracking-[0.3em] text-zinc-500 font-normal">
+                        {family.length > 1 ? `${family.length} configurations` : "Specification"}
+                      </th>
+                      {family.map((m) => {
+                        const pdf = DATASHEETS[m.slug];
+                        const active = m.slug === model.slug;
+                        return (
+                          <th
+                            key={m.slug}
+                            data-testid={`spec-col-${m.slug}`}
+                            className={`px-5 md:px-7 py-4 align-bottom border-t-2 ${
+                              active ? "border-[#1a56e8]" : "border-transparent"
+                            }`}
+                          >
+                            <div className={`text-sm font-semibold leading-snug ${active ? "text-white" : "text-zinc-400"}`}>
+                              {m.name.split(" — ")[1] || m.name}
+                            </div>
+                            <div className="mt-2.5 flex items-center gap-4">
+                              {pdf && (
+                                <a
+                                  href={pdf}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  title="Download datasheet (PDF)"
+                                  data-testid={`spec-pdf-${m.slug}`}
+                                  className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-[#6f93f2] hover:text-white transition-colors duration-300"
+                                >
+                                  <FileDown className="w-4 h-4" /> PDF
+                                </a>
+                              )}
+                              {!active && (
+                                <Link
+                                  to={`/${m.category}/${m.slug}`}
+                                  data-testid={`spec-open-${m.slug}`}
+                                  className="text-[10px] uppercase tracking-[0.2em] text-zinc-500 hover:text-white transition-colors duration-300"
+                                >
+                                  View
+                                </Link>
+                              )}
+                            </div>
+                          </th>
+                        );
+                      })}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {specSheetGroups.map((g, gi) => {
+                      const visibleRows = g.rows.filter(
+                        (r) => !diffsOnly || new Set(r.values.map((v) => v ?? "")).size > 1
+                      );
+                      if (visibleRows.length === 0) return null;
+                      return (
+                        <Fragment key={g.name}>
+                          <tr data-testid={`spec-group-${gi}`}>
+                            <td
+                              colSpan={family.length + 1}
+                              className="px-5 md:px-7 py-3.5 text-[10px] uppercase tracking-[0.3em] text-zinc-400 bg-white/5 border-b border-white/10"
+                            >
+                              {g.name}
+                            </td>
+                          </tr>
+                          {visibleRows.map((r, ri) => {
+                            const differs = new Set(r.values.map((v) => v ?? "")).size > 1;
+                            return (
+                              <tr
+                                key={r.key}
+                                data-testid={`spec-row-${gi}-${ri}`}
+                                className="border-b border-white/10 last:border-b-0 hover:bg-white/[0.03] transition-colors duration-200"
+                              >
+                                <td className="px-5 md:px-7 py-4 text-sm text-zinc-500 align-top">{r.key}</td>
+                                {r.values.map((v, vi) => (
+                                  <td
+                                    key={family[vi].slug}
+                                    className={`px-5 md:px-7 py-4 text-sm leading-relaxed align-top ${
+                                      differs ? "text-white" : "text-zinc-400"
+                                    }`}
+                                  >
+                                    {v ?? "—"}
+                                  </td>
+                                ))}
+                              </tr>
+                            );
+                          })}
+                        </Fragment>
+                      );
+                    })}
+                  </tbody>
+                </table>
               </div>
             </Reveal>
 

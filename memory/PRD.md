@@ -20,6 +20,13 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 27 — MSI-style multi-configuration spec sheet)
+- Specification tab upgraded to true MSI parity: models sharing a chassis name (family = name prefix before " — ") now render as side-by-side configuration columns — MT family = 4 columns (AMD AM4 / H610 DDR4 / H610 DDR5 / Q670 DDR5), Pro AI SFF = 3 columns, Archer laptops = 3 columns
+- Each column header shows the configuration name + per-config PDF datasheet icon + "View" link to that model's page; current model's column highlighted with blue top border
+- "Show the Differences" checkbox (only when family > 1) filters the table to differing rows only (verified: 16 rows → 8, empty groups auto-hidden); differing rows render in brighter text
+- Rows aligned by spec label across configurations (union of keys per group, "—" for missing values); single-configuration models render a clean one-column sheet without the toggle
+- Verified in dark + light themes; per-column PDF links resolve to the local /datasheets/*.pdf files
+
 ## Implemented (2026-08-23, update 26 — spec tabs, datasheets, support page, official logo)
 - Model pages now have MSI-style Overview/Specification tabs: Specification shows a clean grouped spec sheet (group header rows + label/value table) with a blue Download datasheet button + a "Datasheet (PDF)" link in the tab bar; models without a datasheet (laptops/audio/video) hide the button
 - 14 original user-provided datasheet PDFs recovered from the job asset store and hosted locally at /datasheets/<slug>.pdf (all verified valid PDFs, 200 OK); DATASHEETS map in models.js
