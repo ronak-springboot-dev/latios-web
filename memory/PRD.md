@@ -20,6 +20,11 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 16)
+- News detail pages: /news/:slug — full article pages with hero photo, kinetic title, body, more-news rail (5 articles in src/data/news.js); home news cards are now links with image thumbs
+- Application sector pages: /applications/:slug — hero, sector intro, capability points, recommended Latios products grid (real model links) for education/government/enterprise/healthcare/manufacturing/boardrooms
+- LATI product links: knowledge base now lists every product URL and instructs markdown links; chat renders them as tappable blue links (bold-wrapped links normalized)
+
 ## Implemented (2026-08-23, update 15)
 - Towers page: JWIPC-style family accordion (Business Desktops vs PROMAX AI Workstations) with hover expansion, vertical collapsed titles, blue View Models button, smooth-scrolls to the family grid
 - Blue accent pass: nav underlines, all section kickers (blue square), Explore-model and Enquire buttons now Latios blue, spec-cell hover blue inset, model-card blue hover ring, turntable active dot blue

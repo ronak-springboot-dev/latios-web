@@ -17,15 +17,30 @@ const WELCOME = {
 };
 
 const renderText = (t) =>
-  t.split(/(\*\*[^*]+\*\*)/g).map((part, i) =>
-    part.startsWith("**") && part.endsWith("**") ? (
-      <strong key={i} className="font-semibold text-white">
-        {part.slice(2, -2)}
-      </strong>
-    ) : (
-      part
-    )
-  );
+  t
+    .replace(/\*\*(\[[^\]]+\]\([^)]+\))\*\*/g, "$1")
+    .split(/(\[[^\]]+\]\([^)]+\))/g).map((part, i) => {
+    const link = part.match(/^\[([^\]]+)\]\(([^)]+)\)$/);
+    if (link)
+      return (
+        <a
+          key={i}
+          href={link[2]}
+          className="text-[#6f93f2] underline underline-offset-2 hover:text-white transition-colors duration-200"
+        >
+          {link[1]}
+        </a>
+      );
+    return part.split(/(\*\*[^*]+\*\*)/g).map((p2, j) =>
+      p2.startsWith("**") && p2.endsWith("**") ? (
+        <strong key={`${i}-${j}`} className="font-semibold text-white">
+          {p2.slice(2, -2)}
+        </strong>
+      ) : (
+        p2
+      )
+    );
+  });
 
 const getSessionId = () => {
   let s = localStorage.getItem("lati-session");

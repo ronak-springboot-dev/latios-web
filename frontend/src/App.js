@@ -11,6 +11,8 @@ import { Footer } from "@/components/Footer";
 import Home from "@/pages/Home";
 import ProductPage from "@/pages/ProductPage";
 import ModelPage from "@/pages/ModelPage";
+import NewsPage from "@/pages/NewsPage";
+import ApplicationPage from "@/pages/ApplicationPage";
 
 const ScrollReset = () => {
   const { pathname } = useLocation();
@@ -28,6 +30,8 @@ const AnimatedRoutes = () => {
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Home />} />
+        <Route path="/news/:slug" element={<NewsPage />} />
+        <Route path="/applications/:slug" element={<ApplicationPage />} />
         <Route path="/:category/:modelSlug" element={<ModelPage />} />
         <Route path="/:category" element={<ProductPage />} />
         <Route path="*" element={<Home />} />

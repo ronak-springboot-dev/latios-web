@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Cpu, ShieldCheck, Wrench } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
+import { NEWS } from "@/data/news";
+import { APPLICATIONS } from "@/data/applications";
 import { EditorialMarquee } from "@/components/EditorialMarquee";
 import { CATEGORIES } from "@/data/products";
 
@@ -34,23 +36,6 @@ const STATS = [
   ["15+", "Product families"],
   ["12+", "Certifications"],
   ["GeM", "Registered OEM"],
-];
-
-const NEWS = [
-  { tag: "Laptops", date: "July 2026", title: "Latios Archer LTG540Z debuts with RTX 5080 and a 300Hz Mini LED panel" },
-  { tag: "Company", date: "July 2026", title: "Latios expands GeM-registered portfolio for public sector procurement" },
-  { tag: "Workstations", date: "June 2026", title: "PROMAX T4 Plus workstations now shipping with up to 2TB ECC memory" },
-  { tag: "Audio & Visual", date: "June 2026", title: "Smart Audio & Visual range launched for modern boardrooms" },
-  { tag: "Manufacturing", date: "May 2026", title: "New SMT line commissioned at the Ahmedabad facility" },
-];
-
-const APPLICATIONS = [
-  { title: "Education", blurb: "Interactive panels and AI PCs for digital classrooms", image: "/images/av-ifp.jpg" },
-  { title: "Government", blurb: "GeM-registered OEM for public sector fleets", image: "/images/laptop-rugged.jpg" },
-  { title: "Enterprise", blurb: "Secure MT / SFF desktops with TPM 2.0 at scale", image: "/images/ops.jpg" },
-  { title: "Healthcare", blurb: "Dependable terminals and displays for critical care", image: "/images/av-monitor.jpg" },
-  { title: "Manufacturing", blurb: "Rugged computing for the shop floor, made in-house", image: "/images/factory.jpg" },
-  { title: "Boardrooms", blurb: "Audio-visual systems that make remote feel local", image: "/images/audio-hero.jpg" },
 ];
 
 const Carousel = ({ testId, children }) => {
@@ -344,10 +329,11 @@ export default function Home() {
           </Reveal>
           <Carousel testId="apps-carousel">
             {APPLICATIONS.map((a, i) => (
-              <div
-                key={a.title}
+              <Link
+                key={a.slug}
+                to={`/applications/${a.slug}`}
                 data-testid={`app-card-${i}`}
-                className="group shrink-0 w-[300px] md:w-[400px] relative overflow-hidden border border-white/10 aspect-[4/3] hover:border-[#1a56e8]/60 transition-colors duration-500"
+                className="group shrink-0 w-[300px] md:w-[400px] relative block overflow-hidden border border-white/10 aspect-[4/3] hover:border-[#1a56e8]/60 transition-colors duration-500 focus:ring-2 focus:ring-[#1a56e8]/50 focus:outline-none"
               >
                 <img
                   src={a.image}
@@ -360,7 +346,7 @@ export default function Home() {
                   <h3 className="font-display text-2xl font-black tracking-tighter text-white">{a.title}</h3>
                   <p className="mt-1.5 text-sm text-zinc-300">{a.blurb}</p>
                 </div>
-              </div>
+              </Link>
             ))}
           </Carousel>
         </div>
@@ -377,17 +363,23 @@ export default function Home() {
           </Reveal>
           <Carousel testId="news-carousel">
             {NEWS.map((n, i) => (
-              <article
-                key={n.title}
+              <Link
+                key={n.slug}
+                to={`/news/${n.slug}`}
                 data-testid={`news-card-${i}`}
-                className="shrink-0 w-[320px] md:w-[380px] border border-white/10 bg-[#0A0A0A] p-7 flex flex-col hover:border-[#1a56e8]/60 transition-colors duration-500"
+                className="group shrink-0 w-[320px] md:w-[380px] border border-white/10 bg-[#0A0A0A] hover:border-[#1a56e8]/60 transition-colors duration-500 overflow-hidden focus:ring-2 focus:ring-[#1a56e8]/50 focus:outline-none"
               >
-                <span className="text-[9px] uppercase tracking-[0.3em] text-[#6f93f2]">{n.tag}</span>
-                <h3 className="mt-4 font-display text-xl font-bold tracking-tight text-white leading-snug flex-1">
-                  {n.title}
-                </h3>
-                <span className="mt-6 text-xs text-zinc-500">{n.date}</span>
-              </article>
+                <div className="h-40 overflow-hidden">
+                  <img src={n.image} alt={n.title} loading="lazy" className="spotlight-img w-full h-full object-cover" />
+                </div>
+                <div className="p-7 flex flex-col">
+                  <span className="text-[9px] uppercase tracking-[0.3em] text-[#6f93f2]">{n.tag}</span>
+                  <h3 className="mt-4 font-display text-xl font-bold tracking-tight text-white leading-snug flex-1">
+                    {n.title}
+                  </h3>
+                  <span className="mt-6 text-xs text-zinc-500">{n.date}</span>
+                </div>
+              </Link>
             ))}
           </Carousel>
         </div>
