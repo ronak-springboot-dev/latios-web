@@ -8,7 +8,9 @@ from pathlib import Path
 from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 import uuid
+import re
 from datetime import datetime, timezone
+from emailer import send_enquiry_alert
 
 
 ROOT_DIR = Path(__file__).parent
@@ -85,6 +87,11 @@ async def create_enquiry(input: EnquiryCreate):
     doc = enquiry.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
     await db.enquiries.insert_one(doc)
+    try:
+        email_id = await send_enquiry_alert(enquiry.model_dump())
+        logger.info(f"Enquiry alert email id: {email_id}")
+    except Exception as e:
+        logger.error(f"Enquiry email alert failed: {e}")
     return enquiry
 
 @api_router.get("/enquiries", response_model=List[Enquiry])
@@ -153,6 +160,27 @@ async def chat(req: ChatRequest):
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
+
+@api_router.get("/chat-analytics")
+async def chat_analytics():
+    from collections import Counter
+
+    msgs = await db.chat_messages.find({"role": "user"}, {"_id": 0}).sort("ts", -1).to_list(500)
+    sessions = len({m["session_id"] for m in msgs})
+    stop = set(
+        "the a an and or of to in is are do does for with what which how can i me my your you on it this that latios about tell show know more any there best much does do have between vs or not out get".split()
+    )
+    words = Counter()
+    for m in msgs:
+        for w in re.findall(r"[a-z']{3,}", m["content"].lower()):
+            if w not in stop:
+                words[w] += 1
+    return {
+        "total_questions": len(msgs),
+        "total_sessions": sessions,
+        "top_keywords": [{"word": w, "count": c} for w, c in words.most_common(12)],
+        "recent": msgs[:25],
+    }
 
 # Include the router in the main app
 app.include_router(api_router)

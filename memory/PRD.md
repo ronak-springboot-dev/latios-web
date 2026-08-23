@@ -20,6 +20,11 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-08-23, update 18)
+- Email alerts: every enquiry + LATI lead triggers a transactional email to sales@latios.in via Emergent-managed Resend (emailer.py with guardrail gate; from_name "Latios", reply-to sales@latios.in; verified — email id 793e695a logged on test send)
+- Chat analytics: GET /api/chat-analytics (totals, sessions, top keywords, recent questions) + /admin team page "What buyers ask LATI" with stat cards, animated topic bars, recent questions list (no auth — public URL)
+- JWIPC-style header: dark navy utility bar (email/phone/tagline/theme toggle), center nav, square search button + blue square hamburger; full-screen mega menu with staggered big links + contact card; full-text product search overlay across all 28 models; header hides on scroll down, returns on scroll up; light + dark both verified
+
 ## Implemented (2026-08-23, update 17)
 - LATI lead capture: pricing-intent questions (price/quote/buy/bulk/demo etc.) trigger an in-chat name+email form; submissions save to enquiries DB tagged "LATI chat lead — asked about: ..." with confirmation message + toast; once-per-visitor
 - /compare page: pick up to 3 machines (grouped selectors, all 28 models), side-by-side grid with images, links, and union of grouped spec rows; added "Compare" to header nav
