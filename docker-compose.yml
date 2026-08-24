@@ -1,0 +1,49 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: latios-backend
+    restart: always
+    env_file:
+      - ./backend/.env
+    expose:
+      - "8000"
+    networks:
+      - latios
+
+  nginx:
+    image: nginx:alpine
+    container_name: latios-nginx
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./frontend/build:/usr/share/nginx/html:ro
+      - ./deploy/nginx.active.conf:/etc/nginx/conf.d/default.conf:ro
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - ./deploy/certbot-www:/var/www/certbot
+    networks:
+      - latios
+
+  # Not run automatically — deploy.sh invokes this explicitly with
+  # `docker compose run --rm certbot ...` for cert issuance and renewal.
+  certbot:
+    image: certbot/certbot
+    container_name: latios-certbot
+    volumes:
+      - certbot-etc:/etc/letsencrypt
+      - certbot-var:/var/lib/letsencrypt
+      - ./deploy/certbot-www:/var/www/certbot
+    entrypoint: "true"
+
+networks:
+  latios:
+    driver: bridge
+
+volumes:
+  certbot-etc:
+  certbot-var:
