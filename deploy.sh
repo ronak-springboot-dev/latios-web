@@ -46,7 +46,13 @@ for f in backend/.env frontend/.env; do
 done
 
 echo "==> [4/7] Building frontend"
-( cd frontend && npm ci && npm run build )
+# Yarn, not npm: frontend/package.json relies on Yarn's `resolutions` field to keep
+# transitive deps (e.g. ajv) consistent. `npm install`/`npm ci` ignore that field and
+# produce a broken build (missing ajv submodules) — see README.md.
+if ! command -v yarn &> /dev/null; then
+  npm install -g yarn
+fi
+( cd frontend && yarn install --frozen-lockfile && yarn build )
 
 mkdir -p deploy/certbot-www
 

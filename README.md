@@ -6,10 +6,19 @@ assistant ("LATI") and an internal `/admin` sales dashboard. Production deploy t
 
 ## Prerequisites
 
-- **Node.js 20 LTS** and npm (frontend)
+- **Node.js 20 LTS** and **Yarn 1.x (Classic)** — `frontend/package.json` declares
+  `"packageManager": "yarn@1.22.22"` and relies on Yarn's `resolutions` field to keep
+  transitive dependency versions (e.g. `ajv`) consistent. **Do not use `npm install`** — npm
+  silently ignores `resolutions`, which causes a broken install
+  (`Cannot find module 'ajv/dist/compile/codegen'` on `start`). If Yarn isn't installed,
+  `npx yarn@1.22.22 <command>` works without installing anything globally.
 - **Python 3.11** (backend)
 - The two `.env` files below, already filled in locally with real values (gitignored, never
   committed — see `.env.sample` in each folder if you need to recreate them)
+- **Windows + PowerShell note**: if `npm`/`yarn` fail with `UnauthorizedAccess` /
+  `running scripts is disabled on this system`, that's PowerShell's execution policy blocking
+  the `.ps1` wrapper — either run commands from Git Bash instead, or once, in PowerShell:
+  `Set-ExecutionPolicy -Scope CurrentUser -ExecutionPolicy RemoteSigned`
 
 ## Run the backend
 
@@ -37,8 +46,8 @@ uvicorn server:app --reload --port 8000
 
 ```bash
 cd frontend
-npm install
-npm start
+npx yarn@1.22.22 install    # or just `yarn install` if Yarn is installed globally
+npx yarn@1.22.22 start      # or `yarn start`
 ```
 
 - Opens `http://localhost:3000`.
