@@ -1,6 +1,11 @@
 // craco.config.js
 const path = require("path");
 require("dotenv").config();
+// .env.local (gitignored, local-dev-only overrides) must win over .env here too —
+// dotenv never overrides an already-set process.env value, and this file's own
+// `.config()` call above runs BEFORE react-scripts' own .env.local-aware loader,
+// so without this, any .env.local override gets silently discarded.
+require("dotenv").config({ path: path.resolve(__dirname, ".env.local"), override: true });
 
 // Check if we're in development/preview mode (not production build)
 // Craco sets NODE_ENV=development for start, NODE_ENV=production for build

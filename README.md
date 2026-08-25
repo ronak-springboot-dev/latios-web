@@ -32,13 +32,19 @@ pip install -r requirements.txt
 uvicorn server:app --reload --port 8000
 ```
 
-- Reads config from `backend/.env` automatically (via `python-dotenv`) — no need to export
-  anything manually.
+- `emergentintegrations` isn't on the public PyPI — the `pip install` above needs
+  `--extra-index-url https://d33sy5i8bnduwe.cloudfront.net/simple/` (Emergent's own package
+  index) or it'll fail outright. Full command:
+  `pip install --extra-index-url https://d33sy5i8bnduwe.cloudfront.net/simple/ -r requirements.txt`
+- Reads config from `backend/.env` automatically (via `python-dotenv`), then layers
+  `backend/.env.local` on top if present (gitignored, local-dev-only overrides — see Turnstile
+  note below). No need to export anything manually.
 - Serves the API at `http://localhost:8000/api/...`.
-- Uses the same MongoDB Atlas cluster as production (`MONGO_URL` in `backend/.env`) — enquiries
-  and chat messages you create while testing locally land in the same `test_database` database
-  that production uses. Fine for now (it's the same shared instance the whole project already
-  uses), just be aware test submissions aren't isolated from real ones.
+- `MONGO_URL`/`DB_NAME` in `backend/.env` point at your own MongoDB Atlas free-tier cluster
+  (`latios-cluster.5nnpotw.mongodb.net`, database `latios`) — separate from whatever Emergent's
+  own infra used. Atlas only accepts connections from IPs on its Network Access allowlist; if a
+  request hangs for ~30s and times out, your current IP probably isn't allowlisted there yet
+  (cloud.mongodb.com → Network Access → Add IP Address).
 - `backend/.env`'s `CORS_ORIGINS` already includes `http://localhost:3000` alongside the
   production domain, so the locally-run frontend below can call it without CORS errors.
 
@@ -61,14 +67,25 @@ npx yarn@1.22.22 start      # or `yarn start`
 
 ## Notes
 
-- Cloudflare Turnstile bot-protection is live on the enquiry form and chat (`TURNSTILE_SECRET_KEY`
-  / `REACT_APP_TURNSTILE_SITE_KEY` in the `.env` files). The Turnstile widget only accepts requests
-  from hostnames explicitly allowed in the Cloudflare dashboard — `localhost` is normally
-  pre-allowed by Cloudflare Turnstile for dev, but if you see "Unable to connect to website" on
-  the widget locally, check the widget's allowed hostnames in Cloudflare (Turnstile → widget
-  `0x4AAAAAAD0Wk...` → Settings → Hostnames).
-- No local MongoDB needed — both frontend and backend point at the same hosted resources
-  production uses (Atlas, Emergent's LLM/email proxy). There's nothing else to stand up locally.
+- **Cloudflare Turnstile** bot-protection is verified server-side on the enquiry form and chat
+  (`TURNSTILE_SECRET_KEY` / `REACT_APP_TURNSTILE_SITE_KEY`). The real widget only accepts
+  requests from hostnames explicitly allowed in the Cloudflare dashboard (`laptoptrek.com`,
+  `www.laptoptrek.com`) — **`localhost` is NOT allowed there**, so using the production key
+  locally fails with a `110200` "Domain not authorized" error. Fix: `backend/.env.local` and
+  `frontend/.env.local` (gitignored, already set up) override both keys with Cloudflare's
+  official test keypair, which always validates and works on any hostname — see
+  [Cloudflare's testing docs](https://developers.cloudflare.com/turnstile/troubleshooting/testing/).
+  Don't touch the real widget's hostname list just to make local dev work.
+- **LATI chat** calls Google's Gemini API directly (`google-genai` SDK, `GEMINI_API_KEY` from
+  [Google AI Studio](https://aistudio.google.com/apikey)) — not through Emergent's proxy. It
+  originally used Emergent's "Universal Key" routing, but that key's $1 budget cap was already
+  exceeded, so `backend/server.py`'s `/api/chat` was switched to call Google directly.
+  `gen_banner_video.py` (a separate, unrelated script) still uses `emergentintegrations` for
+  video generation — that dependency stays in `requirements.txt`.
+- **Email alerts** (`POST /api/enquiries`) still go through Emergent's managed email proxy
+  (`EMERGENT_EMAIL_KEY`) — untouched, confirmed working.
+- No local MongoDB server to install — `MONGO_URL` points at your hosted Atlas cluster (see
+  above), same as production would.
 
 ## Production deploy
 

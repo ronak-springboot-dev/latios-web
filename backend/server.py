@@ -17,6 +17,9 @@ from emailer import send_enquiry_alert
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
+# Local-dev-only overrides (e.g. Cloudflare Turnstile test keys) — gitignored,
+# absent in production, mirrors frontend's .env.local pattern. No-ops if missing.
+load_dotenv(ROOT_DIR / '.env.local', override=True)
 
 # MongoDB connection
 mongo_url = os.environ['MONGO_URL']
@@ -164,7 +167,8 @@ class ChatRequest(BaseModel):
 async def chat(req: ChatRequest):
     import json
     from fastapi.responses import StreamingResponse
-    from emergentintegrations.llm.chat import LlmChat, UserMessage, TextDelta, StreamDone
+    from google import genai
+    from google.genai import types
     from knowledge import LATIOS_KNOWLEDGE
 
     session = await db.chat_sessions.find_one({"session_id": req.session_id})
@@ -195,21 +199,20 @@ async def chat(req: ChatRequest):
     prior = "\n".join(f"{m['role']}: {m['content']}" for m in history[:-1])
     system = LATIOS_KNOWLEDGE + (f"\n\nConversation so far:\n{prior}" if prior else "")
 
-    llm = LlmChat(
-        api_key=os.environ["GEMINI_API_KEY"],
-        session_id=req.session_id,
-        system_message=system,
-    ).with_model("gemini", "gemini-3.5-flash-lite")
+    client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 
     async def gen():
         full = ""
         try:
-            async for ev in llm.stream_message(UserMessage(text=req.message)):
-                if isinstance(ev, TextDelta):
-                    full += ev.content
-                    yield f"data: {json.dumps({'delta': ev.content})}\n\n"
-                elif isinstance(ev, StreamDone):
-                    break
+            stream = await client.aio.models.generate_content_stream(
+                model="gemini-3.5-flash-lite",
+                contents=req.message,
+                config=types.GenerateContentConfig(system_instruction=system),
+            )
+            async for chunk in stream:
+                if chunk.text:
+                    full += chunk.text
+                    yield f"data: {json.dumps({'delta': chunk.text})}\n\n"
         except Exception as e:
             logger.error(f"LATI chat error: {e}")
             yield f"data: {json.dumps({'error': 'unavailable'})}\n\n"

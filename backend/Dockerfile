@@ -9,7 +9,10 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt \
+# --extra-index-url is required: emergentintegrations isn't on the public PyPI,
+# only on Emergent's own package index (litellm is pulled from a direct wheel URL
+# already pinned in requirements.txt, unaffected by this).
+RUN pip install --no-cache-dir --extra-index-url https://d33sy5i8bnduwe.cloudfront.net/simple/ -r requirements.txt \
     && pip install --no-cache-dir gunicorn
 
 COPY . .
