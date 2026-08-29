@@ -40,8 +40,15 @@ export default function ModelPage() {
 
   const scrollToContact = () => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
 
-  // MSI-style multi-configuration spec sheet: family = models sharing the same chassis name
-  const familyKey = (m) => m.name.split(" — ")[0];
+  // Multi-configuration spec sheet: a "family" is the set of models that are the same
+  // physical chassis in different configurations (e.g. the four Latios MT board options).
+  // Keyed on category + name prefix + shared gallery: models built on one chassis reuse
+  // the same product photography (MT_GALLERY, SFF_GALLERY, ...), so an identical first
+  // gallery image is the reliable signal that two SKUs really are the same box.
+  // Name prefix alone was not enough — the bare "Latios PRO" prefix was grouping a
+  // soundbar, a web camera, a PTZ camera, a monitor and an interactive panel into one
+  // bogus five-column comparison.
+  const familyKey = (m) => `${m.category}|${m.name.split(" — ")[0]}|${m.gallery?.[0] ?? m.slug}`;
   const family = ALL_MODELS.filter((m) => familyKey(m) === familyKey(model));
   const specSheetGroups = (() => {
     const groupNames = [...new Set(family.flatMap((m) => m.specGroups.map((g) => g.group)))];

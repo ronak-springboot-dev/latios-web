@@ -72,7 +72,7 @@ export const CATEGORIES = [
         kicker: "Compute",
         heading: "From Ryzen 3 to Core i9",
         body: "Choose AMD AM4 with Ryzen 5000G graphics onboard, Intel H610 or Q670 with up to 14th Gen Core i9, or the Pro AI edition on AM5 with Ryzen 8000G neural processing. One chassis, five ways to work.",
-        image: "/images/office.png",
+        image: "/images/office.webp",
       },
       {
         n: "02",

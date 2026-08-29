@@ -8,6 +8,7 @@ import {
 import { Reveal } from "@/components/Reveal";
 import { ParallaxImage } from "@/components/ParallaxImage";
 import { ModelTurntable } from "@/components/ModelTurntable";
+import { ProductVideo } from "@/components/ProductVideo";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -17,7 +18,13 @@ export const ModelShowcase = ({ model, data, datasheet, tabs, onViewSpecs, onEnq
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [audience, setAudience] = useState(0);
   const isTurntable = galleryIndex === model.gallery.length;
-  const aud = data.audiences[audience];
+
+  // Every showcase section is optional. Without these defaults a partial entry —
+  // e.g. `{ videoSrc }` alone, to give a product just a video — throws before render.
+  const featureGrid = data.featureGrid ?? [];
+  const audiences = data.audiences ?? [];
+  const fullBleeds = data.fullBleeds ?? [];
+  const aud = audiences[audience];
 
   return (
     <div data-testid="model-showcase">
@@ -161,65 +168,35 @@ export const ModelShowcase = ({ model, data, datasheet, tabs, onViewSpecs, onEnq
               Engineering the future
             </p>
             <h2 className="font-display text-3xl md:text-6xl font-black tracking-tighter text-white leading-[1.02] max-w-4xl" data-testid="showcase-banner-headline">
-              {data.bannerHeadline}
+              {data.bannerHeadline ?? model.name}
             </h2>
             <p className="mt-5 text-sm md:text-base text-zinc-200 max-w-2xl mx-auto">
-              {data.bannerSubline}
+              {data.bannerSubline ?? model.intro}
             </p>
           </Reveal>
         </div>
       </section>
 
       {/* IN MOTION — autoplay video loop, Minisforum cooling-section style */}
-      {data.videoSrc && (
-        <section className="border-t border-white/10" data-testid="showcase-video">
-          <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-20 md:py-28">
-            <Reveal>
-              <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white text-center mb-4 leading-[1.05]">
-                See it in motion.
-              </h2>
-              <p className="text-center text-sm text-zinc-500 mb-14 max-w-xl mx-auto">
-                Every panel, port and edge — engineered, assembled and finished in Ahmedabad.
-              </p>
-            </Reveal>
-            <Reveal delay={0.08}>
-              <div className="relative overflow-hidden border border-white/10">
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  preload="metadata"
-                  data-testid="showcase-video-player"
-                  className="w-full aspect-video object-cover"
-                >
-                  <source src={data.videoSrc} type="video/mp4" />
-                </video>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent pointer-events-none" />
-                <div className="keep-dark absolute bottom-0 left-0 right-0 p-6 md:p-10 flex flex-col md:flex-row md:items-end md:justify-between gap-4 pointer-events-none">
-                  <p className="text-[10px] uppercase tracking-[0.35em] text-zinc-300">
-                    Latios MT — AMD AM4
-                  </p>
-                  <p className="text-[10px] uppercase tracking-[0.35em] text-zinc-300">
-                    Designed · Manufactured · Supported in India
-                  </p>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
-      )}
+      <ProductVideo
+        src={data.videoSrc}
+        poster={data.videoPoster}
+        modelName={model.name}
+      />
 
       {/* FEATURE ICON GRID */}
-      <section className="max-w-[1600px] mx-auto px-6 md:px-12 py-20 md:py-28" data-testid="showcase-features">
+      <section
+        className={`max-w-[1600px] mx-auto px-6 md:px-12 py-20 md:py-28 ${featureGrid.length ? "" : "hidden"}`}
+        data-testid="showcase-features"
+      >
         <Reveal>
           <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white text-center mb-16 leading-[1.05]">
             Everything your fleet needs.
           </h2>
         </Reveal>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10">
-          {data.featureGrid.map((f, i) => {
-            const Icon = ICONS[f.icon];
+          {featureGrid.map((f, i) => {
+            const Icon = ICONS[f.icon] ?? Cpu; // unknown icon name would render undefined and crash
             return (
               <Reveal key={f.title} delay={i * 0.05}>
                 <div
@@ -237,6 +214,7 @@ export const ModelShowcase = ({ model, data, datasheet, tabs, onViewSpecs, onEnq
       </section>
 
       {/* AUDIENCE TABS — "One platform. Every team." */}
+      {aud && (
       <section className="border-t border-white/10" data-testid="showcase-audiences">
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-20 md:py-28">
           <Reveal>
@@ -246,7 +224,7 @@ export const ModelShowcase = ({ model, data, datasheet, tabs, onViewSpecs, onEnq
           </Reveal>
           <Reveal delay={0.05}>
             <div className="flex flex-wrap justify-center gap-2.5 mb-14" data-testid="showcase-audience-tabs">
-              {data.audiences.map((a, i) => (
+              {audiences.map((a, i) => (
                 <button
                   key={a.id}
                   onClick={() => setAudience(i)}
@@ -282,7 +260,7 @@ export const ModelShowcase = ({ model, data, datasheet, tabs, onViewSpecs, onEnq
                 </h3>
                 <p className="mt-5 text-zinc-400 leading-relaxed">{aud.desc}</p>
                 <ul className="mt-6 space-y-3" data-testid="audience-bullets">
-                  {aud.bullets.map((b) => (
+                  {(aud.bullets ?? []).map((b) => (
                     <li key={b} className="flex gap-3 text-sm text-zinc-300">
                       <span className="mt-1.5 w-1.5 h-1.5 shrink-0 bg-[#1a56e8]" />
                       {b}
@@ -294,9 +272,10 @@ export const ModelShowcase = ({ model, data, datasheet, tabs, onViewSpecs, onEnq
           </AnimatePresence>
         </div>
       </section>
+      )}
 
       {/* FULL-BLEED STORY SECTIONS */}
-      {data.fullBleeds.map((b, i) => (
+      {fullBleeds.map((b, i) => (
         <section key={b.heading} className="border-t border-white/10" data-testid={`showcase-bleed-${i}`}>
           <div className={`grid grid-cols-1 md:grid-cols-2 ${i % 2 === 1 ? "md:[direction:rtl]" : ""}`}>
             <div className="md:[direction:ltr]">

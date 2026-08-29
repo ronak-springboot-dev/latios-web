@@ -8,9 +8,44 @@ import { ParallaxImage } from "@/components/ParallaxImage";
 import { EditorialMarquee } from "@/components/EditorialMarquee";
 import { SpecGrid } from "@/components/SpecGrid";
 import { getCategory, nextCategory } from "@/data/products";
+import { getVendor, VENDOR_LABELS } from "@/data/models";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
 const EASE = [0.16, 1, 0.3, 1];
+
+/**
+ * Ryzen / Intel range filter. Only shown for categories that actually carry both
+ * platforms (towers) — the audio and video lines have no CPU, so it stays hidden
+ * there rather than rendering a filter with a single meaningless option.
+ */
+const VendorFilter = ({ value, onChange, counts }) => {
+  const options = [
+    { id: "all", label: "All", n: counts.all },
+    { id: "amd", label: VENDOR_LABELS.amd, n: counts.amd },
+    { id: "intel", label: VENDOR_LABELS.intel, n: counts.intel },
+  ].filter((o) => o.n > 0);
+
+  return (
+    <div className="flex flex-wrap gap-2.5 mb-12" data-testid="vendor-filter">
+      {options.map((o) => (
+        <button
+          key={o.id}
+          onClick={() => onChange(o.id)}
+          data-testid={`vendor-filter-${o.id}`}
+          aria-pressed={value === o.id}
+          className={`rounded-full px-6 py-2.5 text-[10px] uppercase tracking-[0.25em] border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50 ${
+            value === o.id
+              ? "btn-blue border-transparent"
+              : "border-white/15 text-zinc-400 hover:text-white hover:border-white/40"
+          }`}
+        >
+          {o.label}
+          <span className="ml-2 opacity-60">{o.n}</span>
+        </button>
+      ))}
+    </div>
+  );
+};
 
 const FamilyAccordion = ({ families }) => {
   const [active, setActive] = useState(0);
@@ -61,6 +96,7 @@ const FamilyAccordion = ({ families }) => {
 export default function ProductPage() {
   const { category } = useParams();
   const data = getCategory(category);
+  const [vendor, setVendor] = useState("all");
   usePageMeta(
     data ? `${data.name} — ${data.model} | Latios` : "Latios",
     data ? `${data.tagline} Explore the ${data.name} range from Latios.` : ""
@@ -184,7 +220,22 @@ export default function ProductPage() {
       {data.families && (
         <section className="max-w-[1600px] mx-auto px-6 md:px-12 pb-24 md:pb-36" data-testid="models-section">
           {data.families.length > 1 && <FamilyAccordion families={data.families} />}
-          {data.families.map((fam, fi) => (
+          {(() => {
+            const all = data.families.flatMap((f) => f.models);
+            const counts = {
+              all: all.length,
+              amd: all.filter((m) => getVendor(m) === "amd").length,
+              intel: all.filter((m) => getVendor(m) === "intel").length,
+            };
+            // Only offer the split where both platforms are actually sold.
+            return counts.amd > 0 && counts.intel > 0 ? (
+              <VendorFilter value={vendor} onChange={setVendor} counts={counts} />
+            ) : null;
+          })()}
+          {data.families.map((fam, fi) => {
+            const models = fam.models.filter((m) => vendor === "all" || getVendor(m) === vendor);
+            if (!models.length) return null; // hide a family with nothing in the active range
+            return (
             <div key={fam.title} id={`family-${fi}`} className={`scroll-mt-28 ${fi > 0 ? "mt-24 md:mt-32" : ""}`}>
               <Reveal>
                 <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">{fam.kicker}</p>
@@ -194,7 +245,7 @@ export default function ProductPage() {
                 <p className="text-zinc-400 max-w-2xl mb-14 leading-relaxed">{fam.blurb}</p>
               </Reveal>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                {fam.models.map((m, i) => (
+                {models.map((m, i) => (
                   <Reveal key={m.name} delay={i * 0.06}>
                     <Link
                       to={`/${data.slug}/${m.slug}`}
@@ -235,7 +286,8 @@ export default function ProductPage() {
                 ))}
               </div>
             </div>
-          ))}
+            );
+          })}
         </section>
       )}
 

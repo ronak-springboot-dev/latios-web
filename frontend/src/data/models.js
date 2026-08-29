@@ -1,10 +1,12 @@
 const MT_GALLERY = [
   "/images/dp180-1.webp",
   "/images/dp180-2.webp",
-  "/images/dp180-3.webp",
-  "/images/dp180-4.webp",
 ];
-const SFF_GALLERY = ["/images/dp80-1.webp", "/images/dp80-2.webp"];
+const SFF_GALLERY = [
+  "/images/dp80-1.webp",
+  "/images/dp80-2.webp",
+  "/images/dp80-3.webp",
+];
 const MFF_GALLERY = ["/images/dp10-1.webp", "/images/dp10-2.webp"];
 
 const MT_FEATURES = [
@@ -12,25 +14,25 @@ const MT_FEATURES = [
     kicker: "Performance",
     heading: "Performance that keeps up with you",
     body: "Latest-generation processors, dual-channel memory and NVMe storage keep heavy multitasking instant — from sprawling spreadsheets to overnight render queues.",
-    image: "/images/perf.png",
+    image: "/images/perf.webp",
   },
   {
     kicker: "Connectivity",
     heading: "A complete array of I/O",
     body: "Front USB-C and USB-A within easy reach; HDMI 2.1, DisplayPort, legacy VGA and PS/2 at the back. New docks and decade-old projectors both plug straight in.",
-    image: "/images/io-right.png",
+    image: "/images/io-right.webp",
   },
   {
     kicker: "Serviceability",
     heading: "Easy to upgrade design",
     body: "Quick access to memory, M.2, 2.5-inch and 3.5-inch bays means upgrades and servicing take minutes — keeping fleets current for years, not cycles.",
-    image: "/images/easy.png",
+    image: "/images/easy.webp",
   },
   {
     kicker: "Security",
     heading: "Secure inside and out",
     body: "Hardware TPM 2.0 encryption, Kensington and padlock points, and Latios Center keeping hardware health visible to IT at all times.",
-    image: "/images/chassis.png",
+    image: "/images/chassis.webp",
   },
 ];
 
@@ -39,25 +41,25 @@ const SFF_FEATURES = [
     kicker: "Design",
     heading: "Compact. Sleek. Powerful.",
     body: "Eight litres that disappear into any workspace — under the desk, behind the monitor, or standing slim beside it.",
-    image: "/images/office.png",
+    image: "/images/office.webp",
   },
   {
     kicker: "Placement",
     heading: "Versatile placement",
     body: "Position it vertically or horizontally; the chassis is designed to look deliberate either way, with thermals that cope with both.",
-    image: "/images/versatile.png",
+    image: "/images/versatile.webp",
   },
   {
     kicker: "Everyday",
     heading: "Speaker and card reader, built in",
     body: "Clear audio for calls and notifications, plus SD and microSD support up front — no dongles, no desk clutter.",
-    image: "/images/speaker.png",
+    image: "/images/speaker.webp",
   },
   {
     kicker: "Security",
     heading: "Secure inside and out",
     body: "Hardware TPM 2.0, chassis lock points and Latios Center diagnostics — small footprint, enterprise posture.",
-    image: "/images/chassis.png",
+    image: "/images/chassis.webp",
   },
 ];
 
@@ -104,7 +106,7 @@ const PROMAX_FEATURES = [
 ];
 
 const MT_HERO = "/images/banner/banner-board-1.jpg";
-const SFF_HERO = "/images/dp80kv.jpg";
+const SFF_HERO = "/images/dp80kv.webp";
 const MFF_HERO = "/images/dp10kv.jpg";
 const PROMAX_HERO = "/images/rtx.jpg";
 
@@ -120,7 +122,7 @@ export const TOWERS_FAMILIES = [
         slug: "mt-amd-am4",
         name: "Latios MT — AMD AM4",
         tag: "Ryzen 5000 · DDR4",
-        image: "/images/dp180-3.webp",
+        image: "/images/dp180-1.webp",
         gallery: MT_GALLERY,
         heroImage: MT_HERO,
         chips: ["Ryzen 7 5700G", "64GB DDR4", "Wi-Fi 6E"],
@@ -318,7 +320,7 @@ export const TOWERS_FAMILIES = [
         slug: "mt-pro-h610-ddr5",
         name: "Latios Pro MT — Intel H610 DDR5",
         tag: "14th Gen · DDR5 · Pro",
-        image: "/images/dp180-4.webp",
+        image: "/images/dp180-2.webp",
         gallery: MT_GALLERY,
         heroImage: MT_HERO,
         chips: ["Core i7-14700", "64GB DDR5", "RTX A4000"],
@@ -384,7 +386,7 @@ export const TOWERS_FAMILIES = [
         slug: "mt-q670-ddr5",
         name: "Latios MT — Intel Q670 DDR5",
         tag: "12th–14th Gen · Q670",
-        image: "/images/dp180-4.webp",
+        image: "/images/dp180-2.webp",
         gallery: MT_GALLERY,
         heroImage: MT_HERO,
         chips: ["Core i9-14900", "Intel Q670", "RTX A4000"],
@@ -913,7 +915,7 @@ export const TOWERS_FAMILIES = [
         slug: "promax-t2-w880",
         name: "PROMAX T2 AI — Intel W880",
         tag: "Core Ultra K · ECC",
-        image: "/images/dp180-3.webp",
+        image: "/images/dp180-1.webp",
         gallery: MT_GALLERY,
         heroImage: PROMAX_HERO,
         chips: ["Core Ultra 9 285K", "256GB ECC", "Dual 2.5G LAN"],
@@ -971,7 +973,7 @@ export const TOWERS_FAMILIES = [
         slug: "promax-t2-w680",
         name: "PROMAX T2 — Intel W680",
         tag: "14th Gen K · 256GB",
-        image: "/images/dp180-4.webp",
+        image: "/images/dp180-2.webp",
         gallery: MT_GALLERY,
         heroImage: PROMAX_HERO,
         chips: ["Core i9-14900K", "256GB ECC", "RTX A6000"],
@@ -1241,8 +1243,12 @@ export const LAPTOPS_FAMILY = {
       slug: "archer-ltg540z",
       name: "Latios Archer — LTG540Z",
       tag: "16\u2033 2.5K 300Hz · up to RTX 5080",
-      image: "/images/laptop-archer.jpg",
-      gallery: ["/images/laptop-archer.jpg", "/images/laptops-hero.jpg"],
+      image: "/images/laptop-archer-1.webp",
+      gallery: [
+        "/images/laptop-archer-1.webp",
+        "/images/laptop-archer-2.webp",
+        "/images/laptop-archer-3.webp",
+      ],
       heroImage: "/images/laptop-archer.jpg",
       chips: ["Ultra 9 200HX", "RTX 5080", "300Hz Mini LED"],
       stats: [
@@ -1705,6 +1711,22 @@ export const getCategoryModels = (cat) =>
   ALL_FAMILIES.flatMap((f) => f.models).filter((m) => m.category === cat);
 
 export const ALL_MODELS = ALL_FAMILIES.flatMap((f) => f.models);
+
+/**
+ * CPU platform a model is built on — used to browse the Ryzen and Intel ranges
+ * separately on the category pages. Derived from the model's own name/tag/chips
+ * rather than a hand-maintained field, so a newly added SKU is classified without
+ * a second edit. Returns "amd" | "intel" | null (null = not a CPU product, e.g.
+ * the audio and video lines).
+ */
+export const getVendor = (m) => {
+  const hay = `${m.name} ${m.tag} ${(m.chips || []).join(" ")}`.toLowerCase();
+  if (/\b(ryzen|amd|am4|am5)\b/.test(hay)) return "amd";
+  if (/\b(intel|core|xeon|h610|h810|b860|q670|q870|w680|w780|w880)\b/.test(hay)) return "intel";
+  return null;
+};
+
+export const VENDOR_LABELS = { amd: "AMD Ryzen", intel: "Intel Core" };
 export const DATASHEETS = {
   "mt-amd-am4": "/datasheets/mt-amd-am4.pdf",
   "mt-h610-ddr4": "/datasheets/mt-h610-ddr4.pdf",

@@ -99,6 +99,15 @@ credentials.json
 deploy/nginx.active.conf
 deploy/certbot-www/
 
+# One-time image-processing tool's output: intermediate copies of files already
+# committed under frontend/public/images/ — no need to duplicate the binaries.
+tools/image-processing/output/
+
 # .env.sample templates hold no secrets and should stay committed, even though
 # the .env.* rule above would otherwise catch them too.
 !**/.env.sample
+
+# Local-only image tooling scratch (models/venv/renders are large and machine-specific)
+tools/image-processing/generated/
+tools/image-processing/uploads/
+tools/image-processing/preview/
