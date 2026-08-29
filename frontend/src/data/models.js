@@ -1,11 +1,13 @@
 const MT_GALLERY = [
   "/images/dp180-1.webp",
   "/images/dp180-2.webp",
+  "/images/dp180-3.webp",
 ];
 const SFF_GALLERY = [
   "/images/dp80-1.webp",
   "/images/dp80-2.webp",
   "/images/dp80-3.webp",
+  "/images/dp80-4.webp",
 ];
 const MFF_GALLERY = ["/images/dp10-1.webp", "/images/dp10-2.webp"];
 
@@ -1248,6 +1250,7 @@ export const LAPTOPS_FAMILY = {
         "/images/laptop-archer-1.webp",
         "/images/laptop-archer-2.webp",
         "/images/laptop-archer-3.webp",
+        "/images/laptop-archer-4.webp",
       ],
       heroImage: "/images/laptop-archer.jpg",
       chips: ["Ultra 9 200HX", "RTX 5080", "300Hz Mini LED"],
