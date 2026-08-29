@@ -22,7 +22,7 @@ export const SHOWCASE = {
         heading: "Fleets that stay current, not retired",
         desc: "Standard tools, standard parts, TPM 2.0 at the metal. Roll out hundreds of units knowing each one can be serviced or upgraded in minutes, not truck-rolls.",
         bullets: ["TPM 2.0 + secured firmware", "Tool-fast memory and drive access", "Legacy VGA / PS/2 alongside USB-C"],
-        image: "/images/ops.jpg",
+        image: "/images/ops.webp",
       },
       {
         id: "education",

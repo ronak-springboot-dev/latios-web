@@ -33,7 +33,7 @@ export const APPLICATIONS = [
     slug: "enterprise",
     title: "Enterprise",
     blurb: "Secure MT / SFF desktops with TPM 2.0 at scale",
-    image: "/images/ops.jpg",
+    image: "/images/ops.webp",
     intro:
       "From ten seats to ten thousand: Latios business desktops and monitors give IT teams consistent imaging, tool-friendly servicing and security baked into the metal.",
     points: [

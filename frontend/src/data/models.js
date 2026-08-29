@@ -76,13 +76,13 @@ const MFF_FEATURES = [
     kicker: "Displays",
     heading: "Triple display support",
     body: "Drive up to three monitors through HDMI, DisplayPort and the configurable port — a control-room layout from something pocketable.",
-    image: "/images/triple.png",
+    image: "/images/triple.webp",
   },
   {
     kicker: "Detail",
     heading: "Cable organizer design",
     body: "The included cable organizer keeps connections locked and tidy, even in tight or vibration-prone installations.",
-    image: "/images/cable.png",
+    image: "/images/cable.webp",
   },
 ];
 
@@ -97,13 +97,13 @@ const PROMAX_FEATURES = [
     kicker: "Memory",
     heading: "ECC memory at scale",
     body: "Error-correcting DDR5 in capacities ordinary desktops can't touch, keeping week-long computations honest.",
-    image: "/images/ddr5.jpg",
+    image: "/images/ddr5.webp",
   },
   {
     kicker: "Workflow",
     heading: "Drive every display",
     body: "Multiple 4K outputs for design walls, review suites and control rooms — one machine, every screen.",
-    image: "/images/display.jpg",
+    image: "/images/display.webp",
   },
 ];
 
@@ -115,7 +115,7 @@ const PROMAX_HERO = "/images/rtx.jpg";
 export const TOWERS_FAMILIES = [
   {
     kicker: "Business Desktops",
-    image: "/images/ops.jpg",
+    image: "/images/ops.webp",
     title: "The MT · SFF · MFF family.",
     blurb:
       "Eleven configurations spanning micro-tower, small-form-factor and a 1.1-litre mini PC — from Ryzen 3 to Core Ultra 9, with Wi-Fi 6E/7, TPM 2.0 and tool-friendly upgrade paths.",

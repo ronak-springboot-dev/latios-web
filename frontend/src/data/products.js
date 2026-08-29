@@ -79,14 +79,14 @@ export const CATEGORIES = [
         kicker: "Connectivity",
         heading: "Every port you'll ever need",
         body: "Two front USB-C Gen 2, USB-A and mic-in up front. HDMI 2.1 with 4K@60, DisplayPort 1.4, optional VGA, gigabit LAN, PS/2 and triple audio jacks at the back — plus Wi-Fi 6E for cable-free fleets.",
-        image: "/images/ops.jpg",
+        image: "/images/ops.webp",
       },
       {
         n: "03",
         kicker: "Security & Software",
         heading: "TPM 2.0 meets Latios Center",
         body: "Firmware TPM 2.0 encryption, Kensington and padlock points, military-grade certified durability. Latios Center monitors hardware, frees memory and recovers the system; Latios Cloud Center syncs and shares files across your team.",
-        image: "/images/home-setup.png",
+        image: "/images/home-setup.webp",
       },
     ],
     specs: [
