@@ -21,7 +21,7 @@ So the edit is not used wholesale:
 """
 import numpy as np
 from pathlib import Path
-from PIL import Image, ImageFilter, ImageDraw
+from PIL import Image, ImageFilter, ImageDraw, ImageChops
 
 IMAGES = Path(r"C:\Ronak\latios-web\frontend\public\images")
 G = Path(__file__).parent / "generated"
@@ -58,7 +58,14 @@ def match_palette(edit, orig, mask):
     return Image.fromarray(np.clip(out, 0, 255).astype(np.uint8))
 
 
-def merge(orig_path, edit_path, out_path, thresh=14):
+def merge(orig_path, edit_path, out_path, thresh=14, region=None):
+    """
+    `region` = (x0, y0, x1, y1) confines the edit to the area around the product.
+
+    Without it the model's incidental changes elsewhere come along too — on the
+    home-office scene it invented a second mouse and put a mark on the monitor
+    bezel. Everything outside the region reverts to the original room.
+    """
     orig = Image.open(orig_path).convert("RGB")
     edit = Image.open(edit_path).convert("RGB").resize(orig.size, Image.LANCZOS)
 
@@ -73,6 +80,11 @@ def merge(orig_path, edit_path, out_path, thresh=14):
         mask = change_mask(orig, graded, thresh=thresh)
         graded = match_palette(edit, orig, mask)
     mask = change_mask(orig, graded, thresh=thresh)
+    if region:
+        keep = Image.new("L", orig.size, 0)
+        ImageDraw.Draw(keep).rectangle(region, fill=255)
+        keep = keep.filter(ImageFilter.GaussianBlur(10))
+        mask = ImageChops.multiply(mask, keep)
     merged = Image.composite(graded, orig, mask)
     merged.save(out_path)
     cover = np.asarray(mask).mean() / 255.0
