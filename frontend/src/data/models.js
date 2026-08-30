@@ -1854,6 +1854,29 @@ export const ALL_MODELS = ALL_FAMILIES.flatMap((f) => f.models);
  * a second edit. Returns "amd" | "intel" | null (null = not a CPU product, e.g.
  * the audio and video lines).
  */
+/**
+ * Product loop video for a model, if its chassis has actually been photographed.
+ *
+ * Keyed on the gallery's lead frame rather than the slug: the clips are built
+ * from the real photographs of a physical chassis (tools/image-processing/
+ * make_video.py), so every SKU sharing that chassis shares its footage. Three
+ * photographed products cover 15 of the 28 models this way, with no per-model
+ * field to maintain — the same reasoning as getVendor below.
+ *
+ * Products with no photographs deliberately return null and render no video,
+ * rather than borrowing another product's footage.
+ */
+const VIDEO_BY_CHASSIS = {
+  "/images/dp180-1.webp": ["/videos/mt-loop.mp4", "/images/posters/mt-loop.webp"],
+  "/images/dp80-1.webp": ["/videos/sff-loop.mp4", "/images/posters/sff-loop.webp"],
+  "/images/laptop-archer-1.webp": ["/videos/archer-loop.mp4", "/images/posters/archer-loop.webp"],
+};
+
+export const getVideo = (m) => {
+  const hit = VIDEO_BY_CHASSIS[m.gallery?.[0]];
+  return hit ? { src: hit[0], poster: hit[1] } : null;
+};
+
 export const getVendor = (m) => {
   const hay = `${m.name} ${m.tag} ${(m.chips || []).join(" ")}`.toLowerCase();
   if (/\b(ryzen|amd|am4|am5)\b/.test(hay)) return "amd";

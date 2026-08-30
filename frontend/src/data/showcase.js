@@ -1,7 +1,10 @@
 export const SHOWCASE = {
   "mt-amd-am4": {
     bannerImage: "/images/banner/banner-amd-1.jpg",
-    videoSrc: "/videos/mt-amd-am4-loop.mp4",
+    // Was a 4.9MB clip with a pointless AAC track behind a muted player.
+    // Replaced by the MT loop built from the real chassis photographs.
+    videoSrc: "/videos/mt-loop.mp4",
+    videoPoster: "/images/posters/mt-loop.webp",
     bannerHeadline: "Engineered for the everyday enterprise.",
     bannerSubline:
       "AMD Ryzen 5000G processing with Radeon graphics, wrapped in an 18-litre chassis your IT team can open in seconds.",

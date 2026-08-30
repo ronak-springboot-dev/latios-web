@@ -7,7 +7,8 @@ import { Reveal } from "@/components/Reveal";
 import { ParallaxImage } from "@/components/ParallaxImage";
 import { ModelTurntable } from "@/components/ModelTurntable";
 import { ModelShowcase } from "@/components/ModelShowcase";
-import { getModel, getCategoryModels, DATASHEETS, ALL_MODELS } from "@/data/models";
+import { ProductVideo } from "@/components/ProductVideo";
+import { getModel, getCategoryModels, DATASHEETS, ALL_MODELS, getVideo } from "@/data/models";
 import { SHOWCASE } from "@/data/showcase";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
@@ -37,6 +38,9 @@ export default function ModelPage() {
   const others = getCategoryModels(model.category).filter((m) => m.slug !== model.slug);
   const datasheet = DATASHEETS[model.slug];
   const showcase = SHOWCASE[model.slug];
+  // Loop footage for this chassis, if it has been photographed. Showcase pages
+  // render their own video, so this only applies to the standard overview.
+  const video = getVideo(model);
 
   const scrollToContact = () => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
 
@@ -325,6 +329,10 @@ export default function ModelPage() {
           </div>
         ))}
       </section>
+
+      {video && (
+        <ProductVideo src={video.src} poster={video.poster} modelName={model.name} />
+      )}
     </>
   );
 

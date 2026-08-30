@@ -23,6 +23,18 @@ export const ProductVideo = ({ src, poster, modelName, heading, subline }) => {
       setVisible(true); // no observer support: just load it
       return;
     }
+
+    // Already on screen at mount? Don't wait for the observer to tell us.
+    const near = () => {
+      const r = el.getBoundingClientRect();
+      const h = window.innerHeight || document.documentElement.clientHeight || 0;
+      return r.top < h + 300 && r.bottom > -300;
+    };
+    if (near()) {
+      setVisible(true);
+      return;
+    }
+
     const io = new IntersectionObserver(
       (entries) => {
         if (entries.some((e) => e.isIntersecting)) {
@@ -33,7 +45,24 @@ export const ProductVideo = ({ src, poster, modelName, heading, subline }) => {
       { rootMargin: "300px" } // start fetching just before it comes into view
     );
     io.observe(el);
-    return () => io.disconnect();
+
+    // Safety net. The observer existing is not the same as the observer firing:
+    // some embedded/preview webviews expose IntersectionObserver but never
+    // deliver callbacks, and there the clip would simply never appear. Poll
+    // cheaply as a backstop so the video is never permanently stuck behind its
+    // poster — this costs one rect read per second and stops as soon as it hits.
+    const poll = setInterval(() => {
+      if (near()) {
+        setVisible(true);
+        clearInterval(poll);
+        io.disconnect();
+      }
+    }, 1000);
+
+    return () => {
+      clearInterval(poll);
+      io.disconnect();
+    };
   }, []);
 
   if (!src) return null;
