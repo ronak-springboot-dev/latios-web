@@ -60,9 +60,14 @@ export default {
         "The T4 Plus is specified around its parts rather than shipped as a " +
         "sealed unit. Memory, storage, cooling and power are all chosen at order " +
         "and all replaceable in service.",
-      // parts[] is filled by tools/image-processing/gen_components.py as the
-      // renders land; the section self-hides until then rather than showing gaps.
-      parts: [],
+      video: "/videos/components-loop.mp4",
+      poster: "/images/posters/components-loop.webp",
+      parts: [
+        { name: "DDR5 ECC module", note: "Up to 2TB across the Xeon W channel count", image: "/images/components/ddr5.webp" },
+        { name: "M.2 NVMe drive", note: "Gen5 boot and scratch, RAID options", image: "/images/components/m2.webp" },
+        { name: "Tower air cooler", note: "Sized for sustained all-core load", image: "/images/components/cooler.webp" },
+        { name: "Modular PSU", note: "Dual redundant supplies totalling 2700W", image: "/images/components/psu.webp" },
+      ],
     },
 
     {
