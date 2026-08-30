@@ -37,19 +37,30 @@ export default {
     },
 
     {
-      type: "bleed",
+      // Replaces two weak sections: a bleed using the dark mesh-window photo and
+      // the airflow loop. Both were flat images of a black box; this shows the
+      // thing they were trying to describe. Scrubbed by scroll rather than
+      // played, so the reader controls the reveal.
+      type: "reveal",
+      manifest: { frames: 48, width: 1600, height: 1600, pattern: "/reveal/mt/{i}.webp" },
+      height: 260,
       kicker: "Serviceability",
-      heading: "The panel comes off by hand.",
+      heading: "It opens by hand.",
       body:
-        "No screwdriver, no service manual. Memory, the M.2 slot and both drive " +
-        "bays are reachable from one side, which is the difference between a " +
-        "desk-side upgrade and a truck roll.",
-      image: "/images/details/mt-inside.webp",
+        "No screwdriver, no service manual. Scroll to take the panel off and see " +
+        "what a technician sees.",
+      steps: [
+        { at: 0.00, label: "Closed", text: "312 × 166 × 354 mm, 7.59 kg. An 18-litre box that sits under a desk without asking for room." },
+        { at: 0.30, label: "Panel off", text: "One hand-removable side panel. No tools, and nothing to lose on the floor." },
+        { at: 0.55, label: "Cooling", text: "A tower cooler over the socket with a clear intake path from the front mesh." },
+        { at: 0.75, label: "Memory and storage", text: "Two DDR4 U-DIMM slots, an M.2 slot, plus 2.5-inch and 3.5-inch bays — all reachable from this side." },
+        { at: 0.92, label: "Expansion", text: "Full-height slots and a 500W 80+ Bronze supply, so a discrete Radeon card goes in later without a new chassis." },
+      ],
     },
 
     {
       type: "ioMap",
-      image: "/images/details/mt-side.webp",
+      image: "/images/dp180-2.webp",
       heading: "New docks and decade-old projectors.",
       body:
         "The reason this chassis outlives its purchase order: USB-C Gen 2 at the " +
@@ -115,25 +126,6 @@ export default {
       type: "compare",
       heading: "AM4, or one of the Intel boards?",
       rows: ["CPU options", "Chipset", "Memory", "Graphics"],
-    },
-
-    {
-      // Replaces the turntable that used to sit here. All three MT source photos
-      // are side and back panels — no front shot exists — so the turntable read
-      // as a dark slab rotating. This says something the photography cannot.
-      type: "thermal",
-      src: "/videos/mt-airflow.mp4",
-      poster: "/images/posters/mt-airflow.webp",
-      heading: "You can see it breathe.",
-      body:
-        "Cool air drawn across the board, heat carried straight out the back. " +
-        "The 18-litre chassis is vented on three faces so the fan never has to " +
-        "work hard enough for the office to notice.",
-      stats: [
-        ["3 faces", "Vented — front intake, side mesh, rear exhaust"],
-        ["Fan cooler", "Tuned for sustained boost, not short bursts"],
-        ["500W", "80+ Bronze, with headroom for a discrete card"],
-      ],
     },
 
     { type: "specTeaser" },

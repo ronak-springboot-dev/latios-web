@@ -15,6 +15,7 @@ import {
   PdpBleed, PdpStickySplit, PdpCompare, PdpIoMap, PdpExploded, PdpSpecTeaser,
   PdpThermal,
 } from "./sections";
+import { PdpReveal } from "./PdpReveal";
 import { getTheme, themeVars } from "./theme";
 
 const REGISTRY = {
@@ -30,6 +31,7 @@ const REGISTRY = {
   ioMap: PdpIoMap,
   exploded: PdpExploded,
   thermal: PdpThermal,
+  reveal: PdpReveal,
   specTeaser: PdpSpecTeaser,
   video: ProductVideo,
 };
