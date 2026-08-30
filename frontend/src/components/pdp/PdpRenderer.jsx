@@ -16,6 +16,7 @@ import {
   PdpThermal,
 } from "./sections";
 import { PdpReveal } from "./PdpReveal";
+import { PdpWalkthrough } from "./PdpWalkthrough";
 import { getTheme, themeVars } from "./theme";
 
 const REGISTRY = {
@@ -32,6 +33,7 @@ const REGISTRY = {
   exploded: PdpExploded,
   thermal: PdpThermal,
   reveal: PdpReveal,
+  walkthrough: PdpWalkthrough,
   specTeaser: PdpSpecTeaser,
   video: ProductVideo,
 };
