@@ -11,106 +11,236 @@ const SFF_GALLERY = [
 ];
 const MFF_GALLERY = ["/images/dp10-1.webp", "/images/dp10-2.webp"];
 
-const MT_FEATURES = [
-  {
-    kicker: "Performance",
-    heading: "Performance that keeps up with you",
-    body: "Latest-generation processors, dual-channel memory and NVMe storage keep heavy multitasking instant — from sprawling spreadsheets to overnight render queues.",
-    image: "/images/perf.webp",
-  },
-  {
-    kicker: "Connectivity",
-    heading: "A complete array of I/O",
-    body: "Front USB-C and USB-A within easy reach; HDMI 2.1, DisplayPort, legacy VGA and PS/2 at the back. New docks and decade-old projectors both plug straight in.",
-    image: "/images/io-right.webp",
-  },
-  {
-    kicker: "Serviceability",
-    heading: "Easy to upgrade design",
-    body: "Quick access to memory, M.2, 2.5-inch and 3.5-inch bays means upgrades and servicing take minutes — keeping fleets current for years, not cycles.",
-    image: "/images/easy.webp",
-  },
-  {
-    kicker: "Security",
-    heading: "Secure inside and out",
-    body: "Hardware TPM 2.0 encryption, Kensington and padlock points, and Latios Center keeping hardware health visible to IT at all times.",
-    image: "/images/chassis.webp",
-  },
-];
+// ---------------------------------------------------------------------------
+// Per-model art and feature chapters.
+//
+// Every tower model used to share one MT_FEATURES / SFF_FEATURES /
+// PROMAX_FEATURES array and one hero image, so all six MT pages rendered the
+// same four pictures under the same four paragraphs. The chassis genuinely IS
+// the same box across a family - only the board, CPU and memory differ - so the
+// differentiation belongs where the products actually differ: the silicon, the
+// memory generation, the graphics option and the copy. Chassis photography
+// stays real and shared; inventing a different-looking box per SKU would
+// misrepresent the hardware.
+//
+// Component art under /images/components/ is CROPPED FROM REAL PHOTOGRAPHS,
+// never generated - an image model cannot render an Intel or AMD wordmark
+// reliably, and the crops also put third-party board branding outside frame.
+// Shots under /images/details/ are the real Latios units from the product
+// photography, with the MSI PRO badge on the sample chassis patched out.
+// ---------------------------------------------------------------------------
+const ART = {
+  // Real silicon, cropped from photographs
+  cpuAmdAm4: "/images/components/cpu-amd-am4.webp", // Ryzen 7 in a real Socket AM4, DDR4 silkscreen
+  cpuAmd: "/images/components/cpu-amd.webp",
+  cpuIntel: "/images/components/cpu-intel.webp",
+  gpu: "/images/components/gpu-pro.webp",
+  gpu2: "/images/components/gpu-pro-2.webp",
+  board: "/images/components/board-neutral.webp",
+  pcb: "/images/components/pcb-macro.webp",
+  // Real Latios hardware, detail shots
+  mtInside: "/images/details/mt-inside.webp",
+  mtPanel: "/images/details/mt-panel.webp",
+  mtSide: "/images/details/mt-side.webp",
+  sffVent: "/images/details/sff-vent.webp",
+  sffBase: "/images/details/sff-base.webp",
+  sffLabel: "/images/details/sff-label.webp",
+  // Brand-free environment / component art
+  ddr5: "/images/ddr5.webp",
+  perf: "/images/perf.webp",
+  io: "/images/io-right.webp",
+  easy: "/images/easy.webp",
+  chassis: "/images/chassis.webp",
+  office: "/images/office.webp",
+  versatile: "/images/versatile.webp",
+  speaker: "/images/speaker.webp",
+  display: "/images/display.webp",
+  triple: "/images/triple.webp",
+  cable: "/images/cable.webp",
+};
 
-const SFF_FEATURES = [
-  {
-    kicker: "Design",
-    heading: "Compact. Sleek. Powerful.",
-    body: "Eight litres that disappear into any workspace — under the desk, behind the monitor, or standing slim beside it.",
-    image: "/images/office.webp",
-  },
-  {
-    kicker: "Placement",
-    heading: "Versatile placement",
-    body: "Position it vertically or horizontally; the chassis is designed to look deliberate either way, with thermals that cope with both.",
-    image: "/images/versatile.webp",
-  },
-  {
-    kicker: "Everyday",
-    heading: "Speaker and card reader, built in",
-    body: "Clear audio for calls and notifications, plus SD and microSD support up front — no dongles, no desk clutter.",
-    image: "/images/speaker.webp",
-  },
-  {
-    kicker: "Security",
-    heading: "Secure inside and out",
-    body: "Hardware TPM 2.0, chassis lock points and Latios Center diagnostics — small footprint, enterprise posture.",
-    image: "/images/chassis.webp",
-  },
-];
+const ch = (kicker, heading, body, image) => ({ kicker, heading, body, image });
 
-const MFF_FEATURES = [
-  {
-    kicker: "Size",
-    heading: "Power in the palm of your hand",
-    body: "A full Windows 11 Pro PC in 1.1 litres. VESA-mount it behind a monitor and the desk is yours again.",
-    image: "/images/palm.jpg",
-  },
-  {
-    kicker: "Displays",
-    heading: "Triple display support",
-    body: "Drive up to three monitors through HDMI, DisplayPort and the configurable port — a control-room layout from something pocketable.",
-    image: "/images/triple.webp",
-  },
-  {
-    kicker: "Detail",
-    heading: "Cable organizer design",
-    body: "The included cable organizer keeps connections locked and tidy, even in tight or vibration-prone installations.",
-    image: "/images/cable.webp",
-  },
-];
+const FEATURES = {
+  // ---- MT micro-tower (18 L) ----------------------------------------------
+  "mt-amd-am4": [
+    ch("Processor", "Eight Ryzen cores, Radeon graphics on the die",
+       "The Ryzen 7 5700G tops a Socket AM4 line-up that runs down to the Ryzen 3 5305G. Radeon graphics are built into the processor, so most fleets never need a discrete card at all.", ART.cpuAmdAm4),
+    ch("Memory", "Dual-channel DDR4-3200, up to 64GB",
+       "Two U-DIMM slots on the AMD Pro 500 chipset. Ship a desk at 16GB today and take it to 64GB years later without changing anything else in the box.", ART.board),
+    ch("Serviceability", "Open it by hand, in seconds",
+       "The side panel comes off without a screwdriver. Memory, the M.2 slot, the 2.5-inch and the 3.5-inch bays are all reachable from that one side.", ART.mtInside),
+    ch("Security", "TPM 2.0 at the metal",
+       "A hardware root-of-trust, a Kensington slot and a padlock loop, with Latios Center reporting hardware health back to IT across the fleet.", ART.mtPanel),
+  ],
+  "mt-h610-ddr4": [
+    ch("Processor", "One socket, an i3 kiosk to a 24-core i9",
+       "Intel 12th through 14th generation on the H610 chipset. The same chassis takes a Core i3 for a reception kiosk and a Core i9-14900 for a CAD seat.", ART.cpuIntel),
+    ch("Memory", "DDR4, where budget matters more than bus width",
+       "64GB of DDR4-3200 keeps platform cost down without capping the processor. The saving goes into cores and the optional professional graphics card instead.", ART.pcb),
+    ch("Graphics", "Room for an RTX A4000",
+       "A full-height slot and a 500W 80+ Bronze supply, so a professional card drops in the day the workload arrives rather than the day the machine is replaced.", ART.gpu),
+    ch("Serviceability", "Everything reached from one side",
+       "Quick-access panel, tool-free drive bays and standard ATX parts. The fleet stays current for years instead of cycling out on schedule.", ART.mtPanel),
+  ],
+  "mt-h610-ddr5": [
+    ch("Processor", "The same Core i9, on a faster bus",
+       "Intel 12th to 14th generation up to the Core i9-14900, paired here with DDR5 rather than DDR4. This is the configuration to choose when memory bandwidth is the bottleneck.", ART.cpuIntel),
+    ch("Memory", "64GB of DDR5 at 5600 MT/s",
+       "Dual-channel DDR5-5600 moves considerably more data per cycle than the DDR4 build of the same machine, which shows up in simulation, large datasets and heavy virtualisation.", ART.ddr5),
+    ch("Security", "Hardware TPM 2.0, standard",
+       "Secured firmware, a discrete TPM 2.0 module and physical lock points. The baseline for Windows 11 Pro fleet deployment, present on every unit.", ART.mtInside),
+    ch("Serviceability", "Upgrades measured in minutes",
+       "Memory, M.2 and both drive bays sit behind one panel, so a capacity change is a desk-side job rather than a truck roll.", ART.easy),
+  ],
+  "mt-pro-h610-ddr5": [
+    ch("Processor", "Core i7-14700, tuned for sustained load",
+       "Twenty cores of 14th-generation Intel with a cooling profile set for all-day boost rather than short bursts. This is the Pro build of the H610 DDR5 platform.", ART.cpuIntel),
+    ch("Graphics", "Professional graphics, certified drivers",
+       "An RTX A4000-class card fits the full-height slot, bringing certified drivers for CAD, design review and visualisation work that consumer cards are never validated for.", ART.gpu2),
+    ch("Memory", "64GB DDR5, dual channel",
+       "DDR5 across two slots keeps the i7 fed through multi-application workloads without the memory subsystem becoming the limit.", ART.ddr5),
+    ch("Build", "An 18-litre box that opens flat",
+       "312 x 166 x 354 mm and 7.59 kg, with a panel that lifts away cleanly. Small enough to sit under a desk, serviceable enough to keep for a decade.", ART.mtSide),
+  ],
+  "mt-q670-ddr5": [
+    ch("Chipset", "Q670: the chipset IT actually asks for",
+       "The business chipset of the range. Where H610 covers the desk, Q670 adds the manageability and lane count that large managed fleets get specified around.", ART.board),
+    ch("Processor", "Up to a Core i9-14900",
+       "Intel 12th to 14th generation, unchanged from the H610 builds. The difference here is the platform underneath the processor, not the processor itself.", ART.cpuIntel),
+    ch("Memory", "DDR5 at full chipset bandwidth",
+       "Dual-channel DDR5 with the extra PCIe and storage lanes Q670 provides, so memory and storage expansion do not compete for the same budget.", ART.ddr5),
+    ch("Serviceability", "See the board, reach the board",
+       "The mesh window is not decoration. It sits over the component side, and the panel carrying it comes off by hand.", ART.mtInside),
+  ],
+  "mt-am5-pro-ai": [
+    ch("Processor", "Ryzen 7 8700G on Socket AM5",
+       "The AM5 platform with AMD 8000G series silicon: a current socket with an upgrade path ahead of it, rather than the end of the AM4 line.", ART.cpuAmd),
+    ch("AI", "Ryzen AI, on the processor",
+       "A dedicated NPU alongside the CPU and Radeon graphics. Local inference, background noise suppression and Copilot-class features run on-die instead of over the network.", ART.pcb),
+    ch("Memory", "DDR5, dual channel",
+       "AM5 is DDR5-only by design. No legacy memory path, and the full bandwidth the 8700G integrated graphics and NPU need to be worth having.", ART.ddr5),
+    ch("Serviceability", "The same 18-litre chassis, opened the same way",
+       "Whatever board is inside, the box behaves identically for IT: one panel, tool-free bays, standard parts.", ART.mtPanel),
+  ],
 
-const PROMAX_FEATURES = [
-  {
-    kicker: "Graphics",
-    heading: "Professional NVIDIA power",
-    body: "Up to NVIDIA RTX A6000-class graphics for CAD, simulation, 8K editing and local AI inference — certified drivers, workstation stability.",
-    image: "/images/rtx.jpg",
-  },
-  {
-    kicker: "Memory",
-    heading: "ECC memory at scale",
-    body: "Error-correcting DDR5 in capacities ordinary desktops can't touch, keeping week-long computations honest.",
-    image: "/images/ddr5.webp",
-  },
-  {
-    kicker: "Workflow",
-    heading: "Drive every display",
-    body: "Multiple 4K outputs for design walls, review suites and control rooms — one machine, every screen.",
-    image: "/images/display.webp",
-  },
-];
+  // ---- SFF small-form-factor (8 L) ----------------------------------------
+  "sff-h610-ddr5": [
+    ch("Design", "Eight litres that disappear into the desk",
+       "Under the desk, behind the monitor or standing slim beside it. A 9.3-litre footprint that a Core i7-14700 still fits inside.", ART.office),
+    ch("Processor", "Core i7-14700 in a small box",
+       "Twenty cores of 14th-generation Intel, cooled inside a chassis a fraction of the tower volume. No compromise on the processor to buy the footprint.", ART.cpuIntel),
+    ch("Thermal", "A vent wall, not a vent hole",
+       "The full side is perforated. Air is pulled across the board rather than around it, which is how a 500W TFX build stays quiet in a small volume.", ART.sffVent),
+    ch("Placement", "Vertical, horizontal, or mounted",
+       "Rubber feet on two faces and a chassis designed to look deliberate either way. The thermals hold in both orientations.", ART.sffBase),
+  ],
+  "sff-am5-pro-ai": [
+    ch("Processor", "Ryzen 7 8700G, eight litres",
+       "AM5 silicon with Radeon graphics and Ryzen AI onboard, in a chassis small enough to VESA-mount behind the display it drives.", ART.cpuAmd),
+    ch("AI", "An NPU where there is no room for a card",
+       "The small-form-factor argument against local AI used to be the missing graphics slot. Ryzen AI puts the accelerator on the processor instead.", ART.pcb),
+    ch("Thermal", "Perforated the full height",
+       "The vent wall does with surface area what a tower does with volume. Sustained boost clocks inside 8 litres depend on it.", ART.sffVent),
+    ch("Placement", "Deliberate in any orientation",
+       "Stand it, lay it, or hide it. The chassis is finished on every face because it will be seen from all of them.", ART.versatile),
+  ],
+  "sff-b860-pro-ai": [
+    ch("Processor", "Core Ultra 9 285 with Intel AI Boost",
+       "The Core Ultra generation: performance cores, efficiency cores and a dedicated NPU on one package, inside an 8-litre chassis.", ART.cpuIntel),
+    ch("Memory", "128GB of DDR5 in a small box",
+       "Twice the ceiling of the H810 build. Large datasets, many virtual machines or a heavily loaded browser estate all stop being a reason to buy a tower.", ART.ddr5),
+    ch("Connectivity", "Thunderbolt 4 at 40Gb/s",
+       "One cable for a docking station, an external storage array and dual 4K displays. This is the port that makes a small machine behave like a large one.", ART.io),
+    ch("Assurance", "Serialised, certified, traceable",
+       "Every unit carries its certification and serial data on the chassis: BEE, RoHS and EPR, manufactured and supported from Ahmedabad.", ART.sffLabel),
+  ],
+  "sff-h810-pro-ai": [
+    ch("Processor", "Core Ultra 9 285, NPU included",
+       "The same Core Ultra silicon as the B860 build on the leaner H810 platform. This is the configuration for volume desk rollouts rather than power users.", ART.cpuIntel),
+    ch("Networking", "Two 2.5G ports, not one",
+       "Dual 2.5-gigabit LAN for link redundancy, segregated management traffic or a second subnet, without spending the machine's only expansion slot on it.", ART.io),
+    ch("Memory", "64GB DDR5",
+       "Dual-channel DDR5 with headroom for the NPU workloads Core Ultra gets bought for, sized for the desk rather than the datacentre.", ART.ddr5),
+    ch("Thermal", "Quiet under sustained load",
+       "The perforated side wall and TFX supply hold the Core Ultra at its boost profile through a working day, in an open-plan office.", ART.sffVent),
+  ],
 
-const MT_HERO = "/images/banner/banner-board-1.jpg";
-const SFF_HERO = "/images/dp80kv.webp";
-const MFF_HERO = "/images/dp10kv.jpg";
-const PROMAX_HERO = "/images/rtx.jpg";
+  // ---- MFF mini PC (1.1 L) -------------------------------------------------
+  "mff-dp10": [
+    ch("Size", "A full Windows 11 Pro PC in 1.1 litres",
+       "VESA-mount it behind the monitor and the desk is yours again, without dropping to a thin client or giving up a desktop processor.", ART.cable),
+    ch("Displays", "Three monitors from a 1.1-litre box",
+       "HDMI, DisplayPort and a configurable third output drive a full control-room layout from something that fits in one hand.", ART.triple),
+    ch("Processor", "Core i7-14700 class performance",
+       "14th-generation Intel in a mini chassis. The point of the DP10 is that the footprint is the only thing that shrank.", ART.cpuIntel),
+    ch("Memory", "Up to 64GB DDR5 SO-DIMM",
+       "Laptop-format memory modules at desktop capacity, in slots that stay user-accessible rather than soldered down.", ART.ddr5),
+  ],
+
+  // ---- PROMAX workstations -------------------------------------------------
+  "promax-q870": [
+    ch("Graphics", "Up to RTX A6000-class graphics",
+       "Certified professional drivers and workstation-grade stability for CAD, simulation, 8K editing and local AI inference.", ART.gpu),
+    ch("Processor", "Core Ultra 9 285 with Intel AI Boost",
+       "Performance cores, efficiency cores and an on-package NPU. The entry point into the PROMAX range, and the first with AI acceleration as standard.", ART.cpuIntel),
+    ch("Memory", "128GB of DDR5",
+       "Enough headroom to hold a large scene, model or dataset entirely in memory, which is usually the difference between an interactive session and a batch job.", ART.ddr5),
+    ch("Workflow", "Drive every display in the room",
+       "Multiple 4K outputs for design walls, review suites and control rooms. One machine behind all of them.", ART.display),
+  ],
+  "promax-t2-w880": [
+    ch("Processor", "Core Ultra 9 285K, unlocked",
+       "The K-series part on the W880 workstation chipset: unlocked multipliers, and the thermal budget to actually use them.", ART.cpuIntel),
+    ch("Memory", "256GB of ECC DDR5",
+       "Error-correcting memory at a capacity ordinary desktops cannot reach. Week-long computations stay honest, and a bit flip does not silently poison a result.", ART.ddr5),
+    ch("Graphics", "Professional cards, certified",
+       "Full-height, full-length clearance and the power delivery a workstation card expects. Sized for the card, not the other way round.", ART.gpu2),
+    ch("Serviceability", "A workstation you can still open",
+       "Standard parts and hand-removable panels, so a 256GB memory upgrade three years in is a maintenance task rather than a procurement cycle.", ART.mtInside),
+  ],
+  "promax-t2-w680": [
+    ch("Processor", "Core i9-14900K, 24 cores",
+       "Eight performance cores and sixteen efficiency cores on the W680 chipset. The highest core count in the range before the Xeon W platform.", ART.cpuIntel),
+    ch("Graphics", "RTX A6000 ready",
+       "Slot clearance, power headroom and airflow specified around a full professional card, rather than accommodating one as an afterthought.", ART.gpu),
+    ch("Memory", "256GB ECC DDR5",
+       "W680 brings ECC to a Core-series platform: workstation memory integrity without moving to a Xeon socket and its price.", ART.ddr5),
+    ch("Build", "Built to be lived with",
+       "The panels, bays and cable routing are the ones the rest of the range uses, familiar to any technician who has opened a Latios tower before.", ART.mtSide),
+  ],
+  "promax-t4-plus": [
+    ch("Processor", "Xeon W-3400, the top of the range",
+       "The Xeon W platform: the highest core counts, the most PCIe lanes and the memory channels a four-card, multi-terabyte machine needs.", ART.cpuIntel),
+    ch("Memory", "Up to 2TB of ECC DDR5",
+       "Two terabytes of error-correcting memory across the full Xeon W channel count, for datasets that used to be a server-room problem.", ART.pcb),
+    ch("Power", "2700W, redundant",
+       "Dual redundant supplies totalling 2700W. A failed PSU becomes a scheduled swap instead of a stopped render queue.", ART.mtPanel),
+    ch("Graphics", "Multiple professional cards",
+       "Lane count and power for several full-size accelerators at once, which is what separates a workstation from a large desktop.", ART.gpu2),
+  ],
+};
+
+// Per-model hero. AMD models open on real AMD silicon, Intel models on real
+// Intel silicon, PROMAX on graphics, so no two adjacent models in a listing
+// lead with the same frame.
+const HERO = {
+  "mt-amd-am4": ART.cpuAmdAm4,
+  "mt-h610-ddr4": ART.cpuIntel,
+  "mt-h610-ddr5": ART.ddr5,
+  "mt-pro-h610-ddr5": ART.board,
+  "mt-q670-ddr5": ART.pcb,
+  "mt-am5-pro-ai": ART.cpuAmd,
+  "sff-h610-ddr5": "/images/dp80kv.webp",
+  "sff-am5-pro-ai": ART.cpuAmd,
+  "sff-b860-pro-ai": ART.cpuIntel,
+  "sff-h810-pro-ai": ART.board,
+  "mff-dp10": "/images/dp10kv.jpg",
+  "promax-q870": ART.gpu,
+  "promax-t2-w880": ART.gpu2,
+  "promax-t2-w680": ART.pcb,
+  "promax-t4-plus": ART.board,
+};
 
 export const TOWERS_FAMILIES = [
   {
@@ -126,7 +256,7 @@ export const TOWERS_FAMILIES = [
         tag: "Ryzen 5000 · DDR4",
         image: "/images/dp180-1.webp",
         gallery: MT_GALLERY,
-        heroImage: MT_HERO,
+        heroImage: HERO["mt-amd-am4"],
         chips: ["Ryzen 7 5700G", "64GB DDR4", "Wi-Fi 6E"],
         stats: [
           ["18 L", "Chassis volume"],
@@ -141,7 +271,7 @@ export const TOWERS_FAMILIES = [
           "2× DDR4 3200MHz, up to 64GB",
           "Up to 16GB Radeon RX graphics",
         ],
-        features: MT_FEATURES,
+        features: FEATURES["mt-amd-am4"],
         specGroups: [
           {
             group: "Processor",
@@ -190,9 +320,9 @@ export const TOWERS_FAMILIES = [
         slug: "mt-h610-ddr4",
         name: "Latios MT — Intel H610 DDR4",
         tag: "12th–14th Gen · DDR4",
-        image: "/images/dp180-1.webp",
+        image: "/images/dp180-2.webp",
         gallery: MT_GALLERY,
-        heroImage: MT_HERO,
+        heroImage: HERO["mt-h610-ddr4"],
         chips: ["Core i9-14900", "64GB DDR4", "RTX A4000"],
         stats: [
           ["18 L", "Chassis volume"],
@@ -207,7 +337,7 @@ export const TOWERS_FAMILIES = [
           "2× DDR4 3200MHz, up to 64GB",
           "Up to NVIDIA RTX A4000",
         ],
-        features: MT_FEATURES,
+        features: FEATURES["mt-h610-ddr4"],
         specGroups: [
           {
             group: "Processor",
@@ -256,9 +386,9 @@ export const TOWERS_FAMILIES = [
         slug: "mt-h610-ddr5",
         name: "Latios MT — Intel H610 DDR5",
         tag: "12th–14th Gen · DDR5",
-        image: "/images/dp180-2.webp",
+        image: "/images/dp180-3.webp",
         gallery: MT_GALLERY,
-        heroImage: MT_HERO,
+        heroImage: HERO["mt-h610-ddr5"],
         chips: ["Core i9-14900", "64GB DDR5", "TPM 2.0"],
         stats: [
           ["18 L", "Chassis volume"],
@@ -273,7 +403,7 @@ export const TOWERS_FAMILIES = [
           "2× DDR5 5600MHz, up to 64GB",
           "TPM 2.0 · military-grade certified",
         ],
-        features: MT_FEATURES,
+        features: FEATURES["mt-h610-ddr5"],
         specGroups: [
           {
             group: "Processor",
@@ -322,9 +452,9 @@ export const TOWERS_FAMILIES = [
         slug: "mt-pro-h610-ddr5",
         name: "Latios Pro MT — Intel H610 DDR5",
         tag: "14th Gen · DDR5 · Pro",
-        image: "/images/dp180-2.webp",
+        image: "/images/dp180-1.webp",
         gallery: MT_GALLERY,
-        heroImage: MT_HERO,
+        heroImage: HERO["mt-pro-h610-ddr5"],
         chips: ["Core i7-14700", "64GB DDR5", "RTX A4000"],
         stats: [
           ["18 L", "Chassis volume"],
@@ -339,7 +469,7 @@ export const TOWERS_FAMILIES = [
           "2× DDR5, up to 64GB",
           "dTPM 2.0 · hardware TPM support",
         ],
-        features: MT_FEATURES,
+        features: FEATURES["mt-pro-h610-ddr5"],
         specGroups: [
           {
             group: "Processor",
@@ -390,7 +520,7 @@ export const TOWERS_FAMILIES = [
         tag: "12th–14th Gen · Q670",
         image: "/images/dp180-2.webp",
         gallery: MT_GALLERY,
-        heroImage: MT_HERO,
+        heroImage: HERO["mt-q670-ddr5"],
         chips: ["Core i9-14900", "Intel Q670", "RTX A4000"],
         stats: [
           ["18 L", "Chassis volume"],
@@ -405,7 +535,7 @@ export const TOWERS_FAMILIES = [
           "2× DDR5 5600MHz, up to 64GB",
           "Up to NVIDIA RTX A4000",
         ],
-        features: MT_FEATURES,
+        features: FEATURES["mt-q670-ddr5"],
         specGroups: [
           {
             group: "Processor",
@@ -456,7 +586,7 @@ export const TOWERS_FAMILIES = [
         tag: "14th Gen · 9.3 litres",
         image: "/images/dp80-1.webp",
         gallery: SFF_GALLERY,
-        heroImage: SFF_HERO,
+        heroImage: HERO["sff-h610-ddr5"],
         chips: ["Core i7-14700", "64GB DDR5", "8 litres"],
         stats: [
           ["8 L", "Chassis volume"],
@@ -471,7 +601,7 @@ export const TOWERS_FAMILIES = [
           "2× DDR5, up to 64GB",
           "95 × 296 × 330 mm small form factor",
         ],
-        features: SFF_FEATURES,
+        features: FEATURES["sff-h610-ddr5"],
         specGroups: [
           {
             group: "Processor",
@@ -520,9 +650,9 @@ export const TOWERS_FAMILIES = [
         slug: "mt-am5-pro-ai",
         name: "Latios Pro AI MT — AMD AM5",
         tag: "Ryzen 8000G AI · DDR5",
-        image: "/images/dp180-1.webp",
+        image: "/images/dp180-3.webp",
         gallery: MT_GALLERY,
-        heroImage: MT_HERO,
+        heroImage: HERO["mt-am5-pro-ai"],
         chips: ["Ryzen 7 8700G", "Ryzen AI", "Wi-Fi 6E"],
         stats: [
           ["18 L", "Chassis volume"],
@@ -537,7 +667,7 @@ export const TOWERS_FAMILIES = [
           "2× DDR5 5200MHz, up to 64GB",
           "dTPM 2.0 · Wi-Fi 6E",
         ],
-        features: MT_FEATURES,
+        features: FEATURES["mt-am5-pro-ai"],
         specGroups: [
           {
             group: "Processor",
@@ -588,7 +718,7 @@ export const TOWERS_FAMILIES = [
         tag: "Ryzen 8000G AI · 8 litres",
         image: "/images/dp80-2.webp",
         gallery: SFF_GALLERY,
-        heroImage: SFF_HERO,
+        heroImage: HERO["sff-am5-pro-ai"],
         chips: ["Ryzen 7 8700G", "Ryzen AI", "8 litres"],
         stats: [
           ["8 L", "Chassis volume"],
@@ -603,7 +733,7 @@ export const TOWERS_FAMILIES = [
           "2× DDR5 5200MHz, up to 64GB",
           "Card reader + built-in speaker",
         ],
-        features: SFF_FEATURES,
+        features: FEATURES["sff-am5-pro-ai"],
         specGroups: [
           {
             group: "Processor",
@@ -652,9 +782,9 @@ export const TOWERS_FAMILIES = [
         slug: "sff-b860-pro-ai",
         name: "Latios Pro AI SFF — Intel B860",
         tag: "Core Ultra · NPU · 128GB",
-        image: "/images/dp80-1.webp",
+        image: "/images/dp80-3.webp",
         gallery: SFF_GALLERY,
-        heroImage: SFF_HERO,
+        heroImage: HERO["sff-b860-pro-ai"],
         chips: ["Core Ultra 9 285", "128GB DDR5", "Thunderbolt 4"],
         stats: [
           ["8 L", "Chassis volume"],
@@ -669,7 +799,7 @@ export const TOWERS_FAMILIES = [
           "4× DDR5, up to 128GB",
           "Thunderbolt 4 · dual 2.5G LAN",
         ],
-        features: SFF_FEATURES,
+        features: FEATURES["sff-b860-pro-ai"],
         specGroups: [
           {
             group: "Processor",
@@ -718,9 +848,9 @@ export const TOWERS_FAMILIES = [
         slug: "sff-h810-pro-ai",
         name: "Latios Pro AI SFF — Intel H810",
         tag: "Core Ultra · NPU · 64GB",
-        image: "/images/dp80-2.webp",
+        image: "/images/dp80-4.webp",
         gallery: SFF_GALLERY,
-        heroImage: SFF_HERO,
+        heroImage: HERO["sff-h810-pro-ai"],
         chips: ["Core Ultra 9 285", "64GB DDR5", "Dual 2.5G LAN"],
         stats: [
           ["8 L", "Chassis volume"],
@@ -735,7 +865,7 @@ export const TOWERS_FAMILIES = [
           "2× DDR5, up to 64GB",
           "Gen5 NVMe · dual 2.5G LAN",
         ],
-        features: SFF_FEATURES,
+        features: FEATURES["sff-h810-pro-ai"],
         specGroups: [
           {
             group: "Processor",
@@ -786,7 +916,7 @@ export const TOWERS_FAMILIES = [
         tag: "1.1L Mini PC · VESA",
         image: "/images/dp10-1.webp",
         gallery: MFF_GALLERY,
-        heroImage: MFF_HERO,
+        heroImage: HERO["mff-dp10"],
         chips: ["Core i7-14700", "1.1 litres", "Triple display"],
         stats: [
           ["1.1 L", "Chassis volume"],
@@ -801,7 +931,7 @@ export const TOWERS_FAMILIES = [
           "Triple display · dual 2.5G LAN",
           "8× USB Type-A + 1× USB Type-C",
         ],
-        features: MFF_FEATURES,
+        features: FEATURES["mff-dp10"],
         specGroups: [
           {
             group: "Processor",
@@ -850,7 +980,7 @@ export const TOWERS_FAMILIES = [
   },
   {
     kicker: "PROMAX AI Workstations",
-    image: "/images/rtx.jpg",
+    image: "/images/components/gpu-pro.webp",
     title: "When the work gets heavy.",
     blurb:
       "Four towers for engineering, AI and content creation — scaling from Core Ultra with a built-in NPU to Xeon W with 2TB of ECC memory and redundant 2700W power.",
@@ -861,7 +991,7 @@ export const TOWERS_FAMILIES = [
         tag: "Core Ultra · NPU · 128GB",
         image: "/images/dp180-2.webp",
         gallery: MT_GALLERY,
-        heroImage: PROMAX_HERO,
+        heroImage: HERO["promax-q870"],
         chips: ["Core Ultra 9 285", "128GB DDR5", "RTX A6000"],
         stats: [
           ["128GB", "Max DDR5"],
@@ -876,7 +1006,7 @@ export const TOWERS_FAMILIES = [
           "4× DDR5, up to 128GB",
           "Up to NVIDIA RTX A6000",
         ],
-        features: PROMAX_FEATURES,
+        features: FEATURES["promax-q870"],
         specGroups: [
           {
             group: "Processor",
@@ -917,9 +1047,9 @@ export const TOWERS_FAMILIES = [
         slug: "promax-t2-w880",
         name: "PROMAX T2 AI — Intel W880",
         tag: "Core Ultra K · ECC",
-        image: "/images/dp180-1.webp",
+        image: "/images/dp180-3.webp",
         gallery: MT_GALLERY,
-        heroImage: PROMAX_HERO,
+        heroImage: HERO["promax-t2-w880"],
         chips: ["Core Ultra 9 285K", "256GB ECC", "Dual 2.5G LAN"],
         stats: [
           ["256GB", "Max DDR5 ECC"],
@@ -934,7 +1064,7 @@ export const TOWERS_FAMILIES = [
           "4× DDR5 5600 ECC/non-ECC, up to 256GB",
           "Dual 2.5G LAN · 40G USB-C",
         ],
-        features: PROMAX_FEATURES,
+        features: FEATURES["promax-t2-w880"],
         specGroups: [
           {
             group: "Processor",
@@ -975,9 +1105,9 @@ export const TOWERS_FAMILIES = [
         slug: "promax-t2-w680",
         name: "PROMAX T2 — Intel W680",
         tag: "14th Gen K · 256GB",
-        image: "/images/dp180-2.webp",
+        image: "/images/dp180-1.webp",
         gallery: MT_GALLERY,
-        heroImage: PROMAX_HERO,
+        heroImage: HERO["promax-t2-w680"],
         chips: ["Core i9-14900K", "256GB ECC", "RTX A6000"],
         stats: [
           ["256GB", "Max DDR5 ECC"],
@@ -992,7 +1122,7 @@ export const TOWERS_FAMILIES = [
           "4× DDR5 5600 ECC/non-ECC, up to 256GB",
           "Up to NVIDIA RTX A6000",
         ],
-        features: PROMAX_FEATURES,
+        features: FEATURES["promax-t2-w680"],
         specGroups: [
           {
             group: "Processor",
@@ -1033,9 +1163,9 @@ export const TOWERS_FAMILIES = [
         slug: "promax-t4-plus",
         name: "PROMAX T4 Plus — Intel W780",
         tag: "Xeon W · 2TB ECC",
-        image: "/images/dp180-1.webp",
+        image: "/images/dp180-2.webp",
         gallery: MT_GALLERY,
-        heroImage: PROMAX_HERO,
+        heroImage: HERO["promax-t4-plus"],
         chips: ["Xeon W-3400", "2TB ECC", "2700W redundant"],
         stats: [
           ["2TB", "Max DDR5 ECC"],
@@ -1050,7 +1180,7 @@ export const TOWERS_FAMILIES = [
           "NVIDIA Blackwell / RTX A6000 ready",
           "1600–2700W redundant PSU",
         ],
-        features: PROMAX_FEATURES,
+        features: FEATURES["promax-t4-plus"],
         specGroups: [
           {
             group: "Processor",
@@ -1095,7 +1225,9 @@ const LAPTOP_FEATURES = [
     kicker: "AI Performance",
     heading: "Core Ultra, with an NPU inside",
     body: "Every Latios laptop runs Intel Core Ultra with a dedicated AI engine — acceleration for the apps you already use, without draining the battery.",
-    image: "/images/laptop-real-1.jpg",
+    // Was laptop-real-1.jpg: an Apple MacBook Pro, leading the Latios laptop
+    // category. Replaced with a photograph of the real Archer unit.
+    image: "/images/details/archer-open.webp",
   },
   {
     kicker: "Endurance",
@@ -1107,7 +1239,7 @@ const LAPTOP_FEATURES = [
     kicker: "Gaming",
     heading: "Archer: 300Hz of overkill",
     body: "The LTG540Z pairs Core Ultra 9 200HX with up to RTX 5080 graphics and a 2.5K Mini LED panel — 270W of OverBoost Ultra power, unleashed.",
-    image: "/images/laptop-archer.jpg",
+    image: "/images/details/archer-io.webp",
   },
 ];
 

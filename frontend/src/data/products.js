@@ -27,7 +27,7 @@ export const CATEGORIES = [
         kicker: "AI Performance",
         heading: "Core Ultra, with an NPU inside",
         body: "Every Latios laptop runs Intel Core Ultra with a dedicated AI engine — acceleration for the apps you already use, without draining the battery.",
-        image: "/images/laptop-real-1.jpg",
+        image: "/images/details/archer-open.webp",
       },
       {
         n: "02",

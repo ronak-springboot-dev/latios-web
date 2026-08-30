@@ -39,12 +39,15 @@ const STATS = [
   ["GeM", "Registered OEM", "Listed for direct government and public-sector procurement."],
 ];
 
+// banner-amd-3 (Threadripper behind XFX + Lian Li marks) and banner-nvidia-1
+// (a 2017 GTX 1080 Ti) were dropped: competitor branding, and parts Latios does
+// not ship. The cropped versions under /images/components/ carry the genuine
+// Intel/AMD/NVIDIA silicon with the third-party silkscreen outside the frame.
 const BANNER_POOL = [
   "/images/banner/banner-amd-1.jpg",
-  "/images/banner/banner-amd-2.jpg",
-  "/images/banner/banner-amd-3.jpg",
-  "/images/banner/banner-intel-1.jpg",
-  "/images/banner/banner-nvidia-1.jpg",
+  "/images/components/cpu-amd.webp",
+  "/images/components/cpu-intel.webp",
+  "/images/components/gpu-pro.webp",
   "/images/banner/banner-nvidia-2.jpg",
   "/images/banner/banner-nvidia-3.jpg",
   "/images/banner/banner-board-1.jpg",
