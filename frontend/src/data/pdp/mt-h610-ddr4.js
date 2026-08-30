@@ -39,12 +39,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": {
-        "frames": 40,
-        "width": 1400,
-        "height": 1400,
-        "pattern": "/reveal/mt-h610-ddr4/{i}.webp"
-      },
+      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/mt-h610-ddr4/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "The card goes in here.",

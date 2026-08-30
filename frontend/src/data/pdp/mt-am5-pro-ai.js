@@ -32,12 +32,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": {
-        "frames": 40,
-        "width": 1400,
-        "height": 1400,
-        "pattern": "/reveal/mt-am5-pro-ai/{i}.webp"
-      },
+      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/mt-am5-pro-ai/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "No card. No slot spent.",

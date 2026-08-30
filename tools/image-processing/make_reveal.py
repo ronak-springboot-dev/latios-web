@@ -78,7 +78,9 @@ def build(slug, frames=FRAMES, width=WIDTH):
         return
 
     panel = IMAGES / INTERIORS[interior]["panel"]
-    base, panel_img, size = reveal.load(src, panel, width, accent=accent)
+    base, _panel_img, size = reveal.load(src, panel, width, accent=accent)
+    # The real closed chassis is the opening frame for every product.
+    closed = reveal.closed_plate(panel, size)
 
     out = OUT / slug
     out.mkdir(parents=True, exist_ok=True)
@@ -88,7 +90,7 @@ def build(slug, frames=FRAMES, width=WIDTH):
     total = 0
     for i in range(frames):
         t = i / (frames - 1)
-        arr = reveal.frame(t, base, panel_img, size, push=0.05 + bias)
+        arr = reveal.frame_wipe(t, closed, base, size, push=0.06 + bias)
         img = Image.fromarray(np.ascontiguousarray(arr[:, :, :3]))
         p = out / f"{i:03d}.webp"
         img.save(p, "WEBP", quality=QUALITY, method=4)

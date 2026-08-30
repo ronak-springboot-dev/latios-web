@@ -54,6 +54,25 @@ export default {
     },
 
     {
+      // The flagship gets the reveal too, so every tower page carries one. Its
+      // interior is the only eight-slot, liquid-cooled, multi-card render in the
+      // set — the hardware differences here are real, not staged.
+      type: "reveal",
+      manifest: { frames: 40, width: 1400, height: 1400, pattern: "/reveal/promax-t4-plus/{i}.webp" },
+      height: 260,
+      kicker: "Inside",
+      heading: "Eight slots and a closed loop.",
+      body: "Scroll to open it. Nothing else in the range is specified like this.",
+      steps: [
+        { at: 0.00, label: "Closed", text: "A workstation tower sized around what goes in it, not the other way round." },
+        { at: 0.28, label: "Opened", text: "Hand-removable panel — a 2TB memory upgrade stays a maintenance task." },
+        { at: 0.52, label: "Eight DIMM slots", text: "Two banks of four, ECC registered, up to 2TB across the full Xeon W channel count." },
+        { at: 0.74, label: "Liquid cooling", text: "A closed-loop block over the socket — a Xeon W-3400 under sustained load is not an air-cooling problem." },
+        { at: 0.92, label: "Redundant power", text: "Two supplies at the base totalling 2700W. A failure becomes a scheduled swap." },
+      ],
+    },
+
+    {
       type: "exploded",
       heading: "What goes in it.",
       body:

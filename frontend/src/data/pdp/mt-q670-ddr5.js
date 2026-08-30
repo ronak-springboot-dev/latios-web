@@ -49,12 +49,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": {
-        "frames": 40,
-        "width": 1400,
-        "height": 1400,
-        "pattern": "/reveal/mt-q670-ddr5/{i}.webp"
-      },
+      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/mt-q670-ddr5/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "See the board, reach the board.",

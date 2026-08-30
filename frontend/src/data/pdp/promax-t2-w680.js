@@ -21,12 +21,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": {
-        "frames": 40,
-        "width": 1400,
-        "height": 1400,
-        "pattern": "/reveal/promax-t2-w680/{i}.webp"
-      },
+      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/promax-t2-w680/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "Twenty-four cores, fed properly.",

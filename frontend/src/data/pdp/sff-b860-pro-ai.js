@@ -38,12 +38,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": {
-        "frames": 40,
-        "width": 1400,
-        "height": 1400,
-        "pattern": "/reveal/sff-b860-pro-ai/{i}.webp"
-      },
+      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/sff-b860-pro-ai/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "Four slots, in eight litres.",

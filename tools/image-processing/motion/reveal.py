@@ -92,6 +92,70 @@ def load(internals_path, panel_path, width, accent=None):
     return _skia_image(base), _skia_image(panel), base.size
 
 
+def frame_wipe(t, closed, base, size, push=0.06):
+    """
+    Geometry-independent reveal: the real closed chassis wipes away to the
+    interior, with a push-in.
+
+    Preferred over warping a panel onto a measured aperture because the nine
+    interiors did not come back at one camera angle — five are three-quarter
+    views, so a single straight-on aperture would mis-register the panel on
+    most of them, and measuring nine separately is fragile against re-rolls.
+
+    This also has better provenance: frame zero is a REAL photograph of the
+    actual product, dissolving to the illustrative interior, rather than a
+    photograph warped into a shape it was not taken in.
+
+    The wipe is a soft-edged diagonal travelling across the frame, so it reads
+    as a panel being drawn off rather than a plain cross-fade.
+    """
+    w, h = size
+    surface = skia.Surface(w, h)
+    c = surface.getCanvas()
+    c.clear(skia.ColorBLACK)
+
+    scale = 1.0 + push * t
+    c.save()
+    c.translate(w / 2, h / 2)
+    c.scale(scale, scale)
+    c.translate(-w / 2, -h / 2)
+    c.drawImage(base, 0, 0, skia.SamplingOptions(skia.FilterMode.kLinear))
+    c.restore()
+
+    if t >= 0.999:
+        return surface.makeImageSnapshot().toarray(colorType=skia.kRGBA_8888_ColorType)
+
+    # Closed chassis on top, revealed away by a soft diagonal gradient mask.
+    edge = 0.22                      # width of the soft edge, as a fraction
+    lead = -edge + t * (1.0 + 2 * edge)
+    shader = skia.GradientShader.MakeLinear(
+        points=[(-w * 0.15, 0), (w * 1.15, h)],
+        colors=[skia.Color(255, 255, 255, 0), skia.Color(255, 255, 255, 255)],
+        positions=[max(0.0, min(1.0, lead)), max(0.0, min(1.0, lead + edge))])
+
+    c.saveLayer(None, None)
+    c.drawImage(closed, 0, 0, skia.SamplingOptions(skia.FilterMode.kLinear))
+    c.drawRect(skia.Rect.MakeWH(w, h),
+               skia.Paint(Shader=shader, BlendMode=skia.BlendMode.kDstIn))
+    c.restore()
+
+    return surface.makeImageSnapshot().toarray(colorType=skia.kRGBA_8888_ColorType)
+
+
+def closed_plate(src, size, accent=None):
+    """The real chassis photograph, sized and centred to match the interior."""
+    w, h = size
+    im = Image.open(src).convert("RGBA")
+    bbox = im.getchannel("A").getbbox()
+    if bbox:
+        im = im.crop(bbox)
+    fit = min(w * 0.78 / im.width, h * 0.78 / im.height)
+    im = im.resize((max(1, int(im.width * fit)), max(1, int(im.height * fit))), Image.LANCZOS)
+    canvas = Image.new("RGBA", (w, h), (0, 0, 0, 0))
+    canvas.paste(im, ((w - im.width) // 2, (h - im.height) // 2), im)
+    return _skia_image(canvas)
+
+
 def frame(t, base, panel, size, push=0.05, slide=0.62, aperture=None):
     """
     One frame at sequence position t in [0, 1].

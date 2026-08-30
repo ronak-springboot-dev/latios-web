@@ -32,12 +32,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": {
-        "frames": 40,
-        "width": 1400,
-        "height": 1400,
-        "pattern": "/reveal/mff-dp10/{i}.webp"
-      },
+      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/mff-dp10/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "All of it, in 1.1 litres.",

@@ -17,12 +17,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": {
-        "frames": 40,
-        "width": 1400,
-        "height": 1400,
-        "pattern": "/reveal/mt-pro-h610-ddr5/{i}.webp"
-      },
+      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/mt-pro-h610-ddr5/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "Built to hold its clocks.",

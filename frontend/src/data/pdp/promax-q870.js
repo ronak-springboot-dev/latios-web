@@ -39,12 +39,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": {
-        "frames": 40,
-        "width": 1400,
-        "height": 1400,
-        "pattern": "/reveal/promax-q870/{i}.webp"
-      },
+      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/promax-q870/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "Four slots and a full-length card.",

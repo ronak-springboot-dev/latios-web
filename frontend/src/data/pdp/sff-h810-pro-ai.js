@@ -10,12 +10,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": {
-        "frames": 40,
-        "width": 1400,
-        "height": 1400,
-        "pattern": "/reveal/sff-h810-pro-ai/{i}.webp"
-      },
+      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/sff-h810-pro-ai/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "The one you buy a hundred of.",
