@@ -32,6 +32,7 @@ export const PdpReveal = ({
   const [ready, setReady] = useState(0);
   const [step, setStep] = useState(0);
   const [progress, setProgress] = useState(0);
+  const [dead, setDead] = useState(false);
 
   const total = manifest?.frames ?? 0;
 
@@ -54,7 +55,7 @@ export const PdpReveal = ({
           }
           resolve();
         };
-        img.onerror = resolve;
+        img.onerror = resolve;   // a missing frame must not stall the whole set
         img.src = manifest.pattern.replace("{i}", String(i).padStart(3, "0"));
       });
 
@@ -63,6 +64,16 @@ export const PdpReveal = ({
       for (let i = 0; i < total; i += 8) coarse.push(i);
       await Promise.all(coarse.map(load));
       if (cancelled) return;
+
+      // Not one frame loaded: the sequence is missing or unreachable. Drop the
+      // whole section rather than leaving a black stage stuck on "Loading 0%"
+      // for ever. The dev server makes this easy to miss — it answers unknown
+      // paths with a 200 and the SPA's index.html, so the <img> fails to decode
+      // rather than 404ing.
+      if (!imagesRef.current.some(Boolean)) {
+        setDead(true);
+        return;
+      }
       const rest = [];
       for (let i = 0; i < total; i += 1) if (i % 8 !== 0) rest.push(i);
       // Sequentially, so filling in the detail never competes with the rest of
@@ -193,7 +204,7 @@ export const PdpReveal = ({
     };
   }, [total]);
 
-  if (!manifest) return null;
+  if (!manifest || dead) return null;
   const active = steps[step];
 
   return (
