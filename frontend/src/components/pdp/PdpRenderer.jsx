@@ -13,6 +13,7 @@ import { ProductVideo } from "@/components/ProductVideo";
 import {
   PdpHero, PdpBanner, PdpStatWall, PdpMarquee, PdpFeatureGrid, PdpAudiences,
   PdpBleed, PdpStickySplit, PdpCompare, PdpIoMap, PdpExploded, PdpSpecTeaser,
+  PdpThermal,
 } from "./sections";
 import { getTheme, themeVars } from "./theme";
 
@@ -28,6 +29,7 @@ const REGISTRY = {
   compare: PdpCompare,
   ioMap: PdpIoMap,
   exploded: PdpExploded,
+  thermal: PdpThermal,
   specTeaser: PdpSpecTeaser,
   video: ProductVideo,
 };

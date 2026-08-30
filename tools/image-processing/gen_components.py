@@ -72,6 +72,31 @@ JOBS = {
     "heatsink": "A low-profile aluminium chipset heatsink, machined fins in parallel "
                 "rows with a dark anodised finish, viewed at a three-quarter angle. "
                 + STYLE,
+    # --- internals plates for the airflow composite ---------------------------
+    # Freely generated, but the arrangement is taken from the one real interior
+    # photograph (generated/internals-ref2.jpg). That shot is through the hex
+    # mesh so it is heavily occluded; what it reliably establishes is a standard
+    # ATX micro-tower layout — rear expansion brackets across the top, a cable
+    # run curving in from the upper left, one long horizontal component across
+    # the middle, a PSU/drive block to one side. Component placement below is
+    # therefore illustrative, and captioned as such on the site.
+    "internals-mt": "Cutaway interior of a black micro-tower desktop computer viewed "
+                    "straight on, standard ATX layout: a dark motherboard filling the "
+                    "left and centre with a black tower CPU cooler, two vertical memory "
+                    "modules beside it, a row of rear expansion slot brackets along the "
+                    "top edge, a matte black power supply enclosure at the lower right, "
+                    "a drive cage above it, neat black cable runs curving between them, "
+                    "faint blue circuit-board detail. Dark technical product cutaway, "
+                    "pure black background, cool rim lighting from the left, "
+                    "photorealistic, sharp detail, no text. " + STYLE,
+    "internals-sff": "Cutaway interior of a slim black small-form-factor desktop "
+                     "computer viewed straight on, compact layout: a dark motherboard "
+                     "across the base with a low-profile copper-finned cooler, one "
+                     "vertical memory module, an M.2 drive under a slim heatsink, a "
+                     "small TFX power supply enclosure at one end, a blower fan at the "
+                     "other, short tidy cable runs. Dark technical product cutaway, "
+                     "pure black background, cool rim lighting, photorealistic, sharp "
+                     "detail, no text. " + STYLE,
     "nvme-stack": "Four M.2 NVMe solid state drives fanned out in a neat overlapping "
                   "row, each with a slim matte black aluminium heatsink and gold edge "
                   "connectors. " + STYLE,

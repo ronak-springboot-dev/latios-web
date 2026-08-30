@@ -117,7 +117,24 @@ export default {
       rows: ["CPU options", "Chipset", "Memory", "Graphics"],
     },
 
-    { type: "video", src: "/videos/mt-loop.mp4", poster: "/images/posters/mt-loop.webp" },
+    {
+      // Replaces the turntable that used to sit here. All three MT source photos
+      // are side and back panels — no front shot exists — so the turntable read
+      // as a dark slab rotating. This says something the photography cannot.
+      type: "thermal",
+      src: "/videos/mt-airflow.mp4",
+      poster: "/images/posters/mt-airflow.webp",
+      heading: "You can see it breathe.",
+      body:
+        "Cool air drawn across the board, heat carried straight out the back. " +
+        "The 18-litre chassis is vented on three faces so the fan never has to " +
+        "work hard enough for the office to notice.",
+      stats: [
+        ["3 faces", "Vented — front intake, side mesh, rear exhaust"],
+        ["Fan cooler", "Tuned for sustained boost, not short bursts"],
+        ["500W", "80+ Bronze, with headroom for a discrete card"],
+      ],
+    },
 
     { type: "specTeaser" },
   ],

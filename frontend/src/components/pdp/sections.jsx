@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { ParallaxImage } from "@/components/ParallaxImage";
 import { ModelTurntable } from "@/components/ModelTurntable";
+import { ProductVideo } from "@/components/ProductVideo";
 import { ALL_MODELS, familyKey } from "@/data/models";
 import { setEnquiryDraft, formatConfiguration } from "@/lib/enquiryDraft";
 import {
@@ -660,6 +661,50 @@ export const PdpExploded = ({ theme, heading, body, parts = [], video, poster })
         Component illustrations. Fitted parts vary by configuration.
       </p>
     </Band>
+  );
+};
+
+/* -------------------------------------------------------------- thermal -- */
+
+/**
+ * The airflow band: a full-bleed thermal loop with the copy laid over it.
+ *
+ * Its own section rather than a plain `video` because the reference gives this
+ * one a dark full-bleed treatment with the heading sitting on the footage, and
+ * because the clip is deliberately short and silent — it is atmosphere behind a
+ * claim, not a thing to watch.
+ *
+ * Mounted through ProductVideo so it inherits the viewport gating. That matters
+ * here: these clips are ~1.7MB each and several sit on one page.
+ */
+export const PdpThermal = ({ model, theme, src, poster, kicker, heading, body, stats = [] }) => {
+  if (!src) return null;
+  return (
+    <section className="border-t border-white/10 relative overflow-hidden" data-testid="pdp-thermal">
+      <ProductVideo
+        src={src}
+        poster={poster}
+        modelName={model.name}
+        heading={heading ?? "Cooling you can see."}
+        subline={body}
+      />
+      {!!stats.length && (
+        <div className="max-w-[1600px] mx-auto px-6 md:px-12 pb-20 md:pb-28 -mt-6">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-white/10 border border-white/10">
+            {stats.map(([value, label]) => (
+              <div key={label} className="bg-[#0A0A0A] p-7">
+                <div className="font-display text-2xl md:text-3xl font-black tracking-tighter"
+                     style={{ color: ACCENT }}>{value}</div>
+                <div className="mt-2 text-xs text-zinc-400">{label}</div>
+              </div>
+            ))}
+          </div>
+          <p className="mt-5 text-[10px] text-zinc-600">
+            {kicker ?? "Airflow visualisation. Interior components shown are illustrative."}
+          </p>
+        </div>
+      )}
+    </section>
   );
 };
 

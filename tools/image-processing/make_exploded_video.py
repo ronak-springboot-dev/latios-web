@@ -19,6 +19,7 @@ from PIL import Image
 
 import imageio_ffmpeg
 from make_video import backdrop, _lit, _shadow, _ease, W, H, FPS
+from motion.encode import writer, probe
 
 LAYERS = Path(__file__).parent / "generated" / "components" / "layers"
 OUT = Path(__file__).parent / "generated"
@@ -87,13 +88,7 @@ def build(names, out_name="components-loop.mp4", seconds=SECONDS):
     bg = backdrop()
     total = seconds * FPS
 
-    proc = subprocess.Popen(
-        [FFMPEG, "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
-         "-r", str(FPS), "-i", "-", "-an",
-         "-c:v", "libx264", "-preset", "slow", "-crf", "26",
-         "-pix_fmt", "yuv420p", "-movflags", "+faststart", "-g", str(FPS * 2),
-         str(OUT / out_name)],
-        stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    proc = writer(OUT / out_name, (W, H), mbps=5.0)
 
     for f in range(total):
         t = f / total
@@ -103,7 +98,9 @@ def build(names, out_name="components-loop.mp4", seconds=SECONDS):
     proc.stdin.close()
     proc.wait()
     p = OUT / out_name
-    print(f"  {out_name:26s} {total} frames  {p.stat().st_size // 1024:>5} KB")
+    info = probe(p)
+    print(f"  {out_name:24s} {info['resolution']}  {info['seconds']}s  "
+          f"{info['mbps']} Mbps  {info['kb']} KB")
 
     # Poster is the fully-apart frame, not the bare backdrop: the <video> shows
     # it until the clip decodes, and an empty plate reads as a broken section.

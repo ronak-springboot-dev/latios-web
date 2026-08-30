@@ -27,14 +27,15 @@ from pathlib import Path
 import numpy as np
 from PIL import Image, ImageFilter, ImageDraw
 
-import imageio_ffmpeg
+from motion.encode import writer, probe, HERO, FPS
 
 IMAGES = Path(r"C:\Ronak\latios-web\frontend\public\images")
 OUT = Path(__file__).parent / "generated"
-FFMPEG = imageio_ffmpeg.get_ffmpeg_exe()
 
-W, H = 1280, 720
-FPS = 24
+# 1080p on the shared encode profile. These shipped at 720p and roughly
+# 0.5 Mbps, against the reference's 1080p at 4.8-7.2 — the single biggest
+# reason they looked soft next to it.
+W, H = HERO
 SECONDS = 8
 ZOOM = 0.07          # push-in depth over one angle's segment
 MARGIN = 0.14
@@ -120,15 +121,7 @@ def build(sources, out_name, seconds=SECONDS):
     seg = total / n                      # frames per angle, including its dissolve
     fade = int(seg * 0.34)               # dissolve length
 
-    proc = subprocess.Popen(
-        [FFMPEG, "-y", "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{W}x{H}",
-         "-r", str(FPS), "-i", "-",
-         "-an",                                   # no audio: the player is muted
-         "-c:v", "libx264", "-preset", "slow", "-crf", "27",
-         "-pix_fmt", "yuv420p", "-movflags", "+faststart",
-         "-g", str(FPS * 2),
-         str(OUT / out_name)],
-        stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+    proc = writer(OUT / out_name, (W, H), mbps=5.5)
 
     for f in range(total):
         phase = (f / total) % 1.0
@@ -145,8 +138,9 @@ def build(sources, out_name, seconds=SECONDS):
 
     proc.stdin.close()
     proc.wait()
-    p = OUT / out_name
-    print(f"  {out_name:26s} {total} frames  {p.stat().st_size // 1024:>5} KB")
+    info = probe(OUT / out_name)
+    print(f"  {out_name:24s} {info['resolution']}  {info['seconds']}s  "
+          f"{info['mbps']} Mbps  {info['kb']} KB")
 
     # Poster: first frame, so the <video> shows the product before the clip loads.
     poster = _compose(cuts[0], 0.0, 0.0, bg)
