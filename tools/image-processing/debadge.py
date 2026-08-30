@@ -74,6 +74,37 @@ def interp_fill(im, box, sample=14, feather=8, pad=6):
     return out
 
 
+def interp_fill_v(im, box, sample=14, feather=5, padx=8, pady=18):
+    """
+    Vertical twin of interp_fill: interpolate each COLUMN between clean panel
+    above and below.
+
+    The MSI wordmark on the mini-PC front sits rotated on a narrow vertical band.
+    Interpolating horizontally would drag the neighbouring textured vent and the
+    power-button column into it, so the ramp has to run along the band instead.
+    """
+    # padx stays small: widening sideways would drag the neighbouring vent
+    # texture and power-button column into the fill. pady can be generous
+    # because the band is uniform along its length. feather < pad so the
+    # mask is fully opaque across the whole mark rather than inset inside it.
+    x0, y0, x1, y1 = (box[0]-padx, box[1]-pady, box[2]+padx, box[3]+pady)
+    a = np.asarray(im).astype(np.float32)
+    top = a[y0-sample:y0, x0:x1].mean(axis=0)        # (cols, 3)
+    bot = a[y1:y1+sample, x0:x1].mean(axis=0)
+    h = y1 - y0
+    ramp = np.linspace(0.0, 1.0, h)[:, None, None]
+    fill = top[None, :, :] * (1 - ramp) + bot[None, :, :] * ramp
+    grain = float(a[y1:y1+sample, x0:x1].std())
+    mono = np.random.default_rng(11).normal(0, min(3.0, max(0.8, grain * 0.25)),
+                                            (fill.shape[0], fill.shape[1], 1))
+    patch = Image.fromarray(np.clip(fill + mono, 0, 255).astype(np.uint8))
+    mask = Image.new("L", (x1-x0, h), 0)
+    ImageDraw.Draw(mask).rectangle((feather, feather, x1-x0-feather, h-feather), fill=255)
+    mask = mask.filter(ImageFilter.GaussianBlur(feather))
+    out = im.copy(); out.paste(patch, (x0, y0), mask)
+    return out
+
+
 JOBS = [
     # file,          badge box (x0,y0,x1,y1),   clone offset (dx, dy)
     # Already applied and deployed — kept here as the record of what was patched.
