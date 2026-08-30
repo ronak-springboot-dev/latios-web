@@ -42,7 +42,7 @@ export default {
       // thing they were trying to describe. Scrubbed by scroll rather than
       // played, so the reader controls the reveal.
       type: "reveal",
-      manifest: { frames: 48, width: 1600, height: 1600, pattern: "/reveal/mt/{i}.webp" },
+      manifest: { frames: 40, width: 1400, height: 1400, pattern: "/reveal/mt-amd-am4/{i}.webp" },
       height: 260,
       kicker: "Serviceability",
       heading: "It opens by hand.",

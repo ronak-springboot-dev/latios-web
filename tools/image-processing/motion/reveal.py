@@ -24,10 +24,36 @@ from PIL import Image, ImageFilter
 
 IMAGES = Path(r"C:\Ronak\latios-web\frontend\public\images")
 
-# The case's open side, as fractions of the cutaway render. Measured from the
-# render with a coordinate grid rather than guessed: the top edge rises to the
-# right, so this is a genuine quad, not a rectangle.
-APERTURE = [(0.118, 0.222), (0.700, 0.112), (0.700, 0.795), (0.118, 0.858)]
+# The case's open side, as fractions of the render. Measured with a coordinate
+# grid rather than guessed. The straight-on interiors give a near-rectangle;
+# a three-quarter render would give a genuine quad, which is why this is passed
+# per job rather than fixed.
+APERTURE = [(0.120, 0.135), (0.865, 0.135), (0.865, 0.870), (0.120, 0.870)]
+
+
+def tint(pil, accent):
+    """
+    Recolour the render's rim light to a model's accent.
+
+    The interior geometry is shared between models that genuinely have the same
+    interior, so the rim is what makes each page's sequence look like its own.
+    Doing it here costs nothing; re-rendering nine interiors per accent would
+    cost hours of GPU time to say the same thing.
+
+    Only strongly-saturated, blue-dominant pixels are moved — the chassis, board
+    and cables are near-neutral and must not shift.
+    """
+    if not accent:
+        return pil
+    a = np.asarray(pil.convert("RGB"), dtype=np.float32)
+    mx = a.max(axis=2)
+    mn = a.min(axis=2)
+    sat = np.where(mx > 1, (mx - mn) / np.maximum(mx, 1), 0)
+    blue_led = (a[..., 2] >= mx - 1) & (sat > 0.35)
+    target = np.asarray([int(accent[i:i + 2], 16) for i in (1, 3, 5)], dtype=np.float32)
+    lum = (mx / 255.0)[..., None]
+    a[blue_led] = (target * lum)[blue_led]
+    return Image.fromarray(np.clip(a, 0, 255).astype(np.uint8))
 
 
 def _homography(src, dst):
@@ -48,10 +74,11 @@ def _skia_image(pil):
         colorType=skia.kRGBA_8888_ColorType)
 
 
-def load(internals_path, panel_path, width):
+def load(internals_path, panel_path, width, accent=None):
     """Prepare both layers once; the per-frame work is only transforms."""
     base = Image.open(internals_path).convert("RGB")
     base = base.resize((width, round(base.height * width / base.width)), Image.LANCZOS)
+    base = tint(base, accent)
 
     panel = Image.open(panel_path).convert("RGBA")
     bbox = panel.getchannel("A").getbbox()
@@ -65,7 +92,7 @@ def load(internals_path, panel_path, width):
     return _skia_image(base), _skia_image(panel), base.size
 
 
-def frame(t, base, panel, size, push=0.05, slide=0.62):
+def frame(t, base, panel, size, push=0.05, slide=0.62, aperture=None):
     """
     One frame at sequence position t in [0, 1].
 
@@ -95,7 +122,7 @@ def frame(t, base, panel, size, push=0.05, slide=0.62):
         x, y = fx * w, fy * h
         return (w / 2 + (x - w / 2) * scale, h / 2 + (y - h / 2) * scale)
 
-    quad = [pt(*p) for p in APERTURE]
+    quad = [pt(*p) for p in (aperture or APERTURE)]
 
     # Ease-out: the panel breaks away quickly, then drifts.
     e = 1 - (1 - t) ** 2

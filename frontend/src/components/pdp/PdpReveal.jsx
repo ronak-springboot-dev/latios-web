@@ -31,6 +31,7 @@ export const PdpReveal = ({
   stepsRef.current = steps;
   const [ready, setReady] = useState(0);
   const [step, setStep] = useState(0);
+  const [progress, setProgress] = useState(0);
 
   const total = manifest?.frames ?? 0;
 
@@ -128,13 +129,24 @@ export const PdpReveal = ({
         canvas.height = Math.round(ch * dpr);
       }
       const ctx = canvas.getContext("2d");
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Painted, not cleared. The image is contain-fitted so there are bands
+      // either side of it; clearing leaves those transparent and the light
+      // theme shows through, which is what made this read as a pasted box.
+      ctx.fillStyle = "#050505";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // contain, so the case is never cropped at any aspect ratio
-      const s = Math.min(canvas.width / img.width, canvas.height / img.height);
-      const w = img.width * s;
-      const h = img.height * s;
-      ctx.drawImage(img, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
+      // Contain rather than cover: the source is square and the stage is wide,
+      // so cover would crop the top and bottom off the chassis. Biased to the
+      // right of centre on wide viewports so the product clears the copy
+      // overlaid on the left.
+      const fit = Math.min(canvas.width / img.width, canvas.height / img.height) * 1.06;
+      const w = img.width * fit;
+      const h = img.height * fit;
+      const bias = canvas.width > canvas.height ? canvas.width * 0.13 : 0;
+      ctx.drawImage(img, (canvas.width - w) / 2 + bias, (canvas.height - h) / 2, w, h);
+
+      setProgress((prev) =>
+        Math.abs(prev - p) < 0.01 ? prev : p);
 
       const st = stepsRef.current;
       if (st.length) {
@@ -188,46 +200,69 @@ export const PdpReveal = ({
     <section
       ref={wrapRef}
       style={{ height: `${height}vh` }}
-      className="relative border-t border-white/10"
+      className="relative"
       data-testid="pdp-reveal"
     >
-      <div className="sticky top-0 h-screen flex items-center overflow-hidden">
-        <div className="max-w-[1600px] mx-auto px-6 md:px-12 w-full grid grid-cols-1 md:grid-cols-[1.35fr_1fr] gap-8 md:gap-14 items-center">
-          <canvas
-            ref={canvasRef}
-            className="w-full h-[46vh] md:h-[76vh]"
-            data-testid="pdp-reveal-canvas"
-            aria-label={heading}
-          />
-          <div>
+      {/*
+        keep-dark, because the stage has to stay dark in BOTH themes. The
+        previous version inherited the light theme's background and the render
+        sat on it as an obvious pale rectangle.
+      */}
+      <div className="keep-dark sticky top-0 h-screen w-full overflow-hidden bg-[#050505]">
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full"
+          data-testid="pdp-reveal-canvas"
+          aria-label={heading}
+        />
+
+        {/* Legibility wash — the copy sits over the artwork, not beside it. */}
+        <div className="absolute inset-0 pointer-events-none
+                        bg-[linear-gradient(to_right,rgba(5,5,5,0.92)_0%,rgba(5,5,5,0.62)_34%,rgba(5,5,5,0)_62%)]" />
+        <div className="absolute inset-x-0 bottom-0 h-1/3 pointer-events-none
+                        bg-gradient-to-t from-[#050505] via-[#050505]/60 to-transparent" />
+
+        <div className="relative h-full max-w-[1600px] mx-auto px-6 md:px-12 flex flex-col justify-between py-12 md:py-16">
+          <div className="max-w-lg">
             {kicker && (
-              <p className="kicker-sq text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-5">
+              <p className="kicker-sq text-[10px] uppercase tracking-[0.35em] text-zinc-400 mb-5">
                 {kicker}
               </p>
             )}
-            <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white leading-[1.05]">
+            <h2 className="font-display text-3xl md:text-6xl font-black tracking-tighter text-white leading-[1.02]">
               {heading}
             </h2>
-            {body && <p className="mt-5 text-zinc-400 leading-relaxed max-w-md">{body}</p>}
+            {body && (
+              <p className="mt-5 text-sm md:text-base text-zinc-300 leading-relaxed max-w-md">
+                {body}
+              </p>
+            )}
+          </div>
 
+          <div className="max-w-md">
             {active && (
-              <div className="mt-9 border-t border-white/10 pt-6 min-h-[120px]">
+              <div key={active.label} className="border-l-2 pl-5" style={{ borderColor: ACCENT }}>
                 <p className="text-[10px] uppercase tracking-[0.25em]" style={{ color: ACCENT }}>
                   {active.label}
                 </p>
-                <p className="mt-2.5 text-sm text-zinc-300 leading-relaxed max-w-md">
-                  {active.text}
-                </p>
+                <p className="mt-2.5 text-sm text-zinc-200 leading-relaxed">{active.text}</p>
               </div>
             )}
 
-            {ready < total && (
-              <p className="mt-6 text-[10px] uppercase tracking-[0.25em] text-zinc-600">
-                Loading detail · {Math.round((ready / total) * 100)}%
-              </p>
-            )}
-            <p className="mt-4 text-[10px] text-zinc-600">
-              Scroll to open. Interior components shown are illustrative.
+            {/* Progress through the sequence, so the reader knows it responds to them. */}
+            <div className="mt-7 h-px w-40 bg-white/15 relative">
+              <div
+                className="absolute inset-y-0 left-0 transition-[width] duration-150"
+                style={{ width: `${progress * 100}%`, background: ACCENT }}
+              />
+            </div>
+            <p className="mt-4 text-[10px] uppercase tracking-[0.25em] text-zinc-500">
+              {ready < total
+                ? `Loading detail · ${Math.round((ready / total) * 100)}%`
+                : "Scroll to open"}
+            </p>
+            <p className="mt-2 text-[10px] text-zinc-600">
+              Interior components shown are illustrative.
             </p>
           </div>
         </div>

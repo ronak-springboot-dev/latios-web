@@ -48,6 +48,15 @@ STYLE = ("Ultra-detailed studio product render, single object centred on a plain
          "field, industrial product photography, photorealistic, sharp micro "
          "detail on surfaces, neutral colour, 8k")
 
+# Interiors need their own style. Appending STYLE to them was a real bug: STYLE
+# says "plain seamless light grey background", which overrode the "pure black
+# background" in the interior prompts, so every plate came back on light grey
+# and read as a rectangle pasted onto the page.
+DARK_STYLE = ("Ultra-detailed technical product render on a pure black seamless "
+              "background, dramatic low-key studio lighting, cool blue rim light "
+              "raking from the left, deep shadows, photorealistic, sharp micro "
+              "detail on machined surfaces, no background objects, 8k")
+
 NEG = ("text, lettering, words, logo, brand name, badge, sticker, watermark, "
        "label, numbers, packaging, box, hands, person, cluttered background, "
        "multiple objects, blurry, low detail, cartoon, illustration")
@@ -72,31 +81,22 @@ JOBS = {
     "heatsink": "A low-profile aluminium chipset heatsink, machined fins in parallel "
                 "rows with a dark anodised finish, viewed at a three-quarter angle. "
                 + STYLE,
-    # --- internals plates for the airflow composite ---------------------------
-    # Freely generated, but the arrangement is taken from the one real interior
-    # photograph (generated/internals-ref2.jpg). That shot is through the hex
-    # mesh so it is heavily occluded; what it reliably establishes is a standard
-    # ATX micro-tower layout — rear expansion brackets across the top, a cable
-    # run curving in from the upper left, one long horizontal component across
-    # the middle, a PSU/drive block to one side. Component placement below is
-    # therefore illustrative, and captioned as such on the site.
-    "internals-mt": "Cutaway interior of a black micro-tower desktop computer viewed "
-                    "straight on, standard ATX layout: a dark motherboard filling the "
-                    "left and centre with a black tower CPU cooler, two vertical memory "
-                    "modules beside it, a row of rear expansion slot brackets along the "
-                    "top edge, a matte black power supply enclosure at the lower right, "
-                    "a drive cage above it, neat black cable runs curving between them, "
-                    "faint blue circuit-board detail. Dark technical product cutaway, "
-                    "pure black background, cool rim lighting from the left, "
-                    "photorealistic, sharp detail, no text. " + STYLE,
-    "internals-sff": "Cutaway interior of a slim black small-form-factor desktop "
-                     "computer viewed straight on, compact layout: a dark motherboard "
-                     "across the base with a low-profile copper-finned cooler, one "
-                     "vertical memory module, an M.2 drive under a slim heatsink, a "
-                     "small TFX power supply enclosure at one end, a blower fan at the "
-                     "other, short tidy cable runs. Dark technical product cutaway, "
-                     "pure black background, cool rim lighting, photorealistic, sharp "
-                     "detail, no text. " + STYLE,
+    # --- interiors for the scroll reveals -------------------------------------
+    # Freely generated, but the ARRANGEMENT comes from the one real interior
+    # photograph (generated/internals-ref2.jpg), which is shot through the hex
+    # mesh and establishes a standard ATX layout and little else. Hardware is
+    # accurate to each configuration: a graphics card only where one ships,
+    # four DIMM slots only where four exist, eight and liquid cooling only on
+    # the T4 Plus. Captioned as illustrative on the site.
+    "internals-mt-ddr4": "Cutaway interior of a black micro-tower desktop computer viewed straight on with the side panel removed, a dark ATX motherboard filling the left and centre, a black tower air cooler over the socket, two vertical DDR4 memory modules, empty full-height expansion slots below with no graphics card fitted, a matte black power supply enclosure at the lower right with a drive cage above it, neat black cable runs curving between them, faint circuit-board trace detail. no text, no lettering. " + DARK_STYLE,
+    "internals-mt-ddr4-gpu": "Cutaway interior of a black micro-tower desktop computer viewed straight on with the side panel removed, a dark ATX motherboard filling the left and centre, a black tower air cooler over the socket, two vertical DDR4 memory modules, one long black professional graphics card fitted horizontally in the top expansion slot, a matte black power supply enclosure at the lower right with a drive cage above it, neat black cable runs curving between them, faint circuit-board trace detail. no text, no lettering. " + DARK_STYLE,
+    "internals-mt-ddr5-gpu": "Cutaway interior of a black micro-tower desktop computer viewed straight on with the side panel removed, a dark ATX motherboard filling the left and centre, a black tower air cooler with copper heatpipes, two vertical DDR5 memory modules, one long black professional graphics card fitted horizontally in the top expansion slot, a matte black power supply enclosure at the lower right with a drive cage above it, neat black cable runs curving between them, faint circuit-board trace detail. no text, no lettering. " + DARK_STYLE,
+    "internals-mt-ddr5-amd": "Cutaway interior of a black micro-tower desktop computer viewed straight on with the side panel removed, a dark ATX motherboard filling the left and centre, a compact black air cooler with a circular fan, two vertical DDR5 memory modules, empty expansion slots below with no graphics card fitted, a matte black power supply enclosure at the lower right, neat black cable runs curving between them, faint circuit-board trace detail. no text, no lettering. " + DARK_STYLE,
+    "internals-sff-ddr5": "Cutaway interior of a slim black small-form-factor desktop computer viewed straight on with the side panel removed, a compact motherboard across the base, a low-profile copper-finned cooler, two vertical DDR5 memory modules, an M.2 drive under a slim heatsink and no graphics card, a small TFX power supply enclosure at one end and a blower fan at the other, neat black cable runs curving between them, faint circuit-board trace detail. no text, no lettering. " + DARK_STYLE,
+    "internals-sff-4dimm": "Cutaway interior of a slim black small-form-factor desktop computer viewed straight on with the side panel removed, a compact motherboard across the base, a low-profile copper-finned cooler, four vertical DDR5 memory modules in a row, an M.2 drive under a slim heatsink, a small TFX power supply enclosure at one end and a blower fan at the other, neat black cable runs curving between them, faint circuit-board trace detail. no text, no lettering. " + DARK_STYLE,
+    "internals-promax-4dimm": "Cutaway interior of a large black workstation tower desktop computer viewed straight on with the side panel removed, a wide workstation motherboard, a tall twin-fan tower air cooler, four vertical DDR5 ECC memory modules in a row, one very long professional graphics card with a full-length shroud, a large matte black power supply enclosure with a shroud, neat black cable runs curving between them, faint circuit-board trace detail. no text, no lettering. " + DARK_STYLE,
+    "internals-promax-8dimm": "Cutaway interior of a large black workstation tower desktop computer viewed straight on with the side panel removed, a wide server-class motherboard, a closed-loop liquid cooling block with two braided tubes running to a radiator, eight vertical ECC registered memory modules in two banks of four, two very long professional graphics cards stacked in the expansion slots, two redundant power supply modules side by side at the base, neat black cable runs curving between them, faint circuit-board trace detail. no text, no lettering. " + DARK_STYLE,
+    "internals-mff": "Cutaway interior of a very small black mini PC desktop computer viewed straight on with the side panel removed, a tiny motherboard filling the base, a low-profile blower fan and heatsink, two horizontal SO-DIMM laptop memory modules, a single M.2 drive, no graphics card, an external power input, no internal power supply, neat black cable runs curving between them, faint circuit-board trace detail. no text, no lettering. " + DARK_STYLE,
     "nvme-stack": "Four M.2 NVMe solid state drives fanned out in a neat overlapping "
                   "row, each with a slim matte black aluminium heatsink and gold edge "
                   "connectors. " + STYLE,
