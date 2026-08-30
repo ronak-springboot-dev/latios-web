@@ -1855,6 +1855,23 @@ export const ALL_MODELS = ALL_FAMILIES.flatMap((f) => f.models);
  * the audio and video lines).
  */
 /**
+ * A "family" is the set of models that are the same physical chassis in
+ * different configurations — e.g. the four Latios MT board options.
+ *
+ * Keyed on category + name prefix + shared gallery: models built on one chassis
+ * reuse the same product photography (MT_GALLERY, SFF_GALLERY, ...), so an
+ * identical first gallery image is the reliable signal that two SKUs really are
+ * the same box. Name prefix alone was not enough — the bare "Latios PRO" prefix
+ * was grouping a soundbar, a web camera, a PTZ camera, a monitor and an
+ * interactive panel into one bogus five-column comparison.
+ *
+ * Exported because both the spec sheet and the PDP comparison section need it,
+ * and two definitions would eventually disagree.
+ */
+export const familyKey = (m) =>
+  `${m.category}|${m.name.split(" — ")[0]}|${m.gallery?.[0] ?? m.slug}`;
+
+/**
  * Product loop video for a model, if its chassis has actually been photographed.
  *
  * Keyed on the gallery's lead frame rather than the slug: the clips are built

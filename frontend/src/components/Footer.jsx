@@ -1,10 +1,11 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { toast } from "sonner";
 import { ArrowUpRight } from "lucide-react";
 import { CATEGORIES } from "@/data/products";
 import { TurnstileWidget } from "@/components/TurnstileWidget";
+import { useEnquiryDraft, clearEnquiryDraft } from "@/lib/enquiryDraft";
 
 const EMPTY = { name: "", email: "", company: "", message: "" };
 
@@ -14,6 +15,15 @@ const inputCls =
 export const Footer = () => {
   const [form, setForm] = useState(EMPTY);
   const [sending, setSending] = useState(false);
+
+  // A configuration chosen on a product page arrives here as the message body.
+  // Seeded rather than controlled: once someone edits the box it is theirs, so
+  // the draft only fills an untouched field and never overwrites typing.
+  const draft = useEnquiryDraft();
+  const [touched, setTouched] = useState(false);
+  useEffect(() => {
+    if (draft && !touched) setForm((f) => ({ ...f, message: draft }));
+  }, [draft, touched]);
   const [token, setToken] = useState(null);
   const [resetSignal, setResetSignal] = useState(0);
   const onToken = useCallback((t) => setToken(t), []);
@@ -32,6 +42,8 @@ export const Footer = () => {
       });
       toast.success("Enquiry received — our team replies within one business day.");
       setForm(EMPTY);
+      setTouched(false);
+      clearEnquiryDraft();
     } catch (err) {
       toast.error(
         err.response?.status === 422
@@ -47,7 +59,10 @@ export const Footer = () => {
     }
   };
 
-  const set = (k) => (e) => setForm({ ...form, [k]: e.target.value });
+  const set = (k) => (e) => {
+    if (k === "message") setTouched(true);
+    setForm({ ...form, [k]: e.target.value });
+  };
 
   return (
     <footer id="contact" data-testid="site-footer" className="border-t border-white/10 bg-[#050505]">

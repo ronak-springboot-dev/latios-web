@@ -435,3 +435,15 @@ html.light .keep-dark .border-white\/20 {
 html.light .keep-dark .hover\:bg-zinc-300:hover {
     background-color: #d4d4d8 !important;
 }
+
+/* ---------- PDP marquee ----------
+   The stat strip duplicates its items once and translates by exactly half its
+   width, so the wrap is seamless. Paused entirely for reduced-motion users —
+   an endlessly moving strip is the kind of thing that setting exists for. */
+@keyframes pdp-marquee {
+    from { transform: translate3d(0, 0, 0); }
+    to   { transform: translate3d(-50%, 0, 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+    .animate-\[pdp-marquee_linear_infinite\] { animation: none; }
+}

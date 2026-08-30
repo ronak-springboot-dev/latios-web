@@ -6,10 +6,10 @@ import { KineticText } from "@/components/KineticText";
 import { Reveal } from "@/components/Reveal";
 import { ParallaxImage } from "@/components/ParallaxImage";
 import { ModelTurntable } from "@/components/ModelTurntable";
-import { ModelShowcase } from "@/components/ModelShowcase";
+import { PdpRenderer } from "@/components/pdp/PdpRenderer";
 import { ProductVideo } from "@/components/ProductVideo";
-import { getModel, getCategoryModels, DATASHEETS, ALL_MODELS, getVideo } from "@/data/models";
-import { SHOWCASE } from "@/data/showcase";
+import { getModel, getCategoryModels, DATASHEETS, ALL_MODELS, getVideo, familyKey } from "@/data/models";
+import { getPdp } from "@/data/pdp";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
 const EASE = [0.16, 1, 0.3, 1];
@@ -37,22 +37,17 @@ export default function ModelPage() {
 
   const others = getCategoryModels(model.category).filter((m) => m.slug !== model.slug);
   const datasheet = DATASHEETS[model.slug];
-  const showcase = SHOWCASE[model.slug];
+  // A long-form product page if this model has one authored; otherwise the
+  // standard overview below. Filling data/pdp/ a model at a time is safe.
+  const pdp = getPdp(model.slug);
   // Loop footage for this chassis, if it has been photographed. Showcase pages
   // render their own video, so this only applies to the standard overview.
   const video = getVideo(model);
 
   const scrollToContact = () => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
 
-  // Multi-configuration spec sheet: a "family" is the set of models that are the same
-  // physical chassis in different configurations (e.g. the four Latios MT board options).
-  // Keyed on category + name prefix + shared gallery: models built on one chassis reuse
-  // the same product photography (MT_GALLERY, SFF_GALLERY, ...), so an identical first
-  // gallery image is the reliable signal that two SKUs really are the same box.
-  // Name prefix alone was not enough — the bare "Latios PRO" prefix was grouping a
-  // soundbar, a web camera, a PTZ camera, a monitor and an interactive panel into one
-  // bogus five-column comparison.
-  const familyKey = (m) => `${m.category}|${m.name.split(" — ")[0]}|${m.gallery?.[0] ?? m.slug}`;
+  // familyKey now lives in data/models.js so the PDP comparison section and this
+  // spec sheet cannot drift apart on what counts as a sibling.
   const family = ALL_MODELS.filter((m) => familyKey(m) === familyKey(model));
   const specSheetGroups = (() => {
     const groupNames = [...new Set(family.flatMap((m) => m.specGroups.map((g) => g.group)))];
@@ -344,8 +339,8 @@ export default function ModelPage() {
       transition={{ duration: 0.5, ease: EASE }}
       data-testid={`model-page-${model.slug}`}
     >
-      {/* HERO — standard models only (showcase has its own PDP hero) */}
-      {!showcase && (
+      {/* HERO — standard models only; a PDP brings its own hero section */}
+      {!pdp && (
         <section ref={heroRef} className="keep-dark relative h-[92vh] overflow-hidden flex items-end">
           <motion.img
             src={model.heroImage}
@@ -393,10 +388,10 @@ export default function ModelPage() {
         </section>
       )}
 
-      {showcase && tab === "overview" ? (
-        <ModelShowcase
+      {pdp && tab === "overview" ? (
+        <PdpRenderer
           model={model}
-          data={showcase}
+          page={pdp}
           datasheet={datasheet}
           tabs={tabBar}
           onViewSpecs={() => setTab("specification")}
@@ -404,10 +399,10 @@ export default function ModelPage() {
         />
       ) : (
         <>
-          {showcase && (
+          {pdp && (
             <div className="pt-24 md:pt-32">{tabBar}</div>
           )}
-          {!showcase && tabBar}
+          {!pdp && tabBar}
           {tab === "overview" ? standardOverview : specSheet}
         </>
       )}
