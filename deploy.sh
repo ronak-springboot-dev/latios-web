@@ -16,9 +16,20 @@ REPO_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$REPO_DIR"
 
 INIT=false
-if [[ "${1:-}" == "--init" ]]; then
-  INIT=true
-fi
+BUILD_FRONTEND=true
+for arg in "$@"; do
+  case "$arg" in
+    --init)     INIT=true ;;
+    # Use an existing frontend/build instead of compiling on this machine.
+    # Building here costs ~719MB of node_modules on disk and a CRA webpack pass
+    # that peaks well past a gigabyte of RAM — which is what forces a 4GB VM for
+    # a site that only needs to RUN nginx plus one Python container. Build in CI
+    # or on a workstation, rsync frontend/build up, then deploy with this flag
+    # and the box can drop a tier.
+    --no-build) BUILD_FRONTEND=false ;;
+    *) echo "usage: $0 [--init] [--no-build]" >&2; exit 1 ;;
+  esac
+done
 
 echo "==> [1/7] Checking Docker"
 if ! command -v docker &> /dev/null; then
@@ -45,14 +56,27 @@ for f in backend/.env frontend/.env; do
   fi
 done
 
-echo "==> [4/7] Building frontend"
-# Yarn, not npm: frontend/package.json relies on Yarn's `resolutions` field to keep
-# transitive deps (e.g. ajv) consistent. `npm install`/`npm ci` ignore that field and
-# produce a broken build (missing ajv submodules) — see README.md.
-if ! command -v yarn &> /dev/null; then
-  npm install -g yarn
+if $BUILD_FRONTEND; then
+  echo "==> [4/7] Building frontend"
+  # Yarn, not npm: frontend/package.json relies on Yarn's `resolutions` field to keep
+  # transitive deps (e.g. ajv) consistent. `npm install`/`npm ci` ignore that field and
+  # produce a broken build (missing ajv submodules) — see README.md.
+  if ! command -v yarn &> /dev/null; then
+    npm install -g yarn
+  fi
+  # GENERATE_SOURCEMAP=false: CRA ships .map files by default. They are pure
+  # cost here — several MB added to the deploy, more peak build memory, and the
+  # whole unminified source published to anyone who asks for it. Nothing in this
+  # project debugs against production maps.
+  ( cd frontend && yarn install --frozen-lockfile && GENERATE_SOURCEMAP=false yarn build )
+else
+  echo "==> [4/7] Skipping frontend build (--no-build)"
+  if [[ ! -f frontend/build/index.html ]]; then
+    echo "  frontend/build/index.html is missing — rsync a build up first, or drop --no-build." >&2
+    exit 1
+  fi
+  echo "  Using existing frontend/build ($(du -sh frontend/build | cut -f1))"
 fi
-( cd frontend && yarn install --frozen-lockfile && yarn build )
 
 mkdir -p deploy/certbot-www
 
@@ -85,5 +109,13 @@ if curl -sf "https://$DOMAIN/api/" > /dev/null; then
 else
   echo "WARNING: health check failed — check: docker compose logs backend / docker compose logs nginx" >&2
 fi
+
+# Reclaim disk. Every redeploy rebuilds the backend image, and the superseded
+# layers plus the build cache are what silently fill a small VM's disk — the
+# 695MB dependency layer is rewritten whenever requirements.txt changes.
+echo "==> Reclaiming disk"
+docker image prune -f >/dev/null 2>&1 || true
+docker builder prune -f --keep-storage 2GB >/dev/null 2>&1 || true
+df -h / | awk 'NR==2 {print "  root filesystem: " $4 " free of " $2}'
 
 echo "Done."
