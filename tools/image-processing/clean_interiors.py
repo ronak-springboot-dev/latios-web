@@ -21,6 +21,18 @@ import numpy as np
 from PIL import Image, ImageDraw, ImageFilter
 
 SRC = Path(__file__).parent / "generated" / "components"
+# The reveal now composites photo-derived interiors from generated/pairs rather
+# than the old internals-* renders, and the model prints on those too - the
+# mt-ddr4-gpu card shroud came back reading "X IFJOIRX". Same treatment.
+PAIRS = Path(__file__).parent / "generated" / "pairs"
+
+
+def _path(name):
+    """Look in both places, so one patch table covers old and new interiors."""
+    for base, stem in ((SRC, f"{name}.png"), (PAIRS, f"{name}.png")):
+        if (base / stem).exists():
+            return base / stem
+    return SRC / f"{name}.png"
 
 # interior -> boxes as (l, t, r, b) fractions of the render
 PATCHES = {
@@ -32,11 +44,25 @@ PATCHES = {
     "internals-mt-ddr5-gpu":  [(0.385, 0.190, 0.715, 0.264),   # card shroud + "8x"
                                (0.350, 0.281, 0.520, 0.318)],  # second line below the card
     "internals-promax-4dimm": [(0.235, 0.535, 0.400, 0.593)],  # "DDR5 ECC" on the card
+    # Photo-derived interiors (generated/pairs). Located off a zoom of the card
+    # band, the same way the badges were.
+    # A box may carry a fifth value overriding the feather. Needed here: the card
+    # shroud is only ~41px tall, so the box cannot be padded outward without the
+    # horizontal interpolation dragging in cables above and board below. With the
+    # default feather the mask's opaque core is inset ~18px and the lettering's
+    # top and bottom sat under a half-transparent mask - a legible ghost.
+    "interior-mt-ddr4-gpu": [(0.192, 0.584, 0.344, 0.622, 0.0018)],
+    "interior-mt-ddr5-gpu": [(0.288, 0.612, 0.394, 0.663, 0.0018),   # logo mark on the shroud
+                             (0.505, 0.628, 0.590, 0.661, 0.0018),   # "VDPS5"
+                             (0.148, 0.614, 0.210, 0.660, 0.0018)],  # "20GX" at the bracket end
+    "interior-promax-4dimm": [(0.316, 0.679, 0.520, 0.711, 0.0018)],   # "OBBY SHOVIL ADOG" on the board
 }
 
 
 def fill(img, box, sample=0.018, feather=0.006):
     """Interpolate horizontally across `box` from clean surface either side."""
+    if len(box) == 5:
+        box, feather = box[:4], box[4]
     w, h = img.size
     x0, y0, x1, y1 = (int(box[0] * w), int(box[1] * h), int(box[2] * w), int(box[3] * h))
     s = max(6, int(w * sample))
@@ -71,7 +97,7 @@ def scan(name, thresh=190, min_px=180):
     written by eye. Automatically erasing every bright cluster would take out
     legitimate highlights, connectors and gold contacts.
     """
-    p = SRC / f"{name}.png"
+    p = _path(name)
     im = Image.open(p).convert("L").resize((512, 512), Image.LANCZOS)
     a = np.asarray(im)
     ys, xs = np.nonzero(a > thresh)
@@ -91,11 +117,11 @@ def scan(name, thresh=190, min_px=180):
 
 if __name__ == "__main__":
     if "--scan" in sys.argv:
-        for p in sorted(SRC.glob("internals-*.png")):
+        for p in sorted(SRC.glob("internals-*.png")) + sorted(PAIRS.glob("interior-*.png")):
             scan(p.stem)
     else:
         for name, boxes in PATCHES.items():
-            p = SRC / f"{name}.png"
+            p = _path(name)
             if not p.exists():
                 print(f"  {name}: not rendered")
                 continue

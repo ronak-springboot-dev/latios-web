@@ -39,7 +39,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/promax-q870/{i}.webp" },
+      "manifest": { "frames": 64, "width": 1400, "height": 1400, "pattern": "/reveal/promax-q870/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "Four slots and a full-length card.",
@@ -109,6 +109,23 @@ export default {
       ]
     },
     {
+      "type": "band",
+      "kicker": "Workstation class",
+      "items": [
+        {"src": "/bands/promax-q870-0.webp", "w": 1200, "h": 1163, "alt": "PROMAX AI \u2014 Intel Q870 - Up to RTX A6000-class graphics"},
+        {"src": "/bands/promax-q870-1.webp", "w": 1200, "h": 1523, "alt": "PROMAX AI \u2014 Intel Q870 - Core Ultra 9 285 with Intel AI Boost"},
+        {"src": "/bands/promax-q870-2.webp", "w": 1200, "h": 1163, "alt": "PROMAX AI \u2014 Intel Q870 - 128GB of DDR5"}
+      ]
+    },
+{
+  "type": "video",
+  "src": "/videos/promax-q870-loop.mp4",
+  "poster": "/images/posters/promax-q870-loop.webp",
+  "modelName": "PROMAX AI \u2014 Intel Q870",
+  "heading": "Workstation class.",
+  "subline": "Intel Core Ultra 9 285 with AI Boost NPU. Engineered, assembled and finished in Ahmedabad.",
+},
+{
       "type": "compare",
       "heading": "Across the PROMAX range.",
       "subline": "Four different machines, not four configurations of one.",

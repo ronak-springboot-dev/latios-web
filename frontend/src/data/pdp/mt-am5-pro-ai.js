@@ -32,7 +32,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/mt-am5-pro-ai/{i}.webp" },
+      "manifest": { "frames": 64, "width": 1400, "height": 1120, "pattern": "/reveal/mt-am5-pro-ai/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "No card. No slot spent.",
@@ -64,6 +64,24 @@ export default {
           "text": "Two DDR5-5200 slots. AM5 has no legacy memory path by design."
         }
       ]
+    },
+
+    {
+      "type": "band",
+      "kicker": "Ryzen AI, on the die",
+      "items": [
+        {"src": "/bands/mt-am5-pro-ai-0.webp", "w": 1200, "h": 1163, "alt": "Latios Pro AI MT \u2014 AMD AM5 - Ryzen 7 8700G on Socket AM5"},
+        {"src": "/bands/mt-am5-pro-ai-1.webp", "w": 1200, "h": 1523, "alt": "Latios Pro AI MT \u2014 AMD AM5 - Ryzen AI, on the processor"},
+        {"src": "/bands/mt-am5-pro-ai-2.webp", "w": 1200, "h": 1163, "alt": "Latios Pro AI MT \u2014 AMD AM5 - DDR5, dual channel"}
+      ]
+    },
+    {
+      "type": "video",
+      "src": "/videos/mt-am5-pro-ai-loop.mp4",
+      "poster": "/images/posters/mt-am5-pro-ai-loop.webp",
+      "modelName": "Latios Pro AI MT \u2014 AMD AM5",
+      "heading": "Ryzen AI, on the die.",
+      "subline": "AMD Ryzen 7 8700G with Ryzen AI. Engineered, assembled and finished in Ahmedabad.",
     },
     {
       "type": "featureGrid",

@@ -10,7 +10,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/sff-h810-pro-ai/{i}.webp" },
+      "manifest": { "frames": 64, "width": 1400, "height": 1120, "pattern": "/reveal/sff-h810-pro-ai/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "The one you buy a hundred of.",
@@ -42,6 +42,24 @@ export default {
           "text": "Dual 2.5G LAN, so management traffic need not share the data path."
         }
       ]
+    },
+
+    {
+      "type": "band",
+      "kicker": "Volume rollout",
+      "items": [
+        {"src": "/bands/sff-h810-pro-ai-0.webp", "w": 1200, "h": 1163, "alt": "Latios Pro AI SFF \u2014 Intel H810 - Core Ultra 9 285, NPU included"},
+        {"src": "/bands/sff-h810-pro-ai-1.webp", "w": 1200, "h": 1523, "alt": "Latios Pro AI SFF \u2014 Intel H810 - Two 2.5G ports, not one"},
+        {"src": "/bands/sff-h810-pro-ai-2.webp", "w": 1200, "h": 1163, "alt": "Latios Pro AI SFF \u2014 Intel H810 - 64GB DDR5"}
+      ]
+    },
+    {
+      "type": "video",
+      "src": "/videos/sff-h810-pro-ai-loop.mp4",
+      "poster": "/images/posters/sff-h810-pro-ai-loop.webp",
+      "modelName": "Latios Pro AI SFF \u2014 Intel H810",
+      "heading": "Volume rollout.",
+      "subline": "Intel Core Ultra 9 285 with AI Boost NPU. Engineered, assembled and finished in Ahmedabad.",
     },
     {
       "type": "statWall",

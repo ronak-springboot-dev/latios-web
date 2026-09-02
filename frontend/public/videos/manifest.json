@@ -1,0 +1,18 @@
+{
+  "sff-h610-ddr5": {
+    "src": "/videos/sff-h610-ddr5-loop.mp4",
+    "poster": "/images/posters/sff-h610-ddr5-loop.webp"
+  },
+  "sff-am5-pro-ai": {
+    "src": "/videos/sff-am5-pro-ai-loop.mp4",
+    "poster": "/images/posters/sff-am5-pro-ai-loop.webp"
+  },
+  "sff-b860-pro-ai": {
+    "src": "/videos/sff-b860-pro-ai-loop.mp4",
+    "poster": "/images/posters/sff-b860-pro-ai-loop.webp"
+  },
+  "sff-h810-pro-ai": {
+    "src": "/videos/sff-h810-pro-ai-loop.mp4",
+    "poster": "/images/posters/sff-h810-pro-ai-loop.webp"
+  }
+}

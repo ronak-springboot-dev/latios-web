@@ -17,7 +17,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/mt-pro-h610-ddr5/{i}.webp" },
+      "manifest": { "frames": 64, "width": 1400, "height": 1120, "pattern": "/reveal/mt-pro-h610-ddr5/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "Built to hold its clocks.",
@@ -99,6 +99,23 @@ export default {
       ]
     },
     {
+      "type": "band",
+      "kicker": "The Pro build",
+      "items": [
+        {"src": "/bands/mt-pro-h610-ddr5-0.webp", "w": 1200, "h": 1163, "alt": "Latios Pro MT \u2014 Intel H610 DDR5 - Core i7-14700, tuned for sustained load"},
+        {"src": "/bands/mt-pro-h610-ddr5-1.webp", "w": 1200, "h": 1523, "alt": "Latios Pro MT \u2014 Intel H610 DDR5 - Professional graphics, certified drivers"},
+        {"src": "/bands/mt-pro-h610-ddr5-2.webp", "w": 1200, "h": 1163, "alt": "Latios Pro MT \u2014 Intel H610 DDR5 - 64GB DDR5, dual channel"}
+      ]
+    },
+{
+  "type": "video",
+  "src": "/videos/mt-pro-h610-ddr5-loop.mp4",
+  "poster": "/images/posters/mt-pro-h610-ddr5-loop.webp",
+  "modelName": "Latios Pro MT \u2014 Intel H610 DDR5",
+  "heading": "The Pro build.",
+  "subline": "Intel Core i7-14700 / i5-14500 / i3-14100. Engineered, assembled and finished in Ahmedabad.",
+},
+{
       "type": "specTeaser"
     }
   ],

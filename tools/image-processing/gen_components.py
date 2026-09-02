@@ -111,13 +111,22 @@ def _post(path, payload=None, timeout=3600):
         return json.loads(r.read().decode())
 
 
-def graph(prompt, seed):
-    return {
+def graph(prompt, seed, upscale=True, neg=None):
+    """
+    The render graph. `upscale` runs the 4x RealESRGAN pass to 5312px.
+
+    Worth it for the component cutouts, which are matted and reused at several
+    sizes. Not worth it for the marketing bands, which are composited at 1200px
+    and would throw away 95% of those pixels - so those skip it and save the
+    upscale time on every one of forty-five renders.
+    """
+    g = {
         "1": {"class_type": "UnetLoaderGGUF", "inputs": {"unet_name": UNET}},
         "2": {"class_type": "CLIPLoader", "inputs": {"clip_name": CLIP, "type": "qwen_image"}},
         "3": {"class_type": "VAELoader", "inputs": {"vae_name": VAE}},
         "4": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 0], "text": prompt}},
-        "5": {"class_type": "CLIPTextEncode", "inputs": {"clip": ["2", 0], "text": NEG}},
+        "5": {"class_type": "CLIPTextEncode",
+              "inputs": {"clip": ["2", 0], "text": neg or NEG}},
         "6": {"class_type": "EmptySD3LatentImage",
               "inputs": {"width": SIZE, "height": SIZE, "batch_size": 1}},
         "7": {"class_type": "KSampler",
@@ -126,12 +135,15 @@ def graph(prompt, seed):
                          "cfg": CFG, "sampler_name": "euler", "scheduler": "simple",
                          "denoise": 1.0}},
         "8": {"class_type": "VAEDecode", "inputs": {"samples": ["7", 0], "vae": ["3", 0]}},
-        "9": {"class_type": "UpscaleModelLoader", "inputs": {"model_name": UPSCALER}},
-        "10": {"class_type": "ImageUpscaleWithModel",
-               "inputs": {"upscale_model": ["9", 0], "image": ["8", 0]}},
-        "11": {"class_type": "SaveImage",
-               "inputs": {"images": ["10", 0], "filename_prefix": "component"}},
     }
+    if upscale:
+        g["9"] = {"class_type": "UpscaleModelLoader", "inputs": {"model_name": UPSCALER}}
+        g["10"] = {"class_type": "ImageUpscaleWithModel",
+                   "inputs": {"upscale_model": ["9", 0], "image": ["8", 0]}}
+    g["11"] = {"class_type": "SaveImage",
+               "inputs": {"images": ["10" if upscale else "8", 0],
+                          "filename_prefix": "component"}}
+    return g
 
 
 def wait(pid, limit=5400):
@@ -149,10 +161,17 @@ def wait(pid, limit=5400):
     raise TimeoutError(f"no result after {limit}s")
 
 
-def run(name):
+def render(name, prompt, upscale=True, neg=None):
+    """
+    Render one arbitrary prompt through the same graph as the catalogue jobs.
+
+    Split out of run() so callers with prompts of their own — open_chassis.py
+    needs closed PROMAX bodies that were never photographed — get the identical
+    sampler, upscaler and output handling rather than a second near-copy of it.
+    """
     OUT.mkdir(parents=True, exist_ok=True)
     seed = uuid.uuid4().int % (2 ** 31)
-    pid = _post("/prompt", {"prompt": graph(JOBS[name], seed),
+    pid = _post("/prompt", {"prompt": graph(prompt, seed, upscale, neg),
                             "client_id": str(uuid.uuid4())})["prompt_id"]
     print(f"{name}: queued {pid} (seed {seed})", flush=True)
     files, secs = wait(pid)
@@ -161,6 +180,11 @@ def run(name):
     dest = OUT / f"{name}.png"
     dest.write_bytes(src.read_bytes())
     print(f"  {name:12s} -> {dest.name}  {dest.stat().st_size // 1024} KB  in {secs/60:.1f} min", flush=True)
+    return dest
+
+
+def run(name):
+    return render(name, JOBS[name])
 
 
 if __name__ == "__main__":

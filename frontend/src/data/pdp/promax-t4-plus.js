@@ -58,7 +58,7 @@ export default {
       // interior is the only eight-slot, liquid-cooled, multi-card render in the
       // set — the hardware differences here are real, not staged.
       type: "reveal",
-      manifest: { frames: 40, width: 1400, height: 1400, pattern: "/reveal/promax-t4-plus/{i}.webp" },
+      manifest: { frames: 64, width: 1400, height: 1400, pattern: "/reveal/promax-t4-plus/{i}.webp" },
       height: 260,
       kicker: "Inside",
       heading: "Eight slots and a closed loop.",
@@ -73,6 +73,15 @@ export default {
     },
 
     {
+      "type": "band",
+      "kicker": "The top of the range",
+      "items": [
+        {"src": "/bands/promax-t4-plus-0.webp", "w": 1200, "h": 1163, "alt": "PROMAX T4 Plus \u2014 Intel W780 - Xeon W-3400, the top of the range"},
+        {"src": "/bands/promax-t4-plus-1.webp", "w": 1200, "h": 1523, "alt": "PROMAX T4 Plus \u2014 Intel W780 - Up to 2TB of ECC DDR5"},
+        {"src": "/bands/promax-t4-plus-2.webp", "w": 1200, "h": 1163, "alt": "PROMAX T4 Plus \u2014 Intel W780 - 2700W, redundant"}
+      ]
+    },
+{
       type: "exploded",
       heading: "What goes in it.",
       body:
@@ -89,6 +98,14 @@ export default {
       ],
     },
 
+    {
+      "type": "video",
+      "src": "/videos/promax-t4-plus-loop.mp4",
+      "poster": "/images/posters/promax-t4-plus-loop.webp",
+      "modelName": "PROMAX T4 Plus \u2014 Intel W780",
+      "heading": "The top of the range.",
+      "subline": "Intel Xeon W-2400 / 3400 series. Engineered, assembled and finished in Ahmedabad.",
+    },
     {
       type: "compare",
       heading: "Across the PROMAX range.",

@@ -18,6 +18,7 @@ Usage:
     python comfy_client.py edit <scene.png> <product.webp> "<instruction>" out.png
 """
 import json
+import os
 import sys
 import time
 import urllib.request
@@ -31,7 +32,10 @@ IN_DIR = COMFY / "input"
 OUT_DIR = COMFY / "output"
 LOCAL_OUT = Path(__file__).parent / "generated"
 
-UNET = "Qwen-Image-Edit-2509-Q4_K_M.gguf"
+# Q4_K_M by default; LATIOS_UNET=q6 selects the larger Q6_K, which holds fine
+# geometry better on chassis edits at the cost of more offloading on an 8GB card.
+UNET = ("Qwen-Image-Edit-2509-Q6_K.gguf" if os.environ.get("LATIOS_UNET") == "q6"
+        else "Qwen-Image-Edit-2509-Q4_K_M.gguf")
 CLIP = "qwen_2.5_vl_7b_fp8_scaled.safetensors"
 VAE = "qwen_image_vae.safetensors"
 
@@ -94,7 +98,8 @@ def check():
     return ok
 
 
-def _graph(scene_name, product_name, prompt, seed):
+def _graph(scene_name, product_name, prompt, seed, neg_extra="", mask_name=None,
+           mask_grow=0, mask_feather=0):
     """Qwen-Image-Edit graph in ComfyUI API format."""
     info = _req("/object_info")
     enc = "TextEncodeQwenImageEditPlus" if "TextEncodeQwenImageEditPlus" in info \
@@ -102,7 +107,8 @@ def _graph(scene_name, product_name, prompt, seed):
     two_images = "image2" in info[enc]["input"].get("optional", {})
 
     pos_inputs = {"clip": ["2", 0], "prompt": prompt, "vae": ["3", 0], "image1": ["4", 0]}
-    neg_inputs = {"clip": ["2", 0], "prompt": NEG, "vae": ["3", 0], "image1": ["4", 0]}
+    neg_inputs = {"clip": ["2", 0], "prompt": (NEG + neg_extra).strip(),
+                  "vae": ["3", 0], "image1": ["4", 0]}
     if two_images and product_name:
         pos_inputs["image2"] = ["5", 0]
         neg_inputs["image2"] = ["5", 0]
@@ -118,7 +124,8 @@ def _graph(scene_name, product_name, prompt, seed):
         "8": {"class_type": "VAEEncode", "inputs": {"pixels": ["4", 0], "vae": ["3", 0]}},
         "9": {"class_type": "KSampler",
               "inputs": {"model": ["1", 0], "positive": ["6", 0], "negative": ["7", 0],
-                         "latent_image": ["8", 0], "seed": seed, "steps": STEPS,
+                         "latent_image": ["12", 0] if mask_name else ["8", 0],
+                         "seed": seed, "steps": STEPS,
                          "cfg": CFG, "sampler_name": "euler", "scheduler": "simple",
                          "denoise": 1.0}},
         "10": {"class_type": "VAEDecode", "inputs": {"samples": ["9", 0], "vae": ["3", 0]}},
@@ -127,6 +134,28 @@ def _graph(scene_name, product_name, prompt, seed):
     }
     if two_images and product_name:
         g["5"] = {"class_type": "LoadImage", "inputs": {"image": product_name}}
+
+    if mask_name:
+        # Confine the edit to one region of the frame. Everything outside the
+        # mask comes back as the source pixels, so the parts that have to stay
+        # put - silhouette, bezel, ports, wordmark, camera angle - are preserved
+        # by construction rather than by asking the prompt nicely. Lowering
+        # denoise instead does not work: at 0.86 the SFF simply stayed shut,
+        # and at 1.0 the model re-staged the whole shot.
+        g["13"] = {"class_type": "LoadImageMask",
+                   "inputs": {"image": mask_name, "channel": "red"}}
+        src = ["13", 0]
+        if mask_grow:
+            g["14"] = {"class_type": "GrowMask",
+                       "inputs": {"mask": src, "expand": mask_grow, "tapered_corners": True}}
+            src = ["14", 0]
+        if mask_feather:
+            g["15"] = {"class_type": "FeatherMask",
+                       "inputs": {"mask": src, "left": mask_feather, "top": mask_feather,
+                                  "right": mask_feather, "bottom": mask_feather}}
+            src = ["15", 0]
+        g["12"] = {"class_type": "SetLatentNoiseMask",
+                   "inputs": {"samples": ["8", 0], "mask": src}}
     return g
 
 
@@ -147,7 +176,12 @@ def _wait(prompt_id, poll=3, limit=3600):
     raise TimeoutError(f"no result after {limit}s")
 
 
-def edit(scene, product, prompt, out_name, seed=None):
+def edit(scene, product, prompt, out_name, seed=None, neg_extra="", denoise=1.0,
+         mask=None, mask_grow=0, mask_feather=0):
+    """
+    `mask`: optional greyscale PNG the same size as `scene`. White is the only
+    region the sampler may repaint; everything else returns as the source.
+    """
     IN_DIR.mkdir(parents=True, exist_ok=True)
     scene_name = Path(scene).name
     (IN_DIR / scene_name).write_bytes(Path(scene).read_bytes())
@@ -155,9 +189,18 @@ def edit(scene, product, prompt, out_name, seed=None):
     if product:
         product_name = Path(product).name
         (IN_DIR / product_name).write_bytes(Path(product).read_bytes())
+    mask_name = None
+    if mask:
+        mask_name = Path(mask).name
+        (IN_DIR / mask_name).write_bytes(Path(mask).read_bytes())
 
     seed = seed if seed is not None else uuid.uuid4().int % (2 ** 31)
-    g = _graph(scene_name, product_name, prompt, seed)
+    g = _graph(scene_name, product_name, prompt, seed, neg_extra,
+               mask_name=mask_name, mask_grow=mask_grow, mask_feather=mask_feather)
+    # Below 1.0 the sampler starts from the encoded source rather than from
+    # noise, so the original tonality survives. Wanted for a relight, where
+    # the machine must come back the same value it went in.
+    g["9"]["inputs"]["denoise"] = float(denoise)
     pid = _req("/prompt", {"prompt": g, "client_id": str(uuid.uuid4())})["prompt_id"]
     print(f"  queued {pid} (seed {seed}) ...")
     files, secs = _wait(pid)

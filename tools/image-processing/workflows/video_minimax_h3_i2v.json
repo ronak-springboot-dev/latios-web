@@ -1,0 +1,103 @@
+{
+  "_comment": [
+    "MiniMax H3 image-to-video (fl2va) for a Latios product loop.",
+    "ComfyUI API format - the payload POSTed to /prompt. Load with the API-format",
+    "importer, or POST it directly.",
+    "",
+    "The source image is a REAL product photograph, not a text prompt, which is",
+    "the whole point: H3 is asked to move a machine it has been shown rather than",
+    "to invent one. Everything this project generated from a bare prompt came back",
+    "as a different product.",
+    "",
+    "Sized and stepped for an 8GB card: 768x512, ~5s, and the 4-step turbo LoRA at",
+    "CFG 1.0. Without the LoRA this is ~20 steps of a 21GB DiT that does not fit in",
+    "VRAM, which is not viable here.",
+    "",
+    "Node 12 zeroes the positive for the negative slot. At CFG 1.0 the negative is",
+    "unused, but KSampler still requires one."
+  ],
+
+  "1": {
+    "class_type": "UNETLoader",
+    "inputs": {
+      "unet_name": "minimax_h3_fl2va_pruned_fp8_scaled.safetensors",
+      "weight_dtype": "fp8_e4m3fn"
+    }
+  },
+  "2": {
+    "class_type": "LoraLoaderModelOnly",
+    "inputs": {
+      "model": ["1", 0],
+      "lora_name": "minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors",
+      "strength_model": 1.0
+    }
+  },
+  "3": {
+    "class_type": "MiniMaxH3SigmaShift",
+    "inputs": {
+      "model": ["2", 0],
+      "shift_video": 12.0,
+      "shift_audio": 3.0
+    }
+  },
+  "4": {
+    "class_type": "CLIPLoader",
+    "inputs": {
+      "clip_name": "qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors",
+      "type": "minimax"
+    }
+  },
+  "5": {
+    "class_type": "VAELoader",
+    "inputs": { "vae_name": "minimax_h3_video_vae_fp16.safetensors" }
+  },
+  "6": {
+    "class_type": "LoadImage",
+    "inputs": { "image": "latios-h3-input.png" }
+  },
+  "7": {
+    "class_type": "MiniMaxH3ImageToVideo",
+    "inputs": {
+      "clip": ["4", 0],
+      "vae": ["5", 0],
+      "prompt": "A slow, steady studio product shot of this black Latios desktop computer. The camera drifts gently to the left and slightly downward around the machine, holding it centred. The computer itself does not move, deform or change shape. Even soft studio lighting, deep black background, no people, no text.",
+      "width": 768,
+      "height": 512,
+      "length": 124,
+      "first_frame": ["6", 0]
+    }
+  },
+  "12": {
+    "class_type": "ConditioningZeroOut",
+    "inputs": { "conditioning": ["7", 0] }
+  },
+  "8": {
+    "class_type": "KSampler",
+    "inputs": {
+      "model": ["3", 0],
+      "positive": ["7", 0],
+      "negative": ["12", 0],
+      "latent_image": ["7", 1],
+      "seed": 12345,
+      "steps": 4,
+      "cfg": 1.0,
+      "sampler_name": "euler",
+      "scheduler": "simple",
+      "denoise": 1.0
+    }
+  },
+  "9": {
+    "class_type": "VAEDecode",
+    "inputs": { "samples": ["8", 0], "vae": ["5", 0] }
+  },
+  "10": {
+    "class_type": "SaveWEBM",
+    "inputs": {
+      "images": ["9", 0],
+      "filename_prefix": "latios-h3",
+      "codec": "vp9",
+      "fps": 24.0,
+      "crf": 24.0
+    }
+  }
+}

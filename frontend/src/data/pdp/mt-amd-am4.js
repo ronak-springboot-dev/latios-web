@@ -42,7 +42,7 @@ export default {
       // thing they were trying to describe. Scrubbed by scroll rather than
       // played, so the reader controls the reveal.
       type: "reveal",
-      manifest: { frames: 40, width: 1400, height: 1400, pattern: "/reveal/mt-amd-am4/{i}.webp" },
+      manifest: { frames: 64, width: 1400, height: 1120, pattern: "/reveal/mt-amd-am4/{i}.webp" },
       height: 260,
       kicker: "Serviceability",
       heading: "It opens by hand.",
@@ -58,6 +58,24 @@ export default {
       ],
     },
 
+    {
+      "type": "band",
+      "kicker": "The everyday workhorse",
+      "items": [
+        {"src": "/bands/mt-amd-am4-0.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 AMD AM4 - Eight Ryzen cores, Radeon graphics on the die"},
+        {"src": "/bands/mt-amd-am4-1.webp", "w": 1200, "h": 1523, "alt": "Latios MT \u2014 AMD AM4 - Dual-channel DDR4-3200, up to 64GB"},
+        {"src": "/bands/mt-amd-am4-2.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 AMD AM4 - Open it by hand, in seconds"}
+      ]
+    },
+
+    {
+      "type": "video",
+      "src": "/videos/mt-amd-am4-loop.mp4",
+      "poster": "/images/posters/mt-amd-am4-loop.webp",
+      "modelName": "Latios MT \u2014 AMD AM4",
+      "heading": "The everyday workhorse.",
+      "subline": "AMD Ryzen 7 5700G / 5 5600G / 3 5305G. Engineered, assembled and finished in Ahmedabad.",
+    },
     {
       type: "ioMap",
       image: "/images/dp180-2.webp",

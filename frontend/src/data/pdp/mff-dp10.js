@@ -9,6 +9,14 @@ export default {
       "type": "hero"
     },
     {
+      "type": "video",
+      "src": "/videos/mff-dp10-loop.mp4",
+      "poster": "/images/posters/mff-dp10-loop.webp",
+      "modelName": "Latios Pro MFF \u2014 DP10 A14MG",
+      "heading": "1.1 litres.",
+      "subline": "Up to Intel Core i7-14700. Engineered, assembled and finished in Ahmedabad.",
+    },
+    {
       "type": "statWall",
       "align": "center",
       "heading": "A desktop, minus the desk.",
@@ -32,7 +40,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/mff-dp10/{i}.webp" },
+      "manifest": { "frames": 64, "width": 1400, "height": 1120, "pattern": "/reveal/mff-dp10/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "All of it, in 1.1 litres.",
@@ -66,6 +74,15 @@ export default {
       ]
     },
     {
+      "type": "band",
+      "kicker": "1.1 litres",
+      "items": [
+        {"src": "/bands/mff-dp10-0.webp", "w": 1200, "h": 1163, "alt": "Latios Pro MFF \u2014 DP10 A14MG - A full Windows 11 Pro PC in 1.1 litres"},
+        {"src": "/bands/mff-dp10-1.webp", "w": 1200, "h": 1523, "alt": "Latios Pro MFF \u2014 DP10 A14MG - Three monitors from a 1.1-litre box"},
+        {"src": "/bands/mff-dp10-2.webp", "w": 1200, "h": 1163, "alt": "Latios Pro MFF \u2014 DP10 A14MG - Core i7-14700 class performance"}
+      ]
+    },
+{
       "type": "featureGrid",
       "heading": "Nothing given up but the volume.",
       "items": [

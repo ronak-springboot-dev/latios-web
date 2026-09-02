@@ -38,7 +38,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/promax-t2-w880/{i}.webp" },
+      "manifest": { "frames": 64, "width": 1400, "height": 1400, "pattern": "/reveal/promax-t2-w880/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "The platform that allows both.",
@@ -98,6 +98,23 @@ export default {
       ]
     },
     {
+      "type": "band",
+      "kicker": "Unlocked, error-corrected",
+      "items": [
+        {"src": "/bands/promax-t2-w880-0.webp", "w": 1200, "h": 1163, "alt": "PROMAX T2 AI \u2014 Intel W880 - Core Ultra 9 285K, unlocked"},
+        {"src": "/bands/promax-t2-w880-1.webp", "w": 1200, "h": 1523, "alt": "PROMAX T2 AI \u2014 Intel W880 - 256GB of ECC DDR5"},
+        {"src": "/bands/promax-t2-w880-2.webp", "w": 1200, "h": 1163, "alt": "PROMAX T2 AI \u2014 Intel W880 - Professional cards, certified"}
+      ]
+    },
+{
+  "type": "video",
+  "src": "/videos/promax-t2-w880-loop.mp4",
+  "poster": "/images/posters/promax-t2-w880-loop.webp",
+  "modelName": "PROMAX T2 AI \u2014 Intel W880",
+  "heading": "Unlocked, error-corrected.",
+  "subline": "Up to Core Ultra 9 285K, unlocked. Engineered, assembled and finished in Ahmedabad.",
+},
+{
       "type": "compare",
       "heading": "Against the rest of the range.",
       "against": [

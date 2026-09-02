@@ -53,7 +53,9 @@ const walk = (dir) => {
     const p = join(dir, e.name);
     if (e.isDirectory()) walk(p);
     else if (/\.jsx?$/.test(e.name)) {
-      for (const m of readFileSync(p, "utf8").matchAll(/["'](\/(?:images|videos)\/[^"']+)["']/g)) refs.add(m[1]);
+      // `bands` included because those assets carry their headline in the
+      // pixels — a missing one loses copy, not just a picture.
+      for (const m of readFileSync(p, "utf8").matchAll(/["'](\/(?:images|videos|bands)\/[^"']+)["']/g)) refs.add(m[1]);
     }
   }
 };
@@ -61,6 +63,53 @@ walk(join(ROOT, "src"));
 let broken = 0;
 for (const r of refs) if (!existsSync(join(PUB, r.slice(1)))) { broken += 1; fail(`missing asset ${r}`); }
 console.log(`assets           ${refs.size - broken}/${refs.size} resolve`);
+
+// 3b. bands carry their copy in the pixels, so they must never be cropped or
+// stretched, and the dimensions the page declares must be the real ones.
+//
+// This exists because a `md:h-full` + `object-cover` on the portrait band
+// stretched it vertically and therefore cropped it horizontally by ~35% — "64GB"
+// rendered as "4GB". A comment promising the crop was harmless is what stood in
+// for a check last time, so now there is a check.
+const png = (buf) => [buf.readUInt32BE(16), buf.readUInt32BE(20)];
+const webpVP8X = (buf) => {
+  // RIFF/WEBP: VP8X carries canvas size as two 24-bit little-endian (n-1)
+  const i = buf.indexOf("VP8X");
+  if (i < 0) return null;
+  const r = (o) => buf[o] | (buf[o + 1] << 8) | (buf[o + 2] << 16);
+  return [r(i + 12) + 1, r(i + 16) + 1];
+};
+const dims = (file) => {
+  const b = readFileSync(file);
+  if (b.slice(1, 4).toString() === "PNG") return png(b);
+  if (b.slice(0, 4).toString() === "RIFF") return webpVP8X(b);
+  return null;
+};
+
+const bandSrc = readFileSync(join(ROOT, "src/components/pdp/PdpBand.jsx"), "utf8");
+const figureBlock = bandSrc.slice(bandSrc.indexOf("const Figure"), bandSrc.indexOf("return ("));
+for (const bad of ["object-cover", "h-full ", "md:h-full"]) {
+  if (figureBlock.includes(bad) && bad !== "h-full ")
+    fail(`PdpBand Figure uses \`${bad}\` — baked type must never be cropped`);
+}
+
+let bands = 0, wrong = 0;
+for (const f of pages) {
+  const src = readFileSync(join(PDP, f), "utf8");
+  const re = /\{\s*"src":\s*"(\/bands\/[^"]+)",\s*"w":\s*(\d+),\s*"h":\s*(\d+)/g;
+  let m;
+  while ((m = re.exec(src))) {
+    bands += 1;
+    const file = join(PUB, m[1].slice(1));
+    if (!existsSync(file)) continue;                 // already reported above
+    const d = dims(file);
+    if (d && (d[0] !== Number(m[2]) || d[1] !== Number(m[3]))) {
+      wrong += 1;
+      fail(`${f}: ${m[1]} is ${d[0]}x${d[1]} on disk, page declares ${m[2]}x${m[3]}`);
+    }
+  }
+}
+console.log(`band dimensions  ${bands - wrong}/${bands} match the files on disk`);
 
 // 4. no two pages share both accent and section order
 const theme = readFileSync(join(ROOT, "src/components/pdp/theme.js"), "utf8");

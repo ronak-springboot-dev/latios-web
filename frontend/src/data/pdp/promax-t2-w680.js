@@ -21,7 +21,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/promax-t2-w680/{i}.webp" },
+      "manifest": { "frames": 64, "width": 1400, "height": 1400, "pattern": "/reveal/promax-t2-w680/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "Twenty-four cores, fed properly.",
@@ -77,6 +77,23 @@ export default {
       ]
     },
     {
+      "type": "band",
+      "kicker": "Twenty-four cores",
+      "items": [
+        {"src": "/bands/promax-t2-w680-0.webp", "w": 1200, "h": 1163, "alt": "PROMAX T2 \u2014 Intel W680 - Core i9-14900K, 24 cores"},
+        {"src": "/bands/promax-t2-w680-1.webp", "w": 1200, "h": 1523, "alt": "PROMAX T2 \u2014 Intel W680 - RTX A6000 ready"},
+        {"src": "/bands/promax-t2-w680-2.webp", "w": 1200, "h": 1163, "alt": "PROMAX T2 \u2014 Intel W680 - 256GB ECC DDR5"}
+      ]
+    },
+{
+  "type": "video",
+  "src": "/videos/promax-t2-w680-loop.mp4",
+  "poster": "/images/posters/promax-t2-w680-loop.webp",
+  "modelName": "PROMAX T2 \u2014 Intel W680",
+  "heading": "Twenty-four cores.",
+  "subline": "Up to Intel Core i9-14900K. Engineered, assembled and finished in Ahmedabad.",
+},
+{
       "type": "compare",
       "heading": "Where it sits in the range.",
       "against": [

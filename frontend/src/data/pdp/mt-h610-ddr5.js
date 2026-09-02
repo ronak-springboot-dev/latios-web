@@ -23,7 +23,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/mt-h610-ddr5/{i}.webp" },
+      "manifest": { "frames": 64, "width": 1400, "height": 1120, "pattern": "/reveal/mt-h610-ddr5/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "Two slots, twice the bus.",
@@ -79,6 +79,14 @@ export default {
       ]
     },
     {
+      "type": "video",
+      "src": "/videos/mt-h610-ddr5-loop.mp4",
+      "poster": "/images/posters/mt-h610-ddr5-loop.webp",
+      "modelName": "Latios MT \u2014 Intel H610 DDR5",
+      "heading": "Built around the bus.",
+      "subline": "Up to Intel Core i9-14900. Engineered, assembled and finished in Ahmedabad.",
+    },
+    {
       "type": "featureGrid",
       "heading": "The rest is unchanged, on purpose.",
       "items": [
@@ -115,6 +123,15 @@ export default {
       ]
     },
     {
+      "type": "band",
+      "kicker": "Built around the bus",
+      "items": [
+        {"src": "/bands/mt-h610-ddr5-0.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 Intel H610 DDR5 - The same Core i9, on a faster bus"},
+        {"src": "/bands/mt-h610-ddr5-1.webp", "w": 1200, "h": 1523, "alt": "Latios MT \u2014 Intel H610 DDR5 - 64GB of DDR5 at 5600 MT/s"},
+        {"src": "/bands/mt-h610-ddr5-2.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 Intel H610 DDR5 - Hardware TPM 2.0, standard"}
+      ]
+    },
+{
       "type": "compare",
       "heading": "Against the rest of the MT range.",
       "rows": [

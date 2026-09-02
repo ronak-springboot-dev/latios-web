@@ -9,6 +9,14 @@ export default {
       "type": "hero"
     },
     {
+      "type": "video",
+      "src": "/videos/sff-b860-pro-ai-loop.mp4",
+      "poster": "/images/posters/sff-b860-pro-ai-loop.webp",
+      "modelName": "Latios Pro AI SFF \u2014 Intel B860",
+      "heading": "Core Ultra, small footprint.",
+      "subline": "Intel Core Ultra 9 285 with AI Boost NPU. Engineered, assembled and finished in Ahmedabad.",
+    },
+    {
       "type": "statWall",
       "align": "left",
       "heading": "Twice the ceiling of its sibling.",
@@ -38,7 +46,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/sff-b860-pro-ai/{i}.webp" },
+      "manifest": { "frames": 64, "width": 1400, "height": 1120, "pattern": "/reveal/sff-b860-pro-ai/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "Four slots, in eight litres.",
@@ -78,6 +86,15 @@ export default {
       "body": "Thunderbolt 4 at 40Gb/s carries a docking station, an external array and dual 4K displays — the port that makes a small machine behave like a large one."
     },
     {
+      "type": "band",
+      "kicker": "Core Ultra, small footprint",
+      "items": [
+        {"src": "/bands/sff-b860-pro-ai-0.webp", "w": 1200, "h": 1163, "alt": "Latios Pro AI SFF \u2014 Intel B860 - Core Ultra 9 285 with Intel AI Boost"},
+        {"src": "/bands/sff-b860-pro-ai-1.webp", "w": 1200, "h": 1523, "alt": "Latios Pro AI SFF \u2014 Intel B860 - 128GB of DDR5 in a small box"},
+        {"src": "/bands/sff-b860-pro-ai-2.webp", "w": 1200, "h": 1163, "alt": "Latios Pro AI SFF \u2014 Intel B860 - Thunderbolt 4 at 40Gb/s"}
+      ]
+    },
+{
       "type": "featureGrid",
       "heading": "Where the eight litres go.",
       "items": [

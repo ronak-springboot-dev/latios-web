@@ -10,7 +10,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/sff-h610-ddr5/{i}.webp" },
+      "manifest": { "frames": 64, "width": 1400, "height": 1120, "pattern": "/reveal/sff-h610-ddr5/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "A Core i7, in eight litres.",
@@ -42,6 +42,24 @@ export default {
           "text": "An M.2 drive under a slim heatsink, with the TFX supply at the far end."
         }
       ]
+    },
+
+    {
+      "type": "band",
+      "kicker": "Eight litres",
+      "items": [
+        {"src": "/bands/sff-h610-ddr5-0.webp", "w": 1200, "h": 1163, "alt": "Latios Pro SFF \u2014 Intel H610 - Eight litres that disappear into the desk"},
+        {"src": "/bands/sff-h610-ddr5-1.webp", "w": 1200, "h": 1523, "alt": "Latios Pro SFF \u2014 Intel H610 - Core i7-14700 in a small box"},
+        {"src": "/bands/sff-h610-ddr5-2.webp", "w": 1200, "h": 1163, "alt": "Latios Pro SFF \u2014 Intel H610 - A vent wall, not a vent hole"}
+      ]
+    },
+    {
+      "type": "video",
+      "src": "/videos/sff-h610-ddr5-loop.mp4",
+      "poster": "/images/posters/sff-h610-ddr5-loop.webp",
+      "modelName": "Latios Pro SFF \u2014 Intel H610",
+      "heading": "Eight litres.",
+      "subline": "Up to Intel Core i7-14700. Engineered, assembled and finished in Ahmedabad.",
     },
     {
       "type": "statWall",

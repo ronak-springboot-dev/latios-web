@@ -1,0 +1,302 @@
+{
+  "mt-amd-am4": [
+    {
+      "src": "/bands/mt-amd-am4-0.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios MT \u2014 AMD AM4 - Eight Ryzen cores, Radeon graphics on the die"
+    },
+    {
+      "src": "/bands/mt-amd-am4-1.webp",
+      "w": 1200,
+      "h": 1523,
+      "alt": "Latios MT \u2014 AMD AM4 - Dual-channel DDR4-3200, up to 64GB"
+    },
+    {
+      "src": "/bands/mt-amd-am4-2.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios MT \u2014 AMD AM4 - Open it by hand, in seconds"
+    }
+  ],
+  "mt-h610-ddr4": [
+    {
+      "src": "/bands/mt-h610-ddr4-0.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios MT \u2014 Intel H610 DDR4 - One socket, an i3 kiosk to a 24-core i9"
+    },
+    {
+      "src": "/bands/mt-h610-ddr4-1.webp",
+      "w": 1200,
+      "h": 1523,
+      "alt": "Latios MT \u2014 Intel H610 DDR4 - DDR4, where budget matters more than bus width"
+    },
+    {
+      "src": "/bands/mt-h610-ddr4-2.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios MT \u2014 Intel H610 DDR4 - Room for an RTX A4000"
+    }
+  ],
+  "mt-h610-ddr5": [
+    {
+      "src": "/bands/mt-h610-ddr5-0.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios MT \u2014 Intel H610 DDR5 - The same Core i9, on a faster bus"
+    },
+    {
+      "src": "/bands/mt-h610-ddr5-1.webp",
+      "w": 1200,
+      "h": 1523,
+      "alt": "Latios MT \u2014 Intel H610 DDR5 - 64GB of DDR5 at 5600 MT/s"
+    },
+    {
+      "src": "/bands/mt-h610-ddr5-2.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios MT \u2014 Intel H610 DDR5 - Hardware TPM 2.0, standard"
+    }
+  ],
+  "mt-pro-h610-ddr5": [
+    {
+      "src": "/bands/mt-pro-h610-ddr5-0.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios Pro MT \u2014 Intel H610 DDR5 - Core i7-14700, tuned for sustained load"
+    },
+    {
+      "src": "/bands/mt-pro-h610-ddr5-1.webp",
+      "w": 1200,
+      "h": 1523,
+      "alt": "Latios Pro MT \u2014 Intel H610 DDR5 - Professional graphics, certified drivers"
+    },
+    {
+      "src": "/bands/mt-pro-h610-ddr5-2.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios Pro MT \u2014 Intel H610 DDR5 - 64GB DDR5, dual channel"
+    }
+  ],
+  "mt-q670-ddr5": [
+    {
+      "src": "/bands/mt-q670-ddr5-0.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios MT \u2014 Intel Q670 DDR5 - Q670: the chipset IT actually asks for"
+    },
+    {
+      "src": "/bands/mt-q670-ddr5-1.webp",
+      "w": 1200,
+      "h": 1523,
+      "alt": "Latios MT \u2014 Intel Q670 DDR5 - Up to a Core i9-14900"
+    },
+    {
+      "src": "/bands/mt-q670-ddr5-2.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios MT \u2014 Intel Q670 DDR5 - DDR5 at full chipset bandwidth"
+    }
+  ],
+  "mt-am5-pro-ai": [
+    {
+      "src": "/bands/mt-am5-pro-ai-0.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios Pro AI MT \u2014 AMD AM5 - Ryzen 7 8700G on Socket AM5"
+    },
+    {
+      "src": "/bands/mt-am5-pro-ai-1.webp",
+      "w": 1200,
+      "h": 1523,
+      "alt": "Latios Pro AI MT \u2014 AMD AM5 - Ryzen AI, on the processor"
+    },
+    {
+      "src": "/bands/mt-am5-pro-ai-2.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios Pro AI MT \u2014 AMD AM5 - DDR5, dual channel"
+    }
+  ],
+  "sff-h610-ddr5": [
+    {
+      "src": "/bands/sff-h610-ddr5-0.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios Pro SFF \u2014 Intel H610 - Eight litres that disappear into the desk"
+    },
+    {
+      "src": "/bands/sff-h610-ddr5-1.webp",
+      "w": 1200,
+      "h": 1523,
+      "alt": "Latios Pro SFF \u2014 Intel H610 - Core i7-14700 in a small box"
+    },
+    {
+      "src": "/bands/sff-h610-ddr5-2.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios Pro SFF \u2014 Intel H610 - A vent wall, not a vent hole"
+    }
+  ],
+  "sff-am5-pro-ai": [
+    {
+      "src": "/bands/sff-am5-pro-ai-0.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios Pro AI SFF \u2014 AMD AM5 - Ryzen 7 8700G, eight litres"
+    },
+    {
+      "src": "/bands/sff-am5-pro-ai-1.webp",
+      "w": 1200,
+      "h": 1523,
+      "alt": "Latios Pro AI SFF \u2014 AMD AM5 - An NPU where there is no room for a card"
+    },
+    {
+      "src": "/bands/sff-am5-pro-ai-2.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios Pro AI SFF \u2014 AMD AM5 - Perforated the full height"
+    }
+  ],
+  "sff-b860-pro-ai": [
+    {
+      "src": "/bands/sff-b860-pro-ai-0.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios Pro AI SFF \u2014 Intel B860 - Core Ultra 9 285 with Intel AI Boost"
+    },
+    {
+      "src": "/bands/sff-b860-pro-ai-1.webp",
+      "w": 1200,
+      "h": 1523,
+      "alt": "Latios Pro AI SFF \u2014 Intel B860 - 128GB of DDR5 in a small box"
+    },
+    {
+      "src": "/bands/sff-b860-pro-ai-2.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios Pro AI SFF \u2014 Intel B860 - Thunderbolt 4 at 40Gb/s"
+    }
+  ],
+  "sff-h810-pro-ai": [
+    {
+      "src": "/bands/sff-h810-pro-ai-0.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios Pro AI SFF \u2014 Intel H810 - Core Ultra 9 285, NPU included"
+    },
+    {
+      "src": "/bands/sff-h810-pro-ai-1.webp",
+      "w": 1200,
+      "h": 1523,
+      "alt": "Latios Pro AI SFF \u2014 Intel H810 - Two 2.5G ports, not one"
+    },
+    {
+      "src": "/bands/sff-h810-pro-ai-2.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios Pro AI SFF \u2014 Intel H810 - 64GB DDR5"
+    }
+  ],
+  "mff-dp10": [
+    {
+      "src": "/bands/mff-dp10-0.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios Pro MFF \u2014 DP10 A14MG - A full Windows 11 Pro PC in 1.1 litres"
+    },
+    {
+      "src": "/bands/mff-dp10-1.webp",
+      "w": 1200,
+      "h": 1523,
+      "alt": "Latios Pro MFF \u2014 DP10 A14MG - Three monitors from a 1.1-litre box"
+    },
+    {
+      "src": "/bands/mff-dp10-2.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "Latios Pro MFF \u2014 DP10 A14MG - Core i7-14700 class performance"
+    }
+  ],
+  "promax-q870": [
+    {
+      "src": "/bands/promax-q870-0.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "PROMAX AI \u2014 Intel Q870 - Up to RTX A6000-class graphics"
+    },
+    {
+      "src": "/bands/promax-q870-1.webp",
+      "w": 1200,
+      "h": 1523,
+      "alt": "PROMAX AI \u2014 Intel Q870 - Core Ultra 9 285 with Intel AI Boost"
+    },
+    {
+      "src": "/bands/promax-q870-2.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "PROMAX AI \u2014 Intel Q870 - 128GB of DDR5"
+    }
+  ],
+  "promax-t2-w880": [
+    {
+      "src": "/bands/promax-t2-w880-0.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "PROMAX T2 AI \u2014 Intel W880 - Core Ultra 9 285K, unlocked"
+    },
+    {
+      "src": "/bands/promax-t2-w880-1.webp",
+      "w": 1200,
+      "h": 1523,
+      "alt": "PROMAX T2 AI \u2014 Intel W880 - 256GB of ECC DDR5"
+    },
+    {
+      "src": "/bands/promax-t2-w880-2.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "PROMAX T2 AI \u2014 Intel W880 - Professional cards, certified"
+    }
+  ],
+  "promax-t2-w680": [
+    {
+      "src": "/bands/promax-t2-w680-0.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "PROMAX T2 \u2014 Intel W680 - Core i9-14900K, 24 cores"
+    },
+    {
+      "src": "/bands/promax-t2-w680-1.webp",
+      "w": 1200,
+      "h": 1523,
+      "alt": "PROMAX T2 \u2014 Intel W680 - RTX A6000 ready"
+    },
+    {
+      "src": "/bands/promax-t2-w680-2.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "PROMAX T2 \u2014 Intel W680 - 256GB ECC DDR5"
+    }
+  ],
+  "promax-t4-plus": [
+    {
+      "src": "/bands/promax-t4-plus-0.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "PROMAX T4 Plus \u2014 Intel W780 - Xeon W-3400, the top of the range"
+    },
+    {
+      "src": "/bands/promax-t4-plus-1.webp",
+      "w": 1200,
+      "h": 1523,
+      "alt": "PROMAX T4 Plus \u2014 Intel W780 - Up to 2TB of ECC DDR5"
+    },
+    {
+      "src": "/bands/promax-t4-plus-2.webp",
+      "w": 1200,
+      "h": 1163,
+      "alt": "PROMAX T4 Plus \u2014 Intel W780 - 2700W, redundant"
+    }
+  ]
+}

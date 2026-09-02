@@ -22,7 +22,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/sff-am5-pro-ai/{i}.webp" },
+      "manifest": { "frames": 64, "width": 1400, "height": 1120, "pattern": "/reveal/sff-am5-pro-ai/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "The accelerator that needed no slot.",
@@ -54,6 +54,24 @@ export default {
           "text": "A card reader and a built-in speaker up front, because this one lives on the desk."
         }
       ]
+    },
+
+    {
+      "type": "band",
+      "kicker": "An NPU in eight litres",
+      "items": [
+        {"src": "/bands/sff-am5-pro-ai-0.webp", "w": 1200, "h": 1163, "alt": "Latios Pro AI SFF \u2014 AMD AM5 - Ryzen 7 8700G, eight litres"},
+        {"src": "/bands/sff-am5-pro-ai-1.webp", "w": 1200, "h": 1523, "alt": "Latios Pro AI SFF \u2014 AMD AM5 - An NPU where there is no room for a card"},
+        {"src": "/bands/sff-am5-pro-ai-2.webp", "w": 1200, "h": 1163, "alt": "Latios Pro AI SFF \u2014 AMD AM5 - Perforated the full height"}
+      ]
+    },
+    {
+      "type": "video",
+      "src": "/videos/sff-am5-pro-ai-loop.mp4",
+      "poster": "/images/posters/sff-am5-pro-ai-loop.webp",
+      "modelName": "Latios Pro AI SFF \u2014 AMD AM5",
+      "heading": "An NPU in eight litres.",
+      "subline": "AMD Ryzen 7 8700G / 5 8600G / 5 8500G / 3 8300G. Engineered, assembled and finished in Ahmedabad.",
     },
     {
       "type": "statWall",

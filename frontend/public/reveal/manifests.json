@@ -1,0 +1,92 @@
+{
+  "promax-q870": {
+    "frames": 64,
+    "width": 1400,
+    "height": 1400,
+    "pattern": "/reveal/promax-q870/{i}.webp"
+  },
+  "promax-t2-w880": {
+    "frames": 64,
+    "width": 1400,
+    "height": 1400,
+    "pattern": "/reveal/promax-t2-w880/{i}.webp"
+  },
+  "promax-t2-w680": {
+    "frames": 64,
+    "width": 1400,
+    "height": 1400,
+    "pattern": "/reveal/promax-t2-w680/{i}.webp"
+  },
+  "promax-t4-plus": {
+    "frames": 64,
+    "width": 1400,
+    "height": 1400,
+    "pattern": "/reveal/promax-t4-plus/{i}.webp"
+  },
+  "mt-amd-am4": {
+    "frames": 64,
+    "width": 1400,
+    "height": 1120,
+    "pattern": "/reveal/mt-amd-am4/{i}.webp"
+  },
+  "mt-h610-ddr4": {
+    "frames": 64,
+    "width": 1400,
+    "height": 1120,
+    "pattern": "/reveal/mt-h610-ddr4/{i}.webp"
+  },
+  "mt-h610-ddr5": {
+    "frames": 64,
+    "width": 1400,
+    "height": 1120,
+    "pattern": "/reveal/mt-h610-ddr5/{i}.webp"
+  },
+  "mt-pro-h610-ddr5": {
+    "frames": 64,
+    "width": 1400,
+    "height": 1120,
+    "pattern": "/reveal/mt-pro-h610-ddr5/{i}.webp"
+  },
+  "mt-q670-ddr5": {
+    "frames": 64,
+    "width": 1400,
+    "height": 1120,
+    "pattern": "/reveal/mt-q670-ddr5/{i}.webp"
+  },
+  "mt-am5-pro-ai": {
+    "frames": 64,
+    "width": 1400,
+    "height": 1120,
+    "pattern": "/reveal/mt-am5-pro-ai/{i}.webp"
+  },
+  "sff-h610-ddr5": {
+    "frames": 64,
+    "width": 1400,
+    "height": 1120,
+    "pattern": "/reveal/sff-h610-ddr5/{i}.webp"
+  },
+  "sff-am5-pro-ai": {
+    "frames": 64,
+    "width": 1400,
+    "height": 1120,
+    "pattern": "/reveal/sff-am5-pro-ai/{i}.webp"
+  },
+  "sff-b860-pro-ai": {
+    "frames": 64,
+    "width": 1400,
+    "height": 1120,
+    "pattern": "/reveal/sff-b860-pro-ai/{i}.webp"
+  },
+  "sff-h810-pro-ai": {
+    "frames": 64,
+    "width": 1400,
+    "height": 1120,
+    "pattern": "/reveal/sff-h810-pro-ai/{i}.webp"
+  },
+  "mff-dp10": {
+    "frames": 64,
+    "width": 1400,
+    "height": 1120,
+    "pattern": "/reveal/mff-dp10/{i}.webp"
+  }
+}

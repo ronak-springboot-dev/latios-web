@@ -15,6 +15,7 @@ import {
   PdpBleed, PdpStickySplit, PdpCompare, PdpIoMap, PdpExploded, PdpSpecTeaser,
   PdpThermal,
 } from "./sections";
+import { PdpBand } from "./PdpBand";
 import { PdpReveal } from "./PdpReveal";
 import { PdpWalkthrough } from "./PdpWalkthrough";
 import { getTheme, themeVars } from "./theme";
@@ -32,6 +33,7 @@ const REGISTRY = {
   ioMap: PdpIoMap,
   exploded: PdpExploded,
   thermal: PdpThermal,
+  band: PdpBand,
   reveal: PdpReveal,
   walkthrough: PdpWalkthrough,
   specTeaser: PdpSpecTeaser,

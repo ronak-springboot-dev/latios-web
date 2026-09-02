@@ -1,0 +1,13 @@
+{
+  "sff-h610-ddr5": "/images/fronts/sff-h610-ddr5.webp",
+  "sff-am5-pro-ai": "/images/fronts/sff-am5-pro-ai.webp",
+  "sff-b860-pro-ai": "/images/fronts/sff-b860-pro-ai.webp",
+  "sff-h810-pro-ai": "/images/fronts/sff-h810-pro-ai.webp",
+  "mff-dp10": "/images/fronts/mff-dp10.webp",
+  "mt-amd-am4": "/images/fronts/mt-amd-am4.webp",
+  "mt-h610-ddr4": "/images/fronts/mt-h610-ddr4.webp",
+  "mt-h610-ddr5": "/images/fronts/mt-h610-ddr5.webp",
+  "mt-pro-h610-ddr5": "/images/fronts/mt-pro-h610-ddr5.webp",
+  "mt-q670-ddr5": "/images/fronts/mt-q670-ddr5.webp",
+  "mt-am5-pro-ai": "/images/fronts/mt-am5-pro-ai.webp"
+}

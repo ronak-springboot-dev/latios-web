@@ -49,7 +49,7 @@ export default {
     },
     {
       "type": "reveal",
-      "manifest": { "frames": 40, "width": 1400, "height": 1400, "pattern": "/reveal/mt-q670-ddr5/{i}.webp" },
+      "manifest": { "frames": 64, "width": 1400, "height": 1120, "pattern": "/reveal/mt-q670-ddr5/{i}.webp" },
       "height": 260,
       "kicker": "Inside",
       "heading": "See the board, reach the board.",
@@ -81,6 +81,24 @@ export default {
           "text": "Full-height slots for an RTX A4000, and lanes that are not shared away."
         }
       ]
+    },
+
+    {
+      "type": "band",
+      "kicker": "Specified for managed fleets",
+      "items": [
+        {"src": "/bands/mt-q670-ddr5-0.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 Intel Q670 DDR5 - Q670: the chipset IT actually asks for"},
+        {"src": "/bands/mt-q670-ddr5-1.webp", "w": 1200, "h": 1523, "alt": "Latios MT \u2014 Intel Q670 DDR5 - Up to a Core i9-14900"},
+        {"src": "/bands/mt-q670-ddr5-2.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 Intel Q670 DDR5 - DDR5 at full chipset bandwidth"}
+      ]
+    },
+    {
+      "type": "video",
+      "src": "/videos/mt-q670-ddr5-loop.mp4",
+      "poster": "/images/posters/mt-q670-ddr5-loop.webp",
+      "modelName": "Latios MT \u2014 Intel Q670 DDR5",
+      "heading": "Specified for managed fleets.",
+      "subline": "Up to Intel Core i9-14900. Engineered, assembled and finished in Ahmedabad.",
     },
     {
       "type": "ioMap",
