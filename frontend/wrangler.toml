@@ -1,0 +1,21 @@
+# Cloudflare Pages project config for the Latios storefront.
+#
+#   cd frontend && npm run build && npx wrangler pages deploy
+#
+# Run from THIS directory: `wrangler pages deploy` bundles ./functions from the
+# working directory, so the /api proxy only ships when wrangler is invoked here
+# rather than from the repo root.
+
+name = "latios-web"
+compatibility_date = "2026-09-02"
+pages_build_output_dir = "build"
+
+# The Cloud Run base URL, read by functions/api/[[path]].js. A public hostname,
+# not a secret, so it lives in config rather than in a secret store.
+#
+# It MUST be declared here. Setting it only through the API or dashboard does
+# not survive: `wrangler pages deploy` syncs the project config from this file
+# and cleared production's env_vars on the next deploy, which left the /api
+# proxy returning "API_ORIGIN is not set" while preview still worked.
+[vars]
+API_ORIGIN = "https://latios-api-482083216095.asia-south1.run.app"

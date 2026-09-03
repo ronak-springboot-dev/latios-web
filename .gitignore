@@ -111,3 +111,6 @@ tools/image-processing/output/
 tools/image-processing/generated/
 tools/image-processing/uploads/
 tools/image-processing/preview/
+
+# Cloudflare API token for wrangler deploys. Secret - never commit.
+.cloudflare-token

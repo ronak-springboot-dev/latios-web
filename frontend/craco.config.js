@@ -1,11 +1,23 @@
 // craco.config.js
 const path = require("path");
+// Load in PRECEDENCE ORDER, never with `override`. dotenv does not overwrite a
+// value already present in process.env, so whichever file is read first wins:
+//
+//     real shell environment  >  .env.local  >  .env
+//
+// .env.local (gitignored, local-dev-only overrides) still beats .env, which is
+// what this file's ordering has always been for — but a variable set on the
+// command line now beats both.
+//
+// `override: true` used to sit on the .env.local line. It did make .env.local
+// beat .env, but it also silently discarded REAL environment variables, so a
+// production build could never escape a local dev setting. That shipped
+// Cloudflare's "always passes" Turnstile test key (1x0000...AA) into the
+// production bundle: the widget passed client-side, issued a dummy token, and
+// the backend rejected it against the real secret — breaking the chat widget
+// and the enquiry form with "Security check failed".
+require("dotenv").config({ path: path.resolve(__dirname, ".env.local") });
 require("dotenv").config();
-// .env.local (gitignored, local-dev-only overrides) must win over .env here too —
-// dotenv never overrides an already-set process.env value, and this file's own
-// `.config()` call above runs BEFORE react-scripts' own .env.local-aware loader,
-// so without this, any .env.local override gets silently discarded.
-require("dotenv").config({ path: path.resolve(__dirname, ".env.local"), override: true });
 
 // Check if we're in development/preview mode (not production build)
 // Craco sets NODE_ENV=development for start, NODE_ENV=production for build

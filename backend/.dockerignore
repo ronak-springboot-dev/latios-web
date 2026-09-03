@@ -1,0 +1,38 @@
+# Keep the build context to actual source.
+#
+# Without this, `COPY . .` in the Dockerfile shipped 28,421 files / 627 MiB to
+# Cloud Build - almost all of it the local virtualenv, which the image rebuilds
+# from requirements.txt anyway.
+#
+# It also copied backend/.env INTO THE IMAGE. Secrets belong in Secret Manager
+# and are injected at runtime via --set-secrets; baking them into a layer means
+# anyone who can pull the image can read them, and they survive in the registry
+# after the value is rotated.
+
+# Local virtualenv — rebuilt inside the image from requirements.txt
+venv/
+.venv/
+
+# Secrets. Injected at runtime, never baked in.
+.env
+.env.*
+!.env.sample
+
+# Python build noise
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Not needed at runtime
+tests/
+pytest.ini
+.coverage
+htmlcov/
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store

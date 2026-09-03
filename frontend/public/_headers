@@ -1,0 +1,35 @@
+# Cloudflare Pages response headers. Copied into build/ by the CRA build.
+#
+# Pages egress is free and unmetered, so these are about SPEED and CORRECTNESS,
+# not cost. The distinction that matters is whether a path's CONTENT can change
+# without its URL changing.
+
+# CRA content-hashes these filenames (main.<hash>.js), so the URL changes
+# whenever the bytes do. Safe to pin for a year.
+/static/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Generated media. Stable PATHS, changing CONTENT - every model reuses
+# /reveal/<slug>/NNN.webp and the pipeline rewrites all 960 frames on a rebuild.
+# `immutable` would strand a stale frame in a returning browser with no way to
+# bust it. A day plus a week of stale-while-revalidate instead.
+/reveal/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/videos/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/bands/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/images/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+/datasheets/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=604800
+
+# The shell must never be cached, or a deploy ships new hashed bundles that a
+# stale index.html does not reference.
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: SAMEORIGIN

@@ -1,0 +1,10 @@
+# SPA fallback: react-router owns every route, so unknown paths must return the
+# shell rather than a 404.
+#
+# /api/** never reaches this. Pages runs Functions before _redirects and static
+# assets, and functions/api/[[path]].js matches that prefix.
+#
+# Deliberately NOT a wildcard proxy: an over-broad rule here is how asset
+# requests end up served as HTML - the exact failure now live on the Emergent
+# deployment, where every reveal frame returns text/html with status 200.
+/*    /index.html   200
