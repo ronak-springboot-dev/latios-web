@@ -1,3 +1,15 @@
+# Category slugs renamed when the taxonomy landed: "audio" became "av"
+# (speakerphones AND cameras) and "video" became "display" (monitors, LFD, IFP,
+# LED). The two cameras moved category at the same time, so they need their own
+# rules BEFORE the catch-all for their old parent — _redirects matches in file
+# order, and /video/* would otherwise swallow them into /display.
+/video/pro-web-camera   /av/pro-web-camera    301
+/video/pro-ptz-camera   /av/pro-ptz-camera    301
+/audio/*                /av/:splat            301
+/video/*                /display/:splat       301
+/audio                  /av                   301
+/video                  /display              301
+
 # SPA fallback: react-router owns every route, so unknown paths must return the
 # shell rather than a 404.
 #

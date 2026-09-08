@@ -7,6 +7,28 @@ import { CATEGORIES } from "@/data/products";
 import { TurnstileWidget } from "@/components/TurnstileWidget";
 import { useEnquiryDraft, clearEnquiryDraft } from "@/lib/enquiryDraft";
 
+/**
+ * Certifications Latios actually holds, in one place.
+ *
+ * Single source of truth on purpose: these were previously scattered as loose
+ * strings across Home.jsx, applications.js, news.js and the PDP copy, in
+ * unversioned form, and had drifted — Home claimed ISO 45001, which is not on
+ * the company's list.
+ */
+export const CERTIFICATIONS = [
+  "ISO 9001:2015",
+  "ISO 14001:2015",
+  "ISO 20000-1:2018",
+  "ISO 27001:2022",
+  "BIS",
+  "EPR",
+  "REACH",
+  "RoHS",
+  "UL Solutions",
+  "CE",
+  "GeM Registered",
+];
+
 const EMPTY = { name: "", email: "", company: "", message: "" };
 
 const inputCls =
@@ -238,8 +260,27 @@ export const Footer = () => {
             ))}
           </nav>
           <span className="text-[10px] uppercase tracking-[0.3em] text-zinc-600">
-            © 2026 Latios Infosystem Pvt. Ltd.
+            © 2026 Latios Infosystem Pvt. Ltd. All rights reserved.
           </span>
+        </div>
+
+        {/* Certifications and compliance. Text marks, not logos: reproducing the
+            ISO, UL, CE or BIS marks as artwork carries its own licensing rules,
+            and a plain wordmark makes no claim about the mark itself. */}
+        <div
+          className="mt-8 pt-8 border-t border-white/5 flex flex-wrap items-center gap-x-3 gap-y-2"
+          data-testid="compliance-strip"
+          aria-label="Certifications and compliance"
+        >
+          {CERTIFICATIONS.map((c) => (
+            <span
+              key={c}
+              data-testid={`cert-${c.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`}
+              className="text-[9px] uppercase tracking-[0.18em] text-zinc-500 border border-white/10 rounded px-2.5 py-1"
+            >
+              {c}
+            </span>
+          ))}
         </div>
       </div>
     </footer>

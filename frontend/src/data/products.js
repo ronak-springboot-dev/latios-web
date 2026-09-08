@@ -1,14 +1,12 @@
 import { TOWERS_FAMILIES, LAPTOPS_FAMILY, AUDIO_FAMILY, VIDEO_FAMILY } from "./models";
+import {
+  TAXONOMY, walkTaxonomy, TAXONOMY_SLUGS, bucketsFor, SUBCATS,
+} from "./taxonomy";
+
+export { TAXONOMY, walkTaxonomy, TAXONOMY_SLUGS, bucketsFor, SUBCATS };
 
 const U = (id) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=1600&q=80`;
 const P = (id) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=1600`;
-
-export const SUBCATS = {
-  laptops: ["PRO AI 14", "Rugged 14", "Archer Gaming"],
-  towers: ["Business Desktops", "PROMAX Workstations", "Mini PC"],
-  audio: ["Speakerphones", "Video Soundbars", "HPS Systems"],
-  video: ["Cameras", "Monitors", "Large Format", "Interactive", "Active LED"],
-};
 
 export const CATEGORIES = [
   {
@@ -103,15 +101,15 @@ export const CATEGORIES = [
   },
 
   {
-    slug: "audio",
+    slug: "av",
     index: "03",
-    name: "Audio",
-    model: "Latios Smart Audio",
+    name: "AV solutions",
+    model: "Latios Smart AV",
     title: ["HEAR", "EVERYONE."],
-    tagline: "Conference audio that makes remote feel local.",
+    tagline: "Cameras and audio that make remote feel local.",
     hero: "/images/audio-hero.jpg",
     intro:
-      "Speakerphones, video soundbars and full discussion systems — engineered so every seat at the table is heard, from huddle room to boardroom.",
+      "Webcams, PTZ cameras, speakerphones, video soundbars and full discussion systems — engineered so every seat at the table is seen and heard, from huddle room to boardroom.",
     chapters: [
       {
         n: "01",
@@ -136,27 +134,27 @@ export const CATEGORIES = [
       },
     ],
     specs: [
-      ["Range", "Speakerphone · Soundbars · HPS"],
+      ["Range", "Webcam · PTZ · Speakerphone · Soundbars · HPS"],
       ["Voice", "Full-duplex HD · echo cancellation"],
       ["Microphones", "360° arrays · 4-mic beamforming"],
       ["Camera", "Up to 4K UHD · 120° FOV · 5X zoom"],
       ["Intelligence", "Speaker tracking · AI auto framing"],
       ["Battery", "5400mAh (SP-50)"],
-      ["Connectivity", "USB · Bluetooth · LINE IN/OUT"],
+      ["Connectivity", "USB · Bluetooth · HDMI · SDI · LAN"],
       ["Scale", "Up to 200 HPS units"],
     ],
     families: [AUDIO_FAMILY],
   },
   {
-    slug: "video",
+    slug: "display",
     index: "04",
-    name: "Video",
+    name: "Display solutions",
     model: "Latios Smart Display",
     title: ["SEE", "THE DETAIL."],
-    tagline: "Displays and cameras that never miss a frame.",
+    tagline: "Panels that never miss a frame.",
     hero: "/images/video-hero.jpg",
     intro:
-      "From the desk monitor to a 110-inch interactive wall — plus the webcams and PTZ cameras that make every meeting feel in-person.",
+      "From the 19.5-inch desk monitor to a 110-inch interactive wall — anti-glare, colour-honest panels for every room in the building.",
     chapters: [
       {
         n: "01",
@@ -167,10 +165,10 @@ export const CATEGORIES = [
       },
       {
         n: "02",
-        kicker: "Intelligence",
-        heading: "Cameras that follow the room",
-        body: "PTZ cameras with AI tracking and auto-framing keep the speaker centred — HDMI, SDI, USB and LAN outputs drop into any rig.",
-        image: "/images/av-ptz.jpg",
+        kicker: "Scale",
+        heading: "One panel family, every room",
+        body: "Desk monitors, large-format displays for signage and 110-inch walls for the auditorium — the same colour treatment and the same mounting logic across all of them.",
+        image: "/images/av-monitor.jpg",
       },
       {
         n: "03",
@@ -181,19 +179,32 @@ export const CATEGORIES = [
       },
     ],
     specs: [
-      ["Range", "Webcam · PTZ · Monitors · LFD · IFP · LED"],
+      ["Range", "Monitors · LFD · IFP · Active LED"],
       ["Resolution", "1080p60 → 4K UHD"],
       ["Sizes", '19.5" → 110"'],
       ["Panels", "IPS / VA · anti-glare toughened"],
       ["Interactive", "Touch IFP · Windows/Android/OPS"],
-      ["Intelligence", "AI tracking & auto framing (PTZ)"],
-      ["Connectivity", "HDMI · DP · USB · SDI · LAN"],
+      ["Mounting", "VESA · wall · floor stand · signage"],
+      ["Connectivity", "HDMI · DP · USB · OPS slot"],
       ["Deployment", "Desks → auditoriums & signage"],
     ],
     families: [VIDEO_FAMILY],
   },
 
 ];
+
+/**
+ * Top-level nav order, including the levels that have nothing shipping yet.
+ *
+ * CATEGORIES holds only categories with a real page behind them, so a
+ * taxonomy-only level (Boardroom solutions) would never reach the mega menu if
+ * it mapped CATEGORIES. Derived from TAXONOMY so the nav cannot drift from the
+ * tree: a top-level node with no category page renders as a "Soon" column.
+ */
+export const MEGA_CATEGORIES = TAXONOMY.map((t) => {
+  const cat = CATEGORIES.find((c) => c.slug === t.slug);
+  return cat || { slug: t.slug, name: t.name, soon: true };
+});
 
 export const getCategory = (slug) => CATEGORIES.find((c) => c.slug === slug);
 

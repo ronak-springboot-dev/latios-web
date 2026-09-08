@@ -10,7 +10,9 @@
  *
  *   node tools/verify_pages.mjs
  */
-import { readFileSync, readdirSync, existsSync } from "node:fs";
+import { readFileSync, readdirSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { pathToFileURL } from "node:url";
+import { tmpdir } from "node:os";
 import { join, basename } from "node:path";
 import { spawnSync } from "node:child_process";
 
@@ -126,6 +128,49 @@ for (const f of pages) {
   if (!accents[slug]) fail(`${slug} has no theme entry — would fall back to brand blue`);
 }
 console.log(`uniqueness       ${seen.size}/${pages.length} distinct accent+order`);
+
+// 5. the catalogue and the taxonomy agree on where every model lives.
+//
+// Two independent facts decide whether a product appears on a category page:
+// the family array it is authored into (models.js) and the `category` TAXONOMY
+// assigns it (taxonomy.js). ProductPage intersects them, so when they disagree
+// the product silently disappears - which is exactly what happened when the web
+// and PTZ cameras moved to AV but stayed authored in VIDEO_FAMILY: /av rendered
+// four cards instead of six and nothing failed.
+//
+// The data modules are plain ESM with extensionless relative imports, which
+// node will not resolve, so they are copied to a scratch dir with the
+// extensions written in and imported from there.
+{
+  const tmp = join(tmpdir(), "latios-verify-data");
+  mkdirSync(tmp, { recursive: true });
+  writeFileSync(join(tmp, "package.json"), '{"type":"module"}');
+  for (const f of ["taxonomy.js", "models.js", "products.js"]) {
+    const src = readFileSync(join(ROOT, "src/data", f), "utf8")
+      .replace(/(from\s+")(\.\/[^".]+)(")/g, "$1$2.js$3");
+    writeFileSync(join(tmp, f), src);
+  }
+  const { CATEGORIES, TAXONOMY_SLUGS } = await import(pathToFileURL(join(tmp, "products.js")).href);
+  const { ALL_MODELS } = await import(pathToFileURL(join(tmp, "models.js")).href);
+
+  const home = new Map();          // slug -> the category whose families author it
+  for (const c of CATEGORIES)
+    for (const f of c.families)
+      for (const m of f.models) {
+        if (home.has(m.slug)) fail(`${m.slug} is authored into both ${home.get(m.slug)} and ${c.slug}`);
+        home.set(m.slug, c.slug);
+      }
+  let agree = 0;
+  for (const m of ALL_MODELS) {
+    if (!m.category) fail(`${m.slug} has no category - TAXONOMY never placed it`);
+    else if (home.get(m.slug) !== m.category)
+      fail(`${m.slug}: TAXONOMY says "${m.category}" but it is authored into the ${home.get(m.slug)} families, so /${m.category} will not render it`);
+    else agree += 1;
+  }
+  for (const slug of TAXONOMY_SLUGS)
+    if (!ALL_MODELS.some((m) => m.slug === slug)) fail(`TAXONOMY lists "${slug}", which is not a real model`);
+  console.log(`taxonomy         ${agree}/${ALL_MODELS.length} models render in the category TAXONOMY assigns`);
+}
 
 console.log(failures ? `\n${failures} FAILURE(S)` : "\nall checks passed");
 process.exit(failures ? 1 : 0);

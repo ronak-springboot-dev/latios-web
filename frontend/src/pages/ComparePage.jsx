@@ -11,8 +11,8 @@ const EASE = [0.16, 1, 0.3, 1];
 const GROUPS = [
   ["laptops", "Laptops"],
   ["towers", "Towers & Workstations"],
-  ["audio", "Audio"],
-  ["video", "Video"],
+  ["av", "AV solutions"],
+  ["display", "Display solutions"],
 ];
 
 export default function ComparePage() {

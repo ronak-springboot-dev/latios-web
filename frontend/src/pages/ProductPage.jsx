@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { Link, Navigate, useParams } from "react-router-dom";
+import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 import { KineticText } from "@/components/KineticText";
@@ -7,42 +7,78 @@ import { Reveal } from "@/components/Reveal";
 import { ParallaxImage } from "@/components/ParallaxImage";
 import { EditorialMarquee } from "@/components/EditorialMarquee";
 import { SpecGrid } from "@/components/SpecGrid";
-import { getCategory, nextCategory } from "@/data/products";
-import { getVendor, VENDOR_LABELS } from "@/data/models";
+import { getCategory, nextCategory, bucketsFor } from "@/data/products";
+import {
+  VENDOR_LABELS, getProcessorFamily, getMemoryTier, MEMORY_TIERS,
+} from "@/data/models";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
 const EASE = [0.16, 1, 0.3, 1];
 
 /**
- * Ryzen / Intel range filter. Only shown for categories that actually carry both
- * platforms (towers) — the audio and video lines have no CPU, so it stays hidden
- * there rather than rendering a filter with a single meaningless option.
+ * Faceted filter panel.
+ *
+ * Four dimensions, combining as AND across groups and OR within one — pick
+ * "Micro tower" and "Small form factor" and you get both; add "AMD Ryzen" and
+ * you get the AMD machines among those. Counts are computed against the other
+ * active facets, so a number is always what you would actually get by clicking.
+ *
+ * Options with a zero count are hidden rather than shown disabled: a category
+ * with no CPU in it (displays, AV) simply renders no processor group, instead of
+ * a filter offering a single meaningless choice.
  */
-const VendorFilter = ({ value, onChange, counts }) => {
-  const options = [
-    { id: "all", label: "All", n: counts.all },
-    { id: "amd", label: VENDOR_LABELS.amd, n: counts.amd },
-    { id: "intel", label: VENDOR_LABELS.intel, n: counts.intel },
-  ].filter((o) => o.n > 0);
+const FacetPanel = ({ groups, active, onToggle, onClear, total, shown }) => {
+  const live = groups.filter((g) => g.options.some((o) => o.n > 0));
+  if (!live.length) return null;
+  const anyActive = Object.values(active).some((s) => s.size);
 
   return (
-    <div className="flex flex-wrap gap-2.5 mb-12" data-testid="vendor-filter">
-      {options.map((o) => (
-        <button
-          key={o.id}
-          onClick={() => onChange(o.id)}
-          data-testid={`vendor-filter-${o.id}`}
-          aria-pressed={value === o.id}
-          className={`rounded-full px-6 py-2.5 text-[10px] uppercase tracking-[0.25em] border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50 ${
-            value === o.id
-              ? "btn-blue border-transparent"
-              : "border-white/15 text-zinc-400 hover:text-white hover:border-white/40"
-          }`}
-        >
-          {o.label}
-          <span className="ml-2 opacity-60">{o.n}</span>
-        </button>
-      ))}
+    <div className="mb-12" data-testid="facet-panel">
+      <div className="flex items-baseline justify-between gap-4 mb-6">
+        <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-500">
+          Showing <span className="text-white">{shown}</span> of {total}
+        </p>
+        {anyActive && (
+          <button
+            onClick={onClear}
+            data-testid="facet-clear"
+            className="text-[10px] uppercase tracking-[0.25em] text-[#6f93f2] hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50 rounded"
+          >
+            Clear all
+          </button>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-5">
+        {live.map((g) => (
+          <div key={g.id} data-testid={`facet-group-${g.id}`}>
+            <p className="text-[10px] uppercase tracking-[0.22em] text-zinc-600 mb-2.5">{g.label}</p>
+            <div className="flex flex-wrap gap-2.5">
+              {g.options
+                .filter((o) => o.n > 0 || active[g.id]?.has(o.id))
+                .map((o) => {
+                  const on = active[g.id]?.has(o.id);
+                  return (
+                    <button
+                      key={o.id}
+                      onClick={() => onToggle(g.id, o.id)}
+                      data-testid={`facet-${g.id}-${o.id}`}
+                      aria-pressed={!!on}
+                      className={`rounded-full px-5 py-2 text-[10px] uppercase tracking-[0.22em] border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50 ${
+                        on
+                          ? "btn-blue border-transparent"
+                          : "border-white/15 text-zinc-400 hover:text-white hover:border-white/40"
+                      }`}
+                    >
+                      {o.label}
+                      <span className="ml-2 opacity-60">{o.n}</span>
+                    </button>
+                  );
+                })}
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
@@ -93,10 +129,30 @@ const FamilyAccordion = ({ families }) => {
   );
 };
 
+const FACET_IDS = ["bucket", "cpu", "memory", "ai"];
+const emptyFacets = () => Object.fromEntries(FACET_IDS.map((k) => [k, new Set()]));
+
 export default function ProductPage() {
   const { category } = useParams();
   const data = getCategory(category);
-  const [vendor, setVendor] = useState("all");
+  const [search] = useSearchParams();
+
+  // ?b=<bucket key> arrives from the mega menu, which links a sub-category to
+  // this page with that facet pre-selected rather than to a route of its own.
+  const [active, setActive] = useState(() => {
+    const f = emptyFacets();
+    const b = search.get("b");
+    if (b) f.bucket.add(b);
+    return f;
+  });
+
+  const toggleFacet = (group, id) =>
+    setActive((prev) => {
+      const next = { ...prev, [group]: new Set(prev[group]) };
+      next[group].has(id) ? next[group].delete(id) : next[group].add(id);
+      return next;
+    });
+  const clearFacets = () => setActive(emptyFacets());
   usePageMeta(
     data ? `${data.name} — ${data.model} | Latios` : "Latios",
     data ? `${data.tagline} Explore the ${data.name} range from Latios.` : ""
@@ -111,6 +167,52 @@ export default function ProductPage() {
 
   if (!data) return <Navigate to="/" replace />;
   const next = nextCategory(data.slug);
+
+  // ---- facets -------------------------------------------------------------
+  // Two sources have to agree on which category a model belongs to: the family
+  // array it is authored into (which decides what renders below) and the
+  // model's own `category`, assigned by TAXONOMY (which decides what the facet
+  // counts say). The `.filter` here is the intersection, so a model authored
+  // into the wrong family silently vanishes rather than showing a wrong count —
+  // exactly what happened when the cameras moved to AV but stayed in
+  // VIDEO_FAMILY. verify_pages.mjs now asserts the two agree for all 28.
+  const catModels = (data.families || [])
+    .flatMap((f) => f.models)
+    .filter((m) => m.category === data.slug);
+
+  const DIMS = {
+    bucket: (m) => [m.bucket],
+    cpu: (m) => [getProcessorFamily(m)],
+    memory: (m) => [getMemoryTier(m)],
+    ai: (m) => (m.aiReady ? ["yes"] : []),
+  };
+  const passes = (m, sel) =>
+    FACET_IDS.every((id) => {
+      const chosen = sel[id];
+      if (!chosen || !chosen.size) return true;      // group inactive
+      return DIMS[id](m).some((v) => v && chosen.has(v));  // OR within a group
+    });
+
+  // Counted against the OTHER active facets, so the number on a chip is what
+  // clicking it would actually yield.
+  const countFor = (gid, oid) =>
+    catModels.filter((m) => passes(m, { ...active, [gid]: new Set([oid]) })).length;
+
+  const facetGroups = [
+    { id: "bucket", label: "Form factor",
+      options: bucketsFor(data.slug).filter((b) => !b.soon)
+        .map((b) => ({ id: b.key, label: b.name, n: countFor("bucket", b.key) })) },
+    { id: "cpu", label: "Processor",
+      options: ["amd", "intel", "xeon"]
+        .map((v) => ({ id: v, label: VENDOR_LABELS[v], n: countFor("cpu", v) })) },
+    { id: "memory", label: "Memory",
+      options: MEMORY_TIERS.map((t) => ({ id: t.id, label: t.label, n: countFor("memory", t.id) })) },
+    { id: "ai", label: "AI ready",
+      options: [{ id: "yes", label: "AI ready", n: countFor("ai", "yes") }] },
+  ];
+
+  const matched = catModels.filter((m) => passes(m, active));
+  const visible = new Set(matched.map((m) => m.slug));
 
   return (
     <motion.main
@@ -220,20 +322,16 @@ export default function ProductPage() {
       {data.families && (
         <section className="max-w-[1600px] mx-auto px-6 md:px-12 pb-24 md:pb-36" data-testid="models-section">
           {data.families.length > 1 && <FamilyAccordion families={data.families} />}
-          {(() => {
-            const all = data.families.flatMap((f) => f.models);
-            const counts = {
-              all: all.length,
-              amd: all.filter((m) => getVendor(m) === "amd").length,
-              intel: all.filter((m) => getVendor(m) === "intel").length,
-            };
-            // Only offer the split where both platforms are actually sold.
-            return counts.amd > 0 && counts.intel > 0 ? (
-              <VendorFilter value={vendor} onChange={setVendor} counts={counts} />
-            ) : null;
-          })()}
+          <FacetPanel
+            groups={facetGroups}
+            active={active}
+            onToggle={toggleFacet}
+            onClear={clearFacets}
+            total={catModels.length}
+            shown={matched.length}
+          />
           {data.families.map((fam, fi) => {
-            const models = fam.models.filter((m) => vendor === "all" || getVendor(m) === vendor);
+            const models = fam.models.filter((m) => m.category === data.slug && visible.has(m.slug));
             if (!models.length) return null; // hide a family with nothing in the active range
             return (
             <div key={fam.title} id={`family-${fi}`} className={`scroll-mt-28 ${fi > 0 ? "mt-24 md:mt-32" : ""}`}>
@@ -262,7 +360,18 @@ export default function ProductPage() {
                           />
                         </div>
                       )}
-                      <span className="text-[10px] uppercase tracking-[0.35em] text-zinc-500">{m.tag}</span>
+                      <div className="flex items-center gap-3 flex-wrap">
+                        <span className="text-[10px] uppercase tracking-[0.35em] text-zinc-500">{m.tag}</span>
+                        {m.aiReady && (
+                          <span
+                            data-testid={`ai-badge-${m.slug}`}
+                            title="Dedicated neural processing unit"
+                            className="text-[9px] uppercase tracking-[0.2em] text-[#6f93f2] border border-[#6f93f2]/40 rounded-full px-2 py-0.5"
+                          >
+                            AI ready
+                          </span>
+                        )}
+                      </div>
                       <h3 className="mt-4 font-display text-2xl md:text-3xl font-black tracking-tighter text-white">
                         {m.name}
                       </h3>

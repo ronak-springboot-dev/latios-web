@@ -8,6 +8,7 @@ import { usePageMeta } from "@/hooks/usePageMeta";
 import { APPLICATIONS } from "@/data/applications";
 import { EditorialMarquee } from "@/components/EditorialMarquee";
 import { CATEGORIES, SUBCATS } from "@/data/products";
+import { CERTIFICATIONS } from "@/components/Footer";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -35,7 +36,7 @@ const MANIFESTO = [
 const STATS = [
   ["2023", "Founded in India", "Designed, manufactured and supported end-to-end at our Ahmedabad facility."],
   ["15+", "Product families", "Laptops, desktops, workstations, audio-visual systems and displays."],
-  ["12+", "Certifications", "ISO 9001, 14001, 45001, 27001, BIS, RoHS, CE and more."],
+  ["11", "Certifications", "ISO 9001, 14001, 20000-1, 27001, BIS, EPR, REACH, RoHS, UL, CE, GeM."],
   ["GeM", "Registered OEM", "Listed for direct government and public-sector procurement."],
 ];
 
@@ -387,7 +388,7 @@ export default function Home() {
               Every product ships under one promise: Make in India, without shortcuts.
             </p>
             <div className="mt-8 flex flex-wrap gap-2.5" data-testid="cert-chips">
-              {["ISO 9001", "ISO 14001", "ISO 45001", "ISO 27001", "BIS", "RoHS", "CE", "GeM Registered"].map((c) => (
+              {CERTIFICATIONS.map((c) => (
                 <span
                   key={c}
                   className="border border-white/15 rounded-full px-4 py-1.5 text-[10px] uppercase tracking-[0.2em] text-zinc-400"

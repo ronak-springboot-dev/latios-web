@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Search, ArrowUpRight, ArrowRight, Mail, Phone } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { ALL_MODELS } from "@/data/models";
-import { CATEGORIES, SUBCATS } from "@/data/products";
+import { MEGA_CATEGORIES, TAXONOMY } from "@/data/products";
 import { APPLICATIONS } from "@/data/applications";
 
 const EASE = [0.16, 1, 0.3, 1];
@@ -18,6 +18,29 @@ const NAV = [
   { label: "News", to: "/news" },
   { label: "Contact Us", section: "contact" },
 ];
+
+/**
+ * Flatten one category's tree for the mega-menu column.
+ *
+ * Grouping levels (Commercial / Enterprise / Cameras) are emitted as labels and
+ * their leaves follow, so a three-level branch reads as a heading with items
+ * under it rather than losing a level. Leaves link to the category page with
+ * ?b=<key>, which pre-selects that facet — the sub-levels are filters, not
+ * separate routes, so no existing model URL changes.
+ */
+const megaNodes = (slug) => {
+  const top = TAXONOMY.find((t) => t.slug === slug);
+  const out = [];
+  (top?.children || []).forEach((c) => {
+    if (c.children) {
+      out.push({ ...c, group: true });
+      c.children.forEach((g) => out.push(g));
+    } else {
+      out.push(c);
+    }
+  });
+  return out;
+};
 
 const navId = (label) => `nav-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 
@@ -268,7 +291,7 @@ export const Header = () => {
 
               {/* product tree + featured applications */}
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-10">
-                {CATEGORIES.map((cat, i) => (
+                {MEGA_CATEGORIES.map((cat, i) => (
                   <motion.div
                     key={cat.slug}
                     initial={{ opacity: 0, y: 16 }}
@@ -276,32 +299,74 @@ export const Header = () => {
                     transition={{ delay: 0.06 + i * 0.05, duration: 0.5, ease: EASE }}
                     data-testid={`mega-col-${cat.slug}`}
                   >
-                    <button
-                      onClick={() => goPage(`/${cat.slug}`)}
-                      data-testid={`mega-cat-${cat.slug}`}
-                      className="group flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-white hover:text-[#6f93f2] transition-colors duration-300"
-                    >
-                      {cat.name}
-                      <ArrowRight className="w-3.5 h-3.5 text-zinc-600 group-hover:text-[#6f93f2] group-hover:translate-x-1 transition-all duration-300" />
-                    </button>
-                    <div className="mt-5 flex flex-col gap-3">
-                      {(SUBCATS[cat.slug] || []).map((s, si) => (
-                        <button
-                          key={s}
-                          onClick={() => goPage(`/${cat.slug}`)}
-                          data-testid={`mega-sub-${cat.slug}-${si}`}
-                          className="text-left text-sm text-zinc-400 hover:text-white transition-colors duration-300"
-                        >
-                          {s}
-                        </button>
-                      ))}
+                    {cat.soon ? (
+                      // A whole level that exists in the taxonomy but has
+                      // nothing shipping in it. Shown so the range reads
+                      // complete, never linked — there is no page behind it.
+                      <span
+                        data-testid={`mega-cat-${cat.slug}`}
+                        className="flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-zinc-600 cursor-default"
+                      >
+                        {cat.name}
+                        <span className="text-[9px] tracking-[0.18em] border border-zinc-800 rounded px-1.5 py-0.5">
+                          Soon
+                        </span>
+                      </span>
+                    ) : (
                       <button
                         onClick={() => goPage(`/${cat.slug}`)}
-                        data-testid={`mega-viewall-${cat.slug}`}
-                        className="text-left text-[10px] uppercase tracking-[0.2em] text-[#6f93f2] hover:text-white transition-colors duration-300 mt-1"
+                        data-testid={`mega-cat-${cat.slug}`}
+                        className="group flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-white hover:text-[#6f93f2] transition-colors duration-300"
                       >
-                        View all →
+                        {cat.name}
+                        <ArrowRight className="w-3.5 h-3.5 text-zinc-600 group-hover:text-[#6f93f2] group-hover:translate-x-1 transition-all duration-300" />
                       </button>
+                    )}
+                    <div className="mt-5 flex flex-col gap-3">
+                      {megaNodes(cat.slug).map((n) =>
+                        n.group ? (
+                          // A grouping level (Commercial / Enterprise / Cameras)
+                          // — a label, not a destination.
+                          <span
+                            key={n.key}
+                            data-testid={`mega-group-${cat.slug}-${n.key}`}
+                            className="mt-2 first:mt-0 text-[10px] uppercase tracking-[0.2em] text-zinc-600"
+                          >
+                            {n.name}
+                          </span>
+                        ) : n.soon ? (
+                          // Defined in the taxonomy, nothing shipping in it yet.
+                          // Rendered, but never a link to an empty listing.
+                          <span
+                            key={n.key}
+                            data-testid={`mega-soon-${cat.slug}-${n.key}`}
+                            className="flex items-center gap-2 text-sm text-zinc-600 cursor-default"
+                          >
+                            {n.name}
+                            <span className="text-[9px] uppercase tracking-[0.18em] text-zinc-700 border border-zinc-800 rounded px-1.5 py-0.5">
+                              Soon
+                            </span>
+                          </span>
+                        ) : (
+                          <button
+                            key={n.key}
+                            onClick={() => goPage(`/${cat.slug}?b=${n.key}`)}
+                            data-testid={`mega-sub-${cat.slug}-${n.key}`}
+                            className="text-left text-sm text-zinc-400 hover:text-white transition-colors duration-300"
+                          >
+                            {n.name}
+                          </button>
+                        )
+                      )}
+                      {!cat.soon && (
+                        <button
+                          onClick={() => goPage(`/${cat.slug}`)}
+                          data-testid={`mega-viewall-${cat.slug}`}
+                          className="text-left text-[10px] uppercase tracking-[0.2em] text-[#6f93f2] hover:text-white transition-colors duration-300 mt-1"
+                        >
+                          View all →
+                        </button>
+                      )}
                     </div>
                   </motion.div>
                 ))}

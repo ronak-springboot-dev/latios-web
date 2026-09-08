@@ -1,3 +1,4 @@
+import { walkTaxonomy } from "./taxonomy";
 const MT_GALLERY = [
   "/images/dp180-1.webp",
   "/images/dp180-2.webp",
@@ -1285,6 +1286,27 @@ const VIDEO_FEATURES = [
   },
 ];
 
+const CAMERA_FEATURES = [
+  {
+    kicker: "Optics",
+    heading: "Sensors sized for the room",
+    body: "A wide-angle CMOS for the desk, a 1/2.8-inch PTZ sensor for the boardroom — Full HD that holds up on a 98-inch wall, not just in a thumbnail.",
+    image: "/images/av-webcam.jpg",
+  },
+  {
+    kicker: "Intelligence",
+    heading: "Cameras that follow the room",
+    body: "AI tracking and auto-framing keep the speaker centred as they move, so nobody has to sit still to stay on screen.",
+    image: "/images/av-ptz.jpg",
+  },
+  {
+    kicker: "Integration",
+    heading: "Drops into the rig you already run",
+    body: "USB plug and play at the desk; HDMI, SDI, USB and LAN on the PTZ — pair either with a Latios soundbar or speakerphone and the room is done.",
+    image: "/images/av-soundbar.jpg",
+  },
+];
+
 export const LAPTOPS_FAMILY = {
   kicker: "Mobile Computing",
   title: "Laptops that earn their keep.",
@@ -1422,10 +1444,10 @@ export const LAPTOPS_FAMILY = {
 };
 
 export const AUDIO_FAMILY = {
-  kicker: "Smart Audio & Collaboration",
-  title: "Every voice, crystal clear.",
+  kicker: "Smart AV & Collaboration",
+  title: "Every voice heard, every face framed.",
   blurb:
-    "Speakerphones, video soundbars and full discussion systems — conference audio that makes remote feel local.",
+    "Speakerphones, video soundbars, discussion systems and the cameras that go with them — collaboration hardware that makes remote feel local.",
   models: [
     {
       slug: "sp50-speakerphone",
@@ -1586,15 +1608,6 @@ export const AUDIO_FAMILY = {
         },
       ],
     },
-  ],
-};
-
-export const VIDEO_FAMILY = {
-  kicker: "Smart Display & Visual",
-  title: "Pixels with purpose.",
-  blurb:
-    "Desk monitors, boardroom panels, 110-inch walls and the cameras that tie the room together.",
-  models: [
     {
       slug: "pro-web-camera",
       name: "Latios PRO — Web Camera",
@@ -1616,7 +1629,7 @@ export const VIDEO_FAMILY = {
         "Built-in stereo mic",
         "85° wide-angle · USB 2.0 plug & play",
       ],
-      features: VIDEO_FEATURES,
+      features: CAMERA_FEATURES,
       specGroups: [
         {
           group: "Video",
@@ -1656,7 +1669,7 @@ export const VIDEO_FAMILY = {
         "AI tracking & framing",
         "HDMI · SDI · USB · LAN",
       ],
-      features: VIDEO_FEATURES,
+      features: CAMERA_FEATURES,
       specGroups: [
         {
           group: "Video",
@@ -1675,6 +1688,15 @@ export const VIDEO_FAMILY = {
         },
       ],
     },
+  ],
+};
+
+export const VIDEO_FAMILY = {
+  kicker: "Smart Display & Visual",
+  title: "Pixels with purpose.",
+  blurb:
+    "Desk monitors, boardroom panels and 110-inch walls — every panel anti-glare, wide-viewing and colour-honest.",
+  models: [
     {
       slug: "pro-monitor",
       name: "Latios PRO — Monitor",
@@ -1832,12 +1854,59 @@ export const VIDEO_FAMILY = {
 };
 
 const ALL_FAMILIES = [...TOWERS_FAMILIES, LAPTOPS_FAMILY, AUDIO_FAMILY, VIDEO_FAMILY];
-[
-  [TOWERS_FAMILIES, "towers"],
-  [[LAPTOPS_FAMILY], "laptops"],
-  [[AUDIO_FAMILY], "audio"],
-  [[VIDEO_FAMILY], "video"],
-].forEach(([fams, cat]) => fams.forEach((f) => f.models.forEach((m) => (m.category = cat))));
+
+/**
+ * Category and bucket come from the TAXONOMY tree, not from which family array a
+ * model happens to sit in.
+ *
+ * Those two used to be the same thing, and are not any more: the web and PTZ
+ * cameras live in VIDEO_FAMILY for authoring purposes but belong under AV
+ * solutions, because the taxonomy splits AV (cameras + speakerphones) from
+ * Display (monitors, LFD, IFP, LED). Deriving from the tree means that split is
+ * expressed in exactly one place.
+ *
+ * Each model gains:
+ *   category   top-level slug — "towers", "av", ...
+ *   bucket     leaf key       — "micro-tower", "ptz", ...
+ *   bucketName leaf label     — "Micro tower", "PTZ camera", ...
+ */
+/**
+ * Models with a dedicated neural engine, listed explicitly.
+ *
+ * Deliberately NOT inferred from the name. "PROMAX T2 AI" is AI-ready and
+ * "PROMAX T2" is not, despite differing by two characters, and a regex over
+ * names would put a badge on a machine that has no NPU. On a storefront that is
+ * a false capability claim, so this is a hand-kept list — short, and the sort of
+ * thing that should require a deliberate edit.
+ */
+export const AI_READY = new Set([
+  "pro-ai-laptop-14",   // Core Ultra with NPU
+  "mt-am5-pro-ai",      // Ryzen 8000G, Ryzen AI
+  "sff-am5-pro-ai",
+  "sff-b860-pro-ai",
+  "sff-h810-pro-ai",
+  "promax-q870",        // PROMAX AI
+  "promax-t2-w880",     // PROMAX T2 AI
+]);
+
+{
+  const byBucket = new Map();
+  walkTaxonomy().forEach((node) => {
+    const top = node.trail[0] || node;
+    (node.models || []).forEach((slug) =>
+      byBucket.set(slug, { category: top.slug, bucket: node.key, bucketName: node.name }));
+  });
+  ALL_FAMILIES.flatMap((f) => f.models).forEach((m) => {
+    const hit = byBucket.get(m.slug);
+    if (!hit) {
+      // Loud on purpose. A model missing from the tree would otherwise vanish
+      // from every listing page while still resolving at its own URL.
+      console.warn(`[models] "${m.slug}" is not placed in TAXONOMY`);
+      return;
+    }
+    Object.assign(m, hit, { aiReady: AI_READY.has(m.slug) });
+  });
+}
 
 export const getModel = (slug) =>
   ALL_FAMILIES.flatMap((f) => f.models).find((m) => m.slug === slug);
@@ -1901,7 +1970,71 @@ export const getVendor = (m) => {
   return null;
 };
 
-export const VENDOR_LABELS = { amd: "AMD Ryzen", intel: "Intel Core" };
+export const VENDOR_LABELS = { amd: "AMD Ryzen", intel: "Intel Core", xeon: "Intel Xeon" };
+
+/** First spec row whose label matches, searched across all groups. */
+const specRow = (m, re) => {
+  const hit = (m.specGroups || []).flatMap((g) => g.items || [])
+    .find(([label]) => re.test(String(label).trim()));
+  return hit ? String(hit[1]) : "";
+};
+
+/**
+ * Processor family for the facet panel. Xeon is split out of "intel" because a
+ * buyer shopping workstations is choosing Xeon specifically, and it would
+ * otherwise be invisible inside a 20-model Intel bucket.
+ *
+ * Read from the "Processor" spec row rather than from getVendor's scan of the
+ * name, tag and chips. Those are marketing copy and need not name the vendor:
+ * the Archer's chips read "Ultra 9 200HX", which matches nothing, so it was
+ * dropped from the Intel facet while its spec row said "Intel Core Ultra 9
+ * 200HX series" all along. getVendor remains the fallback for anything with no
+ * Processor row.
+ */
+export const getProcessorFamily = (m) => {
+  const cpu = specRow(m, /^processors?$/i).toLowerCase();
+  if (/xeon/.test(cpu)) return "xeon";
+  if (/ryzen|athlon|\bamd\b/.test(cpu)) return "amd";
+  if (/intel|\bcore\b/.test(cpu)) return "intel";
+  const hay = `${m.name} ${m.tag} ${(m.chips || []).join(" ")}`.toLowerCase();
+  if (/\bxeon\b/.test(hay)) return "xeon";
+  return getVendor(m);
+};
+
+/**
+ * Maximum system memory in GB, read from the "Memory" row of the
+ * "Memory, Storage & Graphics" spec group.
+ *
+ * Scoped to that row on purpose. The obvious shortcut — largest GB/TB anywhere
+ * in the model — reports the Mini PC as supporting 2TB of RAM, because that is
+ * its STORAGE ceiling, and would also pick up "Up to 16GB Radeon RX" from the
+ * Graphics row. Returns null for products with no system memory (monitors,
+ * cameras, speakerphones), which the facet then omits rather than bucketing.
+ */
+export const getMaxMemoryGB = (m) => {
+  const rows = (m.specGroups || []).flatMap((g) => g.items || []);
+  const row = rows.find(([label]) => /^memory$/i.test(String(label).trim()));
+  if (!row) return null;
+  let best = null;
+  for (const [, num, unit] of String(row[1]).matchAll(/(\d+(?:\.\d+)?)\s*(GB|TB)\b/gi)) {
+    const gb = parseFloat(num) * (/tb/i.test(unit) ? 1024 : 1);
+    if (best === null || gb > best) best = gb;
+  }
+  return best;
+};
+
+/** Coarse tiers for the memory facet. */
+export const MEMORY_TIERS = [
+  { id: "le32", label: "Up to 32GB", test: (gb) => gb <= 32 },
+  { id: "64", label: "64GB", test: (gb) => gb > 32 && gb <= 64 },
+  { id: "128", label: "128GB", test: (gb) => gb > 64 && gb <= 128 },
+  { id: "256plus", label: "256GB and above", test: (gb) => gb > 128 },
+];
+
+export const getMemoryTier = (m) => {
+  const gb = getMaxMemoryGB(m);
+  return gb === null ? null : (MEMORY_TIERS.find((t) => t.test(gb)) || {}).id || null;
+};
 export const DATASHEETS = {
   "mt-amd-am4": "/datasheets/mt-amd-am4.pdf",
   "mt-h610-ddr4": "/datasheets/mt-h610-ddr4.pdf",
