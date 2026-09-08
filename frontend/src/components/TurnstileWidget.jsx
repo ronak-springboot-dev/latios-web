@@ -1,6 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 
 const SCRIPT_ID = "cf-turnstile-script";
+
+/**
+ * How long to wait for the challenge to appear before calling it broken.
+ *
+ * Turnstile has a failure mode with no callback at all: given a sitekey that
+ * will not issue a challenge for the current hostname, render() returns a
+ * widget id, injects its hidden input, and then simply never draws the iframe.
+ * No callback, no error-callback, no console message. The form or the chat is
+ * then permanently unusable and says nothing about why -- which is how the
+ * deployed chat sat broken while the backend was healthy and logging nothing,
+ * because the request never left the browser.
+ *
+ * Confirmed with a side-by-side render on the live page: Cloudflare's
+ * always-passes test sitekey issued a token, the production sitekey timed out.
+ */
+const RENDER_DEADLINE_MS = 12000;
 const SCRIPT_SRC = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
 
 let scriptPromise;
@@ -23,6 +39,7 @@ const loadTurnstile = () => {
 export const TurnstileWidget = ({ onToken, resetSignal = 0, testid = "turnstile-widget", action = "enquiry", theme }) => {
   const containerRef = useRef(null);
   const widgetIdRef = useRef(null);
+  const deadlineRef = useRef(null);
   const [errorCode, setErrorCode] = useState(null);
   const onTokenRef = useRef(onToken);
   onTokenRef.current = onToken;
@@ -38,16 +55,27 @@ export const TurnstileWidget = ({ onToken, resetSignal = 0, testid = "turnstile-
           theme: widgetTheme,
           action,
           callback: (token) => {
+            clearTimeout(deadlineRef.current);
             setErrorCode(null);
             onTokenRef.current(token);
           },
           "expired-callback": () => onTokenRef.current(null),
           "timeout-callback": () => onTokenRef.current(null),
           "error-callback": (code) => {
+            clearTimeout(deadlineRef.current);
             onTokenRef.current(null);
             setErrorCode(String(code || "unknown"));
           },
         });
+        // Nothing above fires in the silent case, so the only way to notice is
+        // to look for the iframe Turnstile should have drawn by now.
+        deadlineRef.current = setTimeout(() => {
+          if (cancelled || !containerRef.current) return;
+          if (!containerRef.current.querySelector("iframe")) {
+            onTokenRef.current(null);
+            setErrorCode("no-challenge");
+          }
+        }, RENDER_DEADLINE_MS);
       })
       .catch(() => {
         onTokenRef.current(null);
@@ -55,6 +83,7 @@ export const TurnstileWidget = ({ onToken, resetSignal = 0, testid = "turnstile-
       });
     return () => {
       cancelled = true;
+      clearTimeout(deadlineRef.current);
       if (window.turnstile && widgetIdRef.current !== null) {
         try {
           window.turnstile.remove(widgetIdRef.current);
@@ -79,14 +108,18 @@ export const TurnstileWidget = ({ onToken, resetSignal = 0, testid = "turnstile-
     }
   };
 
-  const isConfigError = errorCode && /^[14]/.test(errorCode);
+  // 1xxxxx and 4xxxxx are Turnstile's own configuration and domain errors;
+  // "load" and "no-challenge" are ours. None of them are retryable by the
+  // visitor, so all of them get the route to a human rather than a retry link.
+  const isConfigError =
+    errorCode && (/^[14]/.test(errorCode) || errorCode === "load" || errorCode === "no-challenge");
 
   return (
     <div>
       <div ref={containerRef} data-testid={testid} aria-label="Security verification" />
       {errorCode && (
         <p data-testid={`${testid}-error`} className="mt-2 text-xs text-red-400">
-          {isConfigError || errorCode === "load" ? (
+          {isConfigError ? (
             "Security check could not load on this domain — please email sales@latios.in directly."
           ) : (
             <>
