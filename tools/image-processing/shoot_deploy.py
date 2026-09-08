@@ -71,8 +71,13 @@ def rewrite_models() -> None:
     for p in mt + sff:
         assert (WEB.parent / p.lstrip("/")).exists(), f"missing {p}"
 
-    old_mt = re.search(r"const MT_GALLERY = \[[^\]]*\];", s).group(0)
-    old_sff = re.search(r"const SFF_GALLERY = \[[^\]]*\];", s).group(0)
+    # The comment above each array is part of what gets replaced. Matching only
+    # the `const ...[];` left the old note in place and prepended a new one, so a
+    # second run stacked duplicate comment lines above the array.
+    def block(name):
+        return re.search(rf"(?:^//[^\n]*\n)*const {name} = \[[^\]]*\];", s, re.M).group(0)
+
+    old_mt, old_sff = block("MT_GALLERY"), block("SFF_GALLERY")
     promax_note = (
         "// PROMAX has no photography yet. It used to borrow MT_GALLERY, which was\n"
         "// harmless while that held generic art and would become a false claim now\n"
@@ -80,15 +85,17 @@ def rewrite_models() -> None:
         "// 2700W redundant-PSU workstation, not this box. So it keeps the renders it\n"
         "// was already showing, in a constant of its own, until there is a shoot.\n"
     )
-    old_promax = re.search(r"const MT_GALLERY = \[[^\]]*\];", s).group(0)
-    promax_paths = re.findall(r'"([^"]+)"', old_promax)
+    promax_paths = re.findall(r'"([^"]+)"', old_mt)
 
-    s = s.replace(old_mt, "\n".join([
-        js_array("MT_GALLERY", mt,
-                 "// Real photography of the MT chassis, shared by all six MT configurations.\n"),
-        "",
-        js_array("PROMAX_GALLERY", promax_paths, promax_note),
-    ]), 1)
+    # Idempotent on re-run: the galleries are rebuilt every time the imagery
+    # changes, and without this guard a second run appends a second
+    # PROMAX_GALLERY and the module stops parsing.
+    blocks = [js_array(
+        "MT_GALLERY", mt,
+        "// Real photography of the MT chassis, shared by all six MT configurations.\n")]
+    if "const PROMAX_GALLERY" not in s:
+        blocks += ["", js_array("PROMAX_GALLERY", promax_paths, promax_note)]
+    s = s.replace(old_mt, "\n".join(blocks), 1)
     s = s.replace(old_sff, js_array(
         "SFF_GALLERY", sff,
         "// Real photography of the SFF chassis, shared by all four SFF configurations.\n"), 1)
@@ -108,7 +115,8 @@ def rewrite_models() -> None:
     for slug in SFF_MODELS:
         s = set_field(s, slug, r'image: "[^"]+"', 'image: "/images/fronts/sff.webp"')
     for slug in PROMAX_MODELS:
-        s = set_field(s, slug, r'gallery: MT_GALLERY,', 'gallery: PROMAX_GALLERY,')
+        if "gallery: MT_GALLERY," in s[s.index(f'slug: "{slug}"'):][:6000]:
+            s = set_field(s, slug, r'gallery: MT_GALLERY,', 'gallery: PROMAX_GALLERY,')
 
     MODELS.write_text(s, encoding="utf-8")
     print(f"  models.js: {len(MT_MODELS)} MT + {len(SFF_MODELS)} SFF fronts, "

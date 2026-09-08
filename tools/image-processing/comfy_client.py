@@ -214,6 +214,40 @@ def edit(scene, product, prompt, out_name, seed=None, neg_extra="", denoise=1.0,
     return dest
 
 
+UPSCALER = "RealESRGAN_x4plus.pth"
+
+
+def upscale(src, out_name):
+    """
+    Run an image through RealESRGAN x4 on the GPU.
+
+    Qwen-Image-Edit renders at roughly a megapixel, which is a 1024px product
+    shot -- smaller than the card it has to fill on a retina display. Upscaling
+    with a real ESRGAN model rather than Lanczos is what keeps the panel texture
+    and the lettering as edges instead of as blur, and it runs on the same
+    ComfyUI that is already loaded.
+    """
+    IN_DIR.mkdir(parents=True, exist_ok=True)
+    name = Path(src).name
+    (IN_DIR / name).write_bytes(Path(src).read_bytes())
+    g = {
+        "1": {"class_type": "UpscaleModelLoader", "inputs": {"model_name": UPSCALER}},
+        "2": {"class_type": "LoadImage", "inputs": {"image": name}},
+        "3": {"class_type": "ImageUpscaleWithModel",
+              "inputs": {"upscale_model": ["1", 0], "image": ["2", 0]}},
+        "4": {"class_type": "SaveImage",
+              "inputs": {"images": ["3", 0], "filename_prefix": "latios-up"}},
+    }
+    pid = _req("/prompt", {"prompt": g, "client_id": str(uuid.uuid4())})["prompt_id"]
+    files, secs = _wait(pid)
+    got = OUT_DIR / files[0]["subfolder"] / files[0]["filename"]         if files[0].get("subfolder") else OUT_DIR / files[0]["filename"]
+    LOCAL_OUT.mkdir(exist_ok=True)
+    dest = LOCAL_OUT / out_name
+    dest.write_bytes(got.read_bytes())
+    print(f"  upscaled -> {dest.name} in {secs:.0f}s")
+    return dest
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1] if len(sys.argv) > 1 else "check"
     if cmd == "check":
