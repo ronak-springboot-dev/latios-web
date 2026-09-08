@@ -43,7 +43,7 @@ export const ModelTurntable = ({ frames, name }) => {
           />
         ))}
         <span className="absolute bottom-4 left-5 text-[10px] uppercase tracking-[0.3em] text-zinc-500">
-          Drag to rotate
+          Drag to browse
         </span>
       </div>
       <div className="mt-5 flex items-center justify-center gap-2.5" data-testid="turntable-dots">

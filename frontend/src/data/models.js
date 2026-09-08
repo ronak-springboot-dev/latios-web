@@ -1,14 +1,38 @@
 import { walkTaxonomy } from "./taxonomy";
+// Real photography of the MT chassis, shared by all six MT configurations.
 const MT_GALLERY = [
+  "/images/details/mt-angle.webp",
+  "/images/details/mt-front.webp",
+  "/images/details/mt-flank.webp",
+  "/images/details/mt-ports.webp",
+  "/images/details/mt-rear.webp",
+  "/images/details/mt-rear-close.webp",
+  "/images/details/mt-logo.webp",
+  "/images/details/mt-interior.webp",
+  "/images/details/mt-socket.webp",
+];
+
+// PROMAX has no photography yet. It used to borrow MT_GALLERY, which was
+// harmless while that held generic art and would become a false claim now
+// that MT_GALLERY holds real photographs of a micro tower -- a T4 Plus is a
+// 2700W redundant-PSU workstation, not this box. So it keeps the renders it
+// was already showing, in a constant of its own, until there is a shoot.
+const PROMAX_GALLERY = [
   "/images/dp180-1.webp",
   "/images/dp180-2.webp",
   "/images/dp180-3.webp",
 ];
+// Real photography of the SFF chassis, shared by all four SFF configurations.
 const SFF_GALLERY = [
-  "/images/dp80-1.webp",
-  "/images/dp80-2.webp",
-  "/images/dp80-3.webp",
-  "/images/dp80-4.webp",
+  "/images/details/sff-angle.webp",
+  "/images/details/sff-front.webp",
+  "/images/details/sff-top.webp",
+  "/images/details/sff-rear.webp",
+  "/images/details/sff-rear-close.webp",
+  "/images/details/sff-open.webp",
+  "/images/details/sff-interior.webp",
+  "/images/details/sff-cooling.webp",
+  "/images/details/sff-storage.webp",
 ];
 const MFF_GALLERY = ["/images/dp10-1.webp", "/images/dp10-2.webp"];
 
@@ -255,7 +279,7 @@ export const TOWERS_FAMILIES = [
         slug: "mt-amd-am4",
         name: "Latios MT — AMD AM4",
         tag: "Ryzen 5000 · DDR4",
-        image: "/images/fronts/mt-amd-am4.webp",
+        image: "/images/fronts/mt.webp",
         gallery: MT_GALLERY,
         heroImage: HERO["mt-amd-am4"],
         chips: ["Ryzen 7 5700G", "64GB DDR4", "Wi-Fi 6E"],
@@ -321,7 +345,7 @@ export const TOWERS_FAMILIES = [
         slug: "mt-h610-ddr4",
         name: "Latios MT — Intel H610 DDR4",
         tag: "12th–14th Gen · DDR4",
-        image: "/images/fronts/mt-h610-ddr4.webp",
+        image: "/images/fronts/mt.webp",
         gallery: MT_GALLERY,
         heroImage: HERO["mt-h610-ddr4"],
         chips: ["Core i9-14900", "64GB DDR4", "RTX A4000"],
@@ -387,7 +411,7 @@ export const TOWERS_FAMILIES = [
         slug: "mt-h610-ddr5",
         name: "Latios MT — Intel H610 DDR5",
         tag: "12th–14th Gen · DDR5",
-        image: "/images/fronts/mt-h610-ddr5.webp",
+        image: "/images/fronts/mt.webp",
         gallery: MT_GALLERY,
         heroImage: HERO["mt-h610-ddr5"],
         chips: ["Core i9-14900", "64GB DDR5", "TPM 2.0"],
@@ -453,7 +477,7 @@ export const TOWERS_FAMILIES = [
         slug: "mt-pro-h610-ddr5",
         name: "Latios Pro MT — Intel H610 DDR5",
         tag: "14th Gen · DDR5 · Pro",
-        image: "/images/fronts/mt-pro-h610-ddr5.webp",
+        image: "/images/fronts/mt.webp",
         gallery: MT_GALLERY,
         heroImage: HERO["mt-pro-h610-ddr5"],
         chips: ["Core i7-14700", "64GB DDR5", "RTX A4000"],
@@ -519,7 +543,7 @@ export const TOWERS_FAMILIES = [
         slug: "mt-q670-ddr5",
         name: "Latios MT — Intel Q670 DDR5",
         tag: "12th–14th Gen · Q670",
-        image: "/images/fronts/mt-q670-ddr5.webp",
+        image: "/images/fronts/mt.webp",
         gallery: MT_GALLERY,
         heroImage: HERO["mt-q670-ddr5"],
         chips: ["Core i9-14900", "Intel Q670", "RTX A4000"],
@@ -585,7 +609,7 @@ export const TOWERS_FAMILIES = [
         slug: "sff-h610-ddr5",
         name: "Latios Pro SFF — Intel H610",
         tag: "14th Gen · 9.3 litres",
-        image: "/images/fronts/sff-h610-ddr5.webp",
+        image: "/images/fronts/sff.webp",
         gallery: SFF_GALLERY,
         heroImage: HERO["sff-h610-ddr5"],
         chips: ["Core i7-14700", "64GB DDR5", "8 litres"],
@@ -651,7 +675,7 @@ export const TOWERS_FAMILIES = [
         slug: "mt-am5-pro-ai",
         name: "Latios Pro AI MT — AMD AM5",
         tag: "Ryzen 8000G AI · DDR5",
-        image: "/images/fronts/mt-am5-pro-ai.webp",
+        image: "/images/fronts/mt.webp",
         gallery: MT_GALLERY,
         heroImage: HERO["mt-am5-pro-ai"],
         chips: ["Ryzen 7 8700G", "Ryzen AI", "Wi-Fi 6E"],
@@ -717,7 +741,7 @@ export const TOWERS_FAMILIES = [
         slug: "sff-am5-pro-ai",
         name: "Latios Pro AI SFF — AMD AM5",
         tag: "Ryzen 8000G AI · 8 litres",
-        image: "/images/fronts/sff-am5-pro-ai.webp",
+        image: "/images/fronts/sff.webp",
         gallery: SFF_GALLERY,
         heroImage: HERO["sff-am5-pro-ai"],
         chips: ["Ryzen 7 8700G", "Ryzen AI", "8 litres"],
@@ -783,7 +807,7 @@ export const TOWERS_FAMILIES = [
         slug: "sff-b860-pro-ai",
         name: "Latios Pro AI SFF — Intel B860",
         tag: "Core Ultra · NPU · 128GB",
-        image: "/images/fronts/sff-b860-pro-ai.webp",
+        image: "/images/fronts/sff.webp",
         gallery: SFF_GALLERY,
         heroImage: HERO["sff-b860-pro-ai"],
         chips: ["Core Ultra 9 285", "128GB DDR5", "Thunderbolt 4"],
@@ -849,7 +873,7 @@ export const TOWERS_FAMILIES = [
         slug: "sff-h810-pro-ai",
         name: "Latios Pro AI SFF — Intel H810",
         tag: "Core Ultra · NPU · 64GB",
-        image: "/images/fronts/sff-h810-pro-ai.webp",
+        image: "/images/fronts/sff.webp",
         gallery: SFF_GALLERY,
         heroImage: HERO["sff-h810-pro-ai"],
         chips: ["Core Ultra 9 285", "64GB DDR5", "Dual 2.5G LAN"],
@@ -991,7 +1015,7 @@ export const TOWERS_FAMILIES = [
         name: "PROMAX AI — Intel Q870",
         tag: "Core Ultra · NPU · 128GB",
         image: "/images/dp180-2.webp",
-        gallery: MT_GALLERY,
+        gallery: PROMAX_GALLERY,
         heroImage: HERO["promax-q870"],
         chips: ["Core Ultra 9 285", "128GB DDR5", "RTX A6000"],
         stats: [
@@ -1049,7 +1073,7 @@ export const TOWERS_FAMILIES = [
         name: "PROMAX T2 AI — Intel W880",
         tag: "Core Ultra K · ECC",
         image: "/images/dp180-3.webp",
-        gallery: MT_GALLERY,
+        gallery: PROMAX_GALLERY,
         heroImage: HERO["promax-t2-w880"],
         chips: ["Core Ultra 9 285K", "256GB ECC", "Dual 2.5G LAN"],
         stats: [
@@ -1107,7 +1131,7 @@ export const TOWERS_FAMILIES = [
         name: "PROMAX T2 — Intel W680",
         tag: "14th Gen K · 256GB",
         image: "/images/dp180-1.webp",
-        gallery: MT_GALLERY,
+        gallery: PROMAX_GALLERY,
         heroImage: HERO["promax-t2-w680"],
         chips: ["Core i9-14900K", "256GB ECC", "RTX A6000"],
         stats: [
@@ -1165,7 +1189,7 @@ export const TOWERS_FAMILIES = [
         name: "PROMAX T4 Plus — Intel W780",
         tag: "Xeon W · 2TB ECC",
         image: "/images/dp180-2.webp",
-        gallery: MT_GALLERY,
+        gallery: PROMAX_GALLERY,
         heroImage: HERO["promax-t4-plus"],
         chips: ["Xeon W-3400", "2TB ECC", "2700W redundant"],
         stats: [
