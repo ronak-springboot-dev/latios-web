@@ -1,7 +1,8 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createPortal } from "react-dom";
 import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowRight, ArrowUpRight } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, SlidersHorizontal, X } from "lucide-react";
 import { KineticText } from "@/components/KineticText";
 import { Reveal } from "@/components/Reveal";
 import { ParallaxImage } from "@/components/ParallaxImage";
@@ -9,16 +10,38 @@ import { EditorialMarquee } from "@/components/EditorialMarquee";
 import { SpecGrid } from "@/components/SpecGrid";
 import { getCategory, nextCategory, bucketsFor } from "@/data/products";
 import {
-  VENDOR_LABELS, getProcessorFamily, getMemoryTier, MEMORY_TIERS,
+  VENDOR_LABELS, getProcessorFamily, getMaxMemoryGB, getMemoryTier, MEMORY_TIERS,
 } from "@/data/models";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
 const EASE = [0.16, 1, 0.3, 1];
 
 /**
- * Faceted filter panel.
+ * Sort orders offered in the rail.
  *
- * Four dimensions, combining as AND across groups and OR within one — pick
+ * "Featured" is the authored order and keeps the editorial family sections;
+ * every other order flattens them into one grid, because a sort that only
+ * applies inside each section is not a sort of the results. Models with no
+ * memory figure (a monitor, a speakerphone) sort last rather than as zero.
+ */
+const SORTS = [
+  { id: "featured", label: "Featured" },
+  { id: "name", label: "Name A-Z", cmp: (a, b) => a.name.localeCompare(b.name) },
+  { id: "memory", label: "Memory: high to low",
+    cmp: (a, b) => (getMaxMemoryGB(b) ?? -1) - (getMaxMemoryGB(a) ?? -1) },
+  { id: "ai", label: "AI ready first",
+    cmp: (a, b) => Number(!!b.aiReady) - Number(!!a.aiReady) },
+];
+
+/**
+ * Filter and sort rail.
+ *
+ * Lives in a sticky left column rather than a band above the grid, because the
+ * band could only be reached by scrolling back to the top of the listing --
+ * with fifteen towers on screen that is a long way back. The rail follows the
+ * page, so the filters are reachable wherever the reader has got to.
+ *
+ * Four dimensions, combining as AND across groups and OR within one -- pick
  * "Micro tower" and "Small form factor" and you get both; add "AMD Ryzen" and
  * you get the AMD machines among those. Counts are computed against the other
  * active facets, so a number is always what you would actually get by clicking.
@@ -26,19 +49,23 @@ const EASE = [0.16, 1, 0.3, 1];
  * Options with a zero count are hidden rather than shown disabled: a category
  * with no CPU in it (displays, AV) simply renders no processor group, instead of
  * a filter offering a single meaningless choice.
+ *
+ * On phones the rail collapses behind a "Filter & sort" button -- a 260px
+ * column beside a single-column grid would leave no room for either.
  */
-const FacetPanel = ({ groups, active, onToggle, onClear, total, shown }) => {
-  const live = groups.filter((g) => g.options.some((o) => o.n > 0));
-  if (!live.length) return null;
-  const anyActive = Object.values(active).some((s) => s.size);
+/** Groups worth showing: a facet whose every option matches nothing is noise. */
+const liveGroups = (groups) => groups.filter((g) => g.options.some((o) => o.n > 0));
 
+/** The filter and sort controls themselves, shared by the rail and the sheet. */
+const FacetControls = ({ groups, active, onToggle, onClear, total, shown, sort, onSort, idPrefix }) => {
+  const activeCount = Object.values(active).reduce((n, set) => n + set.size, 0);
   return (
-    <div className="mb-12" data-testid="facet-panel">
+    <>
       <div className="flex items-baseline justify-between gap-4 mb-6">
         <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-500">
           Showing <span className="text-white">{shown}</span> of {total}
         </p>
-        {anyActive && (
+        {activeCount > 0 && (
           <button
             onClick={onClear}
             data-testid="facet-clear"
@@ -49,11 +76,33 @@ const FacetPanel = ({ groups, active, onToggle, onClear, total, shown }) => {
         )}
       </div>
 
-      <div className="flex flex-col gap-5">
-        {live.map((g) => (
+      <div className="mb-7 pb-7 border-b border-white/10">
+        <label
+          htmlFor={`${idPrefix}-sort`}
+          className="block text-[10px] uppercase tracking-[0.22em] text-zinc-600 mb-2.5"
+        >
+          Sort by
+        </label>
+        <select
+          id={`${idPrefix}-sort`}
+          value={sort}
+          onChange={(e) => onSort(e.target.value)}
+          data-testid={`${idPrefix}-sort-select`}
+          className="w-full bg-[#0A0A0A] border border-white/15 text-sm text-white px-3 py-2.5 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50 transition-colors duration-300"
+        >
+          {SORTS.map((o) => (
+            <option key={o.id} value={o.id} className="bg-[#0A0A0A]">
+              {o.label}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="flex flex-col gap-7">
+        {liveGroups(groups).map((g) => (
           <div key={g.id} data-testid={`facet-group-${g.id}`}>
-            <p className="text-[10px] uppercase tracking-[0.22em] text-zinc-600 mb-2.5">{g.label}</p>
-            <div className="flex flex-wrap gap-2.5">
+            <p className="text-[10px] uppercase tracking-[0.22em] text-zinc-600 mb-3">{g.label}</p>
+            <div className="flex flex-col gap-1">
               {g.options
                 .filter((o) => o.n > 0 || active[g.id]?.has(o.id))
                 .map((o) => {
@@ -64,14 +113,22 @@ const FacetPanel = ({ groups, active, onToggle, onClear, total, shown }) => {
                       onClick={() => onToggle(g.id, o.id)}
                       data-testid={`facet-${g.id}-${o.id}`}
                       aria-pressed={!!on}
-                      className={`rounded-full px-5 py-2 text-[10px] uppercase tracking-[0.22em] border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50 ${
-                        on
-                          ? "btn-blue border-transparent"
-                          : "border-white/15 text-zinc-400 hover:text-white hover:border-white/40"
+                      className={`group flex items-center gap-3 py-1.5 text-left text-sm transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50 rounded ${
+                        on ? "text-white" : "text-zinc-400 hover:text-white"
                       }`}
                     >
-                      {o.label}
-                      <span className="ml-2 opacity-60">{o.n}</span>
+                      <span
+                        aria-hidden="true"
+                        className={`w-4 h-4 shrink-0 rounded-[3px] border flex items-center justify-center transition-colors duration-300 ${
+                          on
+                            ? "bg-[#1a56e8] border-[#1a56e8]"
+                            : "border-white/25 group-hover:border-white/50"
+                        }`}
+                      >
+                        {on && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
+                      </span>
+                      <span className="flex-1">{o.label}</span>
+                      <span className="text-xs text-zinc-600 tabular-nums">{o.n}</span>
                     </button>
                   );
                 })}
@@ -79,9 +136,205 @@ const FacetPanel = ({ groups, active, onToggle, onClear, total, shown }) => {
           </div>
         ))}
       </div>
-    </div>
+    </>
   );
 };
+
+/**
+ * Desktop: a rail that follows the page.
+ *
+ * It sits in a sticky left column rather than a band above the grid, because
+ * the band could only be reached by scrolling back to the top of the listing --
+ * with fifteen towers on screen that is a long way back.
+ *
+ * Four dimensions, combining as AND across groups and OR within one: pick
+ * "Micro tower" and "Small form factor" and you get both; add "AMD Ryzen" and
+ * you get the AMD machines among those. Counts are computed against the other
+ * active facets, so a number is always what clicking it would actually yield,
+ * and a zero-count option is hidden rather than shown disabled -- a category
+ * with no CPU in it (displays, AV) renders no processor group at all.
+ */
+const FilterRail = (props) => {
+  if (!liveGroups(props.groups).length) return null;
+  return (
+    <aside
+      className="hidden lg:block lg:sticky lg:top-28 lg:self-start lg:max-h-[calc(100vh-9rem)] lg:overflow-y-auto lg:pr-2"
+      data-testid="facet-panel"
+      aria-label="Filter and sort products"
+    >
+      <FacetControls {...props} idPrefix="rail" />
+    </aside>
+  );
+};
+
+/**
+ * Phone: a pinned trigger and a sheet.
+ *
+ * A 240px rail beside a single-column grid would leave room for neither, and a
+ * panel at the top of the listing is the thing that made filtering mean
+ * scrolling back up in the first place.
+ *
+ * The trigger is `sticky bottom-6`, not `fixed`. Two reasons: framer-motion
+ * leaves a transform on the page's <main> even after the entry animation
+ * settles, and a transformed ancestor makes `position: fixed` resolve against
+ * that ancestor rather than the viewport -- the button lands thousands of
+ * pixels down the document. Sticky is unaffected by that, and it also gives the
+ * behaviour for free: pinned above the fold for as long as the listing is on
+ * screen, gone once it has been scrolled past, with no observer or scroll
+ * listener. Which matters here, because Lenis drives scrolling and window
+ * scroll events are not a reliable signal.
+ *
+ * The sheet itself does need a portal, for the same transform reason: a
+ * full-screen overlay has to be measured against the viewport.
+ */
+const MobileFilterBar = (props) => {
+  const [open, setOpen] = useState(false);
+  const { active, shown } = props;
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";        // the sheet is the only scroller
+    return () => { document.body.style.overflow = prev; };
+  }, [open]);
+
+  useEffect(() => {
+    if (!open) return undefined;
+    const onKey = (e) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
+  const activeCount = Object.values(active).reduce((n, set) => n + set.size, 0);
+  if (!liveGroups(props.groups).length) return null;
+
+  return (
+    <>
+      <div className="lg:hidden sticky bottom-6 z-40 mt-12 flex justify-center pointer-events-none">
+        <button
+          onClick={() => setOpen(true)}
+          data-testid="facet-toggle"
+          aria-expanded={open}
+          className="pointer-events-auto flex items-center gap-2.5 rounded-full border border-white/20 bg-[#111] px-6 py-3.5 text-[10px] uppercase tracking-[0.25em] text-white shadow-2xl focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+        >
+          <SlidersHorizontal className="w-3.5 h-3.5 text-zinc-400" />
+          Filter &amp; sort
+          {activeCount > 0 && (
+            <span className="btn-blue rounded-full px-2 py-0.5 text-[9px]">{activeCount}</span>
+          )}
+        </button>
+      </div>
+
+      {open &&
+        createPortal(
+          <div
+            className="lg:hidden fixed inset-0 z-[60]"
+            data-testid="facet-sheet"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Filter and sort products"
+          >
+            <div className="absolute inset-0 bg-black/70" onClick={() => setOpen(false)} />
+            <div className="absolute inset-x-0 bottom-0 max-h-[85vh] flex flex-col border-t border-white/15 bg-[#050505]">
+              <div className="flex items-center justify-between gap-4 px-6 py-4 border-b border-white/10">
+                <span className="text-[10px] uppercase tracking-[0.25em] text-white">Filter &amp; sort</span>
+                <button
+                  onClick={() => setOpen(false)}
+                  data-testid="facet-sheet-close"
+                  aria-label="Close filters"
+                  className="text-zinc-400 hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50 rounded"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+              <div className="flex-1 overflow-y-auto px-6 py-6">
+                <FacetControls {...props} idPrefix="sheet" />
+              </div>
+              <div className="px-6 py-4 border-t border-white/10">
+                <button
+                  onClick={() => setOpen(false)}
+                  data-testid="facet-sheet-apply"
+                  className="w-full btn-blue py-3.5 text-[10px] uppercase tracking-[0.25em] focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+                >
+                  Show {shown} {shown === 1 ? "result" : "results"}
+                </button>
+              </div>
+            </div>
+          </div>,
+          document.body
+        )}
+    </>
+  );
+};
+
+/** One product tile. Shared by the family sections and the sorted grid. */
+const ModelCard = ({ m, category, testid }) => (
+  <Link
+    to={`/${category}/${m.slug}`}
+    className="group border border-white/10 bg-[#0A0A0A] hover:border-white/25 transition-colors duration-500 p-8 md:p-10 flex flex-col h-full focus:ring-2 focus:ring-white/50 focus:outline-none"
+    data-testid={testid}
+  >
+    {m.image && (
+      <div className="mb-7 rounded-lg bg-[#f2f2f0] px-8 py-6 flex items-center justify-center aspect-[16/9] overflow-hidden">
+        <img
+          src={m.image}
+          alt={m.name}
+          loading="lazy"
+          className="max-h-full w-auto object-contain transition-transform duration-700 group-hover:scale-105"
+        />
+      </div>
+    )}
+    <div className="flex items-center gap-3 flex-wrap">
+      <span className="text-[10px] uppercase tracking-[0.35em] text-zinc-500">{m.tag}</span>
+      {m.aiReady && (
+        <span
+          data-testid={`ai-badge-${m.slug}`}
+          title="Dedicated neural processing unit"
+          className="text-[9px] uppercase tracking-[0.2em] text-[#6f93f2] border border-[#6f93f2]/40 rounded-full px-2 py-0.5"
+        >
+          AI ready
+        </span>
+      )}
+    </div>
+    <h3 className="mt-4 font-display text-2xl md:text-3xl font-black tracking-tighter text-white">
+      {m.name}
+    </h3>
+    <ul className="mt-6 space-y-2.5 flex-1">
+      {m.highlights.map((h) => (
+        <li key={h} className="text-sm text-zinc-400 flex gap-3">
+          <span className="text-zinc-600">&mdash;</span>
+          {h}
+        </li>
+      ))}
+    </ul>
+    <span
+      data-testid={`model-explore-${m.slug}`}
+      className="mt-8 inline-flex items-center gap-2 self-start btn-blue px-6 py-3 text-[10px] uppercase tracking-[0.25em] transition-colors duration-300"
+    >
+      Explore model
+      <ArrowUpRight className="w-3.5 h-3.5" />
+    </span>
+  </Link>
+);
+
+/** Every facet combination can be narrowed to nothing, so say so and offer the way out. */
+const EmptyResults = ({ onClear }) => (
+  <div className="border border-white/10 bg-[#0A0A0A] p-12 text-center" data-testid="facet-empty">
+    <p className="font-display text-2xl font-black tracking-tighter text-white">
+      Nothing matches those filters.
+    </p>
+    <p className="mt-3 text-sm text-zinc-400">
+      Try removing one, or clear them and start again.
+    </p>
+    <button
+      onClick={onClear}
+      data-testid="facet-empty-clear"
+      className="mt-7 btn-blue px-6 py-3 text-[10px] uppercase tracking-[0.25em] focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+    >
+      Clear all filters
+    </button>
+  </div>
+);
 
 const FamilyAccordion = ({ families }) => {
   const [active, setActive] = useState(0);
@@ -153,6 +406,7 @@ export default function ProductPage() {
       return next;
     });
   const clearFacets = () => setActive(emptyFacets());
+  const [sort, setSort] = useState("featured");
   usePageMeta(
     data ? `${data.name} — ${data.model} | Latios` : "Latios",
     data ? `${data.tagline} Explore the ${data.name} range from Latios.` : ""
@@ -213,6 +467,10 @@ export default function ProductPage() {
 
   const matched = catModels.filter((m) => passes(m, active));
   const visible = new Set(matched.map((m) => m.slug));
+
+  // null while "Featured" is chosen, which is what keeps the family sections.
+  const cmp = SORTS.find((o) => o.id === sort)?.cmp;
+  const sorted = cmp ? [...matched].sort(cmp) : null;
 
   return (
     <motion.main
@@ -320,83 +578,91 @@ export default function ProductPage() {
 
       {/* MODEL FAMILIES (when a category has real SKUs) */}
       {data.families && (
-        <section className="max-w-[1600px] mx-auto px-6 md:px-12 pb-24 md:pb-36" data-testid="models-section">
+        <section
+          className="max-w-[1600px] mx-auto px-6 md:px-12 pb-24 md:pb-36"
+          data-testid="models-section"
+        >
           {data.families.length > 1 && <FamilyAccordion families={data.families} />}
-          <FacetPanel
-            groups={facetGroups}
-            active={active}
-            onToggle={toggleFacet}
-            onClear={clearFacets}
-            total={catModels.length}
-            shown={matched.length}
-          />
-          {data.families.map((fam, fi) => {
-            const models = fam.models.filter((m) => m.category === data.slug && visible.has(m.slug));
-            if (!models.length) return null; // hide a family with nothing in the active range
-            return (
-            <div key={fam.title} id={`family-${fi}`} className={`scroll-mt-28 ${fi > 0 ? "mt-24 md:mt-32" : ""}`}>
-              <Reveal>
-                <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">{fam.kicker}</p>
-                <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-5">
-                  {fam.title}
-                </h2>
-                <p className="text-zinc-400 max-w-2xl mb-14 leading-relaxed">{fam.blurb}</p>
-              </Reveal>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
-                {models.map((m, i) => (
-                  <Reveal key={m.name} delay={i * 0.06}>
-                    <Link
-                      to={`/${data.slug}/${m.slug}`}
-                      className="group border border-white/10 bg-[#0A0A0A] hover:border-white/25 transition-colors duration-500 p-8 md:p-10 flex flex-col h-full focus:ring-2 focus:ring-white/50 focus:outline-none"
-                      data-testid={`model-card-${fi}-${i}`}
+          <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-x-12 xl:gap-x-16">
+            <FilterRail
+              groups={facetGroups}
+              active={active}
+              onToggle={toggleFacet}
+              onClear={clearFacets}
+              total={catModels.length}
+              shown={matched.length}
+              sort={sort}
+              onSort={setSort}
+            />
+
+            <div className="min-w-0">
+              {sorted ? (
+                // A sort is active, so the editorial family sections give way to
+                // one ordered grid -- otherwise "memory, high to low" would only
+                // hold inside each section and the first card would not be the
+                // largest machine on the page.
+                <div data-testid="sorted-listing">
+                  <p className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-8">
+                    {matched.length} {matched.length === 1 ? "result" : "results"}
+                  </p>
+                  {matched.length === 0 ? (
+                    <EmptyResults onClear={clearFacets} />
+                  ) : (
+                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 md:gap-8">
+                      {sorted.map((m, i) => (
+                        <Reveal key={m.slug} delay={Math.min(i, 5) * 0.06}>
+                          <ModelCard m={m} category={data.slug} testid={`model-card-sorted-${i}`} />
+                        </Reveal>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ) : matched.length === 0 ? (
+                <EmptyResults onClear={clearFacets} />
+              ) : (
+                data.families.map((fam, fi) => {
+                  const models = fam.models.filter(
+                    (m) => m.category === data.slug && visible.has(m.slug));
+                  if (!models.length) return null; // hide a family with nothing in the active range
+                  return (
+                    <div
+                      key={fam.title}
+                      id={`family-${fi}`}
+                      className={`scroll-mt-28 ${fi > 0 ? "mt-24 md:mt-32" : ""}`}
                     >
-                      {m.image && (
-                        <div className="mb-7 rounded-lg bg-[#f2f2f0] px-8 py-6 flex items-center justify-center aspect-[16/9] overflow-hidden">
-                          <img
-                            src={m.image}
-                            alt={m.name}
-                            loading="lazy"
-                            className="max-h-full w-auto object-contain transition-transform duration-700 group-hover:scale-105"
-                          />
-                        </div>
-                      )}
-                      <div className="flex items-center gap-3 flex-wrap">
-                        <span className="text-[10px] uppercase tracking-[0.35em] text-zinc-500">{m.tag}</span>
-                        {m.aiReady && (
-                          <span
-                            data-testid={`ai-badge-${m.slug}`}
-                            title="Dedicated neural processing unit"
-                            className="text-[9px] uppercase tracking-[0.2em] text-[#6f93f2] border border-[#6f93f2]/40 rounded-full px-2 py-0.5"
-                          >
-                            AI ready
-                          </span>
-                        )}
-                      </div>
-                      <h3 className="mt-4 font-display text-2xl md:text-3xl font-black tracking-tighter text-white">
-                        {m.name}
-                      </h3>
-                      <ul className="mt-6 space-y-2.5 flex-1">
-                        {m.highlights.map((h) => (
-                          <li key={h} className="text-sm text-zinc-400 flex gap-3">
-                            <span className="text-zinc-600">—</span>
-                            {h}
-                          </li>
+                      <Reveal>
+                        <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">
+                          {fam.kicker}
+                        </p>
+                        <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-5">
+                          {fam.title}
+                        </h2>
+                        <p className="text-zinc-400 max-w-2xl mb-14 leading-relaxed">{fam.blurb}</p>
+                      </Reveal>
+                      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 md:gap-8">
+                        {models.map((m, i) => (
+                          <Reveal key={m.name} delay={i * 0.06}>
+                            <ModelCard m={m} category={data.slug} testid={`model-card-${fi}-${i}`} />
+                          </Reveal>
                         ))}
-                      </ul>
-                      <span
-                        data-testid={`model-explore-${fi}-${i}`}
-                        className="mt-8 inline-flex items-center gap-2 self-start btn-blue px-6 py-3 text-[10px] uppercase tracking-[0.25em] transition-colors duration-300"
-                      >
-                        Explore model
-                        <ArrowUpRight className="w-3.5 h-3.5" />
-                      </span>
-                    </Link>
-                  </Reveal>
-                ))}
-              </div>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
             </div>
-            );
-          })}
+
+            <MobileFilterBar
+              groups={facetGroups}
+              active={active}
+              onToggle={toggleFacet}
+              onClear={clearFacets}
+              total={catModels.length}
+              shown={matched.length}
+              sort={sort}
+              onSort={setSort}
+            />
+          </div>
         </section>
       )}
 
