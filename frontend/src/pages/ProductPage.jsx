@@ -385,17 +385,29 @@ const FamilyAccordion = ({ families }) => {
 const FACET_IDS = ["bucket", "cpu", "memory", "ai"];
 const emptyFacets = () => Object.fromEntries(FACET_IDS.map((k) => [k, new Set()]));
 
+/**
+ * Query-string name for each facet, so the mega menu can link straight to a
+ * filtered listing: /towers?cpu=amd, /towers?ai=yes, /towers?b=sff.
+ *
+ * Short names because these end up in links people copy and share. Values are
+ * comma-separated, matching the OR-within-a-group the panel already does, so
+ * ?cpu=amd,xeon is expressible.
+ */
+const FACET_PARAM = { bucket: "b", cpu: "cpu", memory: "mem", ai: "ai" };
+
 export default function ProductPage() {
   const { category } = useParams();
   const data = getCategory(category);
   const [search] = useSearchParams();
 
-  // ?b=<bucket key> arrives from the mega menu, which links a sub-category to
-  // this page with that facet pre-selected rather than to a route of its own.
+  // The mega menu links to a filtered listing rather than to routes of its own:
+  // a sub-category, a processor family, or the AI-ready machines.
   const [active, setActive] = useState(() => {
     const f = emptyFacets();
-    const b = search.get("b");
-    if (b) f.bucket.add(b);
+    FACET_IDS.forEach((id) => {
+      const raw = search.get(FACET_PARAM[id]);
+      if (raw) raw.split(",").filter(Boolean).forEach((v) => f[id].add(v));
+    });
     return f;
   });
 

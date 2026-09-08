@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, Search, ArrowUpRight, ArrowRight, Mail, Phone } from "lucide-react";
+import { Menu, X, Search, ArrowUpRight, ArrowRight, Cpu, Sparkles, Mail, Phone } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
-import { ALL_MODELS } from "@/data/models";
+import { ALL_MODELS, VENDOR_LABELS, getProcessorFamily } from "@/data/models";
 import { MEGA_CATEGORIES, TAXONOMY } from "@/data/products";
 import { APPLICATIONS } from "@/data/applications";
 
@@ -41,6 +41,36 @@ const megaNodes = (slug) => {
   });
   return out;
 };
+
+/**
+ * The two shortcuts the mega menu leads with: what has an NPU in it, and what
+ * silicon is inside.
+ *
+ * Both are counted from the catalogue rather than written down, so a number
+ * here can never disagree with the listing it opens -- the link carries the
+ * same facet the panel would set, so the count IS what the page will show.
+ *
+ * Scoped per category on purpose. Facets live on a category page, so a link has
+ * to name one; and it is honest about the split, rather than quoting a total of
+ * seven AI machines and then landing on a page showing six.
+ */
+const countIn = (slug, pred) =>
+  ALL_MODELS.filter((m) => m.category === slug && pred(m)).length;
+
+const AI_LINKS = [
+  { slug: "towers", label: "Towers", n: countIn("towers", (m) => m.aiReady) },
+  { slug: "laptops", label: "Laptops", n: countIn("laptops", (m) => m.aiReady) },
+].filter((x) => x.n > 0);
+
+const AI_TOTAL = AI_LINKS.reduce((n, x) => n + x.n, 0);
+
+// Processor families, pointed at the towers listing: it is the only category
+// where the choice exists at all -- every Latios laptop is Intel -- and it is
+// where a buyer shopping by silicon actually lands.
+const CPU_LINKS = ["amd", "intel", "xeon"]
+  .map((id) => ({ id, label: VENDOR_LABELS[id],
+                  n: countIn("towers", (m) => getProcessorFamily(m) === id) }))
+  .filter((x) => x.n > 0);
 
 const navId = (label) => `nav-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 
@@ -290,7 +320,7 @@ export const Header = () => {
               </div>
 
               {/* product tree + featured applications */}
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-x-8 gap-y-10">
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-x-8 gap-y-10">
                 {MEGA_CATEGORIES.map((cat, i) => (
                   <motion.div
                     key={cat.slug}
@@ -305,10 +335,13 @@ export const Header = () => {
                       // complete, never linked — there is no page behind it.
                       <span
                         data-testid={`mega-cat-${cat.slug}`}
-                        className="flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-zinc-600 cursor-default"
+                        className="block lg:min-h-[2.6em] text-xs uppercase tracking-[0.25em] text-zinc-600 cursor-default"
                       >
                         {cat.name}
-                        <span className="text-[9px] tracking-[0.18em] border border-zinc-800 rounded px-1.5 py-0.5">
+                        {/* inline, not a flex sibling: as a sibling the chip was
+                            pushed to the far right of the column whenever the
+                            name wrapped to two lines. */}
+                        <span className="ml-2 inline-block align-middle text-[9px] tracking-[0.18em] border border-zinc-800 rounded px-1.5 py-0.5">
                           Soon
                         </span>
                       </span>
@@ -316,13 +349,19 @@ export const Header = () => {
                       <button
                         onClick={() => goPage(`/${cat.slug}`)}
                         data-testid={`mega-cat-${cat.slug}`}
-                        className="group flex items-center gap-2 text-xs uppercase tracking-[0.25em] text-white hover:text-[#6f93f2] transition-colors duration-300"
+                        className="group flex items-start gap-2 lg:min-h-[2.6em] text-left text-xs uppercase tracking-[0.25em] text-white hover:text-[#6f93f2] transition-colors duration-300"
                       >
                         {cat.name}
                         <ArrowRight className="w-3.5 h-3.5 text-zinc-600 group-hover:text-[#6f93f2] group-hover:translate-x-1 transition-all duration-300" />
                       </button>
                     )}
                     <div className="mt-5 flex flex-col gap-3">
+                      {cat.soon && (
+                        <p className="text-sm text-zinc-600 leading-relaxed">
+                          Rooms built from the AV and display ranges. Talk to us about a
+                          fit-out while the packaged range is in development.
+                        </p>
+                      )}
                       {megaNodes(cat.slug).map((n) =>
                         n.group ? (
                           // A grouping level (Commercial / Enterprise / Cameras)
@@ -376,8 +415,72 @@ export const Header = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.3, duration: 0.5, ease: EASE }}
                   className="col-span-2 md:col-span-4 lg:col-span-2 lg:border-l lg:border-white/10 lg:pl-10"
-                  data-testid="mega-featured-apps"
+                  data-testid="mega-rail"
                 >
+                  {/* AI first, because it is the thing a buyer is scanning for
+                      and it is otherwise buried as one checkbox on one page. */}
+                  {AI_TOTAL > 0 && (
+                    <div
+                      className="mb-8 rounded-lg border border-[#6f93f2]/30 bg-[#1a56e8]/[0.07] p-5"
+                      data-testid="mega-ai"
+                    >
+                      <p className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-[#6f93f2]">
+                        <Sparkles className="w-3.5 h-3.5" />
+                        AI ready
+                      </p>
+                      <p className="mt-2.5 text-sm text-zinc-300 leading-relaxed">
+                        <span className="text-white font-semibold">{AI_TOTAL} machines</span> with a
+                        dedicated neural processing unit, ready for on-device AI.
+                      </p>
+                      <div className="mt-4 flex flex-wrap gap-2">
+                        {AI_LINKS.map((a) => (
+                          <button
+                            key={a.slug}
+                            onClick={() => goPage(`/${a.slug}?ai=yes`)}
+                            data-testid={`mega-ai-${a.slug}`}
+                            className="group inline-flex items-center gap-2 rounded-full bg-[#1a56e8] px-4 py-2 text-[10px] uppercase tracking-[0.2em] text-white hover:bg-[#1747c0] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+                          >
+                            {a.label}
+                            <span className="opacity-70">{a.n}</span>
+                            <ArrowRight className="w-3 h-3 transition-transform duration-300 group-hover:translate-x-0.5" />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Processors. Word marks rather than the AMD and Intel
+                      logos: reproducing a partner's artwork is governed by
+                      their brand guidelines and needs files from their partner
+                      kit, and the same reasoning already applies to the
+                      certification marks in the footer. */}
+                  {CPU_LINKS.length > 0 && (
+                    <div className="mb-8" data-testid="mega-cpu">
+                      <p className="flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-4">
+                        <Cpu className="w-3.5 h-3.5" />
+                        Shop by processor
+                      </p>
+                      <div className="flex flex-col">
+                        {CPU_LINKS.map((c) => (
+                          <button
+                            key={c.id}
+                            onClick={() => goPage(`/towers?cpu=${c.id}`)}
+                            data-testid={`mega-cpu-${c.id}`}
+                            className="group flex items-center justify-between gap-3 border-b border-white/10 py-3 text-left transition-colors duration-300 hover:border-white/25 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50 rounded"
+                          >
+                            <span className="font-display text-base font-black tracking-tight text-white group-hover:text-[#6f93f2] transition-colors duration-300">
+                              {c.label}
+                            </span>
+                            <span className="flex items-center gap-2 text-xs text-zinc-500 tabular-nums">
+                              {c.n}
+                              <ArrowUpRight className="w-3.5 h-3.5 text-zinc-600 group-hover:text-[#6f93f2] group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all duration-300" />
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   <p className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-4">
                     Featured Applications
                   </p>

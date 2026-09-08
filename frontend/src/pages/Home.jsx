@@ -55,6 +55,16 @@ const BANNER_POOL = [
   "/images/banner/banner-board-2.jpg",
 ];
 
+/**
+ * Hero copy per category, keyed by category slug.
+ *
+ * These keys have to track CATEGORIES exactly. They stopped doing so when the
+ * taxonomy renamed "audio" to "av" and "video" to "display": the lookup below
+ * returned undefined for the third and fourth slides and the homepage crashed
+ * on `.headline` as soon as the carousel advanced to them. verify_pages.mjs now
+ * asserts every category has an entry, so the next rename fails a check instead
+ * of a page.
+ */
 const HERO_SLIDES = {
   laptops: {
     headline: "Power That Travels.",
@@ -64,11 +74,11 @@ const HERO_SLIDES = {
     headline: "Efficiency, Reliability, and Quality.",
     subline: "Explore business desktops and PROMAX workstations engineered for every workload.",
   },
-  audio: {
+  av: {
     headline: "Every Voice, Heard Clearly.",
     subline: "Explore professional conferencing audio for the modern meeting room.",
   },
-  video: {
+  display: {
     headline: "Clarity at Any Scale.",
     subline: "Explore monitors, interactive panels and active LED displays.",
   },
@@ -168,10 +178,10 @@ export default function Home() {
                 className="font-display font-black tracking-tighter text-white leading-[1.02] text-4xl md:text-6xl lg:text-7xl"
                 data-testid="hero-title"
               >
-                {HERO_SLIDES[CATEGORIES[slide].slug].headline}
+                {HERO_SLIDES[CATEGORIES[slide].slug]?.headline ?? CATEGORIES[slide].tagline}
               </h1>
               <p className="mt-5 text-sm md:text-base text-zinc-200 max-w-xl" data-testid="hero-subtitle">
-                {HERO_SLIDES[CATEGORIES[slide].slug].subline}
+                {HERO_SLIDES[CATEGORIES[slide].slug]?.subline ?? CATEGORIES[slide].intro}
               </p>
               <Link
                 to={`/${CATEGORIES[slide].slug}`}

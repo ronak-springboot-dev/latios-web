@@ -21,6 +21,7 @@ const PDP = join(ROOT, "src/data/pdp");
 const PUB = join(ROOT, "public");
 
 let failures = 0;
+let CATEGORIES_SLUGS = [];   // filled by check 5, reused by check 6
 const fail = (msg) => { console.log("  FAIL " + msg); failures += 1; };
 
 // 1. every page module parses
@@ -151,6 +152,7 @@ console.log(`uniqueness       ${seen.size}/${pages.length} distinct accent+order
     writeFileSync(join(tmp, f), src);
   }
   const { CATEGORIES, TAXONOMY_SLUGS } = await import(pathToFileURL(join(tmp, "products.js")).href);
+  CATEGORIES_SLUGS = CATEGORIES.map((c) => c.slug);
   const { ALL_MODELS } = await import(pathToFileURL(join(tmp, "models.js")).href);
 
   const home = new Map();          // slug -> the category whose families author it
@@ -170,6 +172,25 @@ console.log(`uniqueness       ${seen.size}/${pages.length} distinct accent+order
   for (const slug of TAXONOMY_SLUGS)
     if (!ALL_MODELS.some((m) => m.slug === slug)) fail(`TAXONOMY lists "${slug}", which is not a real model`);
   console.log(`taxonomy         ${agree}/${ALL_MODELS.length} models render in the category TAXONOMY assigns`);
+}
+
+// 6. every category has hero copy, and every hero key is a real category.
+//
+// Home.jsx looks up HERO_SLIDES by category slug and reads .headline off the
+// result. When the taxonomy renamed "audio" to "av" and "video" to "display"
+// the keys were not renamed with it, so the lookup returned undefined and the
+// homepage threw as soon as the carousel reached the third slide -- which is
+// why it survived a browser pass that only looked at the first.
+{
+  const home = readFileSync(join(ROOT, "src/pages/Home.jsx"), "utf8");
+  const block = home.slice(home.indexOf("const HERO_SLIDES"), home.indexOf("const Carousel"));
+  const keys = new Set([...block.matchAll(/^\s{2}([a-z-]+):\s*\{/gm)].map((m) => m[1]));
+  const slugs = CATEGORIES_SLUGS;
+  for (const slug of slugs)
+    if (!keys.has(slug)) fail(`HERO_SLIDES has no entry for category "${slug}" - the hero will throw on that slide`);
+  for (const k of keys)
+    if (!slugs.includes(k)) fail(`HERO_SLIDES has "${k}", which is not a category any more`);
+  console.log(`hero copy       ${slugs.filter((s) => keys.has(s)).length}/${slugs.length} categories have hero text`);
 }
 
 console.log(failures ? `\n${failures} FAILURE(S)` : "\nall checks passed");
