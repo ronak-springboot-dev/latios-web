@@ -12,12 +12,18 @@ PHOTOGRAPHIC below for which whole-machine views come from where:
                               gradient behind it, and the turntable stage is
                               that colour already.
 
-  hires/closeup-<name>.png    a close-up, straight off the camera at 50
-                              megapixels. These deliberately never went through
-                              the model: a full-denoise render of a rear I/O
-                              cluster or a CPU socket is free to invent a port,
-                              and on a spec-driven B2B catalogue an invented
-                              port is a false claim.
+  render/closeup-<name>.png   a close-up, rendered at 0.80 and kept at its own
+                              framing -- no cut-out, because a CPU socket lifted
+                              off the board it is bolted to is not a product
+                              shot. 0.80 rather than the 1.0 the tower views
+                              use: at 1.0 this is where the model invents a
+                              PS/2 pin pattern, and a catalogue read against a
+                              spec sheet cannot carry an approximate port.
+
+  hires/closeup-<name>.png    the camera's own version, at up to 50 megapixels.
+                              Still the source for any frame listed in
+                              PHOTOGRAPHIC, and the fallback if a render is
+                              missing.
 
 Output is 2560x2048 for fronts and 2560x1600 for gallery tiles, against
 1600x1280 and 1600x1000 before. Chosen, not maximal: the renders are ~3800px
@@ -51,17 +57,26 @@ PLATE = (242, 242, 240)
 
 _session = new_session("u2net")
 
-# Which whole-machine views come from the render and which stay photographic.
+# Frames to take from the camera instead of the render.
 #
-# The split is not about picture quality, it is about what the frame is FOR. A
-# hero view sells the form and the finish, and there the render wins outright:
-# real studio light, a seamless ground, no office reflected in the panel. A rear
-# I/O view is read against a spec sheet, and at 1:1 the rendered connectors are
-# approximations -- the PS/2 pin pattern is invented, the HDMI and DisplayPort
-# shells are blobby rectangles. An approximate port is a false claim about what
-# is in the box, so those frames keep the camera's version. Same reasoning for
-# the open chassis: it documents what servicing the machine looks like.
-PHOTOGRAPHIC = {"mt-rear", "sff-rear", "sff-open"}
+# The rule that decided this list is not "is it a close-up" but "does the frame
+# carry printed words". Connectors survive a 0.80 render intact -- the tower's
+# rear panel comes back with the same ports in the same order and the same
+# colours, checked one by one at 1:1 -- because their shapes are geometry the
+# model can hold. Lettering silkscreened at two millimetres is not: on the SFF
+# rear panel "DisplayPort" came back as "Displuy/Port", both "USB 10G" as
+# "USB 1\0O" and "USB 11.G", and "MIC-IN" as "MU 0". The layout was right and
+# every label was wrong, which on a catalogue whose whole claim is legible
+# hardware is worse than an unrendered photograph.
+#
+# The M.2 close-up failed identically: "500GB" and "NV3" survived, but
+# "PCIe 4.0 NVMe M.2" became "PClu 4.0 NVN & M.2", "TAIWAN" became "TAIIIIVN",
+# and "WARRANTY VOID IF REMOVED" became "MIAOIIWIAYTA VUIO IF REIHOWEO".
+#
+# So these two ship from the camera. They are the only frames where printed
+# words are the subject rather than incidental, and the split is legible enough
+# to predict: if a reader would read it, the model must not draw it.
+PHOTOGRAPHIC: set[str] = {"closeup-sff-rear-close", "closeup-sff-storage"}
 
 
 def photo_cutout(name: str) -> Image.Image:
@@ -137,7 +152,11 @@ def main() -> int:
                 img = place(subject(f"{form}-{name}"), (DETAIL_W, DETAIL_H),
                             (*PLATE, 255)).convert("RGB")
             else:
-                src = Image.open(HIRES / f"closeup-{form}-{name}.png").convert("RGB")
+                # Close-ups keep their own frame -- no cut-out, because their
+                # background IS the product -- so they only need the crop.
+                key = f"closeup-{form}-{name}"
+                rendered = (RENDER / f"{key}.png").exists() and key not in PHOTOGRAPHIC
+                src = Image.open((RENDER if rendered else HIRES) / f"{key}.png").convert("RGB")
                 img = ImageOps.fit(src, (DETAIL_W, DETAIL_H), Image.LANCZOS, centering=(0.5, 0.5))
             img.save(dst, "WEBP", quality=91, method=6)
             print(f"  {kind:7s} {form}-{name:14s} {img.size[0]}x{img.size[1]}  "

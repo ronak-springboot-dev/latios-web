@@ -71,6 +71,27 @@ DENOISE_BY = {
     "mt-angle": 0.80,
     "mt-flank": 0.80,
     "sff-top": 0.80,
+    # The I/O panels, the open chassis and every close-up. These were left
+    # photographic at first, because at 1.0 the rendered connectors came back as
+    # approximations -- an invented PS/2 pin pattern, blobby HDMI shells -- and
+    # this catalogue gets read against a spec sheet. Rendering them was asked
+    # for anyway, so they run at 0.80: the setting that demonstrably keeps
+    # printed detail, since it held the SFF's HDMI sticker and the tower's whole
+    # port column where 1.0 lost both. Each one is checked against its
+    # photograph at 1:1, and any whose connectors or labels drift goes back to
+    # the camera version.
+    "mt-rear": 0.80,
+    "sff-rear": 0.80,
+    "sff-open": 0.80,
+    "closeup-mt-rear-close": 0.80,
+    "closeup-mt-ports": 0.80,
+    "closeup-mt-logo": 0.80,
+    "closeup-mt-interior": 0.80,
+    "closeup-mt-socket": 0.80,
+    "closeup-sff-rear-close": 0.80,
+    "closeup-sff-interior": 0.80,
+    "closeup-sff-cooling": 0.80,
+    "closeup-sff-storage": 0.80,
 }
 
 # One prompt per kind of frame. Both name the machine as "this exact" and list
@@ -137,6 +158,16 @@ FORM = {
     "sff-open": (" The chassis is OPEN with its side panel removed: the "
                  "motherboard, the CPU cooler, the drive cage and the power "
                  "supply are visible inside. Keep it open."),
+    # The rear panels are the frames a buyer checks against the spec sheet, so
+    # their instruction is explicit about what may not change.
+    "mt-rear": (" This is the rear of the tower. Keep the connector panel exactly "
+                "as it is: same connectors in the same order, same colours, same "
+                "expansion slot covers, same power inlet and its label. Change "
+                "only the lighting."),
+    "sff-rear": (" This is the rear of the slim desktop. Keep the connector panel "
+                 "exactly as it is: same connectors in the same order, same "
+                 "colours, same expansion slot covers, same power inlet. Change "
+                 "only the lighting."),
 }
 
 NEG_EXTRA = (", different computer, different chassis, invented ports, extra buttons, "
@@ -223,12 +254,9 @@ def main() -> int:
         sweep(sys.argv[i + 1], [float(v) for v in sys.argv[i + 2].split(",")])
         return 0
 
-    # Whole-machine views only. The close-ups stay photographic on purpose: a
-    # full-denoise render of a rear I/O cluster or a CPU socket is free to
-    # invent a port, and on a spec sheet-driven B2B catalogue an invented port
-    # is a false claim. They are also the frames that gain least -- straight off
-    # the camera they are 50 megapixels of real hardware.
-    names = sorted(p.stem for p in HIRES.glob("*.png") if not p.stem.startswith("closeup-"))
+    # Everything, close-ups included. See DENOISE_BY for why the I/O panels and
+    # the close-ups run at 0.80 rather than the 1.0 the tower views use.
+    names = sorted(p.stem for p in HIRES.glob("*.png"))
     if "--test" in sys.argv:
         names = [sys.argv[sys.argv.index("--test") + 1]]
     for n in names:
