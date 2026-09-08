@@ -69,6 +69,10 @@ export const ChatWidget = () => {
   const [verified, setVerified] = useState(() => localStorage.getItem("lati-verified") === "1");
   const [chatToken, setChatToken] = useState(null);
   const [chatReset, setChatReset] = useState(0);
+  // Set when Turnstile cannot serve this hostname at all. The check is then not
+  // something the visitor can complete, so blocking on it just makes the chat
+  // permanently dead -- the backend meters unverified callers instead.
+  const [checkUnavailable, setCheckUnavailable] = useState(false);
   const onChatToken = useCallback((t) => setChatToken(t), []);
   const lastQuery = useRef("");
   const [sessionId] = useState(getSessionId);
@@ -102,7 +106,7 @@ export const ChatWidget = () => {
   const send = async (text) => {
     const msg = (text ?? input).trim();
     if (!msg || busy) return;
-    if (!verified && !chatToken) {
+    if (!verified && !chatToken && !checkUnavailable) {
       toast.error("Please complete the security check first.");
       return;
     }
@@ -121,7 +125,12 @@ export const ChatWidget = () => {
         }),
       });
       if (!res.ok) {
+        if (res.status === 429) {
+          failLast("That is a lot of questions at once — please pause a moment, or email sales@latios.in.");
+          return;
+        }
         if (res.status === 403 || res.status === 400) {
+          setCheckUnavailable(false);
           setVerified(false);
           localStorage.removeItem("lati-verified");
           setChatToken(null);
@@ -332,7 +341,7 @@ export const ChatWidget = () => {
               </div>
             )}
 
-            {!verified && (
+            {!verified && !checkUnavailable && (
               <div className="px-3 pt-3 border-t border-white/10 shrink-0" data-testid="chat-verify">
                 <p className="mb-2 text-[10px] uppercase tracking-[0.25em] text-zinc-500">
                   Quick security check to start chatting
@@ -343,6 +352,7 @@ export const ChatWidget = () => {
                   testid="turnstile-chat-verify"
                   action="chat"
                   theme="dark"
+                  onUnavailable={() => setCheckUnavailable(true)}
                 />
               </div>
             )}

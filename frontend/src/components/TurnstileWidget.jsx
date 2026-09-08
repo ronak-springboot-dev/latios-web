@@ -36,13 +36,25 @@ const loadTurnstile = () => {
   return scriptPromise;
 };
 
-export const TurnstileWidget = ({ onToken, resetSignal = 0, testid = "turnstile-widget", action = "enquiry", theme }) => {
+export const TurnstileWidget = ({
+  onToken,
+  resetSignal = 0,
+  testid = "turnstile-widget",
+  action = "enquiry",
+  theme,
+  // Called once when the check is not something the visitor can complete --
+  // the widget cannot serve this hostname, or the script never loaded. Lets a
+  // caller stop blocking on a gate that will never open.
+  onUnavailable,
+}) => {
   const containerRef = useRef(null);
   const widgetIdRef = useRef(null);
   const deadlineRef = useRef(null);
   const [errorCode, setErrorCode] = useState(null);
   const onTokenRef = useRef(onToken);
   onTokenRef.current = onToken;
+  const onUnavailableRef = useRef(onUnavailable);
+  onUnavailableRef.current = onUnavailable;
 
   useEffect(() => {
     let cancelled = false;
@@ -64,7 +76,9 @@ export const TurnstileWidget = ({ onToken, resetSignal = 0, testid = "turnstile-
           "error-callback": (code) => {
             clearTimeout(deadlineRef.current);
             onTokenRef.current(null);
-            setErrorCode(String(code || "unknown"));
+            const c = String(code || "unknown");
+            setErrorCode(c);
+            if (/^[14]/.test(c)) onUnavailableRef.current?.();
           },
         });
         // Nothing above fires in the silent case, so the only way to notice is
@@ -74,12 +88,14 @@ export const TurnstileWidget = ({ onToken, resetSignal = 0, testid = "turnstile-
           if (!containerRef.current.querySelector("iframe")) {
             onTokenRef.current(null);
             setErrorCode("no-challenge");
+            onUnavailableRef.current?.();
           }
         }, RENDER_DEADLINE_MS);
       })
       .catch(() => {
         onTokenRef.current(null);
         setErrorCode("load");
+        onUnavailableRef.current?.();
       });
     return () => {
       cancelled = true;

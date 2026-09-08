@@ -11,7 +11,7 @@ import uuid
 import re
 import hmac
 import httpx
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 from emailer import send_enquiry_alert
 
 
@@ -106,6 +106,63 @@ async def verify_turnstile(token: str):
     if result.get("action") not in (None, "enquiry", "chat"):
         raise HTTPException(status_code=400, detail="Security check failed")
 
+# Chat abuse control.
+#
+# Turnstile is the front door and stays the front door: a request that brings a
+# token still gets verified, and a verified session is still trusted for a day.
+# But the chat cannot REQUIRE a token, because a Turnstile widget that will not
+# render for the current hostname issues no token and fires no error, and the
+# chat is then dead with a healthy backend behind it and nothing in the logs --
+# which is exactly the state the deployed site was found in.
+#
+# So an unverified caller is allowed through a rate limit instead. That is a
+# real control rather than an open door: it bounds what an abuser can spend of
+# the Gemini quota per session and per address, and it is enforced server-side
+# where a client cannot skip it. Turnstile remains defence in depth, and a
+# verified session bypasses the limit entirely.
+# Two budgets, deliberately far apart.
+#
+# A session is one browser, so 12 an hour is a generous conversation and a poor
+# scraping rate. An ADDRESS is not one person: Latios sells to organisations,
+# and a whole office behind one NAT shares it. Metering the address as tightly
+# as the session locked out a fresh session from the same building on the first
+# message -- found by testing it rather than by reasoning about it -- so the
+# address budget is an order of magnitude higher. It still bounds a single
+# source; it just does not mistake a company for an abuser.
+CHAT_LIMIT_SESSION = int(os.environ.get("CHAT_LIMIT_SESSION", "12"))
+CHAT_LIMIT_IP = int(os.environ.get("CHAT_LIMIT_IP", "150"))
+CHAT_LIMIT_WINDOW_S = int(os.environ.get("CHAT_LIMIT_WINDOW_S", "3600"))
+
+
+def client_ip(request: Request) -> str:
+    """
+    The caller's address.
+
+    Behind Cloud Run and the Pages proxy the socket peer is a Google front end,
+    so the only useful value is the left-most entry of X-Forwarded-For, which is
+    what the original client sent. It is spoofable, which is why it is one of
+    two keys rather than the only one -- the session id is the other.
+    """
+    fwd = request.headers.get("x-forwarded-for", "")
+    return (fwd.split(",")[0].strip() if fwd else None) or (
+        request.client.host if request.client else "unknown")
+
+
+async def enforce_chat_limit(key: str, kind: str, budget: int) -> None:
+    """Count one call against `key`, refusing once the window's budget is spent."""
+    now = datetime.now(timezone.utc)
+    cutoff = now - timedelta(seconds=CHAT_LIMIT_WINDOW_S)
+    await db.chat_calls.insert_one({"key": key, "kind": kind, "at": now})
+    used = await db.chat_calls.count_documents({"key": key, "at": {"$gte": cutoff}})
+    if used > budget:
+        logger.warning(f"chat rate limit hit for {kind} {key}: {used} in window")
+        raise HTTPException(
+            status_code=429,
+            detail="That is a lot of questions in a short time. Please pause a moment, "
+                   "or email sales@latios.in and a human will pick it up.",
+        )
+
+
 @api_router.post("/enquiries", response_model=Enquiry)
 async def create_enquiry(input: EnquiryCreate):
     await verify_turnstile(input.turnstile_token)
@@ -164,7 +221,7 @@ class ChatRequest(BaseModel):
     turnstile_token: Optional[str] = None
 
 @api_router.post("/chat")
-async def chat(req: ChatRequest):
+async def chat(req: ChatRequest, request: Request):
     import json
     from fastapi.responses import StreamingResponse
     from google import genai
@@ -180,14 +237,20 @@ async def chat(req: ChatRequest):
         except Exception:
             session_fresh = False
     if not session_fresh:
-        if not req.turnstile_token:
-            raise HTTPException(status_code=403, detail="Security check required")
-        await verify_turnstile(req.turnstile_token)
-        await db.chat_sessions.update_one(
-            {"session_id": req.session_id},
-            {"$set": {"verified": True, "ts": datetime.now(timezone.utc).isoformat()}},
-            upsert=True,
-        )
+        if req.turnstile_token:
+            # Front door: a token still has to be genuine, and clears the
+            # session for a day.
+            await verify_turnstile(req.turnstile_token)
+            await db.chat_sessions.update_one(
+                {"session_id": req.session_id},
+                {"$set": {"verified": True, "ts": datetime.now(timezone.utc).isoformat()}},
+                upsert=True,
+            )
+        else:
+            # No token: allowed, but metered on both keys, so neither a single
+            # session nor a single address can burn the model quota.
+            await enforce_chat_limit(req.session_id, "session", CHAT_LIMIT_SESSION)
+            await enforce_chat_limit(client_ip(request), "ip", CHAT_LIMIT_IP)
 
     ts = datetime.now(timezone.utc).isoformat()
     await db.chat_messages.insert_one(
@@ -274,6 +337,24 @@ logging.basicConfig(
     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
 )
 logger = logging.getLogger(__name__)
+
+@app.on_event("startup")
+async def ensure_indexes():
+    """
+    Expire the rate-limit counters.
+
+    chat_calls gets a row per unverified chat message and is only ever read
+    over the trailing window, so without a TTL it grows forever -- and the
+    cluster behind this is an Atlas M0 with 512MB to its name. Mongo's TTL
+    monitor sweeps the collection on its own once the index exists. Indexed on
+    (key, at) as well, because that is the shape of every read.
+    """
+    try:
+        await db.chat_calls.create_index("at", expireAfterSeconds=CHAT_LIMIT_WINDOW_S * 2)
+        await db.chat_calls.create_index([("key", 1), ("at", -1)])
+    except Exception as e:                       # never block startup on this
+        logger.warning(f"could not create chat_calls indexes: {e}")
+
 
 @app.on_event("shutdown")
 async def shutdown_db_client():
