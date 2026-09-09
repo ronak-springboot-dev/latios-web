@@ -72,6 +72,22 @@ const CPU_LINKS = ["amd", "intel", "xeon"]
                   n: countIn("towers", (m) => getProcessorFamily(m) === id) }))
   .filter((x) => x.n > 0);
 
+const BY_SLUG = new Map(ALL_MODELS.map((m) => [m.slug, m]));
+
+/**
+ * The machines behind one node of the tree.
+ *
+ * A leaf carries its own slugs; a grouping level (Commercial, Cameras) carries
+ * none and has to gather its children's, so that hovering "Commercial" previews
+ * the whole of it rather than nothing.
+ */
+const modelsFor = (node) => {
+  const slugs = node.models
+    ? node.models
+    : (node.children || []).flatMap((c) => c.models || []);
+  return slugs.map((x) => BY_SLUG.get(x)).filter(Boolean);
+};
+
 const navId = (label) => `nav-${label.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`;
 
 const POPULAR = ["Archer", "RTX 5080", "2TB ECC", "Speakerphone", "PTZ", "Interactive Panel"];
@@ -80,11 +96,107 @@ const POPULAR_MODELS = ["archer-ltg540z", "promax-t4-plus", "sp50-speakerphone",
   .map((s) => ALL_MODELS.find((m) => m.slug === s))
   .filter(Boolean);
 
+/**
+ * Product preview, in the right-hand rail.
+ *
+ * It lives beside the tree rather than under it. Below the tree it measured out
+ * at y=1291 in a 720px viewport -- so hovering a branch changed something the
+ * reader could not see, which is worse than not reacting at all. In the rail it
+ * is level with the thing being hovered.
+ *
+ * It takes the Featured Applications slot while a branch is hovered, because
+ * those are the least urgent thing in the rail and swapping keeps the panel the
+ * same height. The AI and processor blocks above it never move.
+ *
+ * A row per machine rather than a grid of cards: the rail is two columns wide,
+ * and this is the shape the search results in this same menu already use.
+ */
+const MegaPreview = ({ preview, onPick, onSeeAll }) => {
+  const models = modelsFor(preview.node);
+  const shown = models.slice(0, 4);
+
+  return (
+    <div data-testid="mega-preview" aria-live="polite">
+      <div className="flex items-baseline justify-between gap-3 mb-4">
+        <p
+          className="text-[10px] uppercase tracking-[0.3em] text-zinc-500"
+          data-testid="mega-preview-heading"
+        >
+          {preview.node.name}
+          {models.length > 0 && <span className="ml-2 text-zinc-600">{models.length}</span>}
+        </p>
+        {!preview.node.group && (
+          <button
+            onClick={() => onSeeAll(`/${preview.cat.slug}?b=${preview.node.key}`)}
+            data-testid="mega-preview-all"
+            className="shrink-0 text-[10px] uppercase tracking-[0.2em] text-[#6f93f2] hover:text-white transition-colors duration-300"
+          >
+            See all →
+          </button>
+        )}
+      </div>
+
+      {shown.length === 0 ? (
+        <p className="text-sm text-zinc-500" data-testid="mega-preview-empty">
+          Nothing shipping in this line yet — talk to us about what you need.
+        </p>
+      ) : (
+        <div className="flex flex-col">
+          {shown.map((m) => (
+            <button
+              key={m.slug}
+              onClick={() => onPick(m)}
+              data-testid={`mega-preview-${m.slug}`}
+              className="group flex items-center gap-4 py-3 border-b border-white/10 last:border-b-0 text-left focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50 rounded"
+            >
+              <span className="w-16 h-11 shrink-0 rounded bg-[#f2f2f0] flex items-center justify-center overflow-hidden">
+                <img
+                  src={m.image}
+                  alt=""
+                  loading="lazy"
+                  className="max-h-[82%] w-auto object-contain transition-transform duration-500 group-hover:scale-105"
+                />
+              </span>
+              <span className="min-w-0">
+                <span className="flex items-center gap-2">
+                  <span className="text-[9px] uppercase tracking-[0.2em] text-zinc-500 truncate">
+                    {m.tag}
+                  </span>
+                  {m.aiReady && (
+                    <span className="shrink-0 text-[8px] uppercase tracking-[0.18em] text-[#6f93f2] border border-[#6f93f2]/40 rounded-full px-1.5">
+                      AI
+                    </span>
+                  )}
+                </span>
+                <span className="mt-0.5 block text-sm text-white group-hover:text-[#6f93f2] transition-colors duration-300 truncate">
+                  {m.name}
+                </span>
+              </span>
+            </button>
+          ))}
+          {models.length > shown.length && (
+            <p className="pt-3 text-[10px] uppercase tracking-[0.2em] text-zinc-600">
+              +{models.length - shown.length} more
+            </p>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
+
 export const Header = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [menuQuery, setMenuQuery] = useState("");
+  // What the preview strip is showing. Sticky rather than cleared on mouseout:
+  // the pointer has to cross empty space to reach the preview, and blanking it
+  // on the way there would make the products impossible to click.
+  const [preview, setPreview] = useState(null);
+  useEffect(() => {
+    if (!menuOpen) setPreview(null);
+  }, [menuOpen]);
   const [hidden, setHidden] = useState(false);
   const lastY = useRef(0);
   const navigate = useNavigate();
@@ -368,8 +480,9 @@ export const Header = () => {
                           // — a label, not a destination.
                           <span
                             key={n.key}
+                            onMouseEnter={() => setPreview({ cat, node: n })}
                             data-testid={`mega-group-${cat.slug}-${n.key}`}
-                            className="mt-2 first:mt-0 text-[10px] uppercase tracking-[0.2em] text-zinc-600"
+                            className="mt-2 first:mt-0 text-[10px] uppercase tracking-[0.2em] text-zinc-600 cursor-default"
                           >
                             {n.name}
                           </span>
@@ -390,8 +503,15 @@ export const Header = () => {
                           <button
                             key={n.key}
                             onClick={() => goPage(`/${cat.slug}?b=${n.key}`)}
+                            onMouseEnter={() => setPreview({ cat, node: n })}
+                            onFocus={() => setPreview({ cat, node: n })}
                             data-testid={`mega-sub-${cat.slug}-${n.key}`}
-                            className="text-left text-sm text-zinc-400 hover:text-white transition-colors duration-300"
+                            aria-describedby="mega-preview"
+                            className={`text-left text-sm transition-colors duration-300 ${
+                              preview?.node?.key === n.key && preview?.cat?.slug === cat.slug
+                                ? "text-white"
+                                : "text-zinc-400 hover:text-white"
+                            }`}
                           >
                             {n.name}
                           </button>
@@ -481,6 +601,10 @@ export const Header = () => {
                     </div>
                   )}
 
+                  {preview ? (
+                    <MegaPreview preview={preview} onPick={openModel} onSeeAll={goPage} />
+                  ) : (
+                    <>
                   <p className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-4">
                     Featured Applications
                   </p>
@@ -500,6 +624,8 @@ export const Header = () => {
                       <p className="mt-1.5 text-xs text-zinc-500 leading-relaxed">{a.blurb}</p>
                     </button>
                   ))}
+                    </>
+                  )}
                 </motion.div>
               </div>
 
