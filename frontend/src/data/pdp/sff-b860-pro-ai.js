@@ -48,16 +48,17 @@ export default {
     {
       "type": "spotlight",
       "kicker": "Memory",
-      "heading": "The board names four.",
-      "body": "DIMMA1, DIMMA2, DIMMB1, DIMMB2 — printed on the board itself, beside the slots they name. Two channels, two slots each, up to 128GB. The eight-litre sibling stops at two slots and 64GB, and that single row is what separates the two machines.",
+      "heading": "Four slots, not two.",
+      "body": "Two channels, two slots each, up to 128GB of DDR5. The eight-litre sibling stops at two slots and 64GB, and that one row on the specification below is the whole reason this configuration exists.",
       "image": "/images/spotlight/sff-b860-memory.webp",
       "aspect": "aspect-[3/1]",
-      "alt": "The four DIMM designators — DIMMB1, DIMMB2, DIMMA1, DIMMA2 — printed on the B860 board beside a memory slot",
+      "alt": "Four DDR5 memory slots in a row, rendered on a dark ground",
       "stats": [
         ["128GB", "Maximum", "Across four U-DIMM slots"],
-        ["4", "DIMM slots", "DIMMA1, DIMMA2, DIMMB1, DIMMB2"],
-        ["2", "Channels", "Populated in pairs for full bandwidth"]
-      ]
+        ["4", "DIMM slots", "Two per channel, populated in pairs"],
+        ["2", "Channels", "Dual channel at full bandwidth"]
+      ],
+      "caption": "Illustration. Component appearance varies with the configuration ordered."
     },
     {
       "type": "reveal",
@@ -101,7 +102,7 @@ export default {
       "body": "A Gen5x4 socket for the working drive and a Gen4x4 beside it, with a 2.5-inch and a 3.5-inch bay still in the chassis behind them. Storage that keeps up with 128GB of memory rather than becoming the thing that waits.",
       "image": "/images/spotlight/sff-b860-storage.webp",
       "aspect": "aspect-[3/1]",
-      "alt": "A PCIe 4.0 NVMe M.2 drive seated in its socket inside the Latios Pro AI SFF",
+      "alt": "An M.2 NVMe solid state drive, rendered on a dark ground",
       "columns": [
         {
           "title": "Gen5x4",
@@ -115,7 +116,8 @@ export default {
           "title": "Bays as well",
           "desc": "A 2.5-inch and a 3.5-inch, because eight litres did not mean giving up spinning capacity."
         }
-      ]
+      ],
+      "caption": "Illustration. Component appearance varies with the configuration ordered."
     },
     {
       "type": "band",
@@ -133,8 +135,8 @@ export default {
       "body": "A low-profile cooler sits under a fully perforated side, so air is pulled across the board rather than around it. That is how a Core Ultra 9 holds its clocks in a volume this small, and why the machine is as quiet lying flat as it is standing.",
       "image": "/images/spotlight/sff-b860-cooling.webp",
       "aspect": "aspect-[3/1]",
-      "alt": "The low-profile blower cooler over the processor inside the Latios Pro AI SFF",
-      "caption": "Photographed with the side panel removed. Cooler and fan specification vary with the processor ordered."
+      "alt": "A low-profile blower cooler seen from above, rendered on a dark ground",
+      "caption": "Illustration. Component appearance varies with the configuration ordered."
     },
     {
       "type": "ioMap",
