@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { useLenis } from "lenis/react";
 import { ArrowRight, ArrowUpRight, Check, SlidersHorizontal, X } from "lucide-react";
 import { KineticText } from "@/components/KineticText";
 import { Reveal } from "@/components/Reveal";
@@ -420,6 +421,7 @@ export default function ProductPage() {
   const clearFacets = () => setActive(emptyFacets());
   const [sort, setSort] = useState("featured");
   const listingRef = useRef(null);
+  const lenis = useLenis();
 
   /**
    * Land on the products when the link asked for products.
@@ -437,17 +439,30 @@ export default function ProductPage() {
    * material above them rather than being teleported into the middle of a page.
    */
   const deepLinked = FACET_IDS.some((id) => search.get(FACET_PARAM[id]));
-  useEffect(() => {
-    if (!deepLinked || !listingRef.current) return undefined;
-    const t = setTimeout(
-      () => listingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),
-      450,      // let the entry animation settle, or it scrolls to a moving target
-    );
-    return () => clearTimeout(t);
-  }, [deepLinked, category]);
 
-  const jumpToModels = () =>
-    listingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+  /**
+   * Scroll to the listing.
+   *
+   * Through Lenis when it is there, because Lenis owns the scroll position on
+   * this site: a bare scrollIntoView({behavior:"smooth"}) is simply swallowed
+   * -- measured on the deployed page, an instant scroll moved and a smooth one
+   * did not budge. Same reasoning App.js already records for ScrollReset.
+   */
+  const jumpToModels = () => {
+    const el = listingRef.current;
+    if (!el) return;
+    if (lenis) lenis.scrollTo(el, { offset: -96 });
+    else el.scrollIntoView({ behavior: "smooth", block: "start" });
+  };
+
+  useEffect(() => {
+    if (!deepLinked) return undefined;
+    // ScrollReset sends every PUSH navigation to the top, and the sections
+    // above are still mounting, so this waits rather than racing both.
+    const t = setTimeout(jumpToModels, 450);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deepLinked, category, lenis]);
   usePageMeta(
     data ? `${data.name} — ${data.model} | Latios` : "Latios",
     data ? `${data.tagline} Explore the ${data.name} range from Latios.` : ""
