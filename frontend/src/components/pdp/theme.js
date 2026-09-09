@@ -18,11 +18,21 @@
 
 export const BRAND_BLUE = "#1a56e8";
 
-/** density -> vertical rhythm of section padding. */
+/**
+ * density -> vertical rhythm, grid gap and body measure.
+ *
+ * `measure` is the width the body copy is held to under a centred heading. It
+ * is a token rather than a per-section class because the reference's whole
+ * feel comes from a consistent measure under wide imagery, and it had drifted
+ * to four different values across the sections.
+ *
+ * `gap` was declared here from the start and never read by anything; the grids
+ * all hardcoded their own. SectionHead and the grids consume both now.
+ */
 const DENSITY = {
-  tight: { band: "py-14 md:py-20", gap: "gap-8 md:gap-12" },
-  normal: { band: "py-20 md:py-28", gap: "gap-10 md:gap-16" },
-  airy: { band: "py-24 md:py-36", gap: "gap-12 md:gap-20" },
+  tight: { band: "py-14 md:py-20", gap: "gap-8 md:gap-12", measure: "max-w-[560px]" },
+  normal: { band: "py-20 md:py-28", gap: "gap-10 md:gap-16", measure: "max-w-[600px]" },
+  airy: { band: "py-24 md:py-36", gap: "gap-12 md:gap-20", measure: "max-w-[660px]" },
 };
 
 const THEMES = {
@@ -187,7 +197,17 @@ export const getTheme = (slug) => {
   return { ...t, ...DENSITY[t.density] };
 };
 
-/** CSS custom properties for the PDP root element. */
+/**
+ * CSS custom properties for the PDP root element.
+ *
+ * `--pdp-surface` is the page ground each model's band artwork is already
+ * composited on by make_bands.py, so the art has carried the model's surface
+ * for a while and the page behind it has not. Sections opt into it through the
+ * `.pdp-page` / `.pdp-card` classes in index.css rather than by reading the
+ * variable directly: the light theme is implemented as overrides keyed on the
+ * literal Tailwind class names, so a section that swaps `bg-[#0A0A0A]` for a
+ * bare `var()` loses its light-mode rule and turns black on a white page.
+ */
 export const themeVars = (theme) => ({
   "--pdp-accent": theme.accent,
   "--pdp-accent-soft": theme.accentSoft,

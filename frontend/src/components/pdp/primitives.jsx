@@ -45,15 +45,86 @@ export const BandHeading = ({ children, className = "" }) => (
 );
 
 /**
- * Wrapper giving every band the page's own vertical rhythm.
- * `bleed` opts out of the max-width container for full-width sections.
+ * Centred kicker, heading and body — the reference's basic unit.
+ *
+ * Its identity is a centred heading over wide imagery with the body copy held
+ * to a readable measure. That pattern was hand-rolled in eight sections with
+ * four different max-widths (`max-w-3xl`, `max-w-2xl`, `max-w-xl`, `max-w-md`),
+ * so the pages drifted apart at the one place a reader notices most. With it in
+ * one component the type scale is a single edit.
+ *
+ * `align="left"` exists because a few sections genuinely read better ranged
+ * left — a stat wall beside its own numbers, a split with copy in one column.
+ * Alignment belongs to the heading block rather than to `Band`, because half
+ * the bands have no heading at all.
  */
-export const Band = ({ theme, children, bleed = false, border = true, className = "", ...rest }) => (
+export const SectionHead = ({
+  kicker,
+  heading,
+  body,
+  align = "center",
+  theme,
+  className = "",
+  children,
+}) => {
+  if (!kicker && !heading && !body && !children) return null;
+  const centred = align === "center";
+  return (
+    <div className={`${centred ? "text-center" : ""} ${className}`}>
+      <Reveal>
+        {kicker && <Kicker className={centred ? "justify-center" : ""}>{kicker}</Kicker>}
+        {heading && <BandHeading>{heading}</BandHeading>}
+      </Reveal>
+      {body && (
+        <Reveal delay={0.08}>
+          <p
+            className={`mt-5 text-base text-zinc-400 leading-relaxed ${
+              theme?.measure ?? "max-w-[600px]"
+            } ${centred ? "mx-auto" : ""}`}
+          >
+            {body}
+          </p>
+        </Reveal>
+      )}
+      {children}
+    </div>
+  );
+};
+
+/**
+ * Wrapper giving every band the page's own vertical rhythm.
+ *
+ * `contain` and `flush` are separate on purpose. They used to be one `bleed`
+ * prop that dropped the max-width container AND the vertical padding together,
+ * which is why full-bleed sections could not participate in the density scale
+ * at all — going edge-to-edge silently cost you the page's rhythm. Now
+ * `contain={false}` widens a section without changing its rhythm, and `flush`
+ * is the rarer case of a section that paints its own padding (a banner with
+ * text over the image, a sticky canvas).
+ *
+ * Two sections deliberately do NOT use this: PdpReveal and PdpWalkthrough
+ * measure scroll progress from their own section box, so any padding here
+ * inflates the denominator and the sequence never reaches its last frame.
+ */
+export const Band = ({
+  theme,
+  children,
+  contain = true,
+  flush = false,
+  border = true,
+  className = "",
+  ...rest
+}) => (
   <section
     {...rest}
     className={`${border ? "border-t border-white/10" : ""} ${className}`}
   >
-    <div className={bleed ? "" : `max-w-[1600px] mx-auto px-6 md:px-12 ${theme?.band ?? "py-20 md:py-28"}`}>
+    <div
+      className={[
+        contain ? "max-w-[1600px] mx-auto px-6 md:px-12" : "",
+        flush ? "" : theme?.band ?? "py-20 md:py-28",
+      ].join(" ").trim()}
+    >
       {children}
     </div>
   </section>

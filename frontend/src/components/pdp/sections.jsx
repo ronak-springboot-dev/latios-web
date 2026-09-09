@@ -23,9 +23,7 @@ import { ModelTurntable } from "@/components/ModelTurntable";
 import { ProductVideo } from "@/components/ProductVideo";
 import { ALL_MODELS, familyKey } from "@/data/models";
 import { setEnquiryDraft, formatConfiguration } from "@/lib/enquiryDraft";
-import {
-  ACCENT, ACCENT_SOFT, AccentButton, GhostButton, Kicker, BandHeading, Band, Reveal,
-} from "./primitives";
+import { ACCENT, ACCENT_SOFT, AccentButton, GhostButton, Kicker, BandHeading, SectionHead, Band, Reveal } from "./primitives";
 
 const EASE = [0.16, 1, 0.3, 1];
 const ICONS = { Cpu, MemoryStick, HardDrive, MonitorCheck, Wifi, Usb, ShieldCheck, Wrench };
@@ -248,7 +246,9 @@ export const PdpHero = ({ model, theme, datasheet, onViewSpecs, onEnquire, confi
 /* --------------------------------------------------------------- banners -- */
 
 export const PdpBanner = ({ model, theme, image, headline, subline, kicker }) => (
-  <section className="relative" data-testid="showcase-banner">
+  // contain={false} flush: text sits ON the image, so the section paints its own
+  // spacing. It takes the shared top rule rather than drawing its own.
+  <Band theme={theme} contain={false} flush className="relative" data-testid="showcase-banner">
     <ParallaxImage src={image || model.heroImage} alt={model.name} aspect="aspect-[21/9] md:aspect-[21/7]" />
     <div className="keep-dark absolute inset-0 bg-black/45 flex items-center justify-center text-center px-6">
       <Reveal>
@@ -266,7 +266,7 @@ export const PdpBanner = ({ model, theme, image, headline, subline, kicker }) =>
         </p>
       </Reveal>
     </div>
-  </section>
+  </Band>
 );
 
 /* ---------------------------------------------------- the big-number band -- */
@@ -281,14 +281,12 @@ export const PdpStatWall = ({ theme, heading, body, stats = [], align = "center"
   const centered = align === "center";
   return (
     <Band theme={theme} data-testid="pdp-statwall">
-      <div className={centered ? "text-center max-w-3xl mx-auto" : "max-w-3xl"}>
-        {heading && <Reveal><BandHeading>{heading}</BandHeading></Reveal>}
-        {body && (
-          <Reveal delay={0.05}>
-            <p className={`mt-5 text-zinc-400 leading-relaxed ${centered ? "mx-auto" : ""} max-w-2xl`}>{body}</p>
-          </Reveal>
-        )}
-      </div>
+      <SectionHead
+        theme={theme}
+        heading={heading}
+        body={body}
+        align={centered ? "center" : "left"}
+      />
       <div className={`mt-14 grid gap-px bg-white/10 border border-white/10 grid-cols-1 sm:grid-cols-2 ${
         stats.length >= 4 ? "lg:grid-cols-4" : stats.length === 3 ? "lg:grid-cols-3" : ""
       }`}>
@@ -423,23 +421,19 @@ export const PdpAudiences = ({ theme, heading, items = [] }) => {
 
 /* ------------------------------------------------------------- story bands -- */
 
-export const PdpBleed = ({ kicker, heading, body, image, flip = false, index = 0 }) => (
-  <section className="border-t border-white/10" data-testid={`showcase-bleed-${index}`}>
+export const PdpBleed = ({ theme, kicker, heading, body, image, flip = false, index = 0 }) => (
+  // Edge to edge, but the copy column takes its vertical rhythm from the page's
+  // density instead of the fixed p-8/16/24 it used to hardcode.
+  <Band theme={theme} contain={false} flush data-testid={`showcase-bleed-${index}`}>
     <div className={`grid grid-cols-1 md:grid-cols-2 ${flip ? "md:[direction:rtl]" : ""}`}>
       <div className="md:[direction:ltr]">
         <ParallaxImage src={image} alt={heading} aspect="aspect-[16/11] md:aspect-auto md:h-full" />
       </div>
-      <div className="md:[direction:ltr] flex items-center p-8 md:p-16 lg:p-24">
-        <Reveal>
-          <Kicker>{kicker}</Kicker>
-          <h3 className="font-display text-2xl md:text-4xl font-black tracking-tighter text-white leading-[1.05]">
-            {heading}
-          </h3>
-          <p className="mt-5 text-zinc-400 leading-relaxed max-w-md">{body}</p>
-        </Reveal>
+      <div className={`md:[direction:ltr] flex items-center px-8 md:px-16 lg:px-24 ${theme?.band ?? "py-20 md:py-28"}`}>
+        <SectionHead theme={theme} kicker={kicker} heading={heading} body={body} align="left" />
       </div>
     </div>
-  </section>
+  </Band>
 );
 
 /** Copy pinned while a column of media scrolls past it. */
@@ -615,11 +609,13 @@ export const PdpExploded = ({ theme, heading, body, parts = [], video, poster })
   if (!parts.length && !video) return null;
   return (
     <Band theme={theme} data-testid="pdp-exploded">
-      <div className="max-w-3xl">
-        <Kicker>Inside the specification</Kicker>
-        {heading && <Reveal><BandHeading>{heading}</BandHeading></Reveal>}
-        {body && <Reveal delay={0.05}><p className="mt-5 text-zinc-400 leading-relaxed">{body}</p></Reveal>}
-      </div>
+      <SectionHead
+        theme={theme}
+        kicker="Inside the specification"
+        heading={heading}
+        body={body}
+        align="left"
+      />
 
       {video && (
         <Reveal delay={0.08}>

@@ -167,6 +167,31 @@ body {
     background: linear-gradient(180deg, #08080a 0%, #050505 55%);
 }
 
+/* PDP surfaces, per model.
+ *
+ * --pdp-surface is set on the product page root by themeVars(); make_bands.py
+ * already composites each model's band artwork on the same colour, so this is
+ * what stops the art and the page behind it disagreeing.
+ *
+ * Each class ships with its html.light partner in the same rule block, and that
+ * pairing is the point. The light theme is implemented as overrides keyed on
+ * literal Tailwind class names -- html.light .bg-\[\#0A0A0A\] and friends --
+ * so any section that swaps a literal for a bare var() silently loses its
+ * light-mode rule and renders near-black on an off-white page. Adding a surface
+ * class without its override reintroduces exactly that bug. */
+.pdp-page {
+    background-color: var(--pdp-surface, #050505);
+}
+html.light .pdp-page {
+    background-color: #f4f4f2;
+}
+.pdp-card {
+    background-color: color-mix(in srgb, var(--pdp-surface, #0a0a0a) 88%, #ffffff 12%);
+}
+html.light .pdp-card {
+    background-color: #ffffff;
+}
+
 .grid-bg {
     background-image:
         linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
