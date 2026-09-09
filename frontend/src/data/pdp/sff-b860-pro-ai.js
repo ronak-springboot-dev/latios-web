@@ -49,9 +49,10 @@ export default {
       "type": "spotlight",
       "kicker": "Memory",
       "heading": "The board names four.",
-      "body": "DIMMA1, DIMMA2, DIMMB1, DIMMB2 — printed on the board itself, at the left of this frame. Two channels, two slots each, up to 128GB. The eight-litre sibling stops at two slots and 64GB, and that single row is what separates the two machines.",
+      "body": "DIMMA1, DIMMA2, DIMMB1, DIMMB2 — printed on the board itself, beside the slots they name. Two channels, two slots each, up to 128GB. The eight-litre sibling stops at two slots and 64GB, and that single row is what separates the two machines.",
       "image": "/images/spotlight/sff-b860-memory.webp",
-      "alt": "The B860 board inside the Latios Pro AI SFF, with the four DIMM designators printed at the left edge",
+      "aspect": "aspect-[3/1]",
+      "alt": "The four DIMM designators — DIMMB1, DIMMB2, DIMMA1, DIMMA2 — printed on the B860 board beside a memory slot",
       "stats": [
         ["128GB", "Maximum", "Across four U-DIMM slots"],
         ["4", "DIMM slots", "DIMMA1, DIMMA2, DIMMB1, DIMMB2"],
@@ -99,7 +100,8 @@ export default {
       "heading": "Two M.2 sockets, one of them Gen5.",
       "body": "A Gen5x4 socket for the working drive and a Gen4x4 beside it, with a 2.5-inch and a 3.5-inch bay still in the chassis behind them. Storage that keeps up with 128GB of memory rather than becoming the thing that waits.",
       "image": "/images/spotlight/sff-b860-storage.webp",
-      "alt": "An M.2 NVMe drive seated on the board inside the Latios Pro AI SFF",
+      "aspect": "aspect-[3/1]",
+      "alt": "A PCIe 4.0 NVMe M.2 drive seated in its socket inside the Latios Pro AI SFF",
       "columns": [
         {
           "title": "Gen5x4",
@@ -125,20 +127,13 @@ export default {
       ]
     },
     {
-      "type": "video",
-      "src": "/videos/sff-b860-pro-ai-loop.mp4",
-      "poster": "/images/posters/sff-b860-pro-ai-loop.webp",
-      "modelName": "Latios Pro AI SFF — Intel B860",
-      "heading": "Core Ultra, small footprint.",
-      "subline": "Intel Core Ultra 9 285 with AI Boost NPU. Engineered, assembled and finished in Ahmedabad."
-    },
-    {
       "type": "spotlight",
       "kicker": "Thermal",
       "heading": "A vent wall, not a vent hole.",
       "body": "A low-profile cooler sits under a fully perforated side, so air is pulled across the board rather than around it. That is how a Core Ultra 9 holds its clocks in a volume this small, and why the machine is as quiet lying flat as it is standing.",
       "image": "/images/spotlight/sff-b860-cooling.webp",
-      "alt": "The low-profile cooler and perforated side wall inside the Latios Pro AI SFF",
+      "aspect": "aspect-[3/1]",
+      "alt": "The low-profile blower cooler over the processor inside the Latios Pro AI SFF",
       "caption": "Photographed with the side panel removed. Cooler and fan specification vary with the processor ordered."
     },
     {
