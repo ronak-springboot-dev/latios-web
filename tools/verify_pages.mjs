@@ -270,6 +270,51 @@ if (backlog.length) {
   console.log(`product pages    ${withPage}/${ALL_MODELS.length} models have an authored page`);
 }
 
+// 5b. a renamed category still answers on its old path.
+//
+// This is the second category rename here. The first (audio -> av, video ->
+// display) is why check 6 exists; nothing has ever checked that the OLD paths
+// still resolve, and a rename without redirects silently 404s every inbound
+// link and every indexed search result.
+//
+// Read backwards from the redirect file rather than from a list of retired
+// slugs, so this keeps working for the next rename without being edited: every
+// `/<old>/*` rule must target a slug that is a real category now, and any slug
+// those rules retire needs a bare `/<old>` rule too.
+{
+  const rules = readFileSync(join(PUB, "_redirects"), "utf8")
+    .split("\n")
+    .map((l) => l.trim())
+    .filter((l) => l && !l.startsWith("#"));
+
+  const splat = new Map();   // old slug -> the line, for `/old/*` rules
+  const bare = new Set();    // old slugs that also have a plain `/old` rule
+  for (const line of rules) {
+    const [from, to] = line.split(/\s+/);
+    if (!to || to === "/index.html") continue;
+    let m = /^\/([a-z0-9-]+)\/\*$/.exec(from);
+    if (m) { splat.set(m[1], to); continue; }
+    m = /^\/([a-z0-9-]+)$/.exec(from);
+    if (m) bare.add(m[1]);
+  }
+
+  let checked = 0;
+  for (const [old, target] of splat) {
+    // A per-model rule can point anywhere; a category catch-all must land on a
+    // category that exists, or the redirect is itself a 404.
+    const dest = /^\/([a-z0-9-]+)\//.exec(target)?.[1];
+    if (!dest) { fail(`_redirects: "/${old}/*" targets "${target}", which is not a category path`); continue; }
+    if (!CATEGORIES_SLUGS.includes(dest))
+      fail(`_redirects: "/${old}/*" points at "/${dest}", which is not a category any more`);
+    if (CATEGORIES_SLUGS.includes(old))
+      fail(`_redirects: "/${old}/*" redirects away from "${old}", which IS a live category`);
+    if (!bare.has(old))
+      fail(`_redirects: "/${old}/*" exists but the bare "/${old}" has no rule, so the old listing 404s`);
+    checked += 1;
+  }
+  console.log(`redirects        ${checked} retired categor${checked === 1 ? "y" : "ies"} still resolve`);
+}
+
 // 6. every category has hero copy, and every hero key is a real category.
 //
 // Home.jsx looks up HERO_SLIDES by category slug and reads .headline off the
