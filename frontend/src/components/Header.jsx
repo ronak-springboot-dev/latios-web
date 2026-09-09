@@ -3,6 +3,7 @@ import { Link, NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Search, ArrowUpRight, ArrowRight, Cpu, Sparkles, Mail, Phone } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { Wordmark } from "@/components/Wordmark";
 import { ALL_MODELS, VENDOR_LABELS, getProcessorFamily } from "@/data/models";
 import { MEGA_CATEGORIES, TAXONOMY } from "@/data/products";
 import { APPLICATIONS } from "@/data/applications";
@@ -289,9 +290,7 @@ export const Header = () => {
                 setSearchOpen(false);
               }}
             >
-              <span className="logo-chip bg-white rounded-md px-3 py-1.5 inline-flex items-center">
-                <img src="/images/latios-wordmark.png" alt="Latios" className="h-6 md:h-7 w-auto" />
-              </span>
+              <Wordmark className="h-6 md:h-7 w-auto" testid="header-logo" />
             </Link>
 
             <nav className="hidden lg:flex items-center gap-7" data-testid="desktop-nav">

@@ -316,6 +316,23 @@ html.light ::-webkit-scrollbar-thumb {
 html.light .logo-chip {
     background-color: #ffffff !important;
 }
+
+/* Wordmark: dark theme is the default, so the reversed (white) mark shows and
+   the supplied blue one is hidden; html.light swaps them. Both are in the DOM
+   and only display changes, so the correct mark is right on first paint and a
+   theme switch cannot flash the wrong one. */
+.wordmark-ink {
+    display: none;
+}
+.wordmark-reversed {
+    display: block;
+}
+html.light .wordmark-ink {
+    display: block;
+}
+html.light .wordmark-reversed {
+    display: none;
+}
 /* Hero sections keep their dark cinematic treatment in both themes */
 html.light .keep-dark .text-white {
     color: #ffffff !important;
