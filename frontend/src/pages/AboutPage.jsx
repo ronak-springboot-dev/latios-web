@@ -162,7 +162,7 @@ export default function AboutPage() {
             <p className="kicker-sq justify-center text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-10">
               Technology Partners
             </p>
-            <div className="inline-block bg-white rounded-lg px-8 py-6" data-testid="partners-strip">
+            <div className="partner-plate inline-block rounded-lg px-8 py-6" data-testid="partners-strip">
               <img
                 src="/images/Group-29.png"
                 alt="Powered by Intel, AMD, Windows — Make in India"

@@ -266,6 +266,23 @@ html.light .border-white\/25 {
 html.light .bg-white {
     background-color: #0a0a0a !important;
 }
+
+/* Partner marks stand on their own plate, in both themes.
+ *
+ * They are supplied for a light background: composite them on #0a0a0a and
+ * "Powered by", the AMD wordmark and the Make in India lion are black on black
+ * and disappear. They cannot be reversed the way the Latios mark was, because
+ * recolouring a third-party trademark is not ours to do.
+ *
+ * So the plate does not follow the theme -- but it is not raw white either. It
+ * is the #f2f2f0 the product cards and the turntable already stand hardware on,
+ * which is why it reads as this site's product stage rather than a slab. The
+ * blanket `html.light .bg-white` inversion above is exactly what turned it into
+ * a black box on the light theme, so it deliberately does not use bg-white. */
+.partner-plate {
+    background-color: #f2f2f0;
+    border: 1px solid rgba(10, 10, 10, 0.08);
+}
 html.light .bg-white.text-black {
     color: #ffffff !important;
 }

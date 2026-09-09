@@ -408,7 +408,7 @@ export default function Home() {
               ))}
             </div>
             <div className="mt-10 flex flex-wrap items-center gap-6">
-              <span className="inline-block bg-white rounded-md px-5 py-3" data-testid="home-partners-strip">
+              <span className="partner-plate inline-block rounded-md px-5 py-3" data-testid="home-partners-strip">
                 <img
                   src="/images/Group-29.png"
                   alt="Powered by Intel, AMD, Windows — Make in India"
