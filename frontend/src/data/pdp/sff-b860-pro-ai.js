@@ -143,7 +143,7 @@ export default {
       "aspect": "aspect-[3/4]",
       "heading": "One cable for all of it.",
       "body": "Thunderbolt 4 at 40Gb/s carries a docking station, an external array and dual 4K displays. Behind it, two 2.5G LAN ports and a COM header for the equipment a small machine is usually asked to replace.",
-      "caption": "Photographed on a production unit. Port population varies with the configuration ordered — the specification table below is the authority for your build.",
+      "caption": "Front and rear are photographs of a production unit; the top view is a rendered illustration. Port population varies with the configuration ordered — the specification table below is the authority for your build.",
       "faces": [
         {
           "label": "Front",
