@@ -33,7 +33,7 @@ export const PdpSpecTable = ({ model, theme, datasheet, heading, body }) => {
         kicker="Specification"
         heading={heading ?? "Every number that matters."}
         body={body}
-        align="left"
+        align="center"
       />
 
       <div className="mt-10 flex flex-col sm:flex-row sm:items-center justify-between gap-6">

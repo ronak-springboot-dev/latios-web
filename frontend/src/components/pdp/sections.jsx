@@ -516,13 +516,14 @@ export const PdpCompare = ({ model, theme, heading, subline, rows = [], against 
 
   return (
     <Band theme={theme} data-testid="pdp-compare">
-      <Reveal>
-        <BandHeading className="mb-3">{heading ?? "How this one differs."}</BandHeading>
-        <p className="text-sm text-zinc-500 mb-10">
-          {subline ?? "Same chassis, different platform. Only the rows that actually change are shown."}
-        </p>
-      </Reveal>
-      <div className="overflow-x-auto">
+      <SectionHead
+        theme={theme}
+        kicker="Compare"
+        heading={heading ?? "How this one differs."}
+        body={subline ?? "Same chassis, different platform. Only the rows that actually change are shown."}
+        align="center"
+      />
+      <div className="mt-12 md:mt-16 overflow-x-auto">
         <table className="w-full min-w-[640px] border-collapse text-sm">
           <thead>
             <tr>
@@ -612,7 +613,14 @@ export const PdpIoMap = ({
 
   return (
     <Band theme={theme} data-testid="pdp-io-map">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+      <SectionHead
+        theme={theme}
+        kicker="Connectivity"
+        heading={heading ?? "Every port you'll actually use."}
+        body={body}
+        align="center"
+      />
+      <div className="mt-12 md:mt-16 grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
         <div>
           {faces.length > 1 && (
             <div className="mb-5 flex flex-wrap gap-2" data-testid="pdp-io-faces">
@@ -684,17 +692,10 @@ export const PdpIoMap = ({
           )}
         </div>
         <Reveal delay={0.08}>
-          <SectionHead
-            theme={theme}
-            kicker="Connectivity"
-            heading={heading ?? "Every port you'll actually use."}
-            body={body}
-            align="left"
-          />
           {/* The port list is derived from the model's own specGroups rather
               than authored here, so a diagram and the specification table below
               it cannot drift apart. */}
-          <dl className="mt-8 divide-y divide-white/10 border-t border-white/10">
+          <dl className="divide-y divide-white/10 border-t border-white/10">
             {io.map(([label, value]) => (
               <div key={label} className="py-4">
                 <dt className="text-[10px] uppercase tracking-[0.2em]" style={{ color: ACCENT_SOFT }}>{label}</dt>

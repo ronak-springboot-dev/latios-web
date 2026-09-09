@@ -114,21 +114,99 @@ for (const f of pages) {
 }
 console.log(`band dimensions  ${bands - wrong}/${bands} match the files on disk`);
 
-// 4. no two pages share both accent and section order
+// 4. every page is composed differently, and every restyled page is composed well.
+//
+// What this replaces keyed on accent + section order. All 28 accents are
+// distinct, so the composite was unique no matter what the orders did and the
+// check could not fail: twelve pages across three groups shared identical
+// section orders and it still reported "28/28 distinct". These are the tests it
+// was supposed to be running.
+//
+// They gate RESTYLED pages -- the ones carrying a specTable -- rather than all
+// 28, because the legacy thin pages are a known backlog, not a regression. A
+// collision fails the moment one of the colliding pages has been restyled, so
+// the rollout cannot re-introduce one; the rest print as the checklist that is
+// left.
 const theme = readFileSync(join(ROOT, "src/components/pdp/theme.js"), "utf8");
 const accents = Object.fromEntries(
   [...theme.matchAll(/"([a-z0-9-]+)":\s*\{\s*\n\s*accent:\s*"(#[0-9a-fA-F]{6})"/g)].map((m) => [m[1], m[2]]));
-const seen = new Map();
-for (const f of pages) {
+
+// A page whose only sections are the ones every page has is not a designed
+// page, so these do not count towards distinctiveness.
+const SCAFFOLD = new Set(["hero", "statWall", "featureGrid", "specTable", "specTeaser"]);
+const SIGNATURE = ["reveal", "walkthrough", "spotlight", "band"];
+
+const composed = pages.map((f) => {
   const slug = basename(f, ".js");
   const src = readFileSync(join(PDP, f), "utf8");
-  const order = [...src.matchAll(/["']?type["']?\s*:\s*["'](\w+)["']/g)].map((m) => m[1]).join(">");
-  const key = (accents[slug] ?? "FALLBACK") + "|" + order;
-  if (seen.has(key)) fail(`${slug} has the same accent and section order as ${seen.get(key)}`);
-  else seen.set(key, slug);
-  if (!accents[slug]) fail(`${slug} has no theme entry — would fall back to brand blue`);
+  const order = [...src.matchAll(/["']?type["']?\s*:\s*["'](\w+)["']/g)].map((m) => m[1]);
+  return {
+    slug,
+    order,
+    key: order.join(">"),
+    // The middle is what a reader actually experiences as different: strip the
+    // sections that sit in the same place on every page and compare the rest.
+    middle: order.filter((t) => !SCAFFOLD.has(t)).join(">"),
+    restyled: order.includes("specTable"),
+  };
+});
+
+for (const p of composed)
+  if (!accents[p.slug]) fail(`${p.slug} has no theme entry - would fall back to brand blue`);
+
+const collisions = (get) => {
+  const m = new Map();
+  for (const p of composed) {
+    const k = get(p);
+    if (!m.has(k)) m.set(k, []);
+    m.get(k).push(p);
+  }
+  return [...m.values()].filter((g) => g.length > 1);
+};
+
+const backlog = [];
+for (const g of collisions((p) => p.key)) {
+  const names = g.map((p) => p.slug).join(", ");
+  if (g.some((p) => p.restyled)) fail(`identical section order: ${names}`);
+  else backlog.push(names);
 }
-console.log(`uniqueness       ${seen.size}/${pages.length} distinct accent+order`);
+for (const g of collisions((p) => p.middle))
+  if (g.some((p) => p.restyled))
+    fail(`identical section mix once the scaffold is stripped: ${g.map((p) => p.slug).join(", ")}`);
+
+const restyled = composed.filter((p) => p.restyled);
+for (const p of restyled) {
+  const kinds = new Set(p.order);
+  const count = (t) => p.order.filter((x) => x === t).length;
+  if (p.order.length < 6) fail(`${p.slug} has only ${p.order.length} sections`);
+  if (kinds.size < 5) fail(`${p.slug} uses only ${kinds.size} distinct section types`);
+  if (count("hero") !== 1) fail(`${p.slug} has ${count("hero")} hero sections, expected exactly 1`);
+  if (count("specTable") !== 1) fail(`${p.slug} has ${count("specTable")} specTable sections, expected exactly 1`);
+  if (!SIGNATURE.some((t) => kinds.has(t)))
+    fail(`${p.slug} has no signature section (${SIGNATURE.join("/")}) - it is a spec sheet with a headline`);
+}
+
+console.log(`composition      ${restyled.length}/${pages.length} restyled, distinct and above the floor`);
+if (backlog.length) {
+  console.log(`  rollout backlog  ${backlog.length} group(s) of legacy pages still sharing a section order:`);
+  for (const names of backlog) console.log(`    ${names}`);
+}
+
+// The accent fix stays fixed. These literals are legitimate only as the CSS
+// variable's fallback and as BRAND_BLUE itself; anywhere else is a hardcoded
+// accent that will not follow the product's own theme.
+{
+  let hardcoded = 0;
+  for (const dir of [PDP, join(ROOT, "src/components/pdp")])
+    for (const f of readdirSync(dir).filter((x) => /\.(js|jsx)$/.test(x)))
+      readFileSync(join(dir, f), "utf8").split("\n").forEach((line, i) => {
+        if (!/#1a56e8|#6f93f2/i.test(line)) return;
+        if (/var\(--pdp-|BRAND_BLUE/.test(line)) return;
+        hardcoded += 1;
+        fail(`${f}:${i + 1} hardcodes the brand accent instead of var(--pdp-accent)`);
+      });
+  console.log(`accent scope     ${hardcoded ? `${hardcoded} hardcoded` : "no hardcoded brand accent in pdp files"}`);
+}
 
 // 5. the catalogue and the taxonomy agree on where every model lives.
 //
