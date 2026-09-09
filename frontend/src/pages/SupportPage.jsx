@@ -15,7 +15,7 @@ const EASE = [0.16, 1, 0.3, 1];
 
 const PRODUCT_TILES = [
   { icon: Laptop, label: "Laptops", to: "/laptops" },
-  { icon: PcCase, label: "Desktops & Workstations", to: "/towers" },
+  { icon: PcCase, label: "Desktops & Workstations", to: "/desktops" },
   { icon: Speaker, label: "AV solutions", to: "/av" },
   { icon: Monitor, label: "Display solutions", to: "/display" },
 ];

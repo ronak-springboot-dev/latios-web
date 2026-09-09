@@ -59,18 +59,31 @@ const countIn = (slug, pred) =>
   ALL_MODELS.filter((m) => m.category === slug && pred(m)).length;
 
 const AI_LINKS = [
-  { slug: "towers", label: "Towers", n: countIn("towers", (m) => m.aiReady) },
+  { slug: "desktops", label: "Desktops", n: countIn("desktops", (m) => m.aiReady) },
+  { slug: "workstation", label: "Workstations", n: countIn("workstation", (m) => m.aiReady) },
   { slug: "laptops", label: "Laptops", n: countIn("laptops", (m) => m.aiReady) },
 ].filter((x) => x.n > 0);
 
 const AI_TOTAL = AI_LINKS.reduce((n, x) => n + x.n, 0);
 
-// Processor families, pointed at the towers listing: it is the only category
-// where the choice exists at all -- every Latios laptop is Intel -- and it is
-// where a buyer shopping by silicon actually lands.
+// Processor families, counted across the two desktop-class categories: that is
+// where the choice exists at all -- every Latios laptop is Intel.
+//
+// Each vendor links to whichever of the two actually holds it, rather than to a
+// fixed listing. Xeon lives only in PROMAX, so a fixed /desktops link would send
+// that chip to a page with nothing on it.
 const CPU_LINKS = ["amd", "intel", "xeon"]
-  .map((id) => ({ id, label: VENDOR_LABELS[id],
-                  n: countIn("towers", (m) => getProcessorFamily(m) === id) }))
+  .map((id) => {
+    const pred = (m) => getProcessorFamily(m) === id;
+    const desktops = countIn("desktops", pred);
+    const workstation = countIn("workstation", pred);
+    return {
+      id,
+      label: VENDOR_LABELS[id],
+      n: desktops + workstation,
+      slug: workstation > desktops ? "workstation" : "desktops",
+    };
+  })
   .filter((x) => x.n > 0);
 
 const BY_SLUG = new Map(ALL_MODELS.map((m) => [m.slug, m]));
@@ -280,7 +293,10 @@ export const Header = () => {
         </div>
 
         <div className="backdrop-blur-xl bg-black/70 border-b border-white/10">
-          <div className="max-w-[1600px] mx-auto px-6 md:px-12 h-16 md:h-[72px] flex items-center justify-between">
+          {/* gap-5 is a floor, not decoration: with the logo at h-11 the mark and the
+              nav sit flush at exactly 1024px, where justify-between has no slack
+              left to give. */}
+          <div className="max-w-[1600px] mx-auto px-6 md:px-12 h-16 md:h-[72px] flex items-center justify-between gap-5">
             <Link
               to="/"
               data-testid="header-logo"
@@ -290,7 +306,7 @@ export const Header = () => {
                 setSearchOpen(false);
               }}
             >
-              <Wordmark className="h-6 md:h-7 w-auto" testid="header-logo" />
+              <Wordmark className="h-9 md:h-11 w-auto" testid="header-logo" />
             </Link>
 
             <nav className="hidden lg:flex items-center gap-7" data-testid="desktop-nav">
@@ -486,18 +502,21 @@ export const Header = () => {
                             {n.name}
                           </span>
                         ) : n.soon ? (
-                          // Defined in the taxonomy, nothing shipping in it yet.
-                          // Rendered, but never a link to an empty listing.
-                          <span
+                          // Defined in the taxonomy, nothing shipping in it
+                          // yet -- but now reachable: the listing answers with a
+                          // coming-soon panel for the range rather than an empty
+                          // grid, so this is no longer a dead end.
+                          <button
                             key={n.key}
+                            onClick={() => goPage(`/${cat.slug}?b=${n.key}`)}
                             data-testid={`mega-soon-${cat.slug}-${n.key}`}
-                            className="flex items-center gap-2 text-sm text-zinc-600 cursor-default"
+                            className="flex items-center gap-2 text-sm text-zinc-500 text-left hover:text-zinc-300 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50 rounded"
                           >
                             {n.name}
-                            <span className="text-[9px] uppercase tracking-[0.18em] text-zinc-700 border border-zinc-800 rounded px-1.5 py-0.5">
+                            <span className="text-[9px] uppercase tracking-[0.18em] text-zinc-600 border border-zinc-800 rounded px-1.5 py-0.5">
                               Soon
                             </span>
-                          </span>
+                          </button>
                         ) : (
                           <button
                             key={n.key}
@@ -583,7 +602,7 @@ export const Header = () => {
                         {CPU_LINKS.map((c) => (
                           <button
                             key={c.id}
-                            onClick={() => goPage(`/towers?cpu=${c.id}`)}
+                            onClick={() => goPage(`/${c.slug}?cpu=${c.id}`)}
                             data-testid={`mega-cpu-${c.id}`}
                             className="group flex items-center justify-between gap-3 border-b border-white/10 py-3 text-left transition-colors duration-300 hover:border-white/25 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50 rounded"
                           >

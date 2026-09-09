@@ -10,7 +10,8 @@ const EASE = [0.16, 1, 0.3, 1];
 
 const GROUPS = [
   ["laptops", "Laptops"],
-  ["towers", "Towers & Workstations"],
+  ["desktops", "Desktops"],
+  ["workstation", "Workstations"],
   ["av", "AV solutions"],
   ["display", "Display solutions"],
 ];

@@ -10,6 +10,7 @@ import { ParallaxImage } from "@/components/ParallaxImage";
 import { EditorialMarquee } from "@/components/EditorialMarquee";
 import { SpecGrid } from "@/components/SpecGrid";
 import { getCategory, nextCategory, bucketsFor } from "@/data/products";
+import { ACCENT_SOFT } from "@/components/pdp/primitives";
 import {
   VENDOR_LABELS, getProcessorFamily, getMaxMemoryGB, getMemoryTier, MEMORY_TIERS,
 } from "@/data/models";
@@ -105,7 +106,10 @@ const FacetControls = ({ groups, active, onToggle, onClear, total, shown, sort, 
             <p className="text-[10px] uppercase tracking-[0.22em] text-zinc-600 mb-3">{g.label}</p>
             <div className="flex flex-col gap-1">
               {g.options
-                .filter((o) => o.n > 0 || active[g.id]?.has(o.id))
+                // A `soon` option is always n === 0 -- the range holds no
+                // models yet -- so it has to survive the zero-count filter that
+                // hides genuinely empty combinations.
+                .filter((o) => o.n > 0 || o.soon || active[g.id]?.has(o.id))
                 .map((o) => {
                   const on = active[g.id]?.has(o.id);
                   return (
@@ -129,7 +133,13 @@ const FacetControls = ({ groups, active, onToggle, onClear, total, shown, sort, 
                         {on && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
                       </span>
                       <span className="flex-1">{o.label}</span>
-                      <span className="text-xs text-zinc-600 tabular-nums">{o.n}</span>
+                      {o.soon ? (
+                        <span className="text-[9px] uppercase tracking-[0.18em] text-zinc-600 border border-zinc-800 rounded px-1.5 py-0.5">
+                          Soon
+                        </span>
+                      ) : (
+                        <span className="text-xs text-zinc-600 tabular-nums">{o.n}</span>
+                      )}
                     </button>
                   );
                 })}
@@ -319,6 +329,65 @@ const ModelCard = ({ m, category, testid }) => (
 );
 
 /** Every facet combination can be narrowed to nothing, so say so and offer the way out. */
+/**
+ * What a range that does not ship yet says for itself.
+ *
+ * Keyed by bucket, with a generic fallback, so adding a range to the taxonomy
+ * does not require touching this file to avoid a blank panel.
+ */
+const SOON_COPY = {
+  server: {
+    heading: "Rack servers are in development.",
+    body: "The PROMAX platform already carries Xeon W, ECC memory and redundant power. The rack-mount range built on it is not shipping yet â€” tell us what the deployment looks like and we will bring you in early.",
+  },
+  supercomputer: {
+    heading: "Supercomputing, in planning.",
+    body: "Multi-node clusters for research and large-model training sit above the workstation range. Nothing is shipping yet â€” if you are scoping a build, the conversation is worth having now.",
+  },
+  aio: {
+    heading: "All-in-One is in development.",
+    body: "A display and a machine in one enclosure, on the same serviceable platform as the rest of the range. Not shipping yet.",
+  },
+  "full-tower": {
+    heading: "The full-height tower is in development.",
+    body: "A larger chassis than the 18-litre micro tower, for builds that need the expansion. Not shipping yet.",
+  },
+};
+
+const ComingSoon = ({ bucket, label, onClear }) => {
+  const copy = SOON_COPY[bucket] ?? {
+    heading: `${label} is in development.`,
+    body: "This range is named in our roadmap but is not shipping yet.",
+  };
+  return (
+    <div className="border border-white/10 bg-[#0A0A0A] p-12 text-center" data-testid="facet-soon">
+      <p className="text-[10px] uppercase tracking-[0.3em] mb-5" style={{ color: ACCENT_SOFT }}>
+        Coming soon
+      </p>
+      <p className="font-display text-2xl md:text-3xl font-semibold tracking-tight text-white">
+        {copy.heading}
+      </p>
+      <p className="mt-4 text-sm text-zinc-400 leading-relaxed max-w-[560px] mx-auto">{copy.body}</p>
+      <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+        <Link
+          to="/#contact"
+          data-testid="facet-soon-enquire"
+          className="btn-blue px-6 py-3 text-[10px] uppercase tracking-[0.25em] focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+        >
+          Talk to us about it
+        </Link>
+        <button
+          onClick={onClear}
+          data-testid="facet-soon-clear"
+          className="px-6 py-3 text-[10px] uppercase tracking-[0.25em] border border-white/20 text-white hover:border-white/60 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-white/40"
+        >
+          Show what ships today
+        </button>
+      </div>
+    </div>
+  );
+};
+
 const EmptyResults = ({ onClear }) => (
   <div className="border border-white/10 bg-[#0A0A0A] p-12 text-center" data-testid="facet-empty">
     <p className="font-display text-2xl font-black tracking-tighter text-white">
@@ -531,8 +600,12 @@ export default function ProductPage() {
 
   const facetGroups = [
     { id: "bucket", label: "Form factor",
-      options: bucketsFor(data.slug).filter((b) => !b.soon)
-        .map((b) => ({ id: b.key, label: b.name, n: countFor("bucket", b.key) })) },
+      // `soon` buckets are no longer filtered out: a named range that does not
+      // ship yet is still something a buyer looks for, and selecting it shows
+      // the coming-soon panel rather than an empty grid.
+      options: bucketsFor(data.slug)
+        .map((b) => ({ id: b.key, label: b.name, soon: !!b.soon,
+                       n: b.soon ? 0 : countFor("bucket", b.key) })) },
     { id: "cpu", label: "Processor",
       options: ["amd", "intel", "xeon"]
         .map((v) => ({ id: v, label: VENDOR_LABELS[v], n: countFor("cpu", v) })) },
@@ -541,6 +614,15 @@ export default function ProductPage() {
     { id: "ai", label: "AI ready",
       options: [{ id: "yes", label: "AI ready", n: countFor("ai", "yes") }] },
   ];
+
+  // The one selected bucket that has nothing in it yet, if any. Only a single
+  // bucket selection counts: with two selected the result is a normal (empty)
+  // filter combination, not a range announcement.
+  const soonBucket = (() => {
+    const picked = [...(active.bucket ?? [])];
+    if (picked.length !== 1) return null;
+    return bucketsFor(data.slug).find((b) => b.key === picked[0] && b.soon) ?? null;
+  })();
 
   const matched = catModels.filter((m) => passes(m, active));
   const visible = new Set(matched.map((m) => m.slug));
@@ -707,7 +789,13 @@ export default function ProductPage() {
                   <p className="text-[10px] uppercase tracking-[0.3em] text-zinc-500 mb-8">
                     {matched.length} {matched.length === 1 ? "result" : "results"}
                   </p>
-                  {matched.length === 0 ? (
+                  {soonBucket ? (
+                    <ComingSoon
+                      bucket={soonBucket.key}
+                      label={soonBucket.name}
+                      onClear={clearFacets}
+                    />
+                  ) : matched.length === 0 ? (
                     <EmptyResults onClear={clearFacets} />
                   ) : (
                     <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 md:gap-8">
@@ -719,6 +807,12 @@ export default function ProductPage() {
                     </div>
                   )}
                 </div>
+              ) : soonBucket ? (
+                <ComingSoon
+                  bucket={soonBucket.key}
+                  label={soonBucket.name}
+                  onClear={clearFacets}
+                />
               ) : matched.length === 0 ? (
                 <EmptyResults onClear={clearFacets} />
               ) : (

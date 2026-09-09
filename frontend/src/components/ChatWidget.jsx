@@ -15,7 +15,7 @@ const FAQS = [
 const WELCOME = {
   role: "assistant",
   content:
-    "Hi, I'm LATI — the Latios AI assistant. Ask me anything about our laptops, towers, audio or video products, or tap a question below.",
+    "Hi, I'm LATI — the Latios AI assistant. Ask me anything about our laptops, desktops, workstations, AV or display products, or tap a question below.",
 };
 
 const renderText = (t) =>

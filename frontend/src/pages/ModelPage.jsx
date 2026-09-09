@@ -6,6 +6,7 @@ import { Reveal } from "@/components/Reveal";
 import { PdpRenderer } from "@/components/pdp/PdpRenderer";
 import { getTheme, themeVars } from "@/components/pdp/theme";
 import { getModel, getCategoryModels, DATASHEETS, ALL_MODELS, familyKey } from "@/data/models";
+import { getCategory } from "@/data/products";
 import { getPdp } from "@/data/pdp";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
@@ -385,7 +386,7 @@ export default function ModelPage() {
                 data-testid="model-back-button"
                 className="flex items-center gap-3 border border-white/20 text-white rounded-full px-8 py-4 text-xs uppercase tracking-[0.25em] hover:border-white/60 transition-colors duration-300"
               >
-                All {model.category}
+                All {getCategory(model.category)?.name ?? model.category}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

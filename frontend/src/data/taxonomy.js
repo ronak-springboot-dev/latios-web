@@ -6,8 +6,8 @@
 /**
  * The product tree.
  *
- * Three levels where the range needs them (Towers > Enterprise >
- * Server/workstation) and two where it does not. Every node carries the model
+ * Three levels where the range needs them (Workstation > Enterprise > Server)
+ * and two where it does not. Every node carries the model
  * slugs it contains, so the mega menu, the category listings and the facet
  * filters all read from this one structure rather than three parallel lists
  * that drift apart.
@@ -32,8 +32,8 @@ export const TAXONOMY = [
     ],
   },
   {
-    slug: "towers",
-    name: "Towers",
+    slug: "desktops",
+    name: "Desktops",
     children: [
       {
         key: "commercial",
@@ -55,22 +55,37 @@ export const TAXONOMY = [
           // live. It is a desktop chassis, so it sits with the other two.
           { key: "mini-pc", name: "Mini PC", models: ["mff-dp10"] },
           { key: "aio", name: "All-in-One", soon: true },
-          // "Towers" in the supplied list, i.e. a full-height tower as distinct
-          // from the 18-litre micro tower above. Nothing ships in it yet.
+          // A full-height tower as distinct from the 18-litre micro tower
+          // above. Nothing ships in it yet.
           { key: "full-tower", name: "Tower", soon: true },
         ],
       },
+    ],
+  },
+  {
+    // Enterprise is the only group here, so it leads the column. Server and
+    // Supercomputer are named ranges with nothing shipping in them; they are
+    // reachable and carry a coming-soon panel rather than an empty grid.
+    //
+    // The leaf key stays "workstation" even though the category slug is now
+    // also "workstation" -- it is the `bucket` on all four PROMAX models and
+    // the target of ?b=workstation links. Renaming it would break those to
+    // make one URL prettier.
+    slug: "workstation",
+    name: "Workstation",
+    children: [
       {
         key: "enterprise",
         name: "Enterprise",
         children: [
+          { key: "server", name: "Server", soon: true },
           {
             key: "workstation",
-            name: "Server / workstation",
+            name: "Workstation",
             models: ["promax-q870", "promax-t2-w880",
                      "promax-t2-w680", "promax-t4-plus"],
           },
-          { key: "supercomputer", name: "Super computer", soon: true },
+          { key: "supercomputer", name: "Supercomputer", soon: true },
         ],
       },
     ],

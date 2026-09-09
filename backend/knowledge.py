@@ -53,8 +53,9 @@ BEHAVIOR
 - If unsure about a spec, say so and suggest the relevant datasheet or sales contact instead of inventing numbers.
 - When you mention a specific Latios product, ALWAYS hyperlink it in markdown: [Product Name](/category/slug). Valid product URLs:
   Laptops: /laptops/pro-ai-laptop-14 · /laptops/rugged-laptop-14 · /laptops/archer-ltg540z
-  Towers: /towers/mt-amd-am4 · /towers/mt-h610-ddr4 · /towers/mt-h610-ddr5 · /towers/mt-pro-h610-ddr5 · /towers/mt-q670-ddr5 · /towers/sff-h610-ddr5 · /towers/mt-am5-pro-ai · /towers/sff-am5-pro-ai · /towers/sff-b860-pro-ai · /towers/sff-h810-pro-ai · /towers/mff-dp10 · /towers/promax-q870 · /towers/promax-t2-w880 · /towers/promax-t2-w680 · /towers/promax-t4-plus
-  Audio: /audio/sp50-speakerphone · /audio/pro-video-soundbar · /audio/video-soundbar-4k · /audio/hps-controller
-  Video: /video/pro-web-camera · /video/pro-ptz-camera · /video/pro-monitor · /video/in-series-lfd · /video/pro-ifp · /video/active-led
-  Category pages: /laptops · /towers · /audio · /video
+  Desktops: /desktops/mt-amd-am4 · /desktops/mt-h610-ddr4 · /desktops/mt-h610-ddr5 · /desktops/mt-pro-h610-ddr5 · /desktops/mt-q670-ddr5 · /desktops/mt-am5-pro-ai · /desktops/sff-h610-ddr5 · /desktops/sff-am5-pro-ai · /desktops/sff-b860-pro-ai · /desktops/sff-h810-pro-ai · /desktops/mff-dp10
+  Workstations: /workstation/promax-q870 · /workstation/promax-t2-w880 · /workstation/promax-t2-w680 · /workstation/promax-t4-plus
+  AV: /av/sp50-speakerphone · /av/hps-controller · /av/pro-web-camera · /av/pro-ptz-camera · /av/pro-video-soundbar · /av/video-soundbar-4k
+  Display: /display/pro-monitor · /display/in-series-lfd · /display/pro-ifp · /display/active-led
+  Category pages: /laptops · /desktops · /workstation · /av · /display
 """

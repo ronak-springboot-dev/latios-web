@@ -1,4 +1,7 @@
-import { TOWERS_FAMILIES, LAPTOPS_FAMILY, AUDIO_FAMILY, VIDEO_FAMILY } from "./models";
+import {
+  DESKTOP_FAMILIES, WORKSTATION_FAMILIES,
+  LAPTOPS_FAMILY, AUDIO_FAMILY, VIDEO_FAMILY,
+} from "./models";
 import {
   TAXONOMY, walkTaxonomy, TAXONOMY_SLUGS, bucketsFor, SUBCATS,
 } from "./taxonomy";
@@ -55,28 +58,28 @@ export const CATEGORIES = [
     families: [LAPTOPS_FAMILY],
   },
   {
-    slug: "towers",
+    slug: "desktops",
     index: "02",
-    name: "Towers",
-    model: "Latios MT Series",
+    name: "Desktops",
+    model: "Latios MT · SFF · MFF",
     title: ["BUSINESS,", "UNSTOPPABLE."],
     tagline: "Be your window to the world.",
-    hero: P("7858769"),
+    hero: "/images/latios-mt.jpg",
     intro:
-      "The Latios desktop range: six business MT and SFF configurations from Ryzen 3 to Core i9, and four PROMAX AI workstations scaling up to Xeon W with 2TB of ECC memory — every one tool-friendly, TPM-secured and built to be opened, not replaced.",
+      "Eleven commercial configurations across three chassis — the 18-litre micro tower, the eight-litre small form factor and the DP10 mini PC — from Ryzen 3 to Core i9. Every one tool-friendly, TPM-secured and built to be opened, not replaced.",
     chapters: [
       {
         n: "01",
         kicker: "Compute",
         heading: "From Ryzen 3 to Core i9",
-        body: "Choose AMD AM4 with Ryzen 5000G graphics onboard, Intel H610 or Q670 with up to 14th Gen Core i9, or the Pro AI edition on AM5 with Ryzen 8000G neural processing. One chassis, five ways to work.",
+        body: "Choose AMD AM4 with Ryzen 5000G graphics onboard, Intel H610 or Q670 with up to 14th Gen Core i9, or the Pro AI edition on AM5 with Ryzen 8000G neural processing. Three chassis, eleven ways to work.",
         image: "/images/office.webp",
       },
       {
         n: "02",
         kicker: "Connectivity",
         heading: "Every port you'll ever need",
-        body: "Two front USB-C Gen 2, USB-A and mic-in up front. HDMI 2.1 with 4K@60, DisplayPort 1.4, optional VGA, gigabit LAN, PS/2 and triple audio jacks at the back — plus Wi-Fi 6E for cable-free fleets.",
+        body: "Front USB-C Gen 2, USB-A and mic-in up front. HDMI 2.1 with 4K@60, DisplayPort 1.4, optional VGA, gigabit LAN and triple audio jacks at the back — plus Wi-Fi 6E for cable-free fleets.",
         image: "/images/ops.webp",
       },
       {
@@ -88,21 +91,67 @@ export const CATEGORIES = [
       },
     ],
     specs: [
-      ["Desktops", "MT + SFF · Ryzen 3 → Core i9"],
-      ["Workstations", "PROMAX · Core Ultra → Xeon W"],
-      ["Memory", "Up to 2TB DDR5 ECC (T4 Plus)"],
-      ["Graphics", "Up to RTX A6000 / Blackwell"],
-      ["Storage", "Gen5 NVMe + RAID options"],
-      ["Network", "Wi-Fi 6E · Dual 2.5G LAN"],
-      ["Power", "300W → 2700W redundant"],
+      ["Range", "Micro tower · SFF · Mini PC"],
+      ["Processors", "Ryzen 3 → Core i9"],
+      ["Memory", "Up to 128GB DDR5"],
+      ["Graphics", "Integrated → RTX A4000"],
+      ["Storage", "Gen5 NVMe + 2.5\" / 3.5\" bays"],
+      ["Network", "Wi-Fi 6E · up to dual 2.5G LAN"],
+      ["Chassis", "8 L · 18 L · 1 L mini PC"],
       ["Security", "HW TPM 2.0 · Kensington"],
     ],
-    families: TOWERS_FAMILIES,
+    families: DESKTOP_FAMILIES,
+  },
+
+  {
+    slug: "workstation",
+    index: "03",
+    name: "Workstation",
+    model: "Latios PROMAX Series",
+    title: ["WHEN THE WORK", "GETS HEAVY."],
+    tagline: "Engineering, AI and everything that will not wait.",
+    hero: "/images/components/gpu-pro.webp",
+    intro:
+      "Four PROMAX builds for engineering, AI and content creation — scaling from Core Ultra with a built-in NPU to Xeon W with 2TB of ECC memory and redundant 2700W power. Server and supercomputer ranges are in development.",
+    chapters: [
+      {
+        n: "01",
+        kicker: "Compute",
+        heading: "Core Ultra to Xeon W",
+        body: "The Q870 brings a Core Ultra NPU to the desk. The T2 pair moves to W680 and W880 workstation chipsets. The T4 Plus runs Xeon W, where core count and memory channels stop being a compromise.",
+        image: "/images/perf.webp",
+      },
+      {
+        n: "02",
+        kicker: "Memory & Graphics",
+        heading: "2TB of ECC, and lanes to feed it",
+        body: "Error-correcting memory across the full Xeon W channel count, with full-height double-width graphics slots and the PCIe lanes to drive them — for datasets that used to be a server-room problem.",
+        image: "/images/components/gpu-pro-2.webp",
+      },
+      {
+        n: "03",
+        kicker: "Power & Serviceability",
+        heading: "Redundant supply, standard parts",
+        body: "Up to 2700W with redundancy, so a failed supply is a swap rather than an outage. Standard sockets, standard mounts and a panel that comes off by hand — the same service promise as the rest of the range.",
+        image: "/images/chassis.webp",
+      },
+    ],
+    specs: [
+      ["Range", "PROMAX Q870 · T2 · T4 Plus"],
+      ["Processors", "Core Ultra → Xeon W"],
+      ["Memory", "Up to 2TB DDR5 ECC"],
+      ["Graphics", "Up to RTX A6000 / Blackwell"],
+      ["Storage", "Gen5 NVMe + RAID options"],
+      ["Network", "Dual 2.5G LAN · 10G options"],
+      ["Power", "Up to 2700W redundant"],
+      ["Security", "HW TPM 2.0 · Kensington"],
+    ],
+    families: WORKSTATION_FAMILIES,
   },
 
   {
     slug: "av",
-    index: "03",
+    index: "04",
     name: "AV solutions",
     model: "Latios Smart AV",
     title: ["HEAR", "EVERYONE."],
@@ -147,7 +196,7 @@ export const CATEGORIES = [
   },
   {
     slug: "display",
-    index: "04",
+    index: "05",
     name: "Display solutions",
     model: "Latios Smart Display",
     title: ["SEE", "THE DETAIL."],

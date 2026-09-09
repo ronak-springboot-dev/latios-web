@@ -22,6 +22,7 @@ import { ParallaxImage } from "@/components/ParallaxImage";
 import { ModelTurntable } from "@/components/ModelTurntable";
 import { ProductVideo } from "@/components/ProductVideo";
 import { ALL_MODELS, familyKey } from "@/data/models";
+import { getCategory } from "@/data/products";
 import { setEnquiryDraft, formatConfiguration } from "@/lib/enquiryDraft";
 import { ACCENT, ACCENT_SOFT, AccentButton, GhostButton, Kicker, BandHeading, SectionHead, Band, Reveal } from "./primitives";
 
@@ -120,7 +121,7 @@ export const PdpHero = ({ model, theme, datasheet, onViewSpecs, onEnquire, confi
         <Link to="/" className="hover:text-white transition-colors duration-300">Home</Link>
         <span className="mx-2">/</span>
         <Link to={`/${model.category}`} className="hover:text-white transition-colors duration-300">
-          {model.category[0].toUpperCase() + model.category.slice(1)}
+          {getCategory(model.category)?.name ?? model.category}
         </Link>
         <span className="mx-2">/</span>
         <span className="text-zinc-300">{model.name}</span>

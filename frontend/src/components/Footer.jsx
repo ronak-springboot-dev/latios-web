@@ -175,7 +175,7 @@ export const Footer = () => {
       <div className="border-t border-white/10" data-testid="footer-links">
         <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-14 grid grid-cols-2 md:grid-cols-4 gap-10">
           <div>
-            <Wordmark testid="footer-brand-logo" />
+            <Wordmark className="h-8 md:h-9 w-auto" testid="footer-brand-logo" />
             <p className="mt-5 text-xs text-zinc-500 leading-relaxed max-w-[220px]">
               Proudly Indian. Boldly Innovative. Designed and manufactured in Ahmedabad, India.
             </p>

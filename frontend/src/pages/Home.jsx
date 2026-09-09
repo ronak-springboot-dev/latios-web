@@ -86,9 +86,13 @@ const HERO_SLIDES = {
     headline: "Power That Travels.",
     subline: "Explore AI-ready and rugged laptops — designed, manufactured and supported in India.",
   },
-  towers: {
+  desktops: {
     headline: "Efficiency, Reliability, and Quality.",
-    subline: "Explore business desktops and PROMAX workstations engineered for every workload.",
+    subline: "Explore micro tower, small form factor and mini PC builds from Ryzen 3 to Core i9.",
+  },
+  workstation: {
+    headline: "When The Work Gets Heavy.",
+    subline: "Explore PROMAX workstations — Core Ultra to Xeon W, with up to 2TB of ECC memory.",
   },
   av: {
     headline: "Every Voice, Heard Clearly.",

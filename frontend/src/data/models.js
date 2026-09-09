@@ -267,7 +267,7 @@ const HERO = {
   "promax-t4-plus": ART.board,
 };
 
-export const TOWERS_FAMILIES = [
+export const DESKTOP_FAMILIES = [
   {
     kicker: "Business Desktops",
     image: "/images/ops.webp",
@@ -1003,6 +1003,9 @@ export const TOWERS_FAMILIES = [
       },
     ],
   },
+];
+
+export const WORKSTATION_FAMILIES = [
   {
     kicker: "PROMAX AI Workstations",
     image: "/images/components/gpu-pro.webp",
@@ -1877,7 +1880,8 @@ export const VIDEO_FAMILY = {
   ],
 };
 
-const ALL_FAMILIES = [...TOWERS_FAMILIES, LAPTOPS_FAMILY, AUDIO_FAMILY, VIDEO_FAMILY];
+const ALL_FAMILIES = [...DESKTOP_FAMILIES, ...WORKSTATION_FAMILIES,
+                      LAPTOPS_FAMILY, AUDIO_FAMILY, VIDEO_FAMILY];
 
 /**
  * Category and bucket come from the TAXONOMY tree, not from which family array a

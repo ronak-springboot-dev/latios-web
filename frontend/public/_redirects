@@ -10,6 +10,17 @@
 /audio                  /av                   301
 /video                  /display              301
 
+# "Towers" split into two categories: the eleven commercial machines became
+# /desktops and the four PROMAX became /workstation. The per-model PROMAX rules
+# MUST precede the /towers/* catch-all -- matching is in file order, so the
+# catch-all would otherwise swallow them into /desktops.
+/towers/promax-q870      /workstation/promax-q870      301
+/towers/promax-t2-w880   /workstation/promax-t2-w880   301
+/towers/promax-t2-w680   /workstation/promax-t2-w680   301
+/towers/promax-t4-plus   /workstation/promax-t4-plus   301
+/towers/*                /desktops/:splat              301
+/towers                  /workstation                  301
+
 # SPA fallback: react-router owns every route, so unknown paths must return the
 # shell rather than a 404.
 #
