@@ -451,8 +451,29 @@ export default function ProductPage() {
   const jumpToModels = () => {
     const el = listingRef.current;
     if (!el) return;
+    const start = window.scrollY;
+    const target = el.getBoundingClientRect().top + start - 96;
+
+    const reduced = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) {
+      window.scrollTo(0, target);
+      return;
+    }
+
     if (lenis) lenis.scrollTo(el, { offset: -96 });
     else el.scrollIntoView({ behavior: "smooth", block: "start" });
+
+    // Guarantee arrival. Both smooth paths animate on requestAnimationFrame,
+    // and if that loop is not ticking -- a stalled Lenis instance, a
+    // background tab, the page hidden -- the call is a silent no-op and the
+    // reader is left exactly where the scrolling was supposed to save them
+    // from. Only fires if nothing moved at all, so a reader who scrolls during
+    // the animation is never yanked.
+    window.setTimeout(() => {
+      if (window.scrollY === start && Math.abs(target - start) > 200) {
+        window.scrollTo(0, target);
+      }
+    }, 900);
   };
 
   useEffect(() => {
