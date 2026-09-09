@@ -332,19 +332,31 @@ export const PdpMarquee = ({ items = [], speed = 38 }) => {
 
 /* ----------------------------------------------------------- feature grid -- */
 
-export const PdpFeatureGrid = ({ theme, heading, items = [] }) => {
+export const PdpFeatureGrid = ({ theme, heading, body, items = [], cols = 4 }) => {
   if (!items.length) return null;
+  // Six cards in a four-wide grid leave a ragged row of two. `cols` lets a page
+  // pick the width its own card count divides into, which is why the reference
+  // page's grids always land square.
+  const wide = cols === 3 ? "lg:grid-cols-3" : cols === 2 ? "lg:grid-cols-2" : "lg:grid-cols-4";
   return (
     <Band theme={theme} border={false} data-testid="showcase-features">
-      <Reveal>
-        <BandHeading className="text-center mb-16">{heading ?? "Everything your fleet needs."}</BandHeading>
-      </Reveal>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10">
+      <SectionHead
+        theme={theme}
+        heading={heading ?? "Everything your fleet needs."}
+        body={body}
+        align="center"
+      />
+      <div className={`mt-12 md:mt-16 grid grid-cols-1 sm:grid-cols-2 ${wide} gap-px bg-white/10 border border-white/10`}>
         {items.map((f, n) => {
           const Icon = ICONS[f.icon] ?? Cpu; // an unknown name would render undefined and crash
           return (
             <Reveal key={f.title} delay={n * 0.05}>
-              <div className="group bg-[#0A0A0A] p-8 h-full hover:bg-white/5 transition-colors duration-300" data-testid={`showcase-feature-${n}`}>
+              {/* pdp-card rather than a bg-[#0A0A0A] literal: that literal is painted
+                  by a gradient in the dark sheet, and the `background` shorthand
+                  wipes the colour, so the light override left the card with no
+                  background at all. pdp-card carries both themes and the
+                  model's own surface tint. */}
+              <div className="group pdp-card p-8 h-full hover:brightness-125 transition-[filter] duration-300" data-testid={`showcase-feature-${n}`}>
                 <Icon className="w-7 h-7 transition-transform duration-300 group-hover:scale-110" style={{ color: ACCENT_SOFT }} />
                 <h3 className="mt-5 font-display text-lg font-bold tracking-tight text-white">{f.title}</h3>
                 <p className="mt-3 text-sm text-zinc-400 leading-relaxed">{f.desc}</p>
@@ -554,11 +566,38 @@ export const PdpCompare = ({ model, theme, heading, subline, rows = [], against 
 /* ----------------------------------------------------------------- I/O map -- */
 
 /**
+ * A port label, stacked over or under its dot rather than beside it.
+ *
+ * `whitespace-nowrap` is what makes the collision maths in the data files
+ * predictable, because a label's width is then a function of its text alone.
+ */
+const PinLabel = ({ side, align, children }) => (
+  <span
+    className={[
+      // Below `sm` the figure is too narrow for six of these side by side, so
+      // the labels drop out and the numbered legend under the figure carries
+      // the same information instead.
+      "hidden sm:block absolute whitespace-nowrap rounded bg-black/80 px-2 py-1 text-[9px] uppercase tracking-[0.18em] text-white backdrop-blur-sm",
+      side === "bottom" ? "top-full mt-1.5" : "bottom-full mb-1.5",
+      // A centred label on a pin near the frame edge hangs off it, so the ones
+      // at the edges grow inwards instead. Derived from the pin's own x rather
+      // than authored, so a re-crop cannot leave a stale override behind.
+      align === "start" ? "left-0" : align === "end" ? "right-0" : "left-1/2 -translate-x-1/2",
+    ].join(" ")}
+  >
+    {children}
+  </span>
+);
+
+/**
  * Ports listed beside the photograph of the actual panel they sit on.
  * The rows come from the model's own I/O spec entries, so the list cannot drift
  * from the spec sheet.
  */
-export const PdpIoMap = ({ model, theme, image, heading, body, faces = [] }) => {
+export const PdpIoMap = ({
+  model, theme, image, heading, body, caption,
+  faces = [], aspect = "aspect-[16/9]",
+}) => {
   const io = useMemo(
     () =>
       (model.specGroups ?? [])
@@ -596,33 +635,53 @@ export const PdpIoMap = ({ model, theme, image, heading, body, faces = [] }) => 
             </div>
           )}
           <Reveal>
-            <figure className="relative border border-white/10 overflow-hidden">
+            <figure className={`relative border border-white/10 overflow-hidden ${aspect}`}>
               <img
                 src={src}
                 alt={shown ? `${model.name} — ${shown.label}` : `${model.name} I/O`}
                 loading="lazy"
-                className="w-full object-cover"
+                className="w-full h-full object-cover"
               />
               {/* Pins are placed in fractions of the frame, the same convention
                   PdpWalkthrough uses, so a face can be re-cropped without any
                   pin needing to be re-measured in pixels. */}
-              {(shown?.pins ?? []).map((pin) => (
+              {(shown?.pins ?? []).map((pin, p) => (
+                // The dot is the anchor and sits exactly on (x, y); the label
+                // hangs off it. Centring a label-plus-dot stack on the pin
+                // instead would push the dot off the port it is naming.
                 <span
                   key={`${pin.port}-${pin.x}-${pin.y}`}
-                  className="absolute -translate-x-1/2 -translate-y-1/2 flex items-center gap-2"
-                  style={{ left: `${pin.x * 100}%`, top: `${pin.y * 100}%` }}
+                  className="absolute w-2.5 h-2.5 -translate-x-1/2 -translate-y-1/2 rounded-full ring-2 ring-black/50"
+                  style={{ left: `${pin.x * 100}%`, top: `${pin.y * 100}%`, background: ACCENT }}
                 >
-                  <span
-                    className="w-2.5 h-2.5 rounded-full ring-2 ring-black/50 shrink-0"
-                    style={{ background: ACCENT }}
-                  />
-                  <span className="whitespace-nowrap rounded bg-black/75 px-2 py-1 text-[9px] uppercase tracking-[0.18em] text-white backdrop-blur-sm">
-                    {pin.port}
+                  <span className="sm:hidden absolute inset-0 flex items-center justify-center text-[7px] font-bold leading-none text-white">
+                    {p + 1}
                   </span>
+                  <PinLabel
+                    side={pin.side}
+                    align={pin.x < 0.22 ? "start" : pin.x > 0.78 ? "end" : "center"}
+                  >
+                    {pin.port}
+                  </PinLabel>
                 </span>
               ))}
             </figure>
           </Reveal>
+          {!!(shown?.pins ?? []).length && (
+            <ol className="sm:hidden mt-4 grid grid-cols-2 gap-x-4 gap-y-2" data-testid="pdp-io-legend">
+              {shown.pins.map((pin, p) => (
+                <li key={pin.port} className="flex items-start gap-2 text-[10px] uppercase tracking-[0.15em] text-zinc-400">
+                  <span
+                    className="mt-px flex h-3.5 w-3.5 shrink-0 items-center justify-center rounded-full text-[7px] font-bold leading-none text-white"
+                    style={{ background: ACCENT }}
+                  >
+                    {p + 1}
+                  </span>
+                  {pin.port}
+                </li>
+              ))}
+            </ol>
+          )}
         </div>
         <Reveal delay={0.08}>
           <SectionHead
@@ -643,6 +702,7 @@ export const PdpIoMap = ({ model, theme, image, heading, body, faces = [] }) => 
               </div>
             ))}
           </dl>
+          {caption && <p className="mt-6 text-[10px] text-zinc-600 leading-relaxed">{caption}</p>}
         </Reveal>
       </div>
     </Band>
