@@ -419,6 +419,35 @@ export default function ProductPage() {
     });
   const clearFacets = () => setActive(emptyFacets());
   const [sort, setSort] = useState("featured");
+  const listingRef = useRef(null);
+
+  /**
+   * Land on the products when the link asked for products.
+   *
+   * The listing starts about 5.9 screens down: hero, intro, three illustrated
+   * chapters and the spec grid come first, and that editorial run is the point
+   * of the page for someone arriving cold. It is emphatically not the point for
+   * someone who clicked "Micro tower" in the mega menu -- that link carries a
+   * facet, which is an explicit request to see a filtered set of machines, and
+   * making them scroll past four screens of preamble to reach it is the whole
+   * complaint.
+   *
+   * So the scroll is conditional on intent: a facet in the URL scrolls, a bare
+   * /towers does not. Smooth rather than instant so the reader can see there is
+   * material above them rather than being teleported into the middle of a page.
+   */
+  const deepLinked = FACET_IDS.some((id) => search.get(FACET_PARAM[id]));
+  useEffect(() => {
+    if (!deepLinked || !listingRef.current) return undefined;
+    const t = setTimeout(
+      () => listingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }),
+      450,      // let the entry animation settle, or it scrolls to a moving target
+    );
+    return () => clearTimeout(t);
+  }, [deepLinked, category]);
+
+  const jumpToModels = () =>
+    listingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   usePageMeta(
     data ? `${data.name} — ${data.model} | Latios` : "Latios",
     data ? `${data.tagline} Explore the ${data.name} range from Latios.` : ""
@@ -525,6 +554,22 @@ export default function ProductPage() {
           >
             {data.tagline}
           </motion.p>
+
+          {/* Skip the editorial run. Counted, because "15 machines" is a reason
+              to click and "View models" is not. */}
+          {catModels.length > 0 && (
+            <motion.button
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 1, duration: 0.9, ease: EASE }}
+              onClick={jumpToModels}
+              data-testid="hero-jump-to-models"
+              className="group mt-8 inline-flex items-center gap-3 rounded-full border border-white/40 px-7 py-3 text-[10px] uppercase tracking-[0.3em] text-white hover:bg-white hover:text-black transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-white/50"
+            >
+              {catModels.length} {catModels.length === 1 ? "machine" : "machines"}
+              <ArrowRight className="w-3.5 h-3.5 rotate-90 transition-transform duration-300 group-hover:translate-y-0.5" />
+            </motion.button>
+          )}
         </motion.div>
       </section>
 
@@ -591,7 +636,8 @@ export default function ProductPage() {
       {/* MODEL FAMILIES (when a category has real SKUs) */}
       {data.families && (
         <section
-          className="max-w-[1600px] mx-auto px-6 md:px-12 pb-24 md:pb-36"
+          ref={listingRef}
+          className="max-w-[1600px] mx-auto px-6 md:px-12 pb-24 md:pb-36 scroll-mt-24"
           data-testid="models-section"
         >
           {data.families.length > 1 && <FamilyAccordion families={data.families} />}
