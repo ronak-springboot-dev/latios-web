@@ -43,34 +43,34 @@ const STATS = [
 
 // Hero banners.
 //
-// banner-amd-3 (Threadripper behind XFX + Lian Li marks) and banner-nvidia-1
-// (a 2017 GTX 1080 Ti) were dropped earlier: competitor branding, and parts
-// Latios does not ship.
+// These replace nine stock photographs of other companies' hardware -- circuit
+// board macros, a DDR5 stick, an M.2 -- which read as an assembly line rather
+// than as a product range. Two of the five are now Latios machines.
 //
-// banner-nvidia-2 and the two gpu-pro crops go now for the same reason taken
-// further. They are all the same Founders Edition card, and banner-nvidia-2 has
-// "RTX 2080" legible on the shroud -- a 2018 part, on the hero of a site whose
-// Archer ships up to an RTX 5080 and whose desktops run Core Ultra and Ryzen
-// 8000G. A dated part number in the shop window is a claim about what is in the
-// box, and it is the wrong one.
+// All five are rendered with Qwen-Image-Edit-2511 from REAL photographs at low
+// denoise (0.22-0.38), which relights rather than redraws. That distinction is
+// the whole method: at 0.45 the model rewrote the lettering and Intel came back
+// as gibberish. Latios hardware is never generated from scratch, and a brand
+// mark is only ever a photographed one that survived the pass.
 //
-// What is left is silicon that does not carry a generation on its face: board
-// macros, DDR5, an M.2, a socket. They read as "we build computers" rather than
-// as a specific product, which is what a background behind a headline should
-// do. Genuinely current NVIDIA, Intel and AMD banner artwork has to come from
-// their partner kits -- it is not something to approximate.
+// The rule this file already recorded still holds -- a legible model number on
+// the hero is a claim about what is in the box, and "RTX 2080" is why a banner
+// was pulled from here before. The two CPU photographs are a Ryzen 5 3600 and a
+// Core i5-9400F, both 2019 parts, so their model-number lines carry a
+// depth-of-field falloff. Nothing is added or restyled: AMD, RYZEN and INTEL
+// CORE are exactly as photographed, and only the dating text is out of focus.
+// The GPU needed none of it -- that shroud carries the mark and no number.
+//
+// Still worth doing properly: current partner-kit artwork from Intel, AMD and
+// NVIDIA would beat all of this, and photographs of the silicon Latios actually
+// ships would beat it further.
 const BANNER_POOL = [
-  "/images/banner/banner-amd-1.jpg",
-  "/images/banner/banner-board-1.jpg",
-  "/images/banner/banner-board-2.jpg",
-  "/images/components/board-neutral.webp",
-  "/images/components/pcb-macro.webp",
-  "/images/components/cpu-intel.webp",
-  "/images/components/cpu-amd.webp",
-  "/images/components/ddr5.webp",
-  "/images/components/m2.webp",
+  "/images/banner/banner-latios-laptop.webp",
+  "/images/banner/banner-latios-tower.webp",
+  "/images/banner/banner-intel-cpu.webp",
+  "/images/banner/banner-amd-cpu.webp",
+  "/images/banner/banner-nvidia-gpu.webp",
 ];
-
 /**
  * Hero copy per category, keyed by category slug.
  *
