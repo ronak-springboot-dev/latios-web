@@ -41,19 +41,34 @@ const STATS = [
   ["GeM", "Registered OEM", "Listed for direct government and public-sector procurement."],
 ];
 
+// Hero banners.
+//
 // banner-amd-3 (Threadripper behind XFX + Lian Li marks) and banner-nvidia-1
-// (a 2017 GTX 1080 Ti) were dropped: competitor branding, and parts Latios does
-// not ship. The cropped versions under /images/components/ carry the genuine
-// Intel/AMD/NVIDIA silicon with the third-party silkscreen outside the frame.
+// (a 2017 GTX 1080 Ti) were dropped earlier: competitor branding, and parts
+// Latios does not ship.
+//
+// banner-nvidia-2 and the two gpu-pro crops go now for the same reason taken
+// further. They are all the same Founders Edition card, and banner-nvidia-2 has
+// "RTX 2080" legible on the shroud -- a 2018 part, on the hero of a site whose
+// Archer ships up to an RTX 5080 and whose desktops run Core Ultra and Ryzen
+// 8000G. A dated part number in the shop window is a claim about what is in the
+// box, and it is the wrong one.
+//
+// What is left is silicon that does not carry a generation on its face: board
+// macros, DDR5, an M.2, a socket. They read as "we build computers" rather than
+// as a specific product, which is what a background behind a headline should
+// do. Genuinely current NVIDIA, Intel and AMD banner artwork has to come from
+// their partner kits -- it is not something to approximate.
 const BANNER_POOL = [
   "/images/banner/banner-amd-1.jpg",
-  "/images/components/cpu-amd.webp",
-  "/images/components/cpu-intel.webp",
-  "/images/components/gpu-pro.webp",
-  "/images/banner/banner-nvidia-2.jpg",
-  "/images/banner/banner-nvidia-3.jpg",
   "/images/banner/banner-board-1.jpg",
   "/images/banner/banner-board-2.jpg",
+  "/images/components/board-neutral.webp",
+  "/images/components/pcb-macro.webp",
+  "/images/components/cpu-intel.webp",
+  "/images/components/cpu-amd.webp",
+  "/images/components/ddr5.webp",
+  "/images/components/m2.webp",
 ];
 
 /**
@@ -121,6 +136,17 @@ export default function Home() {
     }
     return pool.slice(0, CATEGORIES.length);
   });
+  // Decode every slide up front. The carousel swaps on a timer, so without this
+  // the first showing of each banner races a 300-900KB download that only
+  // starts when the slide appears -- which is why it was intermittent and why
+  // it followed the shuffle around.
+  useEffect(() => {
+    slideImages.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, [slideImages]);
+
   useEffect(() => {
     const t = setInterval(() => setSlide((s) => (s + 1) % CATEGORIES.length), 6000);
     return () => clearInterval(t);
@@ -138,7 +164,15 @@ export default function Home() {
       data-testid="home-page"
     >
       {/* HERO — JWIPC-style banner carousel */}
-      <section className="keep-dark relative h-[92vh] min-h-[560px] overflow-hidden" data-testid="hero-section">
+      {/* bg-[#050505]: the slide image is the only thing painting this section,
+          so while one is still decoding the two dark overlays below sat over
+          nothing and the light theme's page colour showed through -- which is
+          the "hero randomly goes grey" everyone kept seeing. A base colour means
+          a gap is black, which is what the overlays already assume. */}
+      <section
+        className="keep-dark relative h-[92vh] min-h-[560px] overflow-hidden bg-[#050505]"
+        data-testid="hero-section"
+      >
         <AnimatePresence mode="sync">
           <motion.div
             key={slide}
