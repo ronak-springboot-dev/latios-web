@@ -15,6 +15,8 @@ import {
   PdpBleed, PdpStickySplit, PdpCompare, PdpIoMap, PdpExploded, PdpSpecTeaser,
 } from "./sections";
 import { PdpBand } from "./PdpBand";
+import { PdpSpotlight } from "./PdpSpotlight";
+import { PdpSpecTable } from "./PdpSpecTable";
 import { PdpReveal } from "./PdpReveal";
 import { PdpWalkthrough } from "./PdpWalkthrough";
 import { getTheme, themeVars } from "./theme";
@@ -31,10 +33,12 @@ const REGISTRY = {
   compare: PdpCompare,
   ioMap: PdpIoMap,
   exploded: PdpExploded,
+  spotlight: PdpSpotlight,
   band: PdpBand,
   reveal: PdpReveal,
   walkthrough: PdpWalkthrough,
   specTeaser: PdpSpecTeaser,
+  specTable: PdpSpecTable,
   video: ProductVideo,
 };
 
@@ -42,6 +46,10 @@ export const PdpRenderer = ({ model, page, datasheet, tabs, onViewSpecs, onEnqui
   const theme = getTheme(model.slug);
   const sections = page?.sections ?? [];
 
+  // themeVars is also set on ModelPage's <motion.main>, which is what puts the
+  // tab bar, the spec sheet and the CTA band inside the accent scope. Setting it
+  // again here is deliberate and idempotent: it keeps this renderer correct if
+  // it is ever mounted somewhere that has not done so.
   return (
     <div data-testid="model-showcase" style={themeVars(theme)}>
       {sections.map((s, i) => {

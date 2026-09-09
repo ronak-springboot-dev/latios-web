@@ -558,7 +558,7 @@ export const PdpCompare = ({ model, theme, heading, subline, rows = [], against 
  * The rows come from the model's own I/O spec entries, so the list cannot drift
  * from the spec sheet.
  */
-export const PdpIoMap = ({ model, theme, image, heading, body }) => {
+export const PdpIoMap = ({ model, theme, image, heading, body, faces = [] }) => {
   const io = useMemo(
     () =>
       (model.specGroups ?? [])
@@ -566,20 +566,75 @@ export const PdpIoMap = ({ model, theme, image, heading, body }) => {
         .filter(([l]) => /i\/o|network|front|rear/i.test(l)),
     [model]
   );
-  if (!image || !io.length) return null;
+  const [face, setFace] = useState(0);
+  const shown = faces[face] ?? null;
+  const src = shown?.image ?? image;
+  if (!src || !io.length) return null;
 
   return (
     <Band theme={theme} data-testid="pdp-io-map">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-        <Reveal>
-          <figure className="border border-white/10 overflow-hidden">
-            <img src={image} alt={`${model.name} I/O`} loading="lazy" className="w-full object-cover" />
-          </figure>
-        </Reveal>
+        <div>
+          {faces.length > 1 && (
+            <div className="mb-5 flex flex-wrap gap-2" data-testid="pdp-io-faces">
+              {faces.map((f, i) => (
+                <button
+                  key={f.label}
+                  onClick={() => setFace(i)}
+                  data-testid={`pdp-io-face-${i}`}
+                  aria-pressed={i === face}
+                  className="rounded-full px-4 py-2 text-[10px] uppercase tracking-[0.2em] border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-white/40"
+                  style={
+                    i === face
+                      ? { background: ACCENT, borderColor: "transparent", color: "#fff" }
+                      : { borderColor: "rgba(255,255,255,0.15)", color: "#a1a1aa" }
+                  }
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+          )}
+          <Reveal>
+            <figure className="relative border border-white/10 overflow-hidden">
+              <img
+                src={src}
+                alt={shown ? `${model.name} — ${shown.label}` : `${model.name} I/O`}
+                loading="lazy"
+                className="w-full object-cover"
+              />
+              {/* Pins are placed in fractions of the frame, the same convention
+                  PdpWalkthrough uses, so a face can be re-cropped without any
+                  pin needing to be re-measured in pixels. */}
+              {(shown?.pins ?? []).map((pin) => (
+                <span
+                  key={`${pin.port}-${pin.x}-${pin.y}`}
+                  className="absolute -translate-x-1/2 -translate-y-1/2 flex items-center gap-2"
+                  style={{ left: `${pin.x * 100}%`, top: `${pin.y * 100}%` }}
+                >
+                  <span
+                    className="w-2.5 h-2.5 rounded-full ring-2 ring-black/50 shrink-0"
+                    style={{ background: ACCENT }}
+                  />
+                  <span className="whitespace-nowrap rounded bg-black/75 px-2 py-1 text-[9px] uppercase tracking-[0.18em] text-white backdrop-blur-sm">
+                    {pin.port}
+                  </span>
+                </span>
+              ))}
+            </figure>
+          </Reveal>
+        </div>
         <Reveal delay={0.08}>
-          <Kicker>Connectivity</Kicker>
-          <BandHeading>{heading ?? "Every port you'll actually use."}</BandHeading>
-          {body && <p className="mt-5 text-zinc-400 leading-relaxed">{body}</p>}
+          <SectionHead
+            theme={theme}
+            kicker="Connectivity"
+            heading={heading ?? "Every port you'll actually use."}
+            body={body}
+            align="left"
+          />
+          {/* The port list is derived from the model's own specGroups rather
+              than authored here, so a diagram and the specification table below
+              it cannot drift apart. */}
           <dl className="mt-8 divide-y divide-white/10 border-t border-white/10">
             {io.map(([label, value]) => (
               <div key={label} className="py-4">

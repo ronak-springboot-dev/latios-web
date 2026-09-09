@@ -34,6 +34,28 @@ export default function ModelPage() {
 
   const scrollToContact = () => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
 
+  /**
+   * "Full specification" from the hero or the teaser.
+   *
+   * A restyled page carries the table inline, so this scrolls to it — the
+   * reference puts specs at the foot of the page and sending a reader to a
+   * different tab loses their place. A page that has not been restyled yet has
+   * no inline table, so it still falls back to the specification tab. That
+   * fallback is what makes the rollout page-at-a-time rather than all at once.
+   */
+  const viewSpecs = () => {
+    const inline = document.getElementById("specification");
+    if (inline) {
+      inline.scrollIntoView({ behavior: "smooth", block: "start" });
+      return;
+    }
+    setTab("specification");
+    setTimeout(
+      () => document.querySelector("[data-testid=model-tabs]")?.scrollIntoView({ behavior: "smooth" }),
+      120
+    );
+  };
+
   // familyKey now lives in data/models.js so the PDP comparison section and this
   // spec sheet cannot drift apart on what counts as a sibling.
   const family = ALL_MODELS.filter((m) => familyKey(m) === familyKey(model));
@@ -272,7 +294,7 @@ export default function ModelPage() {
           page={pdp}
           datasheet={datasheet}
           tabs={tabBar}
-          onViewSpecs={() => setTab("specification")}
+          onViewSpecs={viewSpecs}
           onEnquire={scrollToContact}
         />
       ) : (
