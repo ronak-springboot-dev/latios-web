@@ -13,7 +13,6 @@ import { ProductVideo } from "@/components/ProductVideo";
 import {
   PdpHero, PdpBanner, PdpStatWall, PdpMarquee, PdpFeatureGrid, PdpAudiences,
   PdpBleed, PdpStickySplit, PdpCompare, PdpIoMap, PdpExploded, PdpSpecTeaser,
-  PdpThermal,
 } from "./sections";
 import { PdpBand } from "./PdpBand";
 import { PdpReveal } from "./PdpReveal";
@@ -32,7 +31,6 @@ const REGISTRY = {
   compare: PdpCompare,
   ioMap: PdpIoMap,
   exploded: PdpExploded,
-  thermal: PdpThermal,
   band: PdpBand,
   reveal: PdpReveal,
   walkthrough: PdpWalkthrough,

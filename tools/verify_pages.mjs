@@ -172,6 +172,24 @@ console.log(`uniqueness       ${seen.size}/${pages.length} distinct accent+order
   for (const slug of TAXONOMY_SLUGS)
     if (!ALL_MODELS.some((m) => m.slug === slug)) fail(`TAXONOMY lists "${slug}", which is not a real model`);
   console.log(`taxonomy         ${agree}/${ALL_MODELS.length} models render in the category TAXONOMY assigns`);
+
+  // Every model must have an authored product page.
+  //
+  // ModelPage used to carry a whole second rendering path -- a parallax hero and
+  // a generic overview -- for models without one. All 28 had one, so that path
+  // was unreachable, and it has been deleted. This is what keeps it safe: a
+  // model added without a data/pdp/ file fails here rather than shipping a page
+  // that is nothing but a specification table.
+  const authored = new Set(pages.map((f) => basename(f, ".js")));
+  let withPage = 0;
+  for (const m of ALL_MODELS) {
+    if (authored.has(m.slug)) withPage += 1;
+    else fail(`${m.slug} has no data/pdp/${m.slug}.js - its page would fall back to the spec sheet alone`);
+  }
+  for (const slug of authored)
+    if (!ALL_MODELS.some((m) => m.slug === slug))
+      fail(`data/pdp/${slug}.js has no matching model`);
+  console.log(`product pages    ${withPage}/${ALL_MODELS.length} models have an authored page`);
 }
 
 // 6. every category has hero copy, and every hero key is a real category.

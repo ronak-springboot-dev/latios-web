@@ -1,14 +1,11 @@
 import { Fragment, useRef, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { ArrowLeft, ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, FileDown } from "lucide-react";
-import { KineticText } from "@/components/KineticText";
+import { motion } from "framer-motion";
+import { ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, FileDown } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
-import { ParallaxImage } from "@/components/ParallaxImage";
-import { ModelTurntable } from "@/components/ModelTurntable";
 import { PdpRenderer } from "@/components/pdp/PdpRenderer";
-import { ProductVideo } from "@/components/ProductVideo";
-import { getModel, getCategoryModels, DATASHEETS, ALL_MODELS, getVideo, familyKey } from "@/data/models";
+import { getTheme, themeVars } from "@/components/pdp/theme";
+import { getModel, getCategoryModels, DATASHEETS, ALL_MODELS, familyKey } from "@/data/models";
 import { getPdp } from "@/data/pdp";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
@@ -23,26 +20,17 @@ export default function ModelPage() {
     model ? `${model.name} | Latios` : "Latios",
     model ? model.intro : ""
   );
-  const heroRef = useRef(null);
   const stripRef = useRef(null);
   const scrollStrip = (dir) => stripRef.current?.scrollBy({ left: dir * 472, behavior: "smooth" });
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
-  const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0.2]);
 
   if (!model) return <Navigate to="/" replace />;
 
   const others = getCategoryModels(model.category).filter((m) => m.slug !== model.slug);
   const datasheet = DATASHEETS[model.slug];
-  // A long-form product page if this model has one authored; otherwise the
-  // standard overview below. Filling data/pdp/ a model at a time is safe.
+  // Every model has an authored long-form page, which verify_pages.mjs asserts.
+  // If one is ever missing the page still renders the specification sheet
+  // rather than nothing, but that is a degraded fallback, not a design.
   const pdp = getPdp(model.slug);
-  // Loop footage for this chassis, if it has been photographed. Showcase pages
-  // render their own video, so this only applies to the standard overview.
-  const video = getVideo(model);
 
   const scrollToContact = () => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
 
@@ -90,7 +78,7 @@ export default function ModelPage() {
             data-testid={`model-tab-${id}`}
             className={`py-5 text-xs uppercase tracking-[0.3em] border-b-2 transition-colors duration-300 focus:outline-none ${
               tab === id
-                ? "text-white border-[#1a56e8]"
+                ? "text-white border-[var(--pdp-accent)]"
                 : "text-zinc-500 border-transparent hover:text-white"
             }`}
           >
@@ -103,7 +91,7 @@ export default function ModelPage() {
             target="_blank"
             rel="noopener noreferrer"
             data-testid="datasheet-download"
-            className="ml-auto hidden sm:inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-[#6f93f2] hover:text-white transition-colors duration-300"
+            className="ml-auto hidden sm:inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.25em] text-[var(--pdp-accent-soft)] hover:text-white transition-colors duration-300"
           >
             <FileDown className="w-4 h-4" /> Datasheet (PDF)
           </a>
@@ -152,7 +140,7 @@ export default function ModelPage() {
                 checked={diffsOnly}
                 onChange={(e) => setDiffsOnly(e.target.checked)}
                 data-testid="spec-diff-toggle"
-                className="w-4 h-4 accent-[#1a56e8]"
+                className="w-4 h-4 accent-[var(--pdp-accent)]"
               />
               Show the differences
             </label>
@@ -175,7 +163,7 @@ export default function ModelPage() {
                         key={m.slug}
                         data-testid={`spec-col-${m.slug}`}
                         className={`px-5 md:px-7 py-4 align-bottom border-t-2 ${
-                          active ? "border-[#1a56e8]" : "border-transparent"
+                          active ? "border-[var(--pdp-accent)]" : "border-transparent"
                         }`}
                       >
                         <div className={`text-sm font-semibold leading-snug ${active ? "text-white" : "text-zinc-400"}`}>
@@ -189,7 +177,7 @@ export default function ModelPage() {
                               rel="noopener noreferrer"
                               title="Download datasheet (PDF)"
                               data-testid={`spec-pdf-${m.slug}`}
-                              className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-[#6f93f2] hover:text-white transition-colors duration-300"
+                              className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-[0.2em] text-[var(--pdp-accent-soft)] hover:text-white transition-colors duration-300"
                             >
                               <FileDown className="w-4 h-4" /> PDF
                             </a>
@@ -264,130 +252,20 @@ export default function ModelPage() {
     </section>
   );
 
-  const standardOverview = (
-    <>
-      {/* INTRO + STATS */}
-      <section className="max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-32 grid grid-cols-1 lg:grid-cols-2 gap-14 items-end">
-        <Reveal>
-          <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">{model.tag}</p>
-          <p className="font-display text-2xl md:text-4xl font-light tracking-tight text-white leading-snug" data-testid="model-intro">
-            {model.intro}
-          </p>
-        </Reveal>
-        <Reveal delay={0.12}>
-          <div className="grid grid-cols-3 border-t border-l border-white/10" data-testid="model-stats">
-            {model.stats.map(([v, l]) => (
-              <div key={l} className="border-r border-b border-white/10 p-6 md:p-8">
-                <div className="font-display text-2xl md:text-4xl font-black tracking-tighter text-white">{v}</div>
-                <div className="mt-2 text-[10px] uppercase tracking-[0.25em] text-zinc-500">{l}</div>
-              </div>
-            ))}
-          </div>
-        </Reveal>
-      </section>
-
-      {/* TURNTABLE */}
-      <section className="max-w-[1600px] mx-auto px-6 md:px-12 pb-24 md:pb-36" data-testid="turntable-section">
-        <Reveal>
-          <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">360° View</p>
-          <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white mb-12">
-            Take it for a spin.
-          </h2>
-        </Reveal>
-        <Reveal delay={0.1}>
-          <div className="max-w-4xl mx-auto">
-            <ModelTurntable frames={model.gallery} name={model.name} />
-          </div>
-        </Reveal>
-      </section>
-
-      {/* FEATURE CHAPTERS */}
-      <section className="max-w-[1600px] mx-auto px-6 md:px-12 space-y-24 md:space-y-36 pb-24 md:pb-36" data-testid="model-features">
-        {model.features.map((f, i) => (
-          <div
-            key={f.heading}
-            className={`flex flex-col md:flex-row items-center gap-10 md:gap-20 ${
-              i % 2 === 1 ? "md:flex-row-reverse" : ""
-            }`}
-            data-testid={`model-feature-${i}`}
-          >
-            <Reveal className="md:w-3/5 w-full">
-              <ParallaxImage src={f.image} alt={f.heading} aspect="aspect-[16/10]" />
-            </Reveal>
-            <Reveal delay={0.12} className="md:w-2/5 w-full">
-              <p className="kicker-sq text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-5">{f.kicker}</p>
-              <h2 className="font-display text-3xl md:text-4xl font-black tracking-tighter text-white leading-[1.05]">
-                {f.heading}
-              </h2>
-              <p className="mt-5 text-base text-zinc-400 leading-relaxed">{f.body}</p>
-            </Reveal>
-          </div>
-        ))}
-      </section>
-
-      {video && (
-        <ProductVideo src={video.src} poster={video.poster} modelName={model.name} />
-      )}
-    </>
-  );
-
   return (
+    // The accent lives here rather than inside PdpRenderer. It used to be set on
+    // the renderer's own wrapper, which meant the tab bar, the specification
+    // sheet, "More from the range" and the CTA band all rendered OUTSIDE the
+    // accent scope -- so a per-model accent visibly stopped partway down the
+    // page and reverted to brand blue. One level up covers the whole page.
     <motion.main
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5, ease: EASE }}
+      style={themeVars(getTheme(model.slug))}
       data-testid={`model-page-${model.slug}`}
     >
-      {/* HERO — standard models only; a PDP brings its own hero section */}
-      {!pdp && (
-        <section ref={heroRef} className="keep-dark relative h-[92vh] overflow-hidden flex items-end">
-          <motion.img
-            src={model.heroImage}
-            alt={model.name}
-            style={{ y: imgY }}
-            className="absolute inset-0 w-full h-[120%] object-cover"
-            data-testid="model-hero-image"
-          />
-          <div className="absolute inset-0 bg-black/55" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-black/30" />
-          <motion.div
-            style={{ opacity: fade }}
-            className="relative z-10 max-w-[1600px] mx-auto px-6 md:px-12 pb-16 md:pb-24 w-full"
-          >
-            <Link
-              to={`/${model.category}`}
-              data-testid="back-to-towers"
-              className="inline-flex items-center gap-2 text-[10px] uppercase tracking-[0.3em] text-zinc-400 hover:text-white transition-colors duration-300 mb-8"
-            >
-              <ArrowLeft className="w-3.5 h-3.5" /> {model.category[0].toUpperCase() + model.category.slice(1)}
-            </Link>
-            <KineticText
-              testId="model-title"
-              lines={model.name.split(" — ")}
-              className="font-display font-black tracking-tighter text-white leading-[0.95] text-[11vw] md:text-[6.5vw]"
-              delay={0.2}
-            />
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.7, duration: 0.9, ease: EASE }}
-              className="mt-8 flex flex-wrap gap-3"
-              data-testid="model-chips"
-            >
-              {model.chips.map((c) => (
-                <span
-                  key={c}
-                  className="border border-white/25 rounded-full px-5 py-2 text-[10px] uppercase tracking-[0.25em] text-white"
-                >
-                  {c}
-                </span>
-              ))}
-            </motion.div>
-          </motion.div>
-        </section>
-      )}
-
       {pdp && tab === "overview" ? (
         <PdpRenderer
           model={model}
@@ -399,11 +277,8 @@ export default function ModelPage() {
         />
       ) : (
         <>
-          {pdp && (
-            <div className="pt-24 md:pt-32">{tabBar}</div>
-          )}
-          {!pdp && tabBar}
-          {tab === "overview" ? standardOverview : specSheet}
+          <div className={pdp ? "pt-24 md:pt-32" : ""}>{tabBar}</div>
+          {specSheet}
         </>
       )}
 
@@ -419,7 +294,7 @@ export default function ModelPage() {
                     onClick={() => scrollStrip(-1)}
                     data-testid="range-strip-prev"
                     aria-label="Scroll models left"
-                    className="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-zinc-400 hover:text-white hover:border-[#1a56e8] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+                    className="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-zinc-400 hover:text-white hover:border-[var(--pdp-accent)] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--pdp-accent)]"
                   >
                     <ChevronLeft className="w-4 h-4" />
                   </button>
@@ -427,7 +302,7 @@ export default function ModelPage() {
                     onClick={() => scrollStrip(1)}
                     data-testid="range-strip-next"
                     aria-label="Scroll models right"
-                    className="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-zinc-400 hover:text-white hover:border-[#1a56e8] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+                    className="w-10 h-10 rounded-full border border-white/15 flex items-center justify-center text-zinc-400 hover:text-white hover:border-[var(--pdp-accent)] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[var(--pdp-accent)]"
                   >
                     <ChevronRight className="w-4 h-4" />
                   </button>
