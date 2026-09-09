@@ -240,7 +240,7 @@ export const PdpReveal = ({
                 {kicker}
               </p>
             )}
-            <h2 className="font-display text-3xl md:text-6xl font-black tracking-tighter text-white leading-[1.02]">
+            <h2 className="font-display text-3xl md:text-6xl font-semibold tracking-tight text-white leading-[1.1] md:leading-[1.1]">
               {heading}
             </h2>
             {body && (

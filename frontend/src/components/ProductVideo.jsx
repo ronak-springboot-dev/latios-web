@@ -71,7 +71,7 @@ export const ProductVideo = ({ src, poster, modelName, heading, subline }) => {
     <section className="border-t border-white/10" data-testid="showcase-video">
       <div className="max-w-[1600px] mx-auto px-6 md:px-12 py-20 md:py-28">
         <Reveal>
-          <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white text-center mb-4 leading-[1.05]">
+          <h2 className="font-display text-3xl md:text-5xl font-semibold tracking-tight text-white text-center mb-4 leading-[1.15] md:leading-[1.15]">
             {heading || "See it in motion."}
           </h2>
           <p className="text-center text-sm text-zinc-500 mb-14 max-w-xl mx-auto">

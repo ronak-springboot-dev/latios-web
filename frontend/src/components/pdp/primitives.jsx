@@ -37,9 +37,19 @@ export const Kicker = ({ children, className = "" }) => (
   </p>
 );
 
-/** Section heading at the scale the marketing bands use. */
+/**
+ * Section heading at the scale the marketing bands use.
+ *
+ * Weight and tracking are set against the reference page, measured at the same
+ * 1440px: its section heads run 36-54px at weight 500-520 with normal tracking,
+ * where ours were 48px at 900 with -2.4px of tracking. The sizes already
+ * agreed, so the heavy condensed setting was the entire difference in feel.
+ *
+ * 600 rather than their 500: on a dark ground a 500 goes soft at this size, and
+ * the display face is the piece of Latios the restyle is meant to keep.
+ */
 export const BandHeading = ({ children, className = "" }) => (
-  <h2 className={`font-display text-3xl md:text-5xl font-black tracking-tighter text-white leading-[1.05] ${className}`}>
+  <h2 className={`font-display text-3xl md:text-5xl font-semibold tracking-tight text-white leading-[1.15] md:leading-[1.15] ${className}`}>
     {children}
   </h2>
 );
