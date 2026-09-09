@@ -37,7 +37,9 @@ export const PdpBand = ({ theme, heading, kicker, body, items = [] }) => {
   // right space before the lazy image decodes and never letterboxes after.
   const Figure = ({ item, className = "" }) => (
     <figure
-      className={`overflow-hidden rounded-2xl bg-[#0a0a0c] ${className}`}
+      // corner-shape is the superellipse; browsers that do not know it ignore
+      // the declaration and keep the radius, which is what shipped before.
+      className={`overflow-hidden rounded-[28px] [corner-shape:squircle] bg-[#0a0a0c] ${className}`}
       style={{ aspectRatio: `${item.w} / ${item.h}` }}
     >
       <img
@@ -72,7 +74,12 @@ export const PdpBand = ({ theme, heading, kicker, body, items = [] }) => {
             right at theirs. `items-start` so neither column stretches the
             other — the columns end at different heights and that is fine. */}
         <div
-          className={`grid gap-4 md:gap-6 md:grid-cols-2 items-start ${heading ? "mt-12" : ""}`}
+          // Its own measure, narrower than the band container. The assets carry
+          // baked type, so the section is made compact by scaling the whole
+          // grid down rather than by cropping anything.
+          className={`grid gap-4 md:gap-6 md:grid-cols-2 items-start mx-auto max-w-[1080px] ${
+            heading ? "mt-12" : ""
+          }`}
         >
           <Figure item={portrait} />
           <div className="grid gap-4 md:gap-6 content-start">
