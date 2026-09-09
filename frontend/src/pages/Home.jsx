@@ -3,6 +3,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft, ArrowRight, ArrowUpRight, Cpu, ShieldCheck, Wrench } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
+import { PartnerStrip } from "@/components/PartnerStrip";
 import { NEWS } from "@/data/news";
 import { usePageMeta } from "@/hooks/usePageMeta";
 import { APPLICATIONS } from "@/data/applications";
@@ -408,14 +409,7 @@ export default function Home() {
               ))}
             </div>
             <div className="mt-10 flex flex-wrap items-center gap-6">
-              <span className="partner-plate inline-block rounded-md px-5 py-3" data-testid="home-partners-strip">
-                <img
-                  src="/images/Group-29.png"
-                  alt="Powered by Intel, AMD, Windows — Make in India"
-                  loading="lazy"
-                  className="h-6 md:h-7 w-auto"
-                />
-              </span>
+              <PartnerStrip testid="home-partners-strip" />
               <Link
                 to="/about"
                 data-testid="home-about-link"

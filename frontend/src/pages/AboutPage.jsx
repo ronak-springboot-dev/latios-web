@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowUpRight, ArrowLeft } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
+import { PartnerStrip } from "@/components/PartnerStrip";
 import { KineticText } from "@/components/KineticText";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
@@ -162,13 +163,7 @@ export default function AboutPage() {
             <p className="kicker-sq justify-center text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-10">
               Technology Partners
             </p>
-            <div className="partner-plate inline-block rounded-lg px-8 py-6" data-testid="partners-strip">
-              <img
-                src="/images/Group-29.png"
-                alt="Powered by Intel, AMD, Windows — Make in India"
-                className="h-8 md:h-10 w-auto"
-              />
-            </div>
+            <PartnerStrip className="h-8 md:h-10 w-auto" testid="partners-strip" />
             <p className="mt-6 text-[10px] text-zinc-600 max-w-md mx-auto leading-relaxed">
               All third-party trademarks, logos, and brand names displayed are the property of
               their respective owners.

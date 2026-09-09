@@ -20,21 +20,21 @@
  * render the dark-theme logo for a frame on a light page.
  *
  * If Latios has an official reversed lockup, replace
- * public/images/latios-wordmark-reversed.png with it; nothing here changes.
+ * public/images/latios-themed-reversed.png with it; nothing here changes.
  */
 export const Wordmark = ({ className = "h-6 w-auto", testid }) => (
   <span className="inline-flex items-center" data-testid={testid}>
     <img
       src="/images/latios-wordmark.png"
       alt="Latios"
-      className={`${className} wordmark-ink`}
+      className={`${className} themed-ink`}
       data-testid={testid ? `${testid}-light` : undefined}
     />
     <img
-      src="/images/latios-wordmark-reversed.png"
+      src="/images/latios-themed-reversed.png"
       alt="Latios"
       aria-hidden="true"
-      className={`${className} wordmark-reversed`}
+      className={`${className} themed-reversed`}
       data-testid={testid ? `${testid}-reversed` : undefined}
     />
   </span>
