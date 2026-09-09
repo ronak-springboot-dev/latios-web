@@ -676,7 +676,15 @@ export default function ProductPage() {
           className="max-w-[1600px] mx-auto px-6 md:px-12 pb-24 md:pb-36 scroll-mt-24"
           data-testid="models-section"
         >
-          {data.families.length > 1 && <FamilyAccordion families={data.families} />}
+          {/* The family picker is a way to choose between MT/SFF and PROMAX. It
+              is redundant for someone who arrived on a facet link, having
+              already chosen -- and at 468px plus its margin it was the reason
+              the first card still sat 14px below the fold after scrolling.
+              Keyed on the URL rather than on live facet state so that toggling
+              a filter never makes the page jump under the reader. */}
+          {data.families.length > 1 && !deepLinked && (
+            <FamilyAccordion families={data.families} />
+          )}
           <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-x-12 xl:gap-x-16">
             <FilterRail
               groups={facetGroups}
