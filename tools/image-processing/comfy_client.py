@@ -32,10 +32,24 @@ IN_DIR = COMFY / "input"
 OUT_DIR = COMFY / "output"
 LOCAL_OUT = Path(__file__).parent / "generated"
 
-# Q4_K_M by default; LATIOS_UNET=q6 selects the larger Q6_K, which holds fine
-# geometry better on chassis edits at the cost of more offloading on an 8GB card.
-UNET = ("Qwen-Image-Edit-2509-Q6_K.gguf" if os.environ.get("LATIOS_UNET") == "q6"
-        else "Qwen-Image-Edit-2509-Q4_K_M.gguf")
+# The edit line is dated, not numbered -- there is no "Qwen 3 Image Edit". 2511
+# (December 2025) is the release after 2509 and holds identity better across
+# lighting and pose changes, which is the whole job when a brand mark or the
+# Latios wordmark has to survive a re-render.
+#
+# Quant matters more than it looks: fetch_edit_q6.sh records the wordmark coming
+# back "Lohxs" at Q4. Anything destined for production uses a Q6.
+#
+#   LATIOS_UNET=2511   Q6_K, 2511 -- production
+#   LATIOS_UNET=2511q4 Q4_K_M, 2511 -- fast iteration
+#   LATIOS_UNET=q6     Q6_K, 2509 -- the previous production model
+#   (unset)            Q4_K_M, 2509 -- the original default
+UNETS = {
+    "2511": "qwen-image-edit-2511-Q6_K.gguf",
+    "2511q4": "qwen-image-edit-2511-Q4_K_M.gguf",
+    "q6": "Qwen-Image-Edit-2509-Q6_K.gguf",
+}
+UNET = UNETS.get(os.environ.get("LATIOS_UNET", ""), "Qwen-Image-Edit-2509-Q4_K_M.gguf")
 CLIP = "qwen_2.5_vl_7b_fp8_scaled.safetensors"
 VAE = "qwen_image_vae.safetensors"
 

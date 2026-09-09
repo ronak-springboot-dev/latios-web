@@ -447,7 +447,12 @@ export const Header = () => {
               </div>
 
               {/* product tree + featured applications */}
-              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-x-8 gap-y-10">
+              {/* The column count is (top-level categories) + 2 for the rail,
+                  which spans lg:col-span-2 below. Get it wrong and the rail
+                  silently wraps under the columns instead of sitting beside
+                  them -- which is what happened when Towers split into Desktops
+                  and Workstation and took the count from 5 to 6. */}
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-x-8 gap-y-10">
                 {MEGA_CATEGORIES.map((cat, i) => (
                   <motion.div
                     key={cat.slug}
