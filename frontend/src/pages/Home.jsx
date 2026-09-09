@@ -65,7 +65,6 @@ const STATS = [
 // NVIDIA would beat all of this, and photographs of the silicon Latios actually
 // ships would beat it further.
 const BANNER_POOL = [
-  "/images/banner/banner-latios-laptop.webp",
   "/images/banner/banner-latios-tower.webp",
   "/images/banner/banner-intel-cpu.webp",
   "/images/banner/banner-amd-cpu.webp",
@@ -138,7 +137,10 @@ export default function Home() {
       const j = Math.floor(Math.random() * (i + 1));
       [pool[i], pool[j]] = [pool[j], pool[i]];
     }
-    return pool.slice(0, CATEGORIES.length);
+    // Wrap rather than slice. The pool is a curated list, not one image per
+    // category, so it can be shorter than the number of slides -- and slice
+    // would then hand `undefined` to <img> on the slides past its end.
+    return Array.from({ length: CATEGORIES.length }, (_, i) => pool[i % pool.length]);
   });
   // Decode every slide up front. The carousel swaps on a timer, so without this
   // the first showing of each banner races a 300-900KB download that only
