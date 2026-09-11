@@ -26,9 +26,9 @@ export const TAXONOMY = [
     slug: "laptops",
     name: "Laptops",
     children: [
-      { key: "commercial", name: "Commercial", models: ["rugged-laptop-14"] },
-      { key: "business", name: "Business", models: ["pro-ai-laptop-14"] },
-      { key: "consumer", name: "Consumer", models: ["archer-ltg540z"] },
+      { key: "business", name: "Business", models: ["pro-14"] },
+      { key: "notebook", name: "Notebook", soon: true },
+      { key: "gaming", name: "Gaming", models: ["archer-ltg540z"] },
     ],
   },
   {

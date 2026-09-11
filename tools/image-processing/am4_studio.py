@@ -184,16 +184,22 @@ def despeckle(rgba, interior, threshold=22):
     return out
 
 
-def light(rgba, sheen_at=0.3, key=(255, 226, 190), fill=(150, 176, 214)):
-    """Form, local contrast, rims and a sheen, all inside the product's alpha."""
+def light(rgba, sheen_at=0.3, key=(255, 226, 190), fill=(150, 176, 214),
+          lift=0.22, fall=0.36, sharpen=70):
+    """Form, local contrast, rims and a sheen, all inside the product's alpha.
+
+    The defaults are the black MT's: a 22% lift at the top is what made a black
+    box read. Bright anodised aluminium clips to white under the same lift, so a
+    laptop passes lift=0 and a gentler fall and sharpen.
+    """
     w, h = rgba.size
     alpha = rgba.getchannel("A")
     rgb = rgba.convert("RGB").filter(
-        ImageFilter.UnsharpMask(radius=max(3, w // 90), percent=70, threshold=1))
+        ImageFilter.UnsharpMask(radius=max(3, w // 90), percent=sharpen, threshold=1))
     arr = np.asarray(rgb).astype(float)
     yy, xx = np.mgrid[0:h, 0:w]
     t, u = yy / h, xx / w
-    arr *= (1.22 - 0.36 * t)[..., None]                          # light falls from above
+    arr *= ((1 + lift) - fall * t)[..., None]                    # light falls from above
     arr += (np.exp(-((u - sheen_at) / 0.10) ** 2) * 20)[..., None]  # one soft sheen
     edge = alpha.filter(ImageFilter.MinFilter(9))
     edge = np.asarray(ImageChops.subtract(alpha, edge).filter(ImageFilter.GaussianBlur(2))).astype(float) / 255
@@ -207,11 +213,14 @@ def light(rgba, sheen_at=0.3, key=(255, 226, 190), fill=(150, 176, 214)):
     return out
 
 
-def compose(product, W, H, height, floor, cx=0.5, halo=(44, 46, 54), glow=(125, 66, 18)):
+def compose(product, W, H, height, floor, cx=0.5, halo=(44, 46, 54), glow=(125, 66, 18),
+            reflect=True, shadow=True):
     """Stage a lit product. height and floor are fractions of H.
 
     Returns (canvas RGB, (x, y, scale)): where the product's top-left landed and
-    how much it was scaled, so callers can place callouts on it.
+    how much it was scaled, so callers can place callouts on it. reflect and
+    shadow are for a product standing on the floor; a view from directly above
+    has neither.
     """
     t = np.linspace(0, 1, H)[:, None, None]
     ground = np.array([7, 7, 10]) * (1 - t) + np.array([3, 3, 5]) * t
@@ -230,13 +239,15 @@ def compose(product, W, H, height, floor, cx=0.5, halo=(44, 46, 54), glow=(125, 
     fy = int(H * floor)
     x, y = int(W * cx - p.width / 2), fy - ph
 
-    refl = p.transpose(Image.FLIP_TOP_BOTTOM).crop((0, 0, p.width, ph // 3))
-    fade = ImageOps.invert(Image.linear_gradient("L").resize(refl.size)).point(lambda v: int(v * 0.20))
-    refl.putalpha(ImageChops.multiply(refl.getchannel("A"), fade))
-    img.paste(refl, (x, fy), refl)
+    if reflect:
+        refl = p.transpose(Image.FLIP_TOP_BOTTOM).crop((0, 0, p.width, ph // 3))
+        fade = ImageOps.invert(Image.linear_gradient("L").resize(refl.size)).point(lambda v: int(v * 0.20))
+        refl.putalpha(ImageChops.multiply(refl.getchannel("A"), fade))
+        img.paste(refl, (x, fy), refl)
 
-    shadow = Image.new("L", (W, H), 0)
-    ImageDraw.Draw(shadow).ellipse([x - p.width * 0.06, fy - H * 0.010, x + p.width * 1.06, fy + H * 0.014], fill=220)
-    img = Image.composite(Image.new("RGB", (W, H), (0, 0, 0)), img, shadow.filter(ImageFilter.GaussianBlur(6)))
+    if shadow:
+        sm = Image.new("L", (W, H), 0)
+        ImageDraw.Draw(sm).ellipse([x - p.width * 0.06, fy - H * 0.010, x + p.width * 1.06, fy + H * 0.014], fill=220)
+        img = Image.composite(Image.new("RGB", (W, H), (0, 0, 0)), img, sm.filter(ImageFilter.GaussianBlur(6)))
     img.paste(p, (x, y), p)
     return img, (x, y, scale)

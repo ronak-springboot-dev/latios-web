@@ -16,7 +16,7 @@ import p_mt_h610_ddr4 from "./mt-h610-ddr4";
 import p_mt_h610_ddr5 from "./mt-h610-ddr5";
 import p_mt_pro_h610_ddr5 from "./mt-pro-h610-ddr5";
 import p_mt_q670_ddr5 from "./mt-q670-ddr5";
-import p_pro_ai_laptop_14 from "./pro-ai-laptop-14";
+import p_pro_14 from "./pro-14";
 import p_pro_ifp from "./pro-ifp";
 import p_pro_monitor from "./pro-monitor";
 import p_pro_ptz_camera from "./pro-ptz-camera";
@@ -26,7 +26,6 @@ import p_promax_q870 from "./promax-q870";
 import p_promax_t2_w680 from "./promax-t2-w680";
 import p_promax_t2_w880 from "./promax-t2-w880";
 import p_promax_t4_plus from "./promax-t4-plus";
-import p_rugged_laptop_14 from "./rugged-laptop-14";
 import p_sff_am5_pro_ai from "./sff-am5-pro-ai";
 import p_sff_b860_pro_ai from "./sff-b860-pro-ai";
 import p_sff_h610_ddr5 from "./sff-h610-ddr5";
@@ -46,7 +45,7 @@ export const PDP = {
   "mt-h610-ddr5": p_mt_h610_ddr5,
   "mt-pro-h610-ddr5": p_mt_pro_h610_ddr5,
   "mt-q670-ddr5": p_mt_q670_ddr5,
-  "pro-ai-laptop-14": p_pro_ai_laptop_14,
+  "pro-14": p_pro_14,
   "pro-ifp": p_pro_ifp,
   "pro-monitor": p_pro_monitor,
   "pro-ptz-camera": p_pro_ptz_camera,
@@ -56,7 +55,6 @@ export const PDP = {
   "promax-t2-w680": p_promax_t2_w680,
   "promax-t2-w880": p_promax_t2_w880,
   "promax-t4-plus": p_promax_t4_plus,
-  "rugged-laptop-14": p_rugged_laptop_14,
   "sff-am5-pro-ai": p_sff_am5_pro_ai,
   "sff-b860-pro-ai": p_sff_b860_pro_ai,
   "sff-h610-ddr5": p_sff_h610_ddr5,

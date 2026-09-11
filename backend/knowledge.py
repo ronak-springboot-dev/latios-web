@@ -10,8 +10,8 @@ COMPANY
 
 PRODUCT RANGE
 LAPTOPS (Mobile Computing):
-1. Latios PRO AI Laptop 14" (LTB244X): Intel Core Ultra with AI NPU, Windows 11, up to 64GB DDR5, dual SSD up to 2TB, USB-C PD up to 150W + Thunderbolt. Lightweight business flagship.
-2. Latios Rugged Laptop 14": Core Ultra AI, Windows 11 Pro, Intel Arc/Xe graphics, MIL-STD-810H and IP65 certified, 14"/15.6" FHD touchscreen — for rail, field and industrial sites.
+1. Latios PRO 14 (business): one aluminium 14" chassis in three platforms — AMD Ryzen AI 300 (Copilot+ PC, NPU up to 50+ TOPS, Radeon 860M), AMD Ryzen 8040 (Radeon 780M) or Intel Core Raptor Lake-U refresh (Iris Xe). 14" 16:10 2880x1800 120Hz 400 nits 100% sRGB (or 1920x1200 60Hz), DDR5-5600 up to 32GB in two SO-DIMM slots, Wi-Fi 6E, FHD + IR camera option with privacy shutter, USB4 (AMD) or Thunderbolt 4 (Intel), HDMI 2.1, RJ45, USB-C charging up to 150W, 80Wh battery (Intel 60Wh, 80Wh option), 180° lay-flat hinge, 311 x 220 x 18.5 mm, 1.5 kg. Storage and OS are not published yet.
+2. Latios Notebook 14: coming soon; specifications not yet published.
 3. Latios Archer LTG540Z (gaming): Intel Core Ultra 9 200HX, NVIDIA RTX 5050/5060/5070/5070 Ti/5080, 16" 2.5K Mini LED 300Hz 500 nits, max 270W CPU+GPU OverBoost Ultra.
 
 TOWERS / DESKTOPS (Business Desktops — MT/SFF/MFF):
@@ -52,7 +52,7 @@ BEHAVIOR
 - For pricing, bulk orders and demos, always direct to sales@latios.in or +91 82381 40787.
 - If unsure about a spec, say so and suggest the relevant datasheet or sales contact instead of inventing numbers.
 - When you mention a specific Latios product, ALWAYS hyperlink it in markdown: [Product Name](/category/slug). Valid product URLs:
-  Laptops: /laptops/pro-ai-laptop-14 · /laptops/rugged-laptop-14 · /laptops/archer-ltg540z
+  Laptops: /laptops/pro-14 · /laptops/archer-ltg540z
   Desktops: /desktops/mt-amd-am4 · /desktops/mt-h610-ddr4 · /desktops/mt-h610-ddr5 · /desktops/mt-pro-h610-ddr5 · /desktops/mt-q670-ddr5 · /desktops/mt-am5-pro-ai · /desktops/sff-h610-ddr5 · /desktops/sff-am5-pro-ai · /desktops/sff-b860-pro-ai · /desktops/sff-h810-pro-ai · /desktops/mff-dp10
   Workstations: /workstation/promax-q870 · /workstation/promax-t2-w880 · /workstation/promax-t2-w680 · /workstation/promax-t4-plus
   AV: /av/sp50-speakerphone · /av/hps-controller · /av/pro-web-camera · /av/pro-ptz-camera · /av/pro-video-soundbar · /av/video-soundbar-4k

@@ -83,7 +83,7 @@ const BANNER_POOL = [
 const HERO_SLIDES = {
   laptops: {
     headline: "Power That Travels.",
-    subline: "Explore AI-ready and rugged laptops — designed, manufactured and supported in India.",
+    subline: "Explore AI-ready business and gaming laptops — designed, manufactured and supported in India.",
   },
   desktops: {
     headline: "Efficiency, Reliability, and Quality.",

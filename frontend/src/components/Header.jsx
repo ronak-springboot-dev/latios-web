@@ -66,8 +66,9 @@ const AI_LINKS = [
 
 const AI_TOTAL = AI_LINKS.reduce((n, x) => n + x.n, 0);
 
-// Processor families, counted across the two desktop-class categories: that is
-// where the choice exists at all -- every Latios laptop is Intel.
+// Processor families, counted across the two desktop-class categories, where
+// each model IS one processor family. A laptop's is a configuration choice on
+// one page -- the PRO 14 is Intel or AMD -- so a vendor count cannot hold it.
 //
 // Each vendor links to whichever of the two actually holds it, rather than to a
 // fixed listing. Xeon lives only in PROMAX, so a fixed /desktops link would send

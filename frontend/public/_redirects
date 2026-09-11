@@ -21,6 +21,12 @@
 /towers/*                /desktops/:splat              301
 /towers                  /workstation                  301
 
+# Two laptops retired when the range became PRO 14 / Notebook 14 / Archer. The
+# PRO AI's place is the PRO 14's; nothing replaced the Rugged, so its old page
+# lands on the range rather than on a laptop that is not rugged.
+/laptops/pro-ai-laptop-14   /laptops/pro-14   301
+/laptops/rugged-laptop-14   /laptops          301
+
 # SPA fallback: react-router owns every route, so unknown paths must return the
 # shell rather than a 404.
 #

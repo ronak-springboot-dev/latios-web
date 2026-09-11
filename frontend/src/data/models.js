@@ -1250,18 +1250,10 @@ export const WORKSTATION_FAMILIES = [
 
 const LAPTOP_FEATURES = [
   {
-    kicker: "AI Performance",
-    heading: "Core Ultra, with an NPU inside",
-    body: "Every Latios laptop runs Intel Core Ultra with a dedicated AI engine — acceleration for the apps you already use, without draining the battery.",
-    // Was laptop-real-1.jpg: an Apple MacBook Pro, leading the Latios laptop
-    // category. Replaced with a photograph of the real Archer unit.
-    image: "/images/details/archer-open.webp",
-  },
-  {
-    kicker: "Endurance",
-    heading: "Rugged when it needs to be",
-    body: "The Rugged series carries MIL-STD-810H and IP65 certification with sunlight-readable touchscreens — rail-ready, field-ready, monsoon-ready.",
-    image: "/images/laptop-rugged.jpg",
+    kicker: "Business",
+    heading: "PRO 14: aluminium, and a choice of silicon",
+    body: "A 14-inch 2880×1800 120Hz display, a 180° hinge and 1.5 kg, with Intel Core or AMD Ryzen inside — up to Ryzen AI 300 with 50+ TOPS for Copilot+.",
+    image: "/images/laptops/pro14/hero.webp",
   },
   {
     kicker: "Gaming",
@@ -1269,6 +1261,16 @@ const LAPTOP_FEATURES = [
     body: "The LTG540Z pairs Core Ultra 9 200HX with up to RTX 5080 graphics and a 2.5K Mini LED panel — 270W of OverBoost Ultra power, unleashed.",
     image: "/images/details/archer-io.webp",
   },
+];
+
+// The PRO 14's own renders, branded and plated for the buy box's light stage.
+const PRO14_GALLERY = [
+  "/images/laptops/pro14/g-open45.webp",
+  "/images/laptops/pro14/g-back.webp",
+  "/images/laptops/pro14/g-close30.webp",
+  "/images/laptops/pro14/g-top.webp",
+  "/images/laptops/pro14/g-left.webp",
+  "/images/laptops/pro14/g-right.webp",
 ];
 
 const AUDIO_FEATURES = [
@@ -1338,86 +1340,68 @@ export const LAPTOPS_FAMILY = {
   kicker: "Mobile Computing",
   title: "Laptops that earn their keep.",
   blurb:
-    "Three machines for three kinds of days — the PRO AI for business, the Rugged for the field, and the Archer for everything that needs 300 frames per second.",
+    "The PRO 14 for business — Intel or AMD Ryzen AI in 1.5 kg of aluminium — and the Archer for everything that needs 300 frames per second.",
   models: [
+    // Every figure is from the factory's sales kit for this chassis (pp. 7-19,
+    // 24-26, 28-29). The kit lists no storage and no OS, so neither is here; its
+    // three thicknesses (17, 17.5, 18.5 mm) resolve to the spec table's 18.5.
     {
-      slug: "pro-ai-laptop-14",
-      name: "Latios PRO AI Laptop — 14\u2033",
-      tag: "LTB244X · Core Ultra AI",
-      image: "/images/laptop-pro14.jpg",
-      gallery: ["/images/laptop-pro14.jpg", "/images/laptops-hero.jpg"],
-      heroImage: "/images/laptops-hero.jpg",
-      chips: ["Core Ultra AI", "64GB DDR5", "Thunderbolt"],
+      slug: "pro-14",
+      name: "Latios PRO 14",
+      tag: "14″ 2.8K 120Hz · Intel or AMD Ryzen AI",
+      image: "/images/laptops/pro14/g-open45.webp",
+      gallery: PRO14_GALLERY,
+      heroImage: "/images/laptops/pro14/hero.webp",
+      chips: ["Ryzen AI 300", "2.8K 120Hz", "1.5 kg"],
       stats: [
-        ["14\u2033", "Business display"],
-        ["64GB", "Max DDR5 memory"],
-        ["150W", "USB-C PD charging"],
+        ["1.5 kg", "All-aluminium"],
+        ["2.8K", "120Hz 14″ display"],
+        ["80Wh", "Battery (AMD)"],
       ],
       intro:
-        "The everyday flagship: lightweight design, heavy performance — Core Ultra AI processing, up to 64GB of DDR5 and dual SSDs in a 14-inch frame.",
+        "The business laptop, in aluminium: a 14-inch 2880 × 1800 120Hz display, a 180° hinge and a choice of Intel Core or AMD Ryzen — up to Ryzen AI 300 with 50+ TOPS for Copilot+ — in 1.5 kg.",
       highlights: [
-        "Intel Core Ultra AI power",
-        "Windows 11 ready",
-        "Up to 64GB DDR5 memory",
-        "Dual SSD — up to 2TB storage",
+        "AMD Ryzen AI 300 · AMD Ryzen 8040 · Intel Core",
+        "14″ 16:10 2880 × 1800 120Hz, 400 nits, 100% sRGB",
+        "DDR5-5600, two SO-DIMM slots, up to 32GB",
+        "311 × 220 × 18.5 mm · 1.5 kg · 180° lay-flat",
       ],
       features: LAPTOP_FEATURES,
       specGroups: [
         {
-          group: "Performance",
+          group: "Processor",
           items: [
-            ["Processor", "Intel Core Ultra with AI NPU"],
-            ["Memory", "Up to 64GB DDR5"],
-            ["Storage", "Dual SSD, up to 2TB"],
+            ["Processor", "AMD Ryzen AI 300 (Krackan Point, up to 8C/16T) · AMD Ryzen 8040 (Hawk Point, 8C/16T) · Intel Core (Raptor Lake-U refresh, up to 10C/12T)"],
+            ["Graphics", "AMD Radeon 860M · AMD Radeon 780M · Intel Iris Xe"],
+            ["AI", "Copilot+ PC with Ryzen AI 300 — NPU up to 50+ TOPS"],
           ],
         },
         {
-          group: "Connectivity & Power",
+          group: "Memory & Display",
           items: [
-            ["Charging", "USB-C PD up to 150W"],
-            ["Ports", "Thunderbolt · USB-C · USB-A"],
-            ["OS", "Windows 11 ready"],
-          ],
-        },
-      ],
-    },
-    {
-      slug: "rugged-laptop-14",
-      name: "Latios Rugged Laptop — 14\u2033",
-      tag: "MIL-STD-810H · IP65",
-      image: "/images/laptop-rugged.jpg",
-      gallery: ["/images/laptop-rugged.jpg", "/images/laptops-hero.jpg"],
-      heroImage: "/images/laptops-hero.jpg",
-      chips: ["Core Ultra", "IP65", "Touchscreen"],
-      stats: [
-        ["810H", "MIL-STD certified"],
-        ["IP65", "Dust & water proof"],
-        ["14\u2033", "FHD touchscreen"],
-      ],
-      intro:
-        "AI power, rail-ready tough: a Windows AI laptop certified to MIL-STD-810H and IP65, built for sites, plants and fields — not just desks.",
-      highlights: [
-        "Intel Core Ultra AI processor",
-        "Windows 11 Pro",
-        "MIL-STD-810H | IP65 certified",
-        "14\u2033 / 15.6\u2033 FHD touchscreen",
-      ],
-      features: LAPTOP_FEATURES,
-      specGroups: [
-        {
-          group: "Performance",
-          items: [
-            ["Processor", "Intel Core Ultra AI"],
-            ["Graphics", "Intel Arc / Xe"],
-            ["OS", "Windows 11 Pro"],
+            ["Memory", "DDR5-5600, 2× SO-DIMM, up to 32GB"],
+            ["Display", "14″ 16:10 2880 × 1800 120Hz, 400 nits, ΔE<2, 100% sRGB · or 1920 × 1200 60Hz, 100% sRGB"],
+            ["Camera", "HD with privacy shutter · FHD + IR (face unlock) option"],
+            ["Keyboard", "Backlit, single-zone white, with Copilot key"],
           ],
         },
         {
-          group: "Durability",
+          group: "Connectivity",
           items: [
-            ["Certification", "MIL-STD-810H · IP65"],
-            ["Display", '14" / 15.6" FHD touchscreen'],
-            ["Use case", "Rail, field and industrial sites"],
+            ["Right side", "2× USB-A 3.2 · full-size card reader"],
+            ["Left side", "USB-A 2.0 · USB-C 3.2 · 3.5mm combo jack · Nano Kensington lock"],
+            ["Rear", "USB4 (AMD) or Thunderbolt 4 (Intel) · HDMI 2.1 · RJ45 1Gb LAN"],
+            ["Wireless", "Wi-Fi 6E"],
+            ["Charging", "USB-C, up to 150W (proprietary protocol) · 40% in under 30 min"],
+          ],
+        },
+        {
+          group: "Build",
+          items: [
+            ["Dimensions", "311 × 220 × 18.5 mm (±1%)"],
+            ["Weight", "1.5 kg (±5%)"],
+            ["Battery", "80Wh (AMD) · 60Wh, 80Wh option (Intel)"],
+            ["Chassis", "Aluminium lid, top case and base — sandblasted, anodised, diamond-cut edges · 180° lay-flat hinge"],
           ],
         },
       ],
@@ -1908,7 +1892,7 @@ const ALL_FAMILIES = [...DESKTOP_FAMILIES, ...WORKSTATION_FAMILIES,
  * thing that should require a deliberate edit.
  */
 export const AI_READY = new Set([
-  "pro-ai-laptop-14",   // Core Ultra with NPU
+  "pro-14",             // Ryzen AI 300 configuration: Copilot+ PC, 50+ TOPS NPU
   "mt-am5-pro-ai",      // Ryzen 8000G, Ryzen AI
   "sff-am5-pro-ai",
   "sff-b860-pro-ai",

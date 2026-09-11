@@ -119,15 +119,10 @@ const THEMES = {
     kicker: "The top of the range",
   },
   // --- laptops, audio and video --------------------------------------------
-  "pro-ai-laptop-14": {
+  "pro-14": {
     accent: "#4f9cf9", accentSoft: "#a5cbfd",
     density: "normal", surface: "#070a0e",
-    kicker: "Business, unplugged",
-  },
-  "rugged-laptop-14": {
-    accent: "#c9a227", accentSoft: "#e6cf7e",
-    density: "tight", surface: "#0b0a06",
-    kicker: "Built for the field",
+    kicker: "Business, in aluminium",
   },
   "archer-ltg540z": {
     accent: "#e0245e", accentSoft: "#f087a6",

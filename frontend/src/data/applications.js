@@ -12,22 +12,22 @@ export const APPLICATIONS = [
       "Windows, Android or OPS flexibility per room",
       "Business laptops and desktops for computer labs and staff",
     ],
-    products: ["pro-ifp", "pro-ai-laptop-14", "in-series-lfd"],
+    products: ["pro-ifp", "pro-14", "in-series-lfd"],
   },
   {
     slug: "government",
     title: "Government",
     blurb: "GeM-registered OEM for public sector fleets",
-    image: "/images/laptop-rugged.jpg",
+    image: "/images/laptops/pro14/back.webp",
     intro:
       "As a GeM-registered Indian OEM, Latios supplies certified, secure computing to departments and PSUs — with full documentation, TPM 2.0 security and local manufacturing accountability.",
     points: [
       "GeM-registered with ISO 9001 / 14001 / 27001, BIS and RoHS documentation",
       "Hardware TPM 2.0 and chassis security across the desktop range",
-      "Rugged MIL-STD-810H and IP65 laptops for field operations",
+      "Business laptops with Wi-Fi 6E and an FHD + IR camera option",
       "Volume deployment with imaging and on-site warranty",
     ],
-    products: ["rugged-laptop-14", "mt-h610-ddr5", "mff-dp10"],
+    products: ["pro-14", "mt-h610-ddr5", "mff-dp10"],
   },
   {
     slug: "enterprise",
@@ -67,12 +67,11 @@ export const APPLICATIONS = [
     intro:
       "We build electronics on our own SMT lines, so we know what shop floors demand: sealed, rugged, serviceable machines that survive dust, heat and vibration.",
     points: [
-      "Rugged laptops and tablets rated MIL-STD-810H and IP65",
       "Fanless-adjacent small-form-factor options for dusty lines",
       "Large-format displays and Active LED for production dashboards",
       "Custom OEM/ODM builds for machine builders",
     ],
-    products: ["rugged-laptop-14", "mt-amd-am4", "active-led"],
+    products: ["mt-amd-am4", "active-led"],
   },
   {
     slug: "boardrooms",
