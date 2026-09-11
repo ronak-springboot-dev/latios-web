@@ -317,9 +317,9 @@ export const DESKTOP_FAMILIES = [
           {
             group: "Connectivity",
             items: [
-              ["Front I/O", "2× USB 3.2 Gen2 Type-C · 2× USB 3.2 Gen1 Type-A · Mic-in"],
-              ["Rear I/O", "HDMI 2.1 (4K@60) · DisplayPort 1.4 · VGA (opt) · 5× USB-A · PS/2 · 3× audio · Kensington · Padlock"],
-              ["Network", "Intel I219-V 1G LAN · Wi-Fi 6E AX211 / Wi-Fi 6 + BT 5.2 options"],
+              ["Front I/O", "2× USB 3.2 Gen 2 Type-C · 2× USB 3.2 Gen 1 Type-A · 1× Mic-in"],
+              ["Rear I/O", "1× USB 3.2 Gen 1 Type-A · 4× USB 2.0 Type-A · RJ45 (1G) · HDMI (4K@60Hz) · DisplayPort 1.4 · VGA (opt) · PS/2 · 3× audio (Realtek ALC897) · Kensington · Padlock"],
+              ["Network", "Intel I219-V 1G LAN · Wi-Fi options: Intel AC3168 (BT 4.2) / AC9462 (BT 5.1) / Wi-Fi 6E AX211 (BT 5.3) / Realtek RTL8852AE Wi-Fi 6 (BT 5.2)"],
             ],
           },
           {

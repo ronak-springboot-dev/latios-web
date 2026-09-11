@@ -134,7 +134,7 @@ const Card = ({ card, n }) => {
           <div className="mt-5 flex-1 flex items-center justify-center min-h-[180px]">
             {dims ? (
               <div className="relative w-full max-w-[420px]" style={{ aspectRatio: dims.aspect }}>
-                <img src={image} alt={alt ?? title} loading="lazy" className="absolute inset-0 w-full h-full" />
+                <img src={image} alt={alt ?? title} loading="lazy" className="absolute inset-0 w-full h-full rounded-2xl" />
                 <Dimensions dims={dims} />
               </div>
             ) : (

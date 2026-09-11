@@ -31,10 +31,10 @@ export default {
       "heading": "The everyday",
       "headingAccent": "workhorse.",
       "body": "AMD Ryzen 5000G processing with Radeon graphics on the die, dual-channel DDR4 and a full array of I/O, in an 18-litre chassis your IT team can open by hand.",
-      "image": "/images/am4/hero-chassis.webp",
-      "alt": "The Latios MT chassis seen from the side against a warm horizon glow",
+      "image": "/images/am4/hero-front.webp",
+      "alt": "The Latios MT tower from the front, its ribbed fascia and Latios wordmark lit against a warm horizon glow",
       "glow": "horizon",
-      "frame": "bleed",
+      "frame": "rounded",
       "stats": [
         ["8", "cores", "Up to Ryzen 7 5700G"],
         ["64", "GB", "DDR4-3200 ceiling"],
@@ -49,12 +49,12 @@ export default {
         {
           "col": 1, "size": "tall",
           "title": "Compact design", "subtitle": "18-litre micro tower",
-          "image": "/images/am4/chassis-side.webp",
-          "alt": "The Latios MT chassis from the side, with its height and depth marked",
+          "image": "/images/am4/chassis-tile.webp",
+          "alt": "The Latios MT chassis from the side in a warm glow, with its height and depth marked",
           "dims": {
-            "aspect": "1400 / 1488",
-            "h": { "x": 6.6, "y1": 2.6, "y2": 89.6, "label": "354 mm" },
-            "d": { "x1": 12.0, "x2": 97.4, "y": 94.8, "label": "312 mm" },
+            "aspect": "1600 / 1235",
+            "h": { "x": 21.2, "y1": 3.0, "y2": 80.5, "label": "354 mm" },
+            "d": { "x1": 24.2, "x2": 78.6, "y": 84.5, "label": "312 mm" },
             "note": "Width 166 mm · 7.59 kg"
           }
         },
@@ -77,11 +77,11 @@ export default {
         },
         {
           "col": 2, "size": "text",
-          "title": "Hardware TPM 2.0", "subtitle": "Kensington slot · padlock loop"
+          "title": "Wi-Fi 6E · TPM 2.0", "subtitle": "Up to Intel AX211 with Bluetooth 5.3 · Kensington · padlock"
         },
         {
           "col": 2, "size": "short",
-          "title": "Dual 4K display", "subtitle": "HDMI 2.1 · DisplayPort 1.4 · VGA (opt)",
+          "title": "Dual 4K display", "subtitle": "HDMI 4K@60 · DisplayPort 1.4 · VGA (opt)",
           "image": "/images/am4/desk-dual.webp",
           "alt": "A desk with two monitors, rendered",
           "fit": "cover"
@@ -166,7 +166,7 @@ export default {
           "label": "Enterprise IT",
           "heading": "Fleets that stay current, not retired",
           "desc": "Standard tools, standard parts, TPM 2.0 at the metal. Roll out hundreds of units knowing each one can be serviced or upgraded in minutes, not truck-rolls.",
-          "bullets": ["TPM 2.0 + secured firmware", "Tool-fast memory and drive access", "Legacy VGA / PS/2 alongside USB-C"],
+          "bullets": ["Hardware TPM 2.0", "Tool-fast memory and drive access", "PS/2 and optional VGA alongside USB-C"],
           "image": "/images/ops.webp"
         },
         {
@@ -189,7 +189,7 @@ export default {
           "id": "frontoffice",
           "label": "Front Office & SMB",
           "heading": "A workhorse that disappears into the desk",
-          "desc": "Quiet fan cooling, an 18-litre footprint and every port accounting teams still rely on — from receipt printers to dual displays.",
+          "desc": "Fan cooling, an 18-litre footprint and every port accounting teams still rely on — from receipt printers to dual displays.",
           "bullets": ["Only 312 × 166 × 354 mm", "Dual-display 4K out of the box", "Up to 500W 80+ Bronze PSU headroom"],
           "image": "/images/av-monitor.jpg"
         }

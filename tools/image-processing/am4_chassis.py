@@ -15,8 +15,7 @@ Before cutting, the mesh window is redrawn as perforated steel with nothing
 behind it. This unit is the Intel Q670, and at card size its board shows through
 the mesh as bright blobs -- on an AM4 page that is the wrong board.
 
-    python am4_chassis.py      # writes the cutout, the bento image, and prints
-                               # the callout geometry for the page data
+    python am4_chassis.py      # builds (and caches) the side and front cutouts
 """
 import io
 from pathlib import Path
@@ -27,7 +26,6 @@ from rembg import new_session, remove
 
 HIRES = Path(r"C:/Ronak/Latios/Images/pipeline/hires")
 WORK = Path(__file__).parent / "generated" / "am4"
-PUBLIC = Path(__file__).resolve().parents[2] / "frontend" / "public" / "images" / "am4"
 
 # The mesh window on pipeline/render-cut/mt-flank.png, measured off a gridded
 # proof of THAT file. Its framing differs from the hires photograph -- the
@@ -44,6 +42,16 @@ MESH = (0.146, 0.158, 0.482, 0.710)
 LIP = ((0.060, 0.948), (0.855, 0.985))     # lower edge of the lip, a straight line
 BEZEL_X = 0.858                            # front bezel: its own curved foot
 FEET = [(0.100, 0.945, 0.133, 0.969), (0.773, 0.976, 0.832, 0.995)]
+
+# The front view, pipeline/render-cut/mt-angle.png cropped to its alpha. It too
+# carries the white sweep's shadow as foreground: a grey wedge left of the base,
+# a strip under it, and a sliver up the right edge where the shadow fell on the
+# sweep behind the box, widening toward the floor. Here the fix is to drop them
+# rather than blacken them -- the stager draws its own contact shadow and floor
+# reflection -- keeping only the dark plinth under the ribs (L 10-41; the sweep
+# is L 90-150). Measured off gridded proofs of the cropped cut.
+FRONT_BASE = ((0.0, 0.946), (1.0, 0.957))           # bottom of the ribs, left -> right
+FRONT_EDGE = ((0.9265, 0.755), (0.9105, 0.950))     # body's right edge, top -> bottom
 
 _session = None
 
@@ -138,28 +146,42 @@ def cutout():
     return rgba
 
 
-def bento_image():
-    """The compact-design card: cutout with margins the callouts live in."""
-    cut = cutout()
-    cw, ch = cut.size
-    L, R, T, B = int(cw * 0.14), int(cw * 0.03), int(ch * 0.03), int(ch * 0.12)
-    W, H = cw + L + R, ch + T + B
-    out = Image.new("RGBA", (W, H), (0, 0, 0, 0))
-    out.paste(cut, (L, T), cut)
-    out = out.resize((1400, int(H * 1400 / W)), Image.LANCZOS)
-    PUBLIC.mkdir(parents=True, exist_ok=True)
-    out.save(PUBLIC / "chassis-side.webp", "WEBP", quality=90, method=6)
-    geo = {
-        "aspect": f"{out.size[0]} / {out.size[1]}",
-        "h": {"x": round(L * 0.55 / W * 100, 1), "y1": round(T / H * 100, 1),
-              "y2": round((T + ch) / H * 100, 1)},
-        "d": {"x1": round(L / W * 100, 1), "x2": round((L + cw) / W * 100, 1),
-              "y": round((T + ch + B * 0.5) / H * 100, 1)},
-    }
-    return out, geo
+def front_cutout():
+    """RGBA front view with the sweep's shadow dropped, cropped to its alpha."""
+    cached = WORK / "front-cut.png"
+    if cached.exists():
+        return Image.open(cached).convert("RGBA")
+    src = Image.open(Path(r"C:/Ronak/Latios/Images/pipeline/render-cut/mt-angle.png")).convert("RGBA")
+    src = src.crop(src.getchannel("A").point(lambda v: 255 if v > 8 else 0).getbbox())
+    arr = np.array(src)
+    h, w = arr.shape[:2]
+    ys, xs = np.mgrid[0:h, 0:w]
+    xf, yf = xs / w, ys / h
+    lum = arr[..., :3].astype(int) @ np.array([299, 587, 114]) // 1000
+    (bx0, by0), (bx1, by1) = FRONT_BASE
+    base = by0 + (xf - bx0) * (by1 - by0) / (bx1 - bx0) + 0.001
+    (ex0, ey0), (ex1, ey1) = FRONT_EDGE
+    edge = ex0 + (yf - ey0) * (ex1 - ex0) / (ey1 - ey0)
+    below = yf > base
+    sweep = (below & (lum >= 55)) | ((yf > ey0) & (xf > edge + 0.002))
+    # Dilate before feathering: feathered alone, the sweep's matted edge
+    # survived as a faint pale outline round where the wedge had been.
+    drop = Image.fromarray((sweep * 255).astype("uint8"))
+    drop = np.asarray(drop.filter(ImageFilter.MaxFilter(5)).filter(ImageFilter.GaussianBlur(2)))
+    arr[..., 3] = (arr[..., 3] * (1 - drop / 255)).astype("uint8")
+    # What stays under the ribs is the plinth, which sits in the box's own
+    # shadow; at photographed brightness it read as a grey slab.
+    arr[below, :3] = (arr[below, :3] * 0.55).astype("uint8")
+    out = Image.fromarray(arr, "RGBA")
+    # Crop on solid alpha: the dropped sweep leaves near-transparent rows at the
+    # bottom, and cropped at >8 they counted as the box -- staged on the floor
+    # line, the plinth then ended short of it and the tower floated.
+    out = out.crop(out.getchannel("A").point(lambda v: 255 if v > 128 else 0).getbbox())
+    WORK.mkdir(parents=True, exist_ok=True)
+    out.save(cached)
+    return out
 
 
 if __name__ == "__main__":
-    img, geo = bento_image()
-    print("chassis-side.webp", img.size)
-    print("geometry", geo)
+    print("side cut", cutout().size)
+    print("front cut", front_cutout().size)
