@@ -124,6 +124,11 @@ const THEMES = {
     density: "normal", surface: "#070a0e",
     kicker: "Business, in aluminium",
   },
+  "notebook-14": {
+    accent: "#2dd4bf", accentSoft: "#99ece0",
+    density: "normal", surface: "#050c0b",
+    kicker: "The everyday notebook",
+  },
   "archer-ltg540z": {
     accent: "#e0245e", accentSoft: "#f087a6",
     density: "normal", surface: "#0d0509",

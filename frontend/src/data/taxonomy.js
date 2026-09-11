@@ -27,7 +27,7 @@ export const TAXONOMY = [
     name: "Laptops",
     children: [
       { key: "business", name: "Business", models: ["pro-14"] },
-      { key: "notebook", name: "Notebook", soon: true },
+      { key: "notebook", name: "Notebook", models: ["notebook-14"] },
       { key: "gaming", name: "Gaming", models: ["archer-ltg540z"] },
     ],
   },

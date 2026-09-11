@@ -16,6 +16,7 @@ import p_mt_h610_ddr4 from "./mt-h610-ddr4";
 import p_mt_h610_ddr5 from "./mt-h610-ddr5";
 import p_mt_pro_h610_ddr5 from "./mt-pro-h610-ddr5";
 import p_mt_q670_ddr5 from "./mt-q670-ddr5";
+import p_notebook_14 from "./notebook-14";
 import p_pro_14 from "./pro-14";
 import p_pro_ifp from "./pro-ifp";
 import p_pro_monitor from "./pro-monitor";
@@ -45,6 +46,7 @@ export const PDP = {
   "mt-h610-ddr5": p_mt_h610_ddr5,
   "mt-pro-h610-ddr5": p_mt_pro_h610_ddr5,
   "mt-q670-ddr5": p_mt_q670_ddr5,
+  "notebook-14": p_notebook_14,
   "pro-14": p_pro_14,
   "pro-ifp": p_pro_ifp,
   "pro-monitor": p_pro_monitor,

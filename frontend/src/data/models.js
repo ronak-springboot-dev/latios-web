@@ -1263,6 +1263,13 @@ const LAPTOP_FEATURES = [
   },
 ];
 
+// The Notebook 14's renders, branded and plated for the buy box's light stage.
+const NOTEBOOK_GALLERY = [
+  "/images/laptops/notebook14/g-hero.webp",
+  "/images/laptops/notebook14/g-angle.webp",
+  "/images/laptops/notebook14/g-lid.webp",
+];
+
 // The PRO 14's own renders, branded and plated for the buy box's light stage.
 const PRO14_GALLERY = [
   "/images/laptops/pro14/g-open45.webp",
@@ -1406,6 +1413,39 @@ export const LAPTOPS_FAMILY = {
         },
       ],
     },
+    // No spec sheet for this machine yet, so the page carries none: one row
+    // saying so, and copy that describes only what the renders show.
+    {
+      slug: "notebook-14",
+      name: "Latios Notebook 14",
+      tag: "Slim aluminium · specifications soon",
+      image: "/images/laptops/notebook14/g-hero.webp",
+      gallery: NOTEBOOK_GALLERY,
+      heroImage: "/images/laptops/notebook14/hero.webp",
+      chips: ["Slim aluminium", "Full-size ports", "Coming soon"],
+      stats: [
+        ["Soon", "Full specifications"],
+        ["14″", "Class"],
+        ["USB-C", "Charging"],
+      ],
+      intro:
+        "The everyday notebook of the range: a slim aluminium body, a full-size keyboard and the ports a working day needs. Its specification sheet is being finalised.",
+      highlights: [
+        "Slim aluminium chassis",
+        "Full-size backlit keyboard",
+        "USB-C, USB-A and HDMI on board",
+        "Full specifications coming soon",
+      ],
+      features: LAPTOP_FEATURES,
+      specGroups: [
+        {
+          group: "Specification",
+          items: [
+            ["Status", "Full specifications coming soon"],
+          ],
+        },
+      ],
+    },
     {
       slug: "archer-ltg540z",
       name: "Latios Archer — LTG540Z",
@@ -1439,6 +1479,8 @@ export const LAPTOPS_FAMILY = {
           items: [
             ["Processor", "Intel Core Ultra 9 200HX series"],
             ["Graphics", "NVIDIA RTX 5050 / 5060 / 5070 / 5070 Ti / 5080"],
+            ["Memory", "DDR5, dual channel, upgradeable"],
+            ["Storage", "Dual M.2 SSD slots"],
             ["Power", "Max 270W CPU + GPU (OverBoost Ultra)"],
           ],
         },

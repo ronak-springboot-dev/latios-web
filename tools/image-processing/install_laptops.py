@@ -31,6 +31,16 @@ GALLERY_WIDTH = 1600
 
 RENDERS = ["hero", "back", "top", "front", "layflat"]
 
+# The Archer's own two renders (gen_archer.py), installed beside the PRO 14's.
+ARCHER_DEST = DEST.parent / "archer"
+ARCHER = ["hero", "angle"]
+
+# The Notebook 14's renders, crop and gallery (gen_notebook.py).
+NB_DEST = DEST.parent / "notebook14"
+NB = ["hero", "angle", "lid"]
+NB_CROPS = {"keyboard": ("open-02.png", (0.235, 0.330, 0.745, 0.700))}
+NB_GALLERY = {"g-hero": "open-01.png", "g-angle": "open-04.png", "g-lid": "open-03.png"}
+
 # Crop boxes as frame fractions of the source render, measured off gridded proofs.
 CROPS = {
     "keyboard": ("IDL_Open_90.png", (0.280, 0.235, 0.720, 0.585)),
@@ -50,11 +60,12 @@ GALLERY = {
 }
 
 
-def save(im, name, width):
-    DEST.mkdir(parents=True, exist_ok=True)
+def save(im, name, width, dest=None):
+    dest = dest or DEST
+    dest.mkdir(parents=True, exist_ok=True)
     if im.width != width:
         im = im.resize((width, round(im.height * width / im.width)), Image.LANCZOS)
-    out = DEST / f"{name}.webp"
+    out = dest / f"{name}.webp"
     im.save(out, "WEBP", quality=88, method=6)
     print(f"  {out.name:16s} {im.mode:4s} {im.size}  {out.stat().st_size // 1024:>4}KB")
 
@@ -87,6 +98,41 @@ if __name__ == "__main__":
             print(f"  skip {name:12s} (not rendered yet)")
             continue
         save(Image.open(src).convert("RGB"), name, WIDTH)
+    for name in ARCHER:
+        if only and f"archer-{name}" not in only:
+            continue
+        src = G.WORK / f"archer-{name}.png"
+        if not src.exists():
+            print(f"  skip archer-{name:6s} (not rendered yet)")
+            continue
+        save(Image.open(src).convert("RGB"), name, WIDTH, dest=ARCHER_DEST)
+    import gen_notebook as N
+    for name in NB:
+        if only and f"nb-{name}" not in only:
+            continue
+        src = G.WORK / f"nb-{name}.png"
+        if not src.exists():
+            print(f"  skip nb-{name:8s} (not rendered yet)")
+            continue
+        save(Image.open(src).convert("RGB"), name, WIDTH, dest=NB_DEST)
+    for name, (view, box) in NB_CROPS.items():
+        if only and f"nb-{name}" not in only:
+            continue
+        im = Image.open(N.REFS / view).convert("RGBA")
+        w, h = im.size
+        x0, y0, x1, y1 = box
+        cut = im.crop((int(w * x0), int(h * y0), int(w * x1), int(h * y1)))
+        ground = Image.new("RGBA", cut.size, (5, 12, 11, 255))
+        ground.alpha_composite(cut)
+        save(ground.convert("RGB").filter(ImageFilter.UnsharpMask(radius=3, percent=35, threshold=2)),
+             name, CROP_WIDTH, dest=NB_DEST)
+    for name, view in NB_GALLERY.items():
+        if only and name not in only:
+            continue
+        prod, screen = N.prepared(view, N.LID_03 if view == "open-03.png" else None)
+        if screen:
+            prod = L.brand_screen(prod, screen, L.wallpaper(N.ACCENT))
+        save(prod, name, GALLERY_WIDTH, dest=NB_DEST)
     for name, (view, box) in CROPS.items():
         if only and name not in only:
             continue
