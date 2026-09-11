@@ -53,8 +53,8 @@ export default {
           "alt": "The Latios MT chassis from the side in a warm glow, with its height and depth marked",
           "dims": {
             "aspect": "1600 / 1235",
-            "h": { "x": 21.2, "y1": 3.0, "y2": 80.5, "label": "354 mm" },
-            "d": { "x1": 24.2, "x2": 78.6, "y": 84.5, "label": "312 mm" },
+            "h": { "x": 23.4, "y1": 12.2, "y2": 82.0, "label": "354 mm" },
+            "d": { "x1": 26.4, "x2": 73.6, "y": 83.5, "label": "312 mm" },
             "note": "Width 166 mm · 7.59 kg"
           }
         },

@@ -25,7 +25,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageChops, ImageDraw, ImageEnhance, ImageFilter
+from PIL import Image, ImageChops, ImageDraw, ImageFilter
 
 import comfy_client as cc
 
@@ -34,29 +34,20 @@ DEST = Path(__file__).resolve().parents[2] / "frontend" / "public" / "images" / 
 WIDTH = 1600
 
 # name -> needs ESRGAN first (edits are model-sized; t2i plates are already 4x).
-# hero-chassis does not: it is drawn at most half the content width, ~540 CSS
-# px, so its native 1472 covers a 2x display -- and ESRGAN would sharpen the
-# very dust clean_hero removes.
+# hero-front and chassis-tile do not: each is drawn at most ~635 CSS px wide, so
+# the edit's native 1472 covers a 2x display.
 ASSETS = {
     "gpu-radeon": False, "ddr4-pair": False, "storage-set": False,
     "cooler": False, "desk-dual": False,
     "cpu-ryzen": True, "hero-front": False, "chassis-tile": False,
 }
 
-# Assets built from another asset's render. chassis-tile is the relit side view
-# kept on its own dark ground, for the bento's Compact design card: shipped
-# transparent on the card's white face, it read as a black slab.
-SOURCES = {"chassis-tile": "hero-chassis", "desk-dual": "desk-tower"}
+# Assets installed from a render of another name.
+SOURCES = {"desk-dual": "desk-tower"}
 
 # desk-dual now carries the real MT, and is cropped to the monitors, the tower
 # and the lamp: at card size (~370 CSS px) the full plate left them small.
 DESK_CROP = (0.26, 0.17, 0.97, 0.87)
-
-# The hero render's side panel, and the mesh window inside it, as fractions of
-# the 1472x1136 render (measured off a gridded proof). Dust comes off the panel
-# only: a median filter over the perforation would erase it.
-HERO_PANEL = (0.232, 0.108, 0.715, 0.825)
-HERO_MESH = (0.285, 0.192, 0.505, 0.660)
 
 # Label plates on ddr4-pair, as frame fractions (measured off the render), and
 # their reflections in the floor below -- toning the plates alone would leave
@@ -154,6 +145,26 @@ def poly_fill(im, poly, samples, feather=2):
     return Image.composite(Image.fromarray(paint.clip(0, 255).astype("uint8")), im, mask)
 
 
+# Regions of hero-front taken back from its staging, as frame fractions. The
+# studio relight kept the wordmark but redrew the port panel's printed icons --
+# the headphone mark came back as "c2", the indicator marks and the USB-C label
+# as new glyphs. The staging already carries the studio light, so the patch
+# matches; the wordmark is restored too, as insurance.
+FRONT_KEEP = [(0.580, 0.155, 0.632, 0.505),      # port panel
+              (0.378, 0.135, 0.425, 0.245)]      # wordmark
+
+
+def restore_regions(im, ref_path, boxes, feather=6):
+    """Paste boxes of the pre-model staging back over the render."""
+    ref = Image.open(ref_path).convert("RGB").resize(im.size, Image.LANCZOS)
+    w, h = im.size
+    mask = Image.new("L", im.size, 0)
+    d = ImageDraw.Draw(mask)
+    for x0, y0, x1, y1 in boxes:
+        d.rectangle([w * x0 + feather, h * y0 + feather, w * x1 - feather, h * y1 - feather], fill=255)
+    return Image.composite(ref, im, mask.filter(ImageFilter.GaussianBlur(feather / 2)))
+
+
 def restore_tower(im):
     """Paste the photographed tower back over the desk render.
 
@@ -211,104 +222,10 @@ def soften(im, boxes, radius):
     return Image.composite(im.filter(ImageFilter.GaussianBlur(radius)), im, mask)
 
 
-# chassis-tile is shifted up by this fraction of its height: the depth label
-# hangs below its line, and at 375 and 1024px it ran off the tile's bottom edge
-# onto the card. There is 8% of empty ground above the chassis to spare.
-TILE_SHIFT = 0.05
-
-
-def shift_up(im, frac):
-    """Move the picture up by frac of its height, continuing the floor below."""
-    w, h = im.size
-    dy = int(h * frac)
-    out = Image.new(im.mode, im.size)
-    out.paste(im.crop((0, dy, w, h)), (0, 0))
-    strip = im.crop((0, h - max(2, h // 100), w, h)).resize((w, dy), Image.BILINEAR)
-    out.paste(strip, (0, h - dy))
-    return out
-
-
 def tile_dims():
-    """Callout geometry for chassis-tile, in percent of the tile.
-
-    Read off the staging rather than measured by eye: hero_layout says where the
-    cutout landed, and the cutout's own proofs say where its corners are -- the
-    rear edge at 5% of its width, the rear foot's floor contact at 96.9% of its
-    height. Scaling the render from 1140 to 1136 rows changes no percentage.
-    """
-    from am4_chassis import cutout
-    from gen_am4_edits import HERO_H, HERO_W, hero_layout
-    cut, (ox, oy) = hero_layout(cutout())
-    cw, ch = cut.size
-    pct = lambda v, s: round(v / s * 100, 1)
-    ypct = lambda v: round((v / HERO_H - TILE_SHIFT) * 100, 1)
-    rear = ox + 0.05 * cw
-    return {
-        "aspect": "1600 / 1235",           # the installed file, not the staging
-        "h": {"x": pct(rear - 0.03 * HERO_W, HERO_W), "y1": ypct(oy),
-              "y2": ypct(oy + 0.969 * ch)},
-        "d": {"x1": pct(rear, HERO_W), "x2": pct(ox + cw, HERO_W),
-              # 1.5% under the feet: at 1024px the tile is 177px tall, and the
-              # label hanging below the line needs the rest of it.
-              "y": ypct(oy + ch + 0.015 * HERO_H)},
-    }
-
-
-def clean_hero(im):
-    """Two retouches on the relit chassis, both restoring what should be there.
-
-    Dust: the photographed panel carries dust and hairline scratches, and the
-    relight kept them -- at hero size they read as a dirty unit. On the panel
-    and off the mesh, a pixel brighter than its 7px median by more than 22
-    levels takes the median's value. Texture and edges are left alone.
-
-    Shadow: the render was staged before am4_chassis learned to blacken the
-    sweep's baked-in grey shadow, so it carries a pale halo under the lip. Under
-    the lip, the fixed cutout's black shadow replaces the render.
-
-    Ground: kept. This is the Compact design tile, a picture on its own dark
-    ground. The transparent cut of it that once opened the page read as a black
-    slab on a light page; the front view replaced it there.
-    """
-    from am4_chassis import LIP, cutout
-    from gen_am4_edits import hero_ground, hero_layout
-
-    w, h = im.size
-
-    med = im.filter(ImageFilter.MedianFilter(7))
-    speck = ImageChops.subtract(im.convert("L"), med.convert("L"))
-    speck = speck.point(lambda v: 255 if v > 22 else 0).filter(ImageFilter.MaxFilter(3))
-    region = Image.new("L", im.size, 0)
-    d = ImageDraw.Draw(region)
-    d.rectangle([w * HERO_PANEL[0], h * HERO_PANEL[1], w * HERO_PANEL[2], h * HERO_PANEL[3]], fill=255)
-    d.rectangle([w * HERO_MESH[0], h * HERO_MESH[1], w * HERO_MESH[2], h * HERO_MESH[3]], fill=0)
-    im = Image.composite(med, im, ImageChops.multiply(speck, region))
-
-    cut, (ox, oy) = hero_layout(cutout())
-    staged = Image.new("RGB", hero_ground().size, (0, 0, 0))   # shadow is black, at its alpha
-    staged.paste(cut.convert("RGB"), (ox, oy))
-    alpha = Image.new("L", staged.size, 0)
-    alpha.paste(cut.getchannel("A"), (ox, oy))
-    (x0, y0), (x1, y1) = LIP
-
-    def at(xf):                            # a point on the lip line, 0.2% below it
-        yf = y0 + (xf - x0) * (y1 - y0) / (x1 - x0) + 0.002
-        return ox + xf * cut.width, oy + yf * cut.height
-
-    band = Image.new("L", staged.size, 0)
-    left, right = at(-0.04), at(1.04)
-    ImageDraw.Draw(band).polygon(
-        [left, right, (right[0], oy + cut.height + 40), (left[0], oy + cut.height + 40)], fill=255)
-    band = band.filter(ImageFilter.GaussianBlur(1.5))
-    # The model returned 1136 rows for a 1140-row staging; scale, don't crop.
-    staged, band, alpha = (x.resize(im.size, Image.LANCZOS) for x in (staged, band, alpha))
-    # The shadow band comes from the ground, darkened by the cutout's shadow
-    # alpha -- the render's floor matches that ground to within two levels, so
-    # there is no seam.
-    ground = hero_ground().resize(im.size, Image.LANCZOS)
-    a = np.asarray(alpha).astype(float)[..., None] / 255
-    shaded = np.asarray(ground).astype(float) * (1 - a) + np.asarray(staged).astype(float) * a
-    return Image.composite(Image.fromarray(shaded.clip(0, 255).astype("uint8")), im, band)
+    """Callout geometry for chassis-tile, from the staging that produced it."""
+    from gen_am4_edits import side_layout
+    return side_layout()[1]
 
 
 def grid(im, boxes, out):
@@ -346,13 +263,13 @@ if __name__ == "__main__":
         if check and name == "gpu-radeon":
             grid(im, GPU_SOFTEN, GEN / "check-gpu.png")
         if name == "chassis-tile":
-            # Lifted: on its own near-black ground the panel's texture was lost.
-            im = shift_up(ImageEnhance.Brightness(clean_hero(im)).enhance(1.15), TILE_SHIFT)
             print("  chassis-tile dims", tile_dims())
         if needs_up:
             im = Image.open(cc.upscale(str(src), f"am4-{name}-up.png")).convert("RGB")
         if name == "desk-dual":
             im = restore_tower(im)                       # before resizing: staging geometry
+        if name == "hero-front":
+            im = restore_regions(im, GEN / "hero-front-ref.png", FRONT_KEEP)
         im = im.resize((WIDTH, round(im.height * WIDTH / im.width)), Image.LANCZOS)
         if name == "ddr4-pair":
             im = tone_labels(im, DDR4_LABELS)
