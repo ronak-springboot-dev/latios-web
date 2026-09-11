@@ -39,7 +39,7 @@ const THEMES = {
   // --- MT micro-tower ------------------------------------------------------
   "mt-amd-am4": {
     accent: "#d98324", accentSoft: "#f0b46a",
-    density: "tight", surface: "#0b0a09",
+    density: "normal", surface: "#0b0a09",
     kicker: "The everyday workhorse",
   },
   "mt-h610-ddr4": {

@@ -134,7 +134,7 @@ const accents = Object.fromEntries(
 // A page whose only sections are the ones every page has is not a designed
 // page, so these do not count towards distinctiveness.
 const SCAFFOLD = new Set(["hero", "statWall", "featureGrid", "specTable", "specTeaser"]);
-const SIGNATURE = ["reveal", "walkthrough", "spotlight", "band"];
+const SIGNATURE = ["reveal", "walkthrough", "spotlight", "band", "bento", "featureSplit"];
 
 const composed = pages.map((f) => {
   const slug = basename(f, ".js");

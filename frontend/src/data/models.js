@@ -12,6 +12,19 @@ const MT_GALLERY = [
   "/images/details/mt-socket.webp",
 ];
 
+// The AM4 build must not borrow MT_GALLERY. That shoot is of the Intel Q670
+// unit: mt-socket and mt-interior show an LGA socket, mt-rear/rear-close/ports
+// show the Intel board's rear panel, and mt-angle/mt-front show a front panel
+// (1x USB-C + headphone) that disagrees with the AM4 spec row (2x USB-C, no
+// headphone) -- a discrepancy still awaiting confirmation. What is left is the
+// exterior every MT shares, from angles where no port can be counted.
+// mt-flank is out too: its mesh window shows the Intel unit's internals. The
+// hero render is the same side view with that mesh redrawn empty.
+const AM4_GALLERY = [
+  "/images/am4/hero-chassis.webp",
+  "/images/details/mt-logo.webp",
+];
+
 // PROMAX has no photography yet. It used to borrow MT_GALLERY, which was
 // harmless while that held generic art and would become a false claim now
 // that MT_GALLERY holds real photographs of a micro tower -- a T4 Plus is a
@@ -280,7 +293,11 @@ export const DESKTOP_FAMILIES = [
         name: "Latios MT — AMD AM4",
         tag: "Ryzen 5000 · DDR4",
         image: "/images/fronts/mt.webp",
-        gallery: MT_GALLERY,
+        gallery: AM4_GALLERY,
+        // Two unrelated views are not a rotation; no "360°" over them.
+        turntable: false,
+        // Same 18-litre box as every other MT -- see familyKey.
+        chassis: MT_GALLERY[0],
         heroImage: HERO["mt-amd-am4"],
         chips: ["Ryzen 7 5700G", "64GB DDR4", "Wi-Fi 6E"],
         stats: [
@@ -1965,8 +1982,14 @@ export const ALL_MODELS = ALL_FAMILIES.flatMap((f) => f.models);
  * Exported because both the spec sheet and the PDP comparison section need it,
  * and two definitions would eventually disagree.
  */
+// `chassis` wins over the gallery's lead frame when a model sets it. The lead
+// frame was only ever a proxy for "which physical box is this", and giving the
+// AM4 build its own gallery (to keep Intel photographs off it) silently made it
+// a family of one: its comparison table vanished, its spec matrix shrank to a
+// single column, and the other five MT pages dropped it from theirs. What a
+// gallery SHOWS and which chassis a model IS are separate facts.
 export const familyKey = (m) =>
-  `${m.category}|${m.name.split(" — ")[0]}|${m.gallery?.[0] ?? m.slug}`;
+  `${m.category}|${m.name.split(" — ")[0]}|${m.chassis ?? m.gallery?.[0] ?? m.slug}`;
 
 /**
  * Product loop video for a model, if its chassis has actually been photographed.

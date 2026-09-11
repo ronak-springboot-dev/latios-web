@@ -1,151 +1,209 @@
 /**
- * Latios MT — AMD AM4.  Design language: the everyday workhorse.
+ * Latios MT — AMD AM4.  Built on the Minisforum 790S7 page: split features with
+ * big-number rows, a bento grid of feature cards, component renders on a dark
+ * ground. Amber, this product's own accent.
  *
- * Warm amber accent, tight vertical rhythm, plain-spoken copy. This is the
- * cheapest machine in the range and the page should feel practical rather than
- * cinematic — dense bands, the ports laid out in full, the fleet-facing
- * audience tabs up front. Contrast it with promax-t4-plus.js, which uses a
- * different subset of sections in a different order.
+ * Every number on this page is either a row of this model's specGroups
+ * (models.js) or AMD's published figure for the Ryzen 7 5700G the spec names:
+ * 8 cores, 16 threads, 3.8 GHz base, up to 4.6 GHz boost, 16 MB L3.
+ *
+ * What is deliberately NOT here, and why:
+ *
+ *   - No benchmark chart. The reference has one; the spec sheet has no scores,
+ *     and a chart is a claim.
+ *   - No scroll reveal and no interior photographs. The MT shoot is of the Intel
+ *     Q670 unit -- an LGA socket, its own rear panel -- so every interior here is
+ *     a rendered component, captioned as an illustration.
+ *   - No port diagram. The photographed rear panel is the Intel board's, and the
+ *     photographed front panel disagrees with this model's Front I/O row. The
+ *     ports are listed in the specification table until that is confirmed.
+ *   - No board-callout diagram and no "smaller than a tower" comparison, both of
+ *     which the reference has: one would invent a layout, the other a figure.
  */
 export default {
   sections: [
-    { type: "hero" },
-
     {
-      type: "marquee",
-      items: [
-        "Ryzen 7 5700G", "Radeon graphics onboard", "64GB DDR4-3200",
-        "18-litre chassis", "TPM 2.0", "Wi-Fi 6E", "Tool-free service",
-        "Made in India", "GeM registered",
-      ],
+      "type": "hero"
     },
-
     {
-      type: "statWall",
-      align: "left",
-      heading: "The numbers that decide a fleet.",
-      body:
-        "Nothing here is a headline figure you will never reach. These are the " +
-        "ceilings of the machine as shipped, and the reasons it is still worth " +
-        "servicing in year six.",
-      stats: [
-        ["8", "Ryzen cores", "Ryzen 7 5700G, down to a Ryzen 3 5305G on the same board"],
-        ["64GB", "DDR4-3200 ceiling", "Two U-DIMM slots — ship at 16GB, finish at 64GB"],
-        ["18 L", "Chassis volume", "312 × 166 × 354 mm, 7.59 kg"],
-        ["500W", "80+ Bronze PSU", "Headroom for a discrete Radeon card later"],
+      "type": "featureSplit",
+      "pill": "Latios MT · AM4",
+      "heading": "The everyday",
+      "headingAccent": "workhorse.",
+      "body": "AMD Ryzen 5000G processing with Radeon graphics on the die, dual-channel DDR4 and a full array of I/O, in an 18-litre chassis your IT team can open by hand.",
+      "image": "/images/am4/hero-chassis.webp",
+      "alt": "The Latios MT chassis seen from the side against a warm horizon glow",
+      "glow": "horizon",
+      "frame": "bleed",
+      "stats": [
+        ["8", "cores", "Up to Ryzen 7 5700G"],
+        ["64", "GB", "DDR4-3200 ceiling"],
+        ["18", "L", "Chassis volume"]
       ],
+      "statCols": 3
     },
-
     {
-      // Replaces two weak sections: a bleed using the dark mesh-window photo and
-      // the airflow loop. Both were flat images of a black box; this shows the
-      // thing they were trying to describe. Scrubbed by scroll rather than
-      // played, so the reader controls the reveal.
-      type: "reveal",
-      manifest: { frames: 64, width: 1400, height: 1120, pattern: "/reveal/mt-amd-am4/{i}.webp" },
-      height: 260,
-      kicker: "Serviceability",
-      heading: "It opens by hand.",
-      body:
-        "No screwdriver, no service manual. Scroll to take the panel off and see " +
-        "what a technician sees.",
-      steps: [
-        { at: 0.00, label: "Closed", text: "312 × 166 × 354 mm, 7.59 kg. An 18-litre box that sits under a desk without asking for room." },
-        { at: 0.30, label: "Panel off", text: "One hand-removable side panel. No tools, and nothing to lose on the floor." },
-        { at: 0.55, label: "Cooling", text: "A tower cooler over the socket with a clear intake path from the front mesh." },
-        { at: 0.75, label: "Memory and storage", text: "Two DDR4 U-DIMM slots, an M.2 slot, plus 2.5-inch and 3.5-inch bays — all reachable from this side." },
-        { at: 0.92, label: "Expansion", text: "Full-height slots and a 500W 80+ Bronze supply, so a discrete Radeon card goes in later without a new chassis." },
-      ],
-    },
-
-    {
-      "type": "band",
-      "kicker": "The everyday workhorse",
-      "items": [
-        {"src": "/bands/mt-amd-am4-0.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 AMD AM4 - Eight Ryzen cores, Radeon graphics on the die"},
-        {"src": "/bands/mt-amd-am4-1.webp", "w": 1200, "h": 1523, "alt": "Latios MT \u2014 AMD AM4 - Dual-channel DDR4-3200, up to 64GB"},
-        {"src": "/bands/mt-amd-am4-2.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 AMD AM4 - Open it by hand, in seconds"}
+      "type": "bento",
+      "heading": "Everything a desk needs, in eighteen litres.",
+      "cards": [
+        {
+          "col": 1, "size": "tall",
+          "title": "Compact design", "subtitle": "18-litre micro tower",
+          "image": "/images/am4/chassis-side.webp",
+          "alt": "The Latios MT chassis from the side, with its height and depth marked",
+          "dims": {
+            "aspect": "1400 / 1488",
+            "h": { "x": 6.6, "y1": 2.6, "y2": 89.6, "label": "354 mm" },
+            "d": { "x1": 12.0, "x2": 97.4, "y": 94.8, "label": "312 mm" },
+            "note": "Width 166 mm · 7.59 kg"
+          }
+        },
+        {
+          "col": 1, "size": "short",
+          "title": "Cooling & power", "subtitle": "Fan cooler · 80+ Bronze supply",
+          "image": "/images/am4/cooler.webp",
+          "alt": "A round desktop fan cooler, rendered",
+          "stat": ["500", "W", "ATX power"]
+        },
+        {
+          "col": 2, "size": "small",
+          "title": "Memory", "subtitle": "Dual-channel DDR4-3200 · up to 64GB",
+          "glyph": "dimm"
+        },
+        {
+          "col": 2, "size": "small",
+          "title": "Storage", "subtitle": "M.2 · 2.5″ bay · 3.5″ bay",
+          "glyph": "drive"
+        },
+        {
+          "col": 2, "size": "text",
+          "title": "Hardware TPM 2.0", "subtitle": "Kensington slot · padlock loop"
+        },
+        {
+          "col": 2, "size": "short",
+          "title": "Dual 4K display", "subtitle": "HDMI 2.1 · DisplayPort 1.4 · VGA (opt)",
+          "image": "/images/am4/desk-dual.webp",
+          "alt": "A desk with two monitors, rendered",
+          "fit": "cover"
+        },
+        {
+          "col": 3, "size": "half",
+          "title": "Processor", "subtitle": "Up to AMD Ryzen 7 5700G",
+          "image": "/images/am4/cpu-ryzen.webp",
+          "alt": "An AMD Ryzen processor seated in an AM4 socket",
+          "fit": "cover"
+        },
+        {
+          "col": 3, "size": "half",
+          "title": "Graphics", "subtitle": "Up to 16GB AMD Radeon RX",
+          "image": "/images/am4/gpu-radeon.webp",
+          "alt": "A full-height desktop graphics card, rendered"
+        }
       ]
     },
-
     {
-      "type": "video",
-      "src": "/videos/mt-amd-am4-loop.mp4",
-      "poster": "/images/posters/mt-amd-am4-loop.webp",
-      "modelName": "Latios MT \u2014 AMD AM4",
-      "heading": "The everyday workhorse.",
-      "subline": "AMD Ryzen 7 5700G / 5 5600G / 3 5305G. Engineered, assembled and finished in Ahmedabad.",
-    },
-    {
-      type: "ioMap",
-      image: "/images/dp180-2.webp",
-      heading: "New docks and decade-old projectors.",
-      body:
-        "The reason this chassis outlives its purchase order: USB-C Gen 2 at the " +
-        "front for what your team buys next year, VGA and PS/2 at the back for " +
-        "what the building already has.",
-    },
-
-    {
-      type: "featureGrid",
-      heading: "Everything your fleet needs.",
-      items: [
-        { icon: "Cpu", title: "Ryzen 5000G Power", desc: "Up to Ryzen 7 5700G with 8 cores and Radeon graphics onboard — no discrete GPU required for most fleets." },
-        { icon: "MemoryStick", title: "64GB DDR4 Memory", desc: "Dual-channel DDR4-3200 across two U-DIMM slots keeps heavy multitasking instant." },
-        { icon: "HardDrive", title: "Triple Storage Bays", desc: 'M.2 NVMe plus 2.5" and 3.5" bays — fast boot drive and bulk archive in one box.' },
-        { icon: "MonitorCheck", title: "Up to 16GB Radeon RX", desc: "Optional discrete graphics for design review, multi-display control rooms and light rendering." },
-        { icon: "Wifi", title: "Wi-Fi 6E + 1G LAN", desc: "Intel I219-V wired and AX211 wireless options keep every desk connected, docked or roaming." },
-        { icon: "Usb", title: "Complete I/O Array", desc: "Front USB-C Gen2 within reach; HDMI 2.1, DisplayPort, VGA and PS/2 at the back." },
-        { icon: "ShieldCheck", title: "Hardware TPM 2.0", desc: "Hardware root-of-trust with Kensington and padlock loops — certified for environments where failure isn't an option." },
-        { icon: "Wrench", title: "Service in Seconds", desc: "Quick-access chassis: memory and drive swaps take minutes, keeping fleets current for years." },
+      "type": "featureSplit",
+      "pill": "Ryzen 7 5700G",
+      "heading": "Eight cores, and the graphics",
+      "headingAccent": "on the same die.",
+      "body": "The Ryzen 7 5700G tops a Socket AM4 line-up that runs down to the Ryzen 3 5305G, on the AMD Pro 500 chipset. Radeon graphics are built into the processor, so most desks never need a discrete card at all.",
+      "image": "/images/am4/cpu-ryzen.webp",
+      "alt": "An AMD Ryzen processor seated in an AM4 socket under a warm key light",
+      "stats": [
+        ["8", "", "Cores"],
+        ["16", "", "Threads"],
+        ["4.6", "GHz", "Max boost clock"],
+        ["16", "MB", "L3 cache"]
       ],
+      "footnote": "Figures are AMD's published specification for the Ryzen 7 5700G. Ryzen 5 5600G/5605G and Ryzen 3 5305G configurations have fewer cores and lower clocks. Image is an illustration."
     },
-
     {
-      type: "audiences",
-      heading: "One platform. Every team.",
-      items: [
-        {
-          id: "enterprise",
-          label: "Enterprise IT",
-          heading: "Fleets that stay current, not retired",
-          desc: "Standard tools, standard parts, TPM 2.0 at the metal. Roll out hundreds of units knowing each one can be serviced or upgraded in minutes, not truck-rolls.",
-          bullets: ["TPM 2.0 + secured firmware", "Tool-fast memory and drive access", "Legacy VGA / PS/2 alongside USB-C"],
-          image: "/images/ops.webp",
-        },
-        {
-          id: "education",
-          label: "Education",
-          heading: "Labs that survive the semester",
-          desc: "Radeon graphics onboard handle coding labs, design coursework and exam kiosks — with padlock loops that keep hardware exactly where you left it.",
-          bullets: ["Ryzen 5/7 options for every budget", "Kensington + padlock physical security", "Wi-Fi 6E for dense classrooms"],
-          image: "/images/av-ifp.jpg",
-        },
-        {
-          id: "government",
-          label: "Government",
-          heading: "GeM-ready, Made in India",
-          desc: "Designed, manufactured and supported at our Ahmedabad facility. Direct public-sector procurement through GeM with local lifecycle support.",
-          bullets: ["GeM-registered OEM", "ISO 9001 / 14001 / 27001 certified plant", "Decade-long parts availability"],
-          image: "/images/factory.jpg",
-        },
-        {
-          id: "frontoffice",
-          label: "Front Office & SMB",
-          heading: "A workhorse that disappears into the desk",
-          desc: "Quiet fan cooling, an 18-litre footprint and every port accounting teams still rely on — from receipt printers to dual displays.",
-          bullets: ["Only 312 × 166 × 354 mm", "Dual-display 4K out of the box", "Up to 500W 80+ Bronze PSU headroom"],
-          image: "/images/av-monitor.jpg",
-        },
+      "type": "featureSplit",
+      "pill": "Graphics",
+      "heading": "Room for a",
+      "headingAccent": "Radeon RX card.",
+      "body": "Integrated Radeon graphics drive two 4K displays out of the box. When a desk needs more — design review, a control-room wall, light rendering — the chassis takes a discrete AMD Radeon RX card, and the 500W supply has the headroom for it.",
+      "image": "/images/am4/gpu-radeon.webp",
+      "alt": "A full-height desktop graphics card with two fans, rendered",
+      "flip": true,
+      "stats": [
+        ["16", "GB", "Up to, Radeon RX", "Up to"],
+        ["500", "W", "80+ Bronze ATX supply"]
       ],
+      "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
     },
-
     {
-      type: "compare",
-      heading: "AM4, or one of the Intel boards?",
-      rows: ["CPU options", "Chipset", "Memory", "Graphics"],
+      "type": "featureSplit",
+      "pill": "Memory",
+      "heading": "Dual-channel DDR4,",
+      "headingAccent": "up to 64GB.",
+      "body": "Two U-DIMM slots at 3200 MHz. Ship a desk at 16GB today and take it to 64GB years later without changing anything else in the box.",
+      "image": "/images/am4/ddr4-pair.webp",
+      "alt": "Two desktop memory modules on a reflective surface, rendered",
+      "stats": [
+        ["3200", "MHz", "Dual DDR4 channels", "Up to"],
+        ["64", "GB", "Maximum supported", "Up to"]
+      ],
+      "footnote": "Image is an illustration."
     },
-
-    { type: "specTeaser" },
-  ],
+    {
+      "type": "featureSplit",
+      "pill": "Storage",
+      "heading": "A fast drive and a big one,",
+      "headingAccent": "in the same box.",
+      "body": "An M.2 SSD for the operating system and working files, with a 2.5-inch bay and a 3.5-inch bay beside it for bulk storage — all reachable from the one hand-removable side panel.",
+      "image": "/images/am4/storage-set.webp",
+      "alt": "An M.2 drive, a 2.5-inch drive and a 3.5-inch drive, rendered",
+      "flip": true,
+      "footnote": "1× M.2 SSD (auto-switch) · 1× 2.5″ HDD/SSD · 1× 3.5″ HDD. Image is an illustration."
+    },
+    {
+      "type": "audiences",
+      "heading": "One platform. Every team.",
+      "items": [
+        {
+          "id": "enterprise",
+          "label": "Enterprise IT",
+          "heading": "Fleets that stay current, not retired",
+          "desc": "Standard tools, standard parts, TPM 2.0 at the metal. Roll out hundreds of units knowing each one can be serviced or upgraded in minutes, not truck-rolls.",
+          "bullets": ["TPM 2.0 + secured firmware", "Tool-fast memory and drive access", "Legacy VGA / PS/2 alongside USB-C"],
+          "image": "/images/ops.webp"
+        },
+        {
+          "id": "education",
+          "label": "Education",
+          "heading": "Labs that survive the semester",
+          "desc": "Radeon graphics onboard handle coding labs, design coursework and exam kiosks — with padlock loops that keep hardware exactly where you left it.",
+          "bullets": ["Ryzen 5/7 options for every budget", "Kensington + padlock physical security", "Wi-Fi 6E for dense classrooms"],
+          "image": "/images/av-ifp.jpg"
+        },
+        {
+          "id": "government",
+          "label": "Government",
+          "heading": "GeM-ready, Made in India",
+          "desc": "Designed, manufactured and supported at our Ahmedabad facility. Direct public-sector procurement through GeM with local lifecycle support.",
+          "bullets": ["GeM-registered OEM", "ISO 9001 / 14001 / 27001 certified plant", "Decade-long parts availability"],
+          "image": "/images/factory.jpg"
+        },
+        {
+          "id": "frontoffice",
+          "label": "Front Office & SMB",
+          "heading": "A workhorse that disappears into the desk",
+          "desc": "Quiet fan cooling, an 18-litre footprint and every port accounting teams still rely on — from receipt printers to dual displays.",
+          "bullets": ["Only 312 × 166 × 354 mm", "Dual-display 4K out of the box", "Up to 500W 80+ Bronze PSU headroom"],
+          "image": "/images/av-monitor.jpg"
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "heading": "AM4, or one of the Intel boards?",
+      "rows": ["CPU options", "Chipset", "Memory", "Graphics"]
+    },
+    {
+      "type": "specTable",
+      "heading": "Every number that matters.",
+      "body": "Every MT configuration on this chassis, side by side. The rows that differ are the decision."
+    }
+  ]
 };

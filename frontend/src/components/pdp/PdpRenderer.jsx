@@ -16,6 +16,8 @@ import {
 } from "./sections";
 import { PdpBand } from "./PdpBand";
 import { PdpSpotlight } from "./PdpSpotlight";
+import { PdpFeatureSplit } from "./PdpFeatureSplit";
+import { PdpBento } from "./PdpBento";
 import { PdpSpecTable } from "./PdpSpecTable";
 import { PdpReveal } from "./PdpReveal";
 import { PdpWalkthrough } from "./PdpWalkthrough";
@@ -34,6 +36,8 @@ const REGISTRY = {
   ioMap: PdpIoMap,
   exploded: PdpExploded,
   spotlight: PdpSpotlight,
+  featureSplit: PdpFeatureSplit,
+  bento: PdpBento,
   band: PdpBand,
   reveal: PdpReveal,
   walkthrough: PdpWalkthrough,

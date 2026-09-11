@@ -188,6 +188,21 @@ html.light .pdp-page {
 .pdp-card {
     background-color: color-mix(in srgb, var(--pdp-surface, #0a0a0a) 88%, #ffffff 12%);
 }
+/* The reference's recurring backdrop: dark at the top, warming to a glow at the
+   horizon, in this product's own accent. Paired with its light-theme rule in the
+   same place, because the light theme is a sheet of overrides and a backdrop
+   that exists only in dark mode is how pages have broken silently before. */
+.pdp-horizon {
+    background-image:
+        radial-gradient(ellipse 70% 55% at 70% 108%,
+            color-mix(in srgb, var(--pdp-accent, #d98324) 34%, transparent), transparent 70%),
+        linear-gradient(180deg, rgba(8, 10, 20, 0.9) 0%, rgba(0, 0, 0, 0) 60%);
+}
+html.light .pdp-horizon {
+    background-image:
+        radial-gradient(ellipse 70% 55% at 70% 108%,
+            color-mix(in srgb, var(--pdp-accent, #d98324) 18%, transparent), transparent 70%);
+}
 html.light .pdp-card {
     background-color: #ffffff;
 }

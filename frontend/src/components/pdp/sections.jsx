@@ -164,7 +164,9 @@ export const PdpHero = ({ model, theme, datasheet, onViewSpecs, onEnquire, confi
                 <img src={src} alt="" loading="lazy" className="max-h-[75%] w-auto object-contain" />
               </button>
             ))}
-            <button
+            {/* The turntable plays the gallery as frames of a rotation. A model
+                whose gallery is not a rotation opts out with turntable: false. */}
+            {model.turntable !== false && <button
               onClick={() => setI(model.gallery.length)}
               data-testid="showcase-thumb-360"
               aria-label="360 degree view"
@@ -175,7 +177,7 @@ export const PdpHero = ({ model, theme, datasheet, onViewSpecs, onEnquire, confi
             >
               <RotateCw className="w-4 h-4 text-zinc-700" />
               <span className="text-[8px] uppercase tracking-[0.2em] text-zinc-600">360°</span>
-            </button>
+            </button>}
           </div>
         </div>
 
