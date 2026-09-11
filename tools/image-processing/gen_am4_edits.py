@@ -119,9 +119,9 @@ def desk_tower_layout():
     """
     from am4_chassis import front_cutout
     cut = front_cutout()
-    th = int(DESK_H * 0.275)
+    th = int(DESK_H * 0.34)
     cut = cut.resize((round(cut.width * th / cut.height), th), Image.LANCZOS)
-    cx, base = int(DESK_W * 0.795), int(DESK_H * 0.72)
+    cx, base = int(DESK_W * 0.795), int(DESK_H * 0.745)
     return cut, (cx - cut.width // 2, base - cut.height)
 
 
@@ -130,10 +130,13 @@ def stage_desk():
 
     The plate was rendered with no PC so as not to invent Latios hardware; this
     puts the photographed one in. It stands between the right monitor (edge at
-    x 0.75) and the lamp base (from 0.84), on the desk just in front of the
-    monitor stand, sized against the monitor: a ~53 cm screen spans 0.23 of the
-    frame, so the 354 mm tower is ~0.275 of its height. The lamp is up and to the
-    right, so the contact shadow falls left.
+    x 0.75) and the lamp base (from 0.84), forward on the desk -- its base at
+    0.745, just short of the front edge (~0.76 there). Against the monitor (a
+    ~53 cm screen spans 0.23 of the frame) a 354 mm tower level with the stands
+    is ~0.275 of the frame's height; this far forward it reads larger, and at
+    0.34 it holds its own in the card. It overlaps the monitor's edge and the
+    corner of the lamp base, in front of both. The lamp is up and to the right,
+    so the contact shadow falls left.
     """
     W, H = DESK_W, DESK_H
     canvas = Image.open(WORK / "desk-dual.png").convert("RGB").resize((W, H), Image.LANCZOS)
