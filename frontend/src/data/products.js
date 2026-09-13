@@ -56,7 +56,7 @@ export const CATEGORIES = [
     model: "Latios MT · SFF · MFF",
     title: ["BUSINESS,", "UNSTOPPABLE."],
     tagline: "Be your window to the world.",
-    hero: "/images/latios-mt.jpg",
+    hero: "/images/latios-mt.webp",
     intro:
       "Eleven commercial configurations across three chassis — the 18-litre micro tower, the eight-litre small form factor and the DP10 mini PC — from Ryzen 3 to Core i9. Every one tool-friendly, TPM-secured and built to be opened, not replaced.",
     chapters: [
