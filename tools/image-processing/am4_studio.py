@@ -213,8 +213,39 @@ def light(rgba, sheen_at=0.3, key=(255, 226, 190), fill=(150, 176, 214),
     return out
 
 
+#: Default ground: the page's own near-black, barely graded. A product plate
+#: sits on the page, so its floor has to BE the page or the plate reads as a
+#: rectangle pasted on.
+DARK_GROUND = ((7, 7, 10), (3, 3, 5))
+
+#: The hero card's backdrop: deep indigo overhead falling through violet to a
+#: warm horizon at the floor, which is the reference page's one lit card and the
+#: reason its grid does not read as eight black squares. Stops are (position,
+#: colour) so the violet can sit above the midpoint, where the eye reads the
+#: turn from cold to warm.
+#: Pitched darker than the reference's, because the product differs. Its tower is
+#: silver over black and reads against a bright ground; the Latios MT's side is a
+#: single black panel, and on the reference's own values it went flat -- a
+#: silhouette with the rim light and the mesh both lost. These stops keep the
+#: backdrop a shade darker than the chassis everywhere but the horizon.
+LIT_GROUND = ((0.0, (11, 14, 40)), (0.44, (30, 26, 58)), (0.80, (78, 49, 30)),
+              (1.0, (104, 66, 38)))
+
+
+def _ground(W, H, stops):
+    """A vertical gradient. Stops are (position, colour) pairs, or two colours."""
+    if len(stops[0]) == 3:
+        stops = ((0.0, stops[0]), (1.0, stops[1]))
+    pos = np.array([p for p, _ in stops])
+    cols = np.array([c for _, c in stops], dtype=float)
+    t = np.linspace(0, 1, H)
+    ramp = np.stack([np.interp(t, pos, cols[:, k]) for k in range(3)], axis=1)
+    return Image.fromarray(
+        np.broadcast_to(ramp[:, None, :], (H, W, 3)).astype("uint8"))
+
+
 def compose(product, W, H, height, floor, cx=0.5, halo=(44, 46, 54), glow=(125, 66, 18),
-            reflect=True, shadow=True):
+            reflect=True, shadow=True, ground=DARK_GROUND, halo_at=0.30, glow_at=120):
     """Stage a lit product. height and floor are fractions of H.
 
     Returns (canvas RGB, (x, y, scale)): where the product's top-left landed and
@@ -222,15 +253,13 @@ def compose(product, W, H, height, floor, cx=0.5, halo=(44, 46, 54), glow=(125, 
     shadow are for a product standing on the floor; a view from directly above
     has neither.
     """
-    t = np.linspace(0, 1, H)[:, None, None]
-    ground = np.array([7, 7, 10]) * (1 - t) + np.array([3, 3, 5]) * t
-    img = Image.fromarray(np.broadcast_to(ground, (H, W, 3)).astype("uint8"))
+    img = _ground(W, H, ground)
 
     halo_m = Image.new("L", (W, H), 0)
-    ImageDraw.Draw(halo_m).ellipse([W * (cx - 0.30), H * 0.04, W * (cx + 0.30), H * (floor - 0.08)], fill=255)
+    ImageDraw.Draw(halo_m).ellipse([W * (cx - halo_at), H * 0.04, W * (cx + halo_at), H * (floor - 0.08)], fill=255)
     img = Image.composite(Image.new("RGB", (W, H), halo), img, halo_m.filter(ImageFilter.GaussianBlur(W / 8)))
     glow_m = Image.new("L", (W, H), 0)
-    ImageDraw.Draw(glow_m).ellipse([W * 0.10, H * (floor - 0.16), W * 0.90, H * (floor + 0.40)], fill=120)
+    ImageDraw.Draw(glow_m).ellipse([W * 0.10, H * (floor - 0.16), W * 0.90, H * (floor + 0.40)], fill=glow_at)
     img = Image.composite(Image.new("RGB", (W, H), glow), img, glow_m.filter(ImageFilter.GaussianBlur(W / 10)))
 
     ph = int(H * height)

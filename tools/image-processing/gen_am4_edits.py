@@ -151,8 +151,9 @@ def side_card():
     # Off-centre, as the reference's dimensioned card is: the height callout and
     # its label need a hand's width of floor to the left of the product, and
     # centring it left them hanging over the card's edge in the narrow column.
-    canvas, (x, y, s) = studio.compose(cut, CARD_W, CARD_H, height=0.58, floor=0.80,
-                                       cx=0.545)
+    canvas, (x, y, s) = studio.compose(
+        cut, CARD_W, CARD_H, height=0.50, floor=0.78, cx=0.530,
+        ground=studio.LIT_GROUND, halo=(74, 70, 116), halo_at=0.40, glow_at=130)
     px = lambda v: round(v / CARD_W * 100, 1)
     py = lambda v: round(v / CARD_H * 100, 1)
     bx0, by0, bx1, _ = body

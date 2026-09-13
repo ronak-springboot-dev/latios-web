@@ -54,7 +54,7 @@ const STAGE_H = {
 /** Line-art in the accent colour, drawn rather than rendered. */
 const Glyph = ({ name, big }) => {
   const common = { fill: "none", stroke: ACCENT, strokeWidth: 3, strokeLinejoin: "round" };
-  const size = big ? "w-44 md:w-56" : "w-40 md:w-48";
+  const size = big ? "w-48 md:w-64" : "w-40 md:w-48";
   if (name === "dimm")
     return (
       <svg viewBox="0 0 200 64" className={size} aria-hidden="true">
@@ -138,10 +138,17 @@ const Dimensions = ({ dims }) => {
   );
 };
 
-const Heading = ({ title, subtitle, align = "center" }) => (
+// A staged card is set larger and brighter than an inset one. The reference
+// bakes its card titles into the artwork, which buys it a heavier setting than a
+// page normally carries; this matches that weight while the words stay real text
+// -- selectable, translatable, and correct at any pixel density.
+const Heading = ({ title, subtitle, align = "center", big }) => (
   <div className={align === "left" ? "text-left" : "text-center"}>
-    <h3 className="font-display text-xl md:text-2xl font-semibold tracking-tight text-white">{title}</h3>
-    {subtitle && <p className="mt-1.5 text-sm text-zinc-400">{subtitle}</p>}
+    <h3 className={`font-display font-semibold tracking-tight text-white ${
+      big ? "text-[22px] md:text-[28px] leading-tight" : "text-xl md:text-2xl"}`}>{title}</h3>
+    {subtitle && (
+      <p className={`mt-1.5 ${big ? "text-[15px] text-zinc-300" : "text-sm text-zinc-400"}`}>{subtitle}</p>
+    )}
   </div>
 );
 
@@ -162,7 +169,7 @@ const Stat = ([big, unit, note], align = "center", scale = "text-5xl md:text-6xl
  * with a dark band above the product, so the scrim here is insurance for the
  * narrow column rather than the thing making the type readable.
  */
-const BleedCard = ({ card }) => {
+const BleedCard = ({ card, stage }) => {
   const { title, subtitle, image, alt, stat, dims, foot } = card;
   if (foot) {
     // A picture too bright to put a title on. It takes the bottom of the card
@@ -176,7 +183,7 @@ const BleedCard = ({ card }) => {
           className="pointer-events-none absolute inset-x-0 bottom-0 h-[70%] w-full object-cover"
         />
         <div className="relative p-6 md:p-8">
-          <Heading title={title} subtitle={subtitle} />
+          <Heading title={title} subtitle={subtitle} big={stage} />
         </div>
       </>
     );
@@ -192,7 +199,7 @@ const BleedCard = ({ card }) => {
           className="pointer-events-none absolute -right-[9%] -bottom-[12%] w-[82%] max-w-none"
         />
         <div className="relative flex-1 flex flex-col p-6 md:p-8">
-          <Heading title={title} subtitle={subtitle} align="left" />
+          <Heading title={title} subtitle={subtitle} align="left" big={stage} />
           <div className="mt-auto pt-8">{Stat(stat, "left")}</div>
         </div>
       </>
@@ -204,13 +211,13 @@ const BleedCard = ({ card }) => {
         src={image} alt={alt ?? title} loading="lazy"
         className="absolute inset-0 w-full h-full object-cover"
       />
-      <div className="pdp-scrim pointer-events-none absolute inset-x-0 top-0 h-1/2" />
+      {!dims && <div className="pdp-scrim pointer-events-none absolute inset-x-0 top-0 h-1/2" />}
       {dims && <Dimensions dims={dims} />}
       <div className="relative p-6 md:p-8">
-        <Heading title={title} subtitle={subtitle} />
+        <Heading title={title} subtitle={subtitle} big={stage} />
       </div>
       {dims?.note && (
-        <p className="absolute inset-x-0 bottom-6 text-center text-[11px] tracking-[0.1em] text-zinc-400">
+        <p className="absolute inset-x-0 bottom-6 text-center text-[11px] tracking-[0.1em] text-white/70">
           {dims.note}
         </p>
       )}
@@ -235,7 +242,7 @@ const Card = ({ card, n, stage }) => {
     return (
       <Reveal delay={Math.min(n, 6) * 0.04} className={grow ? "flex flex-col flex-1" : ""}>
         <div className={shell} style={aspect} data-testid={`pdp-bento-card-${n}`}>
-          <BleedCard card={card} />
+          <BleedCard card={card} stage={stage} />
         </div>
       </Reveal>
     );
@@ -244,7 +251,7 @@ const Card = ({ card, n, stage }) => {
   return (
     <Reveal delay={Math.min(n, 6) * 0.04} className={grow ? "flex flex-col flex-1" : ""}>
       <div className={`${shell} p-6 md:p-8`} data-testid={`pdp-bento-card-${n}`}>
-        <Heading title={title} subtitle={subtitle} align={side ? "left" : "center"} />
+        <Heading title={title} subtitle={subtitle} align={side ? "left" : "center"} big={stage} />
 
         {side ? (
           <div className="mt-4 flex-1 flex items-end justify-between gap-4">
