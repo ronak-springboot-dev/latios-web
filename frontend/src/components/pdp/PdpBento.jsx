@@ -53,7 +53,7 @@ const STAGE_H = {
 
 /** Line-art in the accent colour, drawn rather than rendered. */
 const Glyph = ({ name, big }) => {
-  const common = { fill: "none", stroke: ACCENT, strokeWidth: 3, strokeLinejoin: "round" };
+  const common = { fill: "none", stroke: ACCENT, strokeWidth: big ? 4.5 : 3, strokeLinejoin: "round" };
   const size = big ? "w-48 md:w-64" : "w-40 md:w-48";
   if (name === "dimm")
     return (
@@ -234,7 +234,8 @@ const Card = ({ card, n, stage }) => {
   // already stretches all three columns to the tallest, so one flexible card per
   // column is what keeps them ending level without a height tuned per breakpoint.
   const aspect = bleed && dims?.box ? { aspectRatio: `${dims.box[0]} / ${dims.box[1]}` } : null;
-  const shell = `${stage ? "pdp-stage-card" : "pdp-card"} relative flex flex-col rounded-[28px] ` +
+  const shell = `${stage ? "pdp-stage-card" : "pdp-card"} relative flex flex-col ` +
+    `${stage ? "rounded-[20px]" : "rounded-[28px]"} ` +
     `[corner-shape:squircle] border border-white/10 overflow-hidden ` +
     `${grow ? "flex-1 " : ""}${aspect ? "" : (stage ? STAGE_H : MIN_H)[size] ?? ""}`;
 

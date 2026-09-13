@@ -253,8 +253,8 @@ def feather(im, left=0.26, top=0.30):
 
 
 def build_cards():
-    from gen_am4_edits import side_card
-    canvas, dims = side_card()
+    from gen_am4_edits import front_card
+    canvas, dims = front_card()
     save(canvas, "chassis-card")
     print("  chassis-card dims", dims)
 

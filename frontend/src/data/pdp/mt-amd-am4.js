@@ -51,12 +51,12 @@ export default {
           "col": 1, "size": "tall", "bleed": true,
           "title": "Compact design", "subtitle": "18-litre micro tower",
           "image": "/images/am4/chassis-card.webp",
-          "alt": "The Latios MT chassis from the side in a warm glow, with its height and depth marked",
+          "alt": "The Latios MT tower from the front on a lit backdrop, with its height and width marked",
           "dims": {
             "box": [1000, 1400],
-            "h": { "x": 18.8, "y1": 28.2, "y2": 78.0, "label": "354 mm" },
-            "d": { "x1": 22.3, "x2": 83.6, "y": 79.8, "label": "312 mm" },
-            "note": "Width 166 mm · 7.59 kg"
+            "h": { "x": 26.2, "y1": 22.1, "y2": 80.0, "label": "354 mm" },
+            "d": { "x1": 30.7, "x2": 69.3, "y": 82.0, "label": "166 mm" },
+            "note": "Depth 312 mm · 7.59 kg"
           }
         },
         {

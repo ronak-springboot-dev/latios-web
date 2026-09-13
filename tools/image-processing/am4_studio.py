@@ -223,13 +223,20 @@ DARK_GROUND = ((7, 7, 10), (3, 3, 5))
 #: reason its grid does not read as eight black squares. Stops are (position,
 #: colour) so the violet can sit above the midpoint, where the eye reads the
 #: turn from cold to warm.
-#: Pitched darker than the reference's, because the product differs. Its tower is
-#: silver over black and reads against a bright ground; the Latios MT's side is a
-#: single black panel, and on the reference's own values it went flat -- a
-#: silhouette with the rim light and the mesh both lost. These stops keep the
-#: backdrop a shade darker than the chassis everywhere but the horizon.
-LIT_GROUND = ((0.0, (11, 14, 40)), (0.44, (30, 26, 58)), (0.80, (78, 49, 30)),
-              (1.0, (104, 66, 38)))
+#: The hero card's backdrop, sampled off the reference's own artwork rather than
+#: guessed: deep navy overhead falling through indigo and mauve to a near-white
+#: warm floor at about 86% of the card, then easing back down at the very bottom
+#: edge. Those last two stops are the whole trick -- the product stands ON light,
+#: and its contact shadow and reflection are what read, while the top of it is
+#: still against navy where its own edges catch.
+#:
+#: An earlier pass pitched this much darker out of a worry that a black chassis
+#: would go flat on a bright floor. It does -- but only the SIDE view does, which
+#: is one unbroken black panel. The front is ribbed and carries the wordmark, so
+#: it holds its form against the light, which is why the card shows the front.
+LIT_GROUND = ((0.00, (24, 26, 40)), (0.06, (17, 23, 73)), (0.20, (41, 48, 116)),
+              (0.36, (66, 70, 133)), (0.50, (102, 98, 148)), (0.62, (144, 131, 161)),
+              (0.74, (191, 175, 186)), (0.86, (234, 223, 217)), (1.00, (150, 132, 130)))
 
 
 def _ground(W, H, stops):

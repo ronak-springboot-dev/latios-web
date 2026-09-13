@@ -117,51 +117,48 @@ CARD_W, CARD_H = 1000, 1400        # the Compact design card at 2x, portrait
 # the crop moves mostly to the top and bottom, where there is glow to spare.
 
 
-def side_card():
+def front_card():
     """The Compact design card -> (canvas, callout geometry in percent).
 
-    The bento card is portrait and the chassis is staged landscape, so the tile
-    cannot simply be cropped -- the product would lose its head and its floor.
-    It is restaged instead, and the model is NOT run again: the relit tile is
-    cut with the alpha of the very product that was staged into it, so the pixels
-    that carry the lettering, the mesh and the sheen are the ones already
-    approved. Nothing is regenerated, only moved.
+    The FRONT, not the side. The card's backdrop is the reference's own -- navy
+    overhead to a near-white floor -- and on that floor the side view's single
+    black panel is a silhouette, while the front's ribbing and wordmark hold
+    their form. It is also the view whose two measurements are the ones worth
+    marking: 354 mm tall and 166 mm across, the number that makes eighteen
+    litres mean something. The depth goes in the note beneath.
 
-    The cut is exact rather than segmented because the staging is deterministic:
-    _lit_product returns the same product every time, and compose places it by
-    arithmetic, so its silhouette on the tile is known to the pixel.
+    The model is NOT run again. The relit front is cut with the alpha of the
+    very product that was staged into it -- deterministic, because _lit_product
+    returns the same product every time and compose places it by arithmetic --
+    so the wordmark and the port panel are the pixels already approved.
     """
-    from am4_chassis import LIP, cutout
-    product, body = _lit_product(
-        cutout(), LIP, int(SIDE_H * 0.70), interior=(0.04, 0.04, 0.86, 0.92),
-        sheen_at=0.62, mesh=True)
+    from am4_chassis import front_cutout
+    from install_am4 import FRONT_KEEP, restore_regions
+    ph = int(FRONT_H * 0.80)
+    product, body = _lit_product(front_cutout(), None, ph, sheen_at=0.42)
 
-    # Where compose() put it on the tile. Same arithmetic, not a re-derivation:
-    # at height 0.70 the product is already that tall, so the scale is 1.
-    ph = int(SIDE_H * 0.70)
-    x0 = int(SIDE_W * 0.5 - product.width / 2)
-    y0 = int(SIDE_H * 0.82) - ph
-    alpha = Image.new("L", (SIDE_W, SIDE_H), 0)
+    x0 = int(FRONT_W * 0.5 - product.width / 2)
+    y0 = int(FRONT_H * 0.91) - ph
+    alpha = Image.new("L", (FRONT_W, FRONT_H), 0)
     alpha.paste(product.getchannel("A"), (x0, y0))
 
-    tile = Image.open(WORK / "chassis-tile.png").convert("RGBA")
+    tile = restore_regions(Image.open(WORK / "hero-front.png").convert("RGB"),
+                           WORK / "hero-front-ref.png", FRONT_KEEP).convert("RGBA")
     tile.putalpha(alpha)
     cut = tile.crop((x0, y0, x0 + product.width, y0 + ph))
 
-    # Off-centre, as the reference's dimensioned card is: the height callout and
-    # its label need a hand's width of floor to the left of the product, and
-    # centring it left them hanging over the card's edge in the narrow column.
     canvas, (x, y, s) = studio.compose(
-        cut, CARD_W, CARD_H, height=0.50, floor=0.78, cx=0.530,
-        ground=studio.LIT_GROUND, halo=(74, 70, 116), halo_at=0.40, glow_at=130)
+        cut, CARD_W, CARD_H, height=0.58, floor=0.80, cx=0.500,
+        ground=studio.LIT_GROUND, halo=(140, 142, 170), halo_at=0.44, glow_at=40,
+        glow=(150, 104, 60))
     px = lambda v: round(v / CARD_W * 100, 1)
     py = lambda v: round(v / CARD_H * 100, 1)
     bx0, by0, bx1, _ = body
     left, right, floor = x + bx0 * s, x + bx1 * s, y + cut.height * s
     return canvas, {
         "box": [CARD_W, CARD_H],
-        "h": {"x": px(left - 0.035 * CARD_W), "y1": py(y + by0 * s), "y2": py(floor)},
-        "d": {"x1": px(left), "x2": px(right), "y": py(floor + 0.018 * CARD_H)},
+        "h": {"x": px(left - 0.045 * CARD_W), "y1": py(y + by0 * s), "y2": py(floor)},
+        "d": {"x1": px(left), "x2": px(right), "y": py(floor + 0.020 * CARD_H)},
     }
 
 
