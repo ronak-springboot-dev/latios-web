@@ -157,6 +157,32 @@ export default {
       "footnote": "1× M.2 SSD (auto-switch) · 1× 2.5″ HDD/SSD · 1× 3.5″ HDD. Image is an illustration."
     },
     {
+      "type": "featureSplit",
+      "pill": "Design",
+      "heading": "Extruded lines, and the mark",
+      "headingAccent": "that earns them.",
+      "body": "The fascia is drawn as one extrusion — a field of fine ribs broken by a single band, with the Latios wordmark cut into it. It is the part of the machine a desk actually looks at, and the only part of this page photographed rather than rendered.",
+      "image": "/images/am4/fascia.webp",
+      "alt": "A close photograph of the Latios MT’s ribbed front panel, with the Latios wordmark",
+      "aspect": "aspect-[16/10]",
+      "stats": [
+        ["18", "L", "312 × 166 × 354 mm"],
+        ["7.59", "kg", "Weight"]
+      ]
+    },
+    {
+      "type": "featureSplit",
+      "pill": "On the desk",
+      "heading": "Eighteen litres,",
+      "headingAccent": "beside the screen.",
+      "body": "It stands upright in the footprint of a ream of paper, so it shares a desk with the display rather than competing with it — and drives two 4K screens from HDMI and DisplayPort without a card in the slot.",
+      "image": "/images/am4/desk-photo.webp",
+      "alt": "The Latios MT standing on a desk beside a monitor showing the Latios wallpaper",
+      "aspect": "aspect-[16/10]",
+      "flip": true,
+      "footnote": "Photographed. Display and peripherals are not supplied."
+    },
+    {
       "type": "audiences",
       "heading": "One platform. Every team.",
       "items": [
