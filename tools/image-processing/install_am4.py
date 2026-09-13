@@ -34,16 +34,17 @@ DEST = Path(__file__).resolve().parents[2] / "frontend" / "public" / "images" / 
 WIDTH = 1600
 
 # name -> needs ESRGAN first (edits are model-sized; t2i plates are already 4x).
-# hero-front and chassis-tile do not: each is drawn at most ~635 CSS px wide, so
-# the edit's native 1472 covers a 2x display.
+# hero-front does not: it is drawn at most ~635 CSS px wide, so the edit's native
+# 1472 covers a 2x display. The two bento cards are built separately, below.
 ASSETS = {
     "gpu-radeon": False, "ddr4-pair": False, "storage-set": False,
-    "cooler": False, "desk-dual": False,
-    "cpu-ryzen": True, "hero-front": False, "chassis-tile": False,
+    "desk-dual": False, "cpu-ryzen": True, "hero-front": False,
 }
 
-# Assets installed from a render of another name.
+# Assets installed from a render of another name, and assets installed only as a
+# bento card (see build_cards).
 SOURCES = {"desk-dual": "desk-tower"}
+CARD_FROM = {"desk-dual": "desk-card"}
 
 # desk-dual now carries the real MT, and is cropped to the monitors, the tower
 # and the lamp: at card size (~370 CSS px) the full plate left them small.
@@ -222,10 +223,50 @@ def soften(im, boxes, radius):
     return Image.composite(im.filter(ImageFilter.GaussianBlur(radius)), im, mask)
 
 
-def tile_dims():
-    """Callout geometry for chassis-tile, from the staging that produced it."""
-    from gen_am4_edits import side_layout
-    return side_layout()[1]
+# --- the bento cards -------------------------------------------------------
+# In the feature grid the image IS the card: it fills the tile edge to edge and
+# the title sits over its dark top, the way the reference page does it. Most
+# cards need no new file -- object-cover crops the render they already have, and
+# every one of those is framed with enough margin to survive the crop at both
+# column widths. Two do:
+#
+#   chassis-card  the card is portrait and the tile is landscape, so it is
+#                 restaged rather than cropped (gen_am4_edits.side_card).
+#   cooler-card   sits in the corner of a card it does not fill, bleeding off
+#                 the bottom-right. Its top and left edges are ramped to
+#                 transparent so it meets the card's ground with no seam --
+#                 cheaper and more exact than segmenting a black-on-black render.
+#   desk-card     the one bright picture in the grid. Behind a title it stayed
+#                 bright whatever the scrim did, so it sits in the lower three
+#                 quarters of its card with the title on the card's own ground
+#                 above -- the reference's treatment for its desk photograph --
+#                 and only its top edge is ramped, to dissolve that boundary.
+
+def feather(im, left=0.26, top=0.30):
+    """RGBA with the top and left edges ramped to transparent. 0 skips an edge."""
+    W, H = im.size
+    ramp = lambda n, f: (np.clip(np.arange(n) / (f * n), 0, 1) ** 1.2 if f else np.ones(n))
+    lx, ty = ramp(W, left), ramp(H, top)
+    out = im.convert("RGBA")
+    out.putalpha(Image.fromarray((255 * lx[None, :] * ty[:, None]).astype("uint8")))
+    return out
+
+
+def build_cards():
+    from gen_am4_edits import side_card
+    canvas, dims = side_card()
+    save(canvas, "chassis-card")
+    print("  chassis-card dims", dims)
+
+    cooler = Image.open(GEN / "cooler.png").convert("RGB")
+    cooler = cooler.resize((1000, round(cooler.height * 1000 / cooler.width)), Image.LANCZOS)
+    save(feather(cooler), "cooler-card")
+
+
+def save(im, name):
+    out = DEST / f"{name}.webp"
+    im.save(out, "WEBP", quality=90, method=6, exact=im.mode == "RGBA")
+    print(f"  {out.name:18s} {im.size}  {out.stat().st_size // 1024:>4}KB")
 
 
 def grid(im, boxes, out):
@@ -262,8 +303,6 @@ if __name__ == "__main__":
             grid(im, CPU_SOFTEN, GEN / "check-cpu.png")
         if check and name == "gpu-radeon":
             grid(im, GPU_SOFTEN, GEN / "check-gpu.png")
-        if name == "chassis-tile":
-            print("  chassis-tile dims", tile_dims())
         if needs_up:
             im = Image.open(cc.upscale(str(src), f"am4-{name}-up.png")).convert("RGB")
         if name == "desk-dual":
@@ -287,6 +326,18 @@ if __name__ == "__main__":
             for box, left, right in LID_FILLS:
                 im = row_fill(im, box, left, right)
             im = soften(im, LID_TEXT, radius=3)
+        if name in CARD_FROM:
+            # Installed only as its card: the desk plate is retouched, the tower
+            # restored and the frame cropped by everything above, and the card is
+            # that same picture with its top edge ramped. Writing both would
+            # leave an unreferenced file behind on every run.
+            save(feather(im, left=0, top=0.26), CARD_FROM[name])
+            continue
         out = DEST / f"{name}.webp"
         im.save(out, "WEBP", quality=88, method=6)
         print(f"  {out.name:18s} {im.size}  {out.stat().st_size // 1024:>4}KB")
+
+    # A targeted run rebuilds only what was named; a full run rebuilds the cards
+    # too, since they are cut from the very files it has just written.
+    if "--cards" in sys.argv or not only:
+        build_cards()

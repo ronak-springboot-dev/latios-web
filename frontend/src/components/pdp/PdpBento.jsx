@@ -14,12 +14,26 @@
  * callouts. None of those keys is called `type` -- verify_pages.mjs reads
  * section order with a depth-blind regex for `type`, and a nested one would be
  * counted as a section.
+ *
+ * Two flags carry the reference's actual look, and both are opt-in so that a
+ * page which has not had its art staged for it keeps the inset cards it was
+ * designed with:
+ *
+ *   stage   the block becomes a dark panel in both themes (see PdpBento).
+ *   bleed   the card's image fills it edge to edge, title over the picture,
+ *           instead of sitting inset with a margin around it.
  */
 import { ACCENT, ACCENT_SOFT, Band, Reveal, SectionHead } from "./primitives";
 
 // Heights are floors, not fixed sizes, so a card with more text grows rather
 // than clipping. They are chosen so the three columns land within a few pixels
 // of each other with the reference's card mix.
+//
+// A staged grid needs its own table for two reasons. Its cards are pictures
+// rather than pictures-inside-padding, so they want more height; and below `md`
+// the grid is one column, where a full-bleed image has nothing but the card box
+// to take its height from and would otherwise collapse to the title. An inset
+// card needs no base floor because its content is already taller.
 const MIN_H = {
   tall: "md:min-h-[560px]",
   half: "md:min-h-[430px]",
@@ -28,12 +42,22 @@ const MIN_H = {
   text: "md:min-h-[140px]",
 };
 
+// 620+300, 224+224+144+300 and 460+460 all come to 940 with a 16px gap.
+const STAGE_H = {
+  tall: "min-h-[440px] md:min-h-[620px]",
+  half: "min-h-[340px] md:min-h-[460px]",
+  short: "min-h-[260px] md:min-h-[300px]",
+  small: "md:min-h-[224px]",
+  text: "md:min-h-[144px]",
+};
+
 /** Line-art in the accent colour, drawn rather than rendered. */
-const Glyph = ({ name }) => {
+const Glyph = ({ name, big }) => {
   const common = { fill: "none", stroke: ACCENT, strokeWidth: 3, strokeLinejoin: "round" };
+  const size = big ? "w-44 md:w-56" : "w-40 md:w-48";
   if (name === "dimm")
     return (
-      <svg viewBox="0 0 200 64" className="w-40 md:w-48" aria-hidden="true">
+      <svg viewBox="0 0 200 64" className={size} aria-hidden="true">
         <path d="M6 10h188v36h-8l-4 8H18l-4-8H6z" {...common} />
         {[30, 70, 110, 150].map((x) => (
           <rect key={x} x={x} y="20" width="22" height="16" rx="2" {...common} />
@@ -43,7 +67,7 @@ const Glyph = ({ name }) => {
     );
   if (name === "drive")
     return (
-      <svg viewBox="0 0 200 64" className="w-40 md:w-48" aria-hidden="true">
+      <svg viewBox="0 0 200 64" className={size} aria-hidden="true">
         <rect x="6" y="10" width="188" height="44" rx="4" {...common} />
         <rect x="22" y="20" width="56" height="24" rx="2" {...common} />
         <rect x="88" y="20" width="28" height="24" rx="2" {...common} />
@@ -57,14 +81,21 @@ const Glyph = ({ name }) => {
 /**
  * Leader lines and measurements over a product image.
  *
- * Coordinates are fractions of the image box (the same convention as ioMap
- * pins), and the box carries the image's own aspect ratio so the image fills it
- * exactly -- with object-contain letterboxing, a fraction of the box would not be
- * a fraction of the product. The measurements are live text, not pixels.
+ * Coordinates are percentages of the staged image (the same convention as ioMap
+ * pins). They are also percentages of the CARD, because a dimensioned card is
+ * given that image's own aspect ratio and so never crops it -- see `aspect` in
+ * Card. That is not a nicety: the three columns run from about 210px wide at
+ * `md` to 490 on a wide desktop, and with a fixed card height object-cover ate a
+ * different slice off the sides at every breakpoint. At 1024 the "354 mm" label
+ * was cropped clean off the card.
+ *
+ * White rather than the accent: over a product standing on the accent's own
+ * floor glow, an accent-coloured rule reads as part of the lighting.
  */
 const Dimensions = ({ dims }) => {
-  const line = { stroke: ACCENT_SOFT, strokeWidth: 0.4, vectorEffect: "non-scaling-stroke" };
+  const line = { stroke: "rgba(255,255,255,0.75)", strokeWidth: 1, vectorEffect: "non-scaling-stroke" };
   const tick = 1.6;
+  const label = "absolute text-[12px] tracking-[0.08em] whitespace-nowrap text-white/85";
   const { h, d } = dims;
   return (
     <>
@@ -85,20 +116,20 @@ const Dimensions = ({ dims }) => {
         )}
       </svg>
       {/* Set vertically, reading upward along its line, as a drawing would. Laid
-          horizontally it was ~54px wide beside a line only 6.6% into the box,
+          horizontally it was ~54px wide beside a line only a tenth into the box,
           and at 375 and 1024px it ran out past the card's edge. */}
       {h && (
         <span
-          className="absolute -translate-x-full -translate-y-1/2 rotate-180 [writing-mode:vertical-rl] text-[11px] tracking-[0.1em] whitespace-nowrap"
-          style={{ left: `calc(${h.x}% - 6px)`, top: `${(h.y1 + h.y2) / 2}%`, color: ACCENT_SOFT }}
+          className={`${label} -translate-x-full -translate-y-1/2 rotate-180 [writing-mode:vertical-rl]`}
+          style={{ left: `calc(${h.x}% - 7px)`, top: `${(h.y1 + h.y2) / 2}%` }}
         >
           {h.label}
         </span>
       )}
       {d && (
         <span
-          className="absolute -translate-x-1/2 pt-2 text-[11px] tracking-[0.1em] whitespace-nowrap"
-          style={{ left: `${(d.x1 + d.x2) / 2}%`, top: `${d.y}%`, color: ACCENT_SOFT }}
+          className={`${label} -translate-x-1/2 pt-2`}
+          style={{ left: `${(d.x1 + d.x2) / 2}%`, top: `${d.y}%` }}
         >
           {d.label}
         </span>
@@ -107,27 +138,117 @@ const Dimensions = ({ dims }) => {
   );
 };
 
-const Card = ({ card, n }) => {
-  const { size = "small", title, subtitle, image, alt, glyph, stat, dims, fit = "contain" } = card;
-  const side = image && stat;     // a number beside a picture, as on the reference's cooling card
-  return (
-    <Reveal delay={Math.min(n, 6) * 0.04}>
-      <div
-        className={`pdp-card flex flex-col rounded-[28px] [corner-shape:squircle] border border-white/10 overflow-hidden p-6 md:p-8 ${MIN_H[size] ?? ""}`}
-        data-testid={`pdp-bento-card-${n}`}
-      >
-        <div className={side ? "text-left" : "text-center"}>
-          <h3 className="font-display text-xl md:text-2xl font-semibold tracking-tight text-white">{title}</h3>
-          {subtitle && <p className="mt-1.5 text-sm text-zinc-400">{subtitle}</p>}
+const Heading = ({ title, subtitle, align = "center" }) => (
+  <div className={align === "left" ? "text-left" : "text-center"}>
+    <h3 className="font-display text-xl md:text-2xl font-semibold tracking-tight text-white">{title}</h3>
+    {subtitle && <p className="mt-1.5 text-sm text-zinc-400">{subtitle}</p>}
+  </div>
+);
+
+const Stat = ([big, unit, note], align = "center", scale = "text-5xl md:text-6xl") => (
+  <p className={`font-display font-semibold leading-none ${align === "left" ? "" : "text-center"}`}>
+    <span className={scale} style={{ color: ACCENT }}>{big}</span>
+    {unit && <span className="text-xl ml-1" style={{ color: ACCENT_SOFT }}>{unit}</span>}
+    {note && <span className="block mt-2 text-sm font-normal text-zinc-400">{note}</span>}
+  </p>
+);
+
+/**
+ * A card whose image IS the card.
+ *
+ * The reference's grid has no inset pictures at all: every image runs to the
+ * card's own corners and the title sits over its dark top. That is what the
+ * `-card` renders are staged for -- each one is composed at the card's aspect
+ * with a dark band above the product, so the scrim here is insurance for the
+ * narrow column rather than the thing making the type readable.
+ */
+const BleedCard = ({ card }) => {
+  const { title, subtitle, image, alt, stat, dims, foot } = card;
+  if (foot) {
+    // A picture too bright to put a title on. It takes the bottom of the card
+    // and the title sits on the card's own ground above it, which is what the
+    // reference does with its one photograph; the file's top edge is ramped to
+    // transparent, so there is no line where the two meet.
+    return (
+      <>
+        <img
+          src={image} alt={alt ?? title} loading="lazy"
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[70%] w-full object-cover"
+        />
+        <div className="relative p-6 md:p-8">
+          <Heading title={title} subtitle={subtitle} />
         </div>
+      </>
+    );
+  }
+  if (stat) {
+    // The cooling card: a number at the foot, the part bleeding off the corner.
+    // Its top and left edges are ramped to transparent in the file, so it meets
+    // the card's ground without an edge.
+    return (
+      <>
+        <img
+          src={image} alt={alt ?? title} loading="lazy"
+          className="pointer-events-none absolute -right-[9%] -bottom-[12%] w-[82%] max-w-none"
+        />
+        <div className="relative flex-1 flex flex-col p-6 md:p-8">
+          <Heading title={title} subtitle={subtitle} align="left" />
+          <div className="mt-auto pt-8">{Stat(stat, "left")}</div>
+        </div>
+      </>
+    );
+  }
+  return (
+    <>
+      <img
+        src={image} alt={alt ?? title} loading="lazy"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      <div className="pdp-scrim pointer-events-none absolute inset-x-0 top-0 h-1/2" />
+      {dims && <Dimensions dims={dims} />}
+      <div className="relative p-6 md:p-8">
+        <Heading title={title} subtitle={subtitle} />
+      </div>
+      {dims?.note && (
+        <p className="absolute inset-x-0 bottom-6 text-center text-[11px] tracking-[0.1em] text-zinc-400">
+          {dims.note}
+        </p>
+      )}
+    </>
+  );
+};
+
+const Card = ({ card, n, stage }) => {
+  const { size = "small", title, subtitle, image, alt, glyph, stat, dims, fit = "contain", bleed, grow } = card;
+  const side = image && stat;     // a number beside a picture, as on the reference's cooling card
+  // A full-bleed card carrying callouts takes its height from the picture, so
+  // the picture is never cropped and the callouts stay on the product at every
+  // column width. `grow` then lets the other columns take up the slack: the grid
+  // already stretches all three columns to the tallest, so one flexible card per
+  // column is what keeps them ending level without a height tuned per breakpoint.
+  const aspect = bleed && dims?.box ? { aspectRatio: `${dims.box[0]} / ${dims.box[1]}` } : null;
+  const shell = `${stage ? "pdp-stage-card" : "pdp-card"} relative flex flex-col rounded-[28px] ` +
+    `[corner-shape:squircle] border border-white/10 overflow-hidden ` +
+    `${grow ? "flex-1 " : ""}${aspect ? "" : (stage ? STAGE_H : MIN_H)[size] ?? ""}`;
+
+  if (bleed && image) {
+    return (
+      <Reveal delay={Math.min(n, 6) * 0.04} className={grow ? "flex flex-col flex-1" : ""}>
+        <div className={shell} style={aspect} data-testid={`pdp-bento-card-${n}`}>
+          <BleedCard card={card} />
+        </div>
+      </Reveal>
+    );
+  }
+
+  return (
+    <Reveal delay={Math.min(n, 6) * 0.04} className={grow ? "flex flex-col flex-1" : ""}>
+      <div className={`${shell} p-6 md:p-8`} data-testid={`pdp-bento-card-${n}`}>
+        <Heading title={title} subtitle={subtitle} align={side ? "left" : "center"} />
 
         {side ? (
           <div className="mt-4 flex-1 flex items-end justify-between gap-4">
-            <p className="font-display font-semibold leading-none">
-              <span className="text-5xl md:text-6xl" style={{ color: ACCENT }}>{stat[0]}</span>
-              {stat[1] && <span className="text-xl ml-1" style={{ color: ACCENT_SOFT }}>{stat[1]}</span>}
-              {stat[2] && <span className="block mt-2 text-sm font-normal text-zinc-400">{stat[2]}</span>}
-            </p>
+            {Stat(stat, "left")}
             <img src={image} alt={alt ?? title} loading="lazy" className="w-1/2 max-h-[200px] object-contain rounded-2xl" />
           </div>
         ) : image ? (
@@ -150,14 +271,20 @@ const Card = ({ card, n }) => {
             )}
           </div>
         ) : glyph ? (
-          <div className="mt-5 flex-1 flex items-center justify-center">
-            <Glyph name={glyph} />
+          <div className="relative mt-5 flex-1 flex items-center justify-center">
+            {/* A bloom under the line art, so a card with no photograph still has
+                depth. A blurred div rather than an SVG filter: a filter on a
+                stroke repaints the whole glyph on every scroll frame. */}
+            {stage && (
+              <div
+                className="pointer-events-none absolute w-52 h-52 rounded-full blur-[64px] opacity-30"
+                style={{ background: ACCENT }}
+              />
+            )}
+            <Glyph name={glyph} big={stage} />
           </div>
         ) : stat ? (
-          <p className="mt-4 text-center font-display font-semibold leading-none">
-            <span className="text-5xl" style={{ color: ACCENT }}>{stat[0]}</span>
-            {stat[1] && <span className="text-xl ml-1" style={{ color: ACCENT_SOFT }}>{stat[1]}</span>}
-          </p>
+          <div className="mt-4">{Stat([stat[0], stat[1]], "center", "text-5xl")}</div>
         ) : null}
 
         {dims?.note && <p className="mt-3 text-center text-[11px] tracking-[0.1em] text-zinc-500">{dims.note}</p>}
@@ -166,21 +293,41 @@ const Card = ({ card, n }) => {
   );
 };
 
-export const PdpBento = ({ theme, kicker, heading, body, cards = [] }) => {
+/**
+ * `stage` makes the whole block a dark panel, heading included, in BOTH themes.
+ *
+ * It is not a style preference. Every product render in this grid is lit for a
+ * dark ground -- rim light on the edges, the shadow side falling into black --
+ * so on the light theme's white card each one read as a black rectangle pasted
+ * into the page. Re-lighting the range for a white ground is the alternative,
+ * and it would cost the separation those renders get their shape from. A dark
+ * gallery inset into a light page is what the reference does, and what the
+ * pictures were made for.
+ */
+export const PdpBento = ({ theme, kicker, heading, body, cards = [], stage = false }) => {
   if (!cards.length) return null;
   const cols = [1, 2, 3].map((c) => cards.map((card, n) => ({ card, n })).filter((x) => (x.card.col ?? 1) === c));
-  return (
-    <Band theme={theme} data-testid="pdp-bento">
+  const grid = (
+    <>
       <SectionHead theme={theme} kicker={kicker} heading={heading} body={body} align="center" />
       <div className={`${heading || body ? "mt-12 md:mt-16" : ""} grid grid-cols-1 md:grid-cols-3 gap-4`}>
         {cols.map((col, c) => (
           <div key={c} className="flex flex-col gap-4">
             {col.map(({ card, n }) => (
-              <Card key={n} card={card} n={n} />
+              <Card key={n} card={card} n={n} stage={stage} />
             ))}
           </div>
         ))}
       </div>
+    </>
+  );
+  return (
+    <Band theme={theme} data-testid="pdp-bento">
+      {stage ? (
+        <div className="pdp-stage-band rounded-[36px] px-4 py-12 md:px-10 md:py-16">{grid}</div>
+      ) : (
+        grid
+      )}
     </Band>
   );
 };

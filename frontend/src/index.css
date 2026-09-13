@@ -207,6 +207,61 @@ html.light .pdp-card {
     background-color: #ffffff;
 }
 
+/* The feature grid as a dark gallery, in both themes. Its light partners keep
+   it dark on purpose -- see the comment on PdpBento's `stage`. Because the light
+   theme is a sheet of overrides keyed on literal Tailwind class names, the text
+   and border colours inside the panel have to be put back by hand; anything
+   added to a stage card that is not in this list will turn near-black on a
+   light page. */
+.pdp-stage-band {
+    background-color: #07070a;
+    background-image:
+        radial-gradient(ellipse 60% 45% at 50% 0%,
+            color-mix(in srgb, var(--pdp-accent, #d98324) 12%, transparent), transparent 70%);
+}
+html.light .pdp-stage-band {
+    background-color: #08080b;
+}
+html.light .pdp-stage-band .text-white {
+    color: #ffffff !important;
+}
+html.light .pdp-stage-band .text-zinc-300 {
+    color: #d4d4d8 !important;
+}
+html.light .pdp-stage-band .text-zinc-400 {
+    color: #a1a1aa !important;
+}
+html.light .pdp-stage-band .text-zinc-500 {
+    color: #8b8b93 !important;
+}
+html.light .pdp-stage-band .border-white\/10 {
+    border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+/* The card ground under a glyph or a line of text -- the cards with no
+   photograph of their own. Lit from the top so the grid does not read as a
+   sheet of flat squares. */
+.pdp-stage-card {
+    background-color: #0d0d11;
+    background-image: linear-gradient(180deg,
+        rgba(255, 255, 255, 0.045) 0%, rgba(255, 255, 255, 0) 55%);
+}
+html.light .pdp-stage-card {
+    background-color: #0d0d11;
+}
+
+/* Shade under a card title that sits over its own picture. The staged renders
+   already keep their top quarter dark; this is what covers the ones cropped
+   tighter in the narrow column. */
+.pdp-scrim {
+    background-image: linear-gradient(180deg,
+        rgba(0, 0, 0, 0.86) 0%, rgba(0, 0, 0, 0.55) 38%, rgba(0, 0, 0, 0) 100%);
+}
+html.light .pdp-scrim {
+    background-image: linear-gradient(180deg,
+        rgba(0, 0, 0, 0.86) 0%, rgba(0, 0, 0, 0.55) 38%, rgba(0, 0, 0, 0) 100%);
+}
+
 .grid-bg {
     background-image:
         linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),

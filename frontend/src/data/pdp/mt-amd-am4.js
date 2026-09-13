@@ -44,24 +44,25 @@ export default {
     },
     {
       "type": "bento",
+      "stage": true,
       "heading": "Everything a desk needs, in eighteen litres.",
       "cards": [
         {
-          "col": 1, "size": "tall",
+          "col": 1, "size": "tall", "bleed": true,
           "title": "Compact design", "subtitle": "18-litre micro tower",
-          "image": "/images/am4/chassis-tile.webp",
+          "image": "/images/am4/chassis-card.webp",
           "alt": "The Latios MT chassis from the side in a warm glow, with its height and depth marked",
           "dims": {
-            "aspect": "1600 / 1235",
-            "h": { "x": 23.4, "y1": 12.2, "y2": 82.0, "label": "354 mm" },
-            "d": { "x1": 26.4, "x2": 73.6, "y": 83.5, "label": "312 mm" },
+            "box": [1000, 1400],
+            "h": { "x": 15.5, "y1": 22.2, "y2": 80.0, "label": "354 mm" },
+            "d": { "x1": 19.0, "x2": 90.0, "y": 81.8, "label": "312 mm" },
             "note": "Width 166 mm · 7.59 kg"
           }
         },
         {
-          "col": 1, "size": "short",
+          "col": 1, "size": "short", "bleed": true, "grow": true,
           "title": "Cooling & power", "subtitle": "Fan cooler · 80+ Bronze supply",
-          "image": "/images/am4/cooler.webp",
+          "image": "/images/am4/cooler-card.webp",
           "alt": "A round desktop fan cooler, rendered",
           "stat": ["500", "W", "ATX power"]
         },
@@ -80,21 +81,19 @@ export default {
           "title": "Wi-Fi 6E · TPM 2.0", "subtitle": "Up to Intel AX211 with Bluetooth 5.3 · Kensington · padlock"
         },
         {
-          "col": 2, "size": "short",
+          "col": 2, "size": "short", "bleed": true, "foot": true, "grow": true,
           "title": "Dual 4K display", "subtitle": "HDMI 4K@60 · DisplayPort 1.4 · VGA (opt)",
-          "image": "/images/am4/desk-dual.webp",
-          "alt": "A desk with two monitors, rendered",
-          "fit": "cover"
+          "image": "/images/am4/desk-card.webp",
+          "alt": "A desk with two monitors, rendered"
         },
         {
-          "col": 3, "size": "half",
+          "col": 3, "size": "half", "bleed": true,
           "title": "Processor", "subtitle": "Up to AMD Ryzen 7 5700G",
           "image": "/images/am4/cpu-ryzen.webp",
-          "alt": "An AMD Ryzen processor seated in an AM4 socket",
-          "fit": "cover"
+          "alt": "An AMD Ryzen processor seated in an AM4 socket"
         },
         {
-          "col": 3, "size": "half",
+          "col": 3, "size": "half", "bleed": true, "grow": true,
           "title": "Graphics", "subtitle": "Up to 16GB AMD Radeon RX",
           "image": "/images/am4/gpu-radeon.webp",
           "alt": "A full-height desktop graphics card, rendered"
