@@ -106,6 +106,30 @@ T2I = {
     # tower cooler with heat pipes in front of a giant disc patterned like a
     # circuit board. Described now as the object itself, seen from above, with
     # the tower parts named in JOB_NEG instead of negated inside the prompt.
+    # Storage, one object per render.
+    #
+    # Five attempts at all three in one frame failed on the same thing every
+    # time: the third drive came back open, or with its lid sliding off, or as a
+    # window onto a PCB, or as a lollipop. Single objects, meanwhile, have never
+    # failed here -- the cooler and the graphics card were both right first time.
+    # So they are rendered apart and composited in stage_am4_parts, where the
+    # relative sizes are arithmetic rather than something the model has to infer.
+    #
+    # Thickness is the other thing it gets wrong, so each says its proportions
+    # twice: once in millimetres and once in plain shape words.
+    "part-ssd": ((1328, 1328),
+        "a single slim sealed metal case shaped like a flat thin card, 100 mm long "
+        "and 70 mm wide but only 7 mm thick -- as thin as a stack of three coins -- "
+        "with a brushed aluminium top face, square corners and a fine seam running "
+        "round its edge. Completely closed on every face, nothing inside visible. "
+        "One very flat thin object, plain unmarked surfaces. " + AM4_PART),
+    "part-hdd": ((1328, 1328),
+        "a single sealed metal case 146 mm long, 102 mm wide and 26 mm thick -- a "
+        "squat flat rectangular block, about three times the thickness of a phone -- "
+        "with a flat brushed aluminium lid on its upper face held down by four "
+        "recessed screws near the corners, and a plain machined side wall with a fine "
+        "seam. Completely closed on every face, nothing inside visible. One squat "
+        "rectangular object, plain unmarked surfaces. " + AM4_PART),
     "cooler": ((1328, 1328),
         "a compact low-profile desktop processor air cooler seen from above at a "
         "slight angle: a round black fan with seven curved black blades and a "
@@ -130,6 +154,10 @@ JOB_NEG = {
     "cooler": ", square fan frame, tower cooler, heat pipes, copper pipes, "
               "vertical heatsink, disc, ring, circular backdrop, circuit board, "
               "printed circuit pattern",
+    "part-ssd": ", open case, exposed circuit board, visible pcb, missing lid, "
+               "thick block, cube, tall box, two objects",
+    "part-hdd": ", open case, exposed circuit board, visible pcb, missing lid, "
+               "open lid, lid lifted off, tall upright box, cube, two objects",
     "storage-set": ", open hard drive, exposed platter, read arm, fourth drive, "
                    "open enclosure, exposed circuit board, visible pcb inside a "
                    "case, missing lid, open lid, lid lifted off, green board showing "

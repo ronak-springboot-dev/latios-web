@@ -25,6 +25,8 @@
  */
 import { ACCENT, ACCENT_SOFT, Band, Reveal, SectionHead } from "./primitives";
 
+const RADIUS = "var(--pdp-card-radius, 20px)";
+
 // Heights are floors, not fixed sizes, so a card with more text grows rather
 // than clipping. They are chosen so the three columns land within a few pixels
 // of each other with the reference's card mix.
@@ -144,8 +146,11 @@ const Dimensions = ({ dims }) => {
 // -- selectable, translatable, and correct at any pixel density.
 const Heading = ({ title, subtitle, align = "center", big }) => (
   <div className={align === "left" ? "text-left" : "text-center"}>
-    <h3 className={`font-display font-semibold tracking-tight text-white ${
-      big ? "text-[22px] md:text-[28px] leading-tight" : "text-xl md:text-2xl"}`}>{title}</h3>
+    <h3
+      style={{ fontWeight: "var(--pdp-head-weight, 600)", letterSpacing: "var(--pdp-track, -0.025em)" }}
+      className={`font-display text-white ${
+        big ? "text-[22px] md:text-[28px] leading-tight" : "text-xl md:text-2xl"}`}
+    >{title}</h3>
     {subtitle && (
       <p className={`mt-1.5 ${big ? "text-[15px] text-zinc-300" : "text-sm text-zinc-400"}`}>{subtitle}</p>
     )}
@@ -235,14 +240,13 @@ const Card = ({ card, n, stage }) => {
   // column is what keeps them ending level without a height tuned per breakpoint.
   const aspect = bleed && dims?.box ? { aspectRatio: `${dims.box[0]} / ${dims.box[1]}` } : null;
   const shell = `${stage ? "pdp-stage-card" : "pdp-card"} relative flex flex-col ` +
-    `${stage ? "rounded-[20px]" : "rounded-[28px]"} ` +
     `[corner-shape:squircle] border border-white/10 overflow-hidden ` +
     `${grow ? "flex-1 " : ""}${aspect ? "" : (stage ? STAGE_H : MIN_H)[size] ?? ""}`;
 
   if (bleed && image) {
     return (
       <Reveal delay={Math.min(n, 6) * 0.04} className={grow ? "flex flex-col flex-1" : ""}>
-        <div className={shell} style={aspect} data-testid={`pdp-bento-card-${n}`}>
+        <div className={shell} style={{ borderRadius: RADIUS, ...aspect }} data-testid={`pdp-bento-card-${n}`}>
           <BleedCard card={card} stage={stage} />
         </div>
       </Reveal>
@@ -251,7 +255,7 @@ const Card = ({ card, n, stage }) => {
 
   return (
     <Reveal delay={Math.min(n, 6) * 0.04} className={grow ? "flex flex-col flex-1" : ""}>
-      <div className={`${shell} p-6 md:p-8`} data-testid={`pdp-bento-card-${n}`}>
+      <div className={`${shell} p-6 md:p-8`} style={{ borderRadius: RADIUS }} data-testid={`pdp-bento-card-${n}`}>
         <Heading title={title} subtitle={subtitle} align={side ? "left" : "center"} big={stage} />
 
         {side ? (
@@ -332,7 +336,8 @@ export const PdpBento = ({ theme, kicker, heading, body, cards = [], stage = fal
   return (
     <Band theme={theme} data-testid="pdp-bento">
       {stage ? (
-        <div className="pdp-stage-band rounded-[36px] px-4 py-12 md:px-10 md:py-16">{grid}</div>
+        <div className="pdp-stage-band px-4 py-12 md:px-10 md:py-16"
+             style={{ borderRadius: "var(--pdp-radius, 36px)" }}>{grid}</div>
       ) : (
         grid
       )}

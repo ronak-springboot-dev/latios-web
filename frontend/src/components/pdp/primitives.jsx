@@ -15,8 +15,14 @@ export const ACCENT_SOFT = "var(--pdp-accent-soft, #6f93f2)";
 export const AccentButton = ({ as: As = "button", children, className = "", ...rest }) => (
   <As
     {...rest}
-    style={{ background: ACCENT, ...(rest.style || {}) }}
-    className={`group inline-flex items-center gap-3 text-white px-8 py-4 text-xs uppercase tracking-[0.25em] font-semibold transition-opacity duration-300 hover:opacity-85 focus:outline-none focus:ring-2 focus:ring-white/40 ${className}`}
+    style={{
+      background: ACCENT,
+      borderRadius: "var(--pdp-pill, 9999px)",
+      textTransform: "var(--pdp-label-case, uppercase)",
+      letterSpacing: "var(--pdp-label-track, 0.25em)",
+      ...(rest.style || {}),
+    }}
+    className={`group inline-flex items-center gap-3 text-white px-8 py-4 text-xs font-semibold transition-opacity duration-300 hover:opacity-85 focus:outline-none focus:ring-2 focus:ring-white/40 ${className}`}
   >
     {children}
   </As>
@@ -25,14 +31,23 @@ export const AccentButton = ({ as: As = "button", children, className = "", ...r
 export const GhostButton = ({ as: As = "button", children, className = "", ...rest }) => (
   <As
     {...rest}
-    className={`inline-flex items-center gap-3 border border-white/20 text-white rounded-full px-8 py-4 text-xs uppercase tracking-[0.25em] hover:border-white/60 transition-colors duration-300 focus:outline-none ${className}`}
+    style={{
+      borderRadius: "var(--pdp-pill, 9999px)",
+      textTransform: "var(--pdp-label-case, uppercase)",
+      letterSpacing: "var(--pdp-label-track, 0.25em)",
+      ...(rest.style || {}),
+    }}
+    className={`inline-flex items-center gap-3 border border-white/20 text-white px-8 py-4 text-xs hover:border-white/60 transition-colors duration-300 focus:outline-none ${className}`}
   >
     {children}
   </As>
 );
 
 export const Kicker = ({ children, className = "" }) => (
-  <p className={`kicker-sq text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-5 ${className}`}>
+  <p
+    style={{ letterSpacing: "var(--pdp-kicker-track, 0.35em)" }}
+    className={`kicker-sq text-[10px] uppercase text-zinc-500 mb-5 ${className}`}
+  >
     {children}
   </p>
 );
@@ -49,7 +64,14 @@ export const Kicker = ({ children, className = "" }) => (
  * the display face is the piece of Latios the restyle is meant to keep.
  */
 export const BandHeading = ({ children, className = "" }) => (
-  <h2 className={`font-display text-3xl md:text-5xl font-semibold tracking-tight text-white leading-[1.15] md:leading-[1.15] ${className}`}>
+  <h2
+    style={{
+      fontSize: "var(--pdp-head-size, clamp(1.875rem, 2.2vw + 1rem, 3rem))",
+      fontWeight: "var(--pdp-head-weight, 600)",
+      letterSpacing: "var(--pdp-track, -0.025em)",
+    }}
+    className={`font-display text-white leading-[1.15] md:leading-[1.15] ${className}`}
+  >
     {children}
   </h2>
 );
@@ -88,7 +110,8 @@ export const SectionHead = ({
       {body && (
         <Reveal delay={0.08}>
           <p
-            className={`mt-5 text-base text-zinc-400 leading-relaxed ${
+            style={{ fontSize: "var(--pdp-body-size, 1rem)" }}
+            className={`mt-5 text-zinc-400 leading-relaxed ${
               theme?.measure ?? "max-w-[600px]"
             } ${centred ? "mx-auto" : ""}`}
           >

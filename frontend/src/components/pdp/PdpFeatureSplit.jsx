@@ -76,7 +76,10 @@ export const PdpFeatureSplit = ({
 
           {body && (
             <Reveal delay={0.06}>
-              <p className={`mt-5 text-base text-zinc-400 leading-relaxed ${theme?.measure ?? "max-w-[600px]"}`}>
+              <p
+                style={{ fontSize: "var(--pdp-body-size, 1rem)" }}
+                className={`mt-5 text-zinc-400 leading-relaxed ${theme?.measure ?? "max-w-[600px]"}`}
+              >
                 {body}
               </p>
             </Reveal>
@@ -101,9 +104,10 @@ export const PdpFeatureSplit = ({
         {image && (
           <Reveal delay={0.1} className={flip ? "md:order-1" : ""}>
             <figure
+              style={framed ? { borderRadius: "var(--pdp-radius, 28px)" } : undefined}
               className={
                 framed
-                  ? `relative overflow-hidden rounded-[28px] [corner-shape:squircle] border border-white/10 bg-black ${aspect}`
+                  ? `relative overflow-hidden [corner-shape:squircle] border border-white/10 bg-black ${aspect}`
                   : `relative ${aspect}`
               }
             >

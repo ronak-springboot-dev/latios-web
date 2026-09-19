@@ -35,12 +35,42 @@ const DENSITY = {
   airy: { band: "py-24 md:py-36", gap: "gap-12 md:gap-20", measure: "max-w-[660px]" },
 };
 
+/**
+ * Shape and type, as two named sets rather than per-page values.
+ *
+ * `soft` is what every page has had: a 600-weight display face pulled tight,
+ * pill buttons in uppercase at wide tracking, and generously rounded cards.
+ *
+ * `sharp` is adapted from the reference storefront, measured off it rather than
+ * guessed -- headings at weight 520 with NORMAL tracking, 8px corners on
+ * everything including buttons, sentence-case labels, 14px body. Those are its
+ * values; these are a shade softer, because the Latios display face is Outfit
+ * rather than MiSans and body copy here is read in English at a longer measure.
+ *
+ * The font stays Latios's own. A typeface is a brand, not a layout token.
+ */
+const SHAPE = {
+  soft: {
+    radius: "28px", card: "20px", pill: "9999px",
+    headWeight: "600", track: "-0.025em",
+    headSize: "clamp(1.875rem, 2.2vw + 1rem, 3rem)", bodySize: "1rem",
+    label: "uppercase", labelTrack: "0.25em", kickerTrack: "0.35em",
+  },
+  sharp: {
+    radius: "10px", card: "10px", pill: "8px",
+    headWeight: "500", track: "normal",
+    headSize: "clamp(1.75rem, 1.6vw + 1rem, 2.5rem)", bodySize: "0.9375rem",
+    label: "none", labelTrack: "0.02em", kickerTrack: "0.18em",
+  },
+};
+
 const THEMES = {
   // --- MT micro-tower ------------------------------------------------------
   "mt-amd-am4": {
     accent: "#d98324", accentSoft: "#f0b46a",
     density: "normal", surface: "#0b0a09",
     kicker: "The everyday workhorse",
+    shape: "sharp",
   },
   "mt-h610-ddr4": {
     accent: "#e2571f", accentSoft: "#f5926a",
@@ -194,7 +224,7 @@ const FALLBACK = {
 
 export const getTheme = (slug) => {
   const t = THEMES[slug] ?? FALLBACK;
-  return { ...t, ...DENSITY[t.density] };
+  return { ...t, ...DENSITY[t.density], ...SHAPE[t.shape ?? "soft"] };
 };
 
 /**
@@ -212,6 +242,16 @@ export const themeVars = (theme) => ({
   "--pdp-accent": theme.accent,
   "--pdp-accent-soft": theme.accentSoft,
   "--pdp-surface": theme.surface,
+  "--pdp-radius": theme.radius,
+  "--pdp-card-radius": theme.card,
+  "--pdp-pill": theme.pill,
+  "--pdp-head-size": theme.headSize,
+  "--pdp-body-size": theme.bodySize,
+  "--pdp-head-weight": theme.headWeight,
+  "--pdp-track": theme.track,
+  "--pdp-label-case": theme.label,
+  "--pdp-label-track": theme.labelTrack,
+  "--pdp-kicker-track": theme.kickerTrack,
 });
 
 export const ALL_THEMES = THEMES;
