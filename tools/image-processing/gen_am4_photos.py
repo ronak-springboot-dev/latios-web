@@ -158,7 +158,8 @@ def spotlight(im, at=(0.52, 0.60), radius=(0.80, 0.92), lift=0.48, tint_amt=0.26
     return Image.fromarray(arr.clip(0, 255).astype("uint8"))
 
 
-def desk(check=False):
+def _desk_frame(check=False):
+    """The graded desk frame, shared by the section image and the bento card."""
     import laptop_refs as refs
     im = crop(shot("125535"), DESK_CROP)
     if check:
@@ -172,11 +173,37 @@ def desk(check=False):
     im = grade(im, vignette=0.55)
     w, h = im.size
     quad = [(x * w, y * h) for x, y in DESK_SCREEN]
-    im = refs.brand_screen(im, quad, refs.wallpaper("#d98324")).convert("RGB")
-    install(im, "desk-photo")
+    return refs.brand_screen(im, quad, refs.wallpaper("#d98324")).convert("RGB")
 
 
-JOBS = {"fascia": fascia, "desk": desk}
+def desk(check=False):
+    install(_desk_frame(check), "desk-photo")
+
+
+def desk_card():
+    """The same frame as the bento's display card, in place of a generated room.
+
+    That card used to carry a text-to-image office: a room that does not exist,
+    with monitors that are not a product, standing in for a machine we have an
+    actual photograph of. Trimmed to the card's shape and ramped along the top
+    edge, the way the generated one was, so it dissolves into the card's ground
+    with the title sitting on the ground above it rather than on the picture.
+    """
+    im = _desk_frame()
+    w, h = im.size
+    keep = w / 1.82                                  # the card's own proportion
+    top = int((h - keep) * 0.45)                     # bias up: the desk matters more
+    im = im.crop((0, top, w, top + int(keep)))
+    from install_am4 import feather
+    out = feather(im, left=0, top=0.26)
+    DEST.mkdir(parents=True, exist_ok=True)
+    im2 = out.resize((1600, round(out.height * 1600 / out.width)), Image.LANCZOS)
+    path = DEST / "desk-card.webp"
+    im2.save(path, "WEBP", quality=90, method=6, exact=True)
+    print(f"  {path.name:18s} {im2.size}  {path.stat().st_size // 1024:>4}KB")
+
+
+JOBS = {"fascia": fascia, "desk": desk, "desk-card": desk_card}
 
 if __name__ == "__main__":
     only = [a for a in sys.argv[1:] if not a.startswith("--")]

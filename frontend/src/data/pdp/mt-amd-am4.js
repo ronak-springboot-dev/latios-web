@@ -1,7 +1,14 @@
 /**
  * Latios MT — AMD AM4.  Built on the Minisforum 790S7 page: split features with
- * big-number rows, a bento grid of feature cards, component renders on a dark
- * ground. Amber, this product's own accent.
+ * big-number rows, a bento grid of feature cards. Amber, this product's own
+ * accent.
+ *
+ * Every picture on this page is either a photograph of the real chassis or a
+ * component standing on the SAME backdrop as that chassis -- navy overhead
+ * falling to a warm floor, with light streaks behind. The parts used to float on
+ * flat black, each render having invented its own ground, and next to a
+ * photographed tower they read as stock imagery from five different places.
+ * stage_am4_parts.py is what puts them on one stage.
  *
  * Every number on this page is either a row of this model's specGroups
  * (models.js) or AMD's published figure for the Ryzen 7 5700G the spec names:
@@ -13,7 +20,10 @@
  *     and a chart is a claim.
  *   - No scroll reveal and no interior photographs. The MT shoot is of the Intel
  *     Q670 unit -- an LGA socket, its own rear panel -- so every interior here is
- *     a rendered component, captioned as an illustration.
+ *     a rendered component, captioned as an illustration. For the same reason
+ *     this model has its own gallery (MT_GALLERY_CHASSIS): the shared MT one
+ *     carries four frames of that board, and showing an LGA socket to someone
+ *     shopping for a Ryzen is the same error in a smaller place.
  *   - No port diagram. The photographed rear panel is the Intel board's, and the
  *     photographed front panel disagrees with this model's Front I/O row. The
  *     ports are listed in the specification table until that is confirmed.
@@ -82,9 +92,9 @@ export default {
         },
         {
           "col": 2, "size": "short", "bleed": true, "foot": true, "grow": true,
-          "title": "Dual 4K display", "subtitle": "HDMI 4K@60 · DisplayPort 1.4 · VGA (opt)",
+          "title": "4K display output", "subtitle": "HDMI 4K@60 · DisplayPort 1.4 · VGA (opt)",
           "image": "/images/am4/desk-card.webp",
-          "alt": "A desk with two monitors, rendered"
+          "alt": "The Latios MT on a desk beside a display showing the Latios wallpaper"
         },
         {
           "col": 3, "size": "half", "bleed": true,

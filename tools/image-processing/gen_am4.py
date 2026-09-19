@@ -1,6 +1,6 @@
 """Render the component art for the mt-amd-am4 page.
 
-Five text-to-image plates and two identity-preserving edits. Everything here is
+Four text-to-image plates and two identity-preserving edits. Everything here is
 checked against the product's own spec sheet (models.js, slug mt-amd-am4):
 
     CPU options  Ryzen 7 5700G / 5 5600G / 3 5305G      -> Ryzen chip (edit)
@@ -8,7 +8,11 @@ checked against the product's own spec sheet (models.js, slug mt-amd-am4):
     Storage      1x M.2 · 1x 2.5" · 1x 3.5"               -> one of each bay
     Graphics     up to 16GB Radeon RX                     -> a full-height card
     Cooling      fan cooler                               -> a round fan cooler
-    Rear I/O     HDMI 2.1 · DP 1.4 · VGA (opt)            -> two monitors
+
+The plates are rendered on black and NOTHING else -- no floor, no horizon. The
+page's backdrop goes behind them afterwards, in stage_am4_parts.py. The desk
+scene that used to live here is gone: that card is a photograph of the real
+machine now (gen_am4_photos.py).
 
 Rules that come from earlier failures in this project, not from taste:
 
@@ -17,8 +21,12 @@ Rules that come from earlier failures in this project, not from taste:
   * Dark ground, not gen_components.STYLE. STYLE says "light grey background",
     and appending it to dark prompts is recorded as having turned every plate
     into a pasted grey rectangle.
-  * No Latios hardware is ever generated from scratch. The desk scene has no PC
-    in it for that reason, and the chassis is an EDIT of the real photograph.
+  * No Latios hardware is ever generated from scratch. The chassis is an EDIT of
+    the real photograph, and anything showing the machine itself is a photograph.
+  * Describe a part by its GEOMETRY, never by its name, and never name a surface
+    the part should not show. "a bare dark green circuit board covering its
+    underside" was meant to say the drive has a PCB underneath; the model read it
+    as an instruction and returned an open case with its board on display.
   * The Ryzen chip is an edit at low denoise from a photograph, because it has
     lettering. That source is a Ryzen 7 3700X, so the model number is defocused
     afterwards -- the page sells a 5700G.
@@ -40,41 +48,60 @@ OUT = Path(__file__).parent / "generated" / "am4"
 HIRES = Path(r"C:/Ronak/Latios/Images/pipeline/hires")
 PUBLIC = Path(__file__).resolve().parents[2] / "frontend" / "public" / "images"
 
-# The page's own look: dark ground, WARM rim. gen_components.DARK_STYLE uses a
-# cool blue rim; this page's accent is amber, and the reference's stat numerals
-# and horizon glow are warm, so the renders are lit to match.
-AM4_STYLE = (
-    "ultra-detailed studio product render on a pure black seamless background, "
-    "low-key lighting, warm amber rim light raking from behind, soft key light "
-    "from the upper left, subtle reflective floor, photorealistic, sharp micro "
-    "detail on machined metal and PCB surfaces, no background objects, 8k"
+# The part ONLY -- no backdrop, no floor, no horizon.
+#
+# These plates used to be asked for their own stage ("subtle reflective floor",
+# "warm amber horizon glow"), and every one came back on a different one. On the
+# page they then sat next to the chassis card, which stands on a gradient
+# sampled off the reference, and read as five pictures borrowed from five places.
+#
+# The stage is now built in stage_am4_parts.py with the same compose() and
+# LIT_GROUND that made the chassis card, so all of them share one backdrop to the
+# pixel. The model is asked for the object on black and nothing else, which is
+# also the thing it does most reliably.
+AM4_PART = (
+    "ultra-detailed studio product render, one object alone on a pure black "
+    "seamless background, low-key lighting, soft key light from the upper left, "
+    "cool rim light along the far edge, no floor, no horizon, no backdrop, no "
+    "background objects, photorealistic, sharp micro detail on machined metal "
+    "and PCB surfaces, 8k"
 )
 
 T2I = {
     # (width, height) from Qwen-Image's native aspect set
     "gpu-radeon": ((1472, 1140),
-        "a single full-height desktop graphics card seen at a three-quarter angle, "
+        "a single full-height desktop graphics card seen from a low three-quarter "
+        "angle with the bracket end nearest the camera and the card receding away "
+        "to the upper right, "
         "matte black shroud with two large axial fans, brushed metal backplate "
         "edge, full-height metal PCIe bracket, gold PCIe edge connector along the "
-        "bottom, plain unmarked shroud with no text and no logo. " + AM4_STYLE),
+        "bottom, plain unmarked shroud with no text and no logo. " + AM4_PART),
     "ddr4-pair": ((1472, 1140),
-        "exactly two desktop DDR4 memory modules standing upright side by side, "
-        "matte black aluminium heatspreaders, gold contact pins along the bottom "
-        "edge, resting on a glossy reflective surface with a warm amber horizon "
-        "glow behind them, no labels, no stickers, no text. " + AM4_STYLE),
+        "exactly two desktop memory modules standing upright, one a little behind "
+        "and to the right of the other, both seen from a low three-quarter angle so "
+        "they recede away from the camera, matte black aluminium heatspreaders with "
+        "a shallow angular relief, a row of fine gold contact pins along the bottom "
+        "edge of each, blank heatspreaders with no labels, no stickers, no text. "
+        + AM4_PART),
     # Described by shape, never by name. The first render was asked for an "M.2
     # NVMe SSD" and a "2.5 inch" drive and printed those words back onto the
     # parts as garbled lettering ("M.NWC SSD", "2.5 k!/") -- Qwen-Image renders
     # text well enough that a product name in the prompt reads as a label to
     # draw. It also came back with four drives, one with its platter exposed.
     "storage-set": ((1472, 1140),
-        "exactly three computer storage drives and nothing else, side by side on "
-        "a glossy black floor: on the left a long thin bare green circuit board "
-        "stick with two blank black chips and a row of gold contacts at one end; "
-        "in the middle a slim flat sealed rectangular metal drive the size of a "
-        "phone; on the right a larger thick sealed rectangular brushed metal hard "
-        "drive with a closed lid. Blank chips and blank lids with no markings, no "
-        "stickers, no labels, no printed characters. " + AM4_STYLE),
+        "exactly three objects and nothing else, standing upright in a row and "
+        "staggered in depth, seen from a low three-quarter angle so the row recedes "
+        "to the right: on the left a long thin bare green circuit board stick with "
+        "two blank black chips and one single row of fine gold contacts along its "
+        "BOTTOM edge only, its top end bare green board with no contacts; in the middle a slim flat sealed metal case about the size of a "
+        "playing card and a finger thick, with a flat brushed top face, square "
+        "corners, a chamfered edge and two small recessed screw dimples in its side; "
+        "on the right a plain solid rectangular block of brushed aluminium, twice as "
+        "thick as the middle one, machined from one piece, every face smooth and "
+        "unbroken, with four small recessed screw heads on its front face and a thin "
+        "seam around its edge. Nothing inside any of them is visible. Every surface "
+        "blank -- no markings, no stickers, no labels, no printed characters. "
+        + AM4_PART),
     # The first render read "circular footprint" as a prop: it stood a square
     # tower cooler with heat pipes in front of a giant disc patterned like a
     # circuit board. Described now as the object itself, seen from above, with
@@ -85,24 +112,28 @@ T2I = {
         "plain round black hub, sitting flat on a short round stack of thin "
         "aluminium fins that radiate outward from the centre like the spokes of "
         "a wheel, a flat metal base plate underneath. A single squat round object, "
-        "plain unmarked surfaces. " + AM4_STYLE),
-    "desk-dual": ((1664, 928),
-        "a clean modern office desk in a dark room at night, exactly two identical "
-        "unbranded monitors side by side on thin stands showing abstract data "
-        "dashboards, a keyboard and mouse, warm amber desk lamp glow, no computer "
-        "tower on or under the desk, no PC case, no people, cinematic, "
-        "photorealistic, 8k"),
+        "plain unmarked surfaces. " + AM4_PART),
 }
 
+# The stage is built afterwards (stage_am4_parts), so anything the model draws
+# under or behind the part has to be fought for here. Saying "no floor" in the
+# prompt was not enough: both re-renders came back standing on a reflective plane
+# with a glowing bar behind them, and a luminance cut takes whatever is lit.
 T2I_NEG = gc.NEG + (", computer tower, desktop pc case, second monitor pair, "
-                    "brand logo, rgb lighting, rainbow, blue cast")
+                    "brand logo, rgb lighting, rainbow, blue cast, "
+                    "floor, ground plane, table top, desk surface, reflective "
+                    "surface, reflection, cast shadow, horizon line, backdrop, "
+                    "light streak, light bar, glowing stripe, lens flare")
 
 # Per-job negatives, for failure modes one render showed.
 JOB_NEG = {
     "cooler": ", square fan frame, tower cooler, heat pipes, copper pipes, "
               "vertical heatsink, disc, ring, circular backdrop, circuit board, "
               "printed circuit pattern",
-    "storage-set": ", open hard drive, exposed platter, read arm, fourth drive",
+    "storage-set": ", open hard drive, exposed platter, read arm, fourth drive, "
+                   "open enclosure, exposed circuit board, visible pcb inside a "
+                   "case, missing lid, open lid, lid lifted off, green board showing "
+                   "through a case, gold contacts at both ends, only two objects",
 }
 
 

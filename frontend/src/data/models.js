@@ -1,5 +1,12 @@
 import { walkTaxonomy } from "./taxonomy";
-// Real photography of the MT chassis, shared by all six MT configurations.
+// Real photography of the MT chassis, shared by the four INTEL MT configurations.
+//
+// Four of these frames are of the board, not the box: mt-ports is the front
+// panel, mt-rear and mt-rear-close the rear panel, mt-interior and mt-socket the
+// board itself. The unit that was shot has an LGA socket, so on an AMD page they
+// show the wrong machine -- an Intel socket to someone shopping for a Ryzen --
+// and the front panel's one Type-C contradicts that model's Front I/O row, which
+// says two. The AMD models get MT_GALLERY_CHASSIS below.
 const MT_GALLERY = [
   "/images/details/mt-angle.webp",
   "/images/details/mt-front.webp",
@@ -10,6 +17,15 @@ const MT_GALLERY = [
   "/images/details/mt-logo.webp",
   "/images/details/mt-interior.webp",
   "/images/details/mt-socket.webp",
+];
+
+// The same shoot, chassis only. Correct for any MT whatever board is inside it,
+// which is what mt-amd-am4 needs until the AM4 build is photographed.
+const MT_GALLERY_CHASSIS = [
+  "/images/details/mt-angle.webp",
+  "/images/details/mt-front.webp",
+  "/images/details/mt-flank.webp",
+  "/images/details/mt-logo.webp",
 ];
 
 // PROMAX has no photography yet. It used to borrow MT_GALLERY, which was
@@ -280,7 +296,7 @@ export const DESKTOP_FAMILIES = [
         name: "Latios MT — AMD AM4",
         tag: "Ryzen 5000 · DDR4",
         image: "/images/fronts/mt.webp",
-        gallery: MT_GALLERY,
+        gallery: MT_GALLERY_CHASSIS,
         heroImage: HERO["mt-amd-am4"],
         chips: ["Ryzen 7 5700G", "64GB DDR4", "Wi-Fi 6E"],
         stats: [

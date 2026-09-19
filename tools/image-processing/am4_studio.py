@@ -251,8 +251,38 @@ def _ground(W, H, stops):
         np.broadcast_to(ramp[:, None, :], (H, W, 3)).astype("uint8"))
 
 
+def streaks(img, at=0.52, count=7, spread=0.22, strength=0.55, tint=(196, 214, 255)):
+    """Horizontal light streaks across the backdrop, behind the subject.
+
+    The reference's component sections all carry these -- long, soft, unevenly
+    spaced bands of light drawn through the gradient at about the subject's
+    waist. They are what stops a lit backdrop reading as a flat sheet of colour,
+    and they are cheap: drawn here rather than asked of the model, which cannot
+    place them behind a subject it is drawing at the same time.
+
+    Deterministic spacing from a fixed table, not random: a re-run has to give
+    back the same picture, and a seeded RNG is one import away from not doing so.
+    """
+    W, H = img.size
+    offsets = (-1.00, -0.62, -0.30, -0.08, 0.16, 0.44, 0.82, 1.00, -0.46, 0.64)
+    widths = (0.010, 0.004, 0.007, 0.003, 0.005, 0.0035, 0.008, 0.005, 0.003, 0.006)
+    alphas = (0.55, 0.30, 0.80, 0.22, 0.45, 0.28, 0.65, 0.35, 0.20, 0.40)
+    yy = np.arange(H)[:, None].astype(np.float32)
+    band = np.zeros((H, W), np.float32)
+    for i in range(min(count, len(offsets))):
+        y0 = (at + offsets[i] * spread) * H
+        band += alphas[i] * np.exp(-0.5 * ((yy - y0) / max(1.0, widths[i] * H)) ** 2)
+    # Fade the ends so no streak stops dead at the frame edge.
+    xx = np.linspace(0, 1, W, dtype=np.float32)[None, :]
+    band = band * np.clip(np.sin(np.pi * xx) ** 0.6, 0, 1)
+    arr = np.asarray(img).astype(np.float32)
+    arr += np.array(tint, np.float32) * (strength * np.clip(band, 0, 1))[..., None]
+    return Image.fromarray(arr.clip(0, 255).astype("uint8"))
+
+
 def compose(product, W, H, height, floor, cx=0.5, halo=(44, 46, 54), glow=(125, 66, 18),
-            reflect=True, shadow=True, ground=DARK_GROUND, halo_at=0.30, glow_at=120):
+            reflect=True, shadow=True, ground=DARK_GROUND, halo_at=0.30, glow_at=120,
+            after_ground=None):
     """Stage a lit product. height and floor are fractions of H.
 
     Returns (canvas RGB, (x, y, scale)): where the product's top-left landed and
@@ -261,6 +291,8 @@ def compose(product, W, H, height, floor, cx=0.5, halo=(44, 46, 54), glow=(125, 
     has neither.
     """
     img = _ground(W, H, ground)
+    if after_ground:                      # streaks go on the backdrop, under the bloom
+        img = after_ground(img)
 
     halo_m = Image.new("L", (W, H), 0)
     ImageDraw.Draw(halo_m).ellipse([W * (cx - halo_at), H * 0.04, W * (cx + halo_at), H * (floor - 0.08)], fill=255)

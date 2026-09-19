@@ -10,11 +10,13 @@ plates come out of the graph already 4x upscaled (5888 wide) and are simply
 reduced; the two edits come out at the model's ~1.5 megapixels and go through
 RealESRGAN first.
 
-Two retouches, both subtractive -- nothing is added or restyled:
+This file now installs only the two images that still pass through it whole --
+cpu-ryzen and hero-front -- plus the two bento cards at the foot. The component
+plates moved to stage_am4_parts.py when they moved onto the page's backdrop, and
+their retouch coordinates went with them; the constants stay here because that
+is where they were measured and where the proofs are written.
 
-  ddr4-pair  each heatspreader came back carrying a blank white label. No text,
-             so nothing garbled, but a bright blank rectangle reads unfinished.
-             Toned to a dark plate so it reads as a label area, not a hole.
+One retouch, subtractive -- nothing is added or restyled:
 
   cpu-ryzen  the source photograph is a Ryzen 7 3700X, and this page sells a
              5700G. The model-number line and the fine print (which carries a
@@ -36,25 +38,28 @@ WIDTH = 1600
 # name -> needs ESRGAN first (edits are model-sized; t2i plates are already 4x).
 # hero-front does not: it is drawn at most ~635 CSS px wide, so the edit's native
 # 1472 covers a 2x display. The two bento cards are built separately, below.
-ASSETS = {
-    "gpu-radeon": False, "ddr4-pair": False, "storage-set": False,
-    "desk-dual": False, "cpu-ryzen": True, "hero-front": False,
-}
+# gpu-radeon, ddr4-pair and storage-set left this file when they moved onto the
+# product's own backdrop: they are cut and staged in stage_am4_parts.py now, and
+# installing them from here as well would overwrite the staged versions with the
+# raw plates. desk-dual left when its card became a photograph (gen_am4_photos).
+ASSETS = {"cpu-ryzen": True, "hero-front": False}
 
-# Assets installed from a render of another name, and assets installed only as a
-# bento card (see build_cards).
-SOURCES = {"desk-dual": "desk-tower"}
-CARD_FROM = {"desk-dual": "desk-card"}
+SOURCES = {}
+CARD_FROM = {}
 
 # desk-dual now carries the real MT, and is cropped to the monitors, the tower
 # and the lamp: at card size (~370 CSS px) the full plate left them small.
 DESK_CROP = (0.26, 0.17, 0.97, 0.87)
 
-# Label plates on ddr4-pair, as frame fractions (measured off the render), and
-# their reflections in the floor below -- toning the plates alone would leave
-# two white reflections under two dark labels.
-DDR4_LABELS = [(0.326, 0.600, 0.378, 0.770), (0.551, 0.600, 0.603, 0.770),
-               (0.322, 0.862, 0.382, 0.995), (0.547, 0.862, 0.607, 0.995)]
+# The blank label plate on ddr4-pair, as frame fractions, re-measured off a
+# gridded proof of the SECOND render -- the one staggered in depth. The first
+# render stood both modules square to the camera and carried four of these (two
+# plates and their two reflections); this one has one plate, on the near module,
+# and a floor too dark to reflect it.
+#
+# The box can be generous: tone_labels only takes pixels that are bright in all
+# three channels, so the dark heatspreader inside the same rectangle is untouched.
+DDR4_LABELS = [(0.563, 0.468, 0.672, 0.802)]
 
 # Defocus regions on cpu-ryzen, as polygons in frame fractions, measured off a
 # gridded proof of the render. Polygons, not rectangles: the chip sits at an
