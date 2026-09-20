@@ -391,29 +391,60 @@ def _persp(dst, w, h):
     return np.linalg.solve(np.array(A, float), np.array(B, float))
 
 
-def _screen(mon):
-    """Find the display's screen and put the real Latios wordmark on it.
+def _quad(mon):
+    """The screen's four corners, as (top-left, top-right, bottom-right, bottom-left).
 
-    The quad is measured off this render, not hardcoded: the screen is the
-    largest dark region inside the matte, and its corners are the extremes along
-    the two diagonals. A re-rolled monitor moves it, and this follows.
+    Keys on flatness, which holds whatever colour the display is. An earlier
+    version looked for the largest DARK region, which worked only while the
+    display was silver -- a screen is the darkest thing on a silver monitor.
+    Rebuilt in black to match the machine, screen and bezel became one dark blob
+    and the wordmark would have been stretched across the whole panel.
+
+    A screen is uniform; a bezel carries its own edges and highlights. Eroding
+    the flat mask deletes the bezel, because a bezel is thin, and leaves the
+    screen, because a screen is not -- then the erosion is given back.
     """
     W, H = mon.size
-    a = np.asarray(mon).astype(np.int16)
+    a = np.asarray(mon).astype(np.float32)
     inside = a[..., 3] > 200
-    dark = inside & (a[..., :3].max(axis=2) < 110)
-    lab, n = ndimage.label(dark)
-    if not n:
-        return mon
-    sizes = ndimage.sum(dark, lab, range(1, n + 1))
-    dark = lab == (int(np.argmax(sizes)) + 1)
+    lum = a[..., :3].max(axis=2)
 
-    ys, xs = np.nonzero(dark)
+    k = max(3, int(W * 0.006) | 1)
+    mean = ndimage.uniform_filter(lum, k)
+    var = ndimage.uniform_filter(lum * lum, k) - mean * mean
+    flat = inside & (var < 26.0)
+
+    grow = max(2, int(W * 0.013))
+    core = ndimage.binary_erosion(flat, np.ones((grow, grow), bool))
+    lab, n = ndimage.label(core)
+    if not n:
+        return None, inside
+    sizes = ndimage.sum(core, lab, range(1, n + 1))
+    core = lab == (int(np.argmax(sizes)) + 1)
+    screen = ndimage.binary_dilation(core, np.ones((grow, grow), bool)) & inside
+
+    ys, xs = np.nonzero(screen)
     ssum, sdif = xs + ys, xs - ys
-    quad = [(int(xs[ssum.argmin()]), int(ys[ssum.argmin()])),      # top left
-            (int(xs[sdif.argmax()]), int(ys[sdif.argmax()])),      # top right
-            (int(xs[ssum.argmax()]), int(ys[ssum.argmax()])),      # bottom right
-            (int(xs[sdif.argmin()]), int(ys[sdif.argmin()]))]      # bottom left
+    quad = [(int(xs[ssum.argmin()]), int(ys[ssum.argmin()])),
+            (int(xs[sdif.argmax()]), int(ys[sdif.argmax()])),
+            (int(xs[ssum.argmax()]), int(ys[ssum.argmax()])),
+            (int(xs[sdif.argmin()]), int(ys[sdif.argmin()]))]
+
+    # Push the corners out a little. The detected region stops just inside the
+    # glass, and the couple of per cent left over showed as a lit wedge of the
+    # render's own screen reflection down one side of an otherwise new screen.
+    cx = sum(x for x, _ in quad) / 4.0
+    cy = sum(y for _, y in quad) / 4.0
+    quad = [(int(cx + (x - cx) * 1.035), int(cy + (y - cy) * 1.035)) for x, y in quad]
+    return quad, inside
+
+
+def _screen(mon):
+    """Put the real Latios wordmark on the display's screen."""
+    W, H = mon.size
+    quad, inside = _quad(mon)
+    if quad is None:
+        return mon
 
     cw, ch = 1920, 1080
     content = Image.new("RGB", (cw, ch), (12, 12, 14))
@@ -430,9 +461,9 @@ def _screen(mon):
 
     warped = content.transform((W, H), Image.PERSPECTIVE, _persp(quad, cw, ch),
                                Image.BICUBIC)
-    # Fill the QUAD, not the dark mask that produced it. The mask stops at the
-    # render's own screen reflection, so compositing through it left the
-    # reflection showing as a smudge in the top left of an otherwise new screen.
+    # Fill the QUAD, not the detected region that produced it. That region stops
+    # at the render's own screen reflection, so compositing through it left the
+    # reflection showing as a smudge across an otherwise new screen.
     m = Image.new("L", (W, H), 0)
     ImageDraw.Draw(m).polygon(quad, fill=255)
     m = Image.composite(m, Image.new("L", (W, H), 0),
@@ -512,11 +543,24 @@ def desk_card():
         print("  skip desk-card (sources not ready)")
         return
 
-    # Mirror the display so it stands right of the camera axis, matching the
-    # tower photograph. Safe to mirror and nothing else here is: the bezel is
-    # deliberately unmarked, and the wordmark goes on AFTER the flip, so it
-    # reads the right way round.
-    mon = _screen(cutout(mon_src).transpose(Image.FLIP_LEFT_RIGHT))
+    # One camera, so the two objects must be turned consistently: a thing left of
+    # the lens shows its right side, a thing right of the lens shows its left.
+    # The tower photograph shows the front and the LEFT flank, so it stands left
+    # of the axis and the display has to stand right of it, which means the
+    # display's own left side must be the nearer one.
+    #
+    # Measured off the screen's corners rather than assumed, because a re-rolled
+    # display faces whichever way it feels like -- the silver one came back
+    # turned the opposite way to the black one, and hardcoding the flip would
+    # have quietly put both objects in the same perspective again. Flipping the
+    # display is safe and flipping the tower is not: the bezel is deliberately
+    # unmarked and the wordmark is pasted on afterwards, while the tower carries
+    # the Latios mark on its fascia.
+    mon = cutout(mon_src)
+    q, _ = _quad(mon)
+    if q is not None and (q[3][1] - q[0][1]) < (q[2][1] - q[1][1]):
+        mon = mon.transpose(Image.FLIP_LEFT_RIGHT)
+    mon = _screen(mon)
     tower = Image.open(tower_src).convert("RGBA")
 
     W, H = CARD

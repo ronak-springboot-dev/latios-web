@@ -204,11 +204,13 @@ T2I = {
         "text. " + AM4_PART),
     "monitor": ((1664, 928),
         "a single modern desktop computer monitor, a widescreen flat LCD display "
-        "standing on a slim brushed aluminium stand, seen from a low three-quarter "
+        "standing on a slim matte black stand, seen from a low three-quarter "
         "angle and turned slightly to the left so the screen faces the camera. Very "
-        "thin dark bezels on the top and both sides with a slightly deeper chin "
-        "along the bottom, a flat matte screen switched off, a narrow upright neck "
-        "and a flat rectangular base plate. One monitor and nothing else. Plain "
+        "thin matte black bezels on the top and both sides with a slightly deeper "
+        "black chin along the bottom, a flat matte screen switched off, a narrow "
+        "upright black neck and a flat black rectangular base plate. The whole "
+        "display is black, the same deep matte black as a desktop computer case. "
+        "One monitor and nothing else. Plain "
         "unmarked bezel with no text, no logo and no badge. " + AM4_PART),
     "cooler": ((1328, 1328),
         "a compact low-profile desktop processor air cooler seen from above at a "
@@ -245,7 +247,8 @@ JOB_NEG = {
                "thick block, cube, tall box, two objects",
     "part-hdd": ", open case, exposed circuit board, visible pcb, missing lid, "
                "open lid, lid lifted off, tall upright box, cube, two objects",
-    "monitor": ", curved screen, two monitors, monitor pair, television, "
+    "monitor": ", silver bezel, white bezel, aluminium frame, chrome, "
+               "curved screen, two monitors, monitor pair, television, "
                "laptop, all-in-one computer, keyboard, mouse, desk, table, "
                "wall, room, window, bright screen, wallpaper on screen, "
                "user interface, icons, image on the display, bezel logo, "
