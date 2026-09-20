@@ -16,8 +16,10 @@ machine now (gen_am4_photos.py).
 
 Rules that come from earlier failures in this project, not from taste:
 
-  * Text-to-image plates carry no lettering at all. gen_components.NEG already
-    suppresses text, logos and numbers; a generated brand mark is a wrong one.
+  * Text-to-image plates ship with no lettering at all. gen_components.NEG
+    suppresses text, logos and numbers, but not reliably once the prompt names a
+    part that normally carries a label -- see the NAME rule below, and the
+    softening boxes that finish the job.
   * Dark ground, not gen_components.STYLE. STYLE says "light grey background",
     and appending it to dark prompts is recorded as having turned every plate
     into a pasted grey rectangle.
@@ -40,24 +42,34 @@ Rules that come from earlier failures in this project, not from taste:
     global negative suppresses text, but not text the prompt itself supplies.
     Millimetres are safe on a big plain case and not on a circuit board; ratios
     in words ("four times as long as it is wide") are safe on both.
-  * Describe a part by its GEOMETRY, never by its name, and never name a surface
-    the part should not show. "a bare dark green circuit board covering its
+  * Describe the part's DETAIL by geometry even when the name is given, and
+    never name a surface the part should not show. "a bare dark green circuit board covering its
     underside" was meant to say the drive has a PCB underneath; the model read it
     as an instruction and returned an open case with its board on display.
-  * A CONNECTOR cannot be described into existence, and the drives stay blank
-    because of it. The two storage prompts say "completely closed on every face,
-    plain unmarked surfaces", which is why they return featureless brushed
-    boxes -- a fair complaint about the plate, and one attempt was made to fix
-    it by describing a SATA edge as geometry: "two adjacent slot openings set
-    into the side wall, each a narrow dark recess with a small stepped notch at
-    one end". The model reads a recess-with-a-notch as something that sticks
-    out. The 2.5" came back with three protruding hinge tabs along its edge and
-    the 3.5" became a latched aluminium equipment case. This is the M.2 failure
-    again -- the model has a stronger prior for a familiar object that roughly
-    matches the words than for the unfamiliar one being described -- and it is
-    the reason the blank-box wording is deliberate rather than lazy. A drive
-    that reads as a lunchbox is worse than a drive that reads as a sealed case.
-    Do not retry this without a photograph to edit from.
+  * NAME the part, and take the lettering off afterwards. This reverses the rule
+    that stood here for most of this page's life, so the reasoning matters.
+    Naming a part was banned because "M.2 NVMe SSD" came back with the words
+    printed on it, garbled. So every prompt described geometry instead -- and
+    geometry alone cannot carry a connector. Asked for "two adjacent slot
+    openings set into the side wall, each a narrow dark recess with a small
+    stepped notch at one end", the model returned a 2.5" with three protruding
+    hinge tabs and a 3.5" that was a latched aluminium equipment case; it reads
+    a recess-with-a-notch as something that sticks out. Without a connector the
+    drives were featureless bricks, which is what the page shipped and what was
+    rightly rejected.
+
+    The ban solved the wrong half of the problem. This pipeline ALREADY removes
+    generated lettering deterministically, and does it on three images on this
+    very page: install_am4.py defocuses the Ryzen's model number, DDR4_LABELS
+    blanks the pseudo-text on the memory heatspreaders, GPU_SOFTEN kills the
+    invented mark on the fan hub. So name the part, let the model put a correct
+    SATA tongue and a correct DIMM notch where they belong, and measure a
+    softening box over whatever text it invents. Model priors are the reason to
+    name it; the retouch stage is the reason naming is now safe.
+
+    What does NOT change: the plate ships with no legible lettering on it, ever.
+    Check every render at 100% and measure the boxes against that render -- the
+    constants do not survive a re-roll.
   * The Ryzen chip is an edit at low denoise from a photograph, because it has
     lettering. That source is a Ryzen 7 3700X, so the model number is defocused
     afterwards -- the page sells a 5700G.
@@ -95,27 +107,35 @@ AM4_PART = (
     "seamless background, the object BRIGHTLY and EVENLY lit from above and in "
     "front, clean specular highlights along every machined edge, no face of the "
     "object falling into shadow, crisp sharp focus across the whole object, fine "
-    "surface texture on brushed metal and circuit board, the object fills most of "
-    "the frame, nothing else in the picture, no lamp, no light source visible, no "
-    "floor, no horizon, no backdrop, no background objects"
+    "surface texture on brushed metal and circuit board, deep depth of field with "
+    "the near edge and the far edge equally sharp, every part of the object in "
+    "focus, the object fills most of the frame, nothing else in the picture, no "
+    "lamp, no light source visible, no floor, no horizon, no backdrop, no "
+    "background objects"
 )
 
 T2I = {
     # (width, height) from Qwen-Image's native aspect set
     "gpu-radeon": ((1472, 1140),
-        "a single full-height desktop graphics card seen from a low three-quarter "
-        "angle with the bracket end nearest the camera and the card receding away "
-        "to the upper right, "
-        "matte black shroud with two large axial fans, brushed metal backplate "
-        "edge, full-height metal PCIe bracket, gold PCIe edge connector along the "
-        "bottom, plain unmarked shroud with no text and no logo. " + AM4_PART),
+        "a single full-height dual-fan desktop graphics card, a modern PCI Express "
+        "video card, seen from a low three-quarter angle with the bracket end "
+        "nearest the camera and the card receding away to the upper right. Deep "
+        "matte black plastic shroud moulded in angular facets around two large "
+        "eleven-blade axial fans, a dark anodised aluminium backplate, a "
+        "full-height metal PCIe bracket cut with display output openings, a row of "
+        "heatsink fins visible along the top edge, and the gold PCIe edge connector "
+        "running along the bottom. Plain unmarked shroud with no text and no "
+        "logo. " + AM4_PART),
     "ddr4-pair": ((1472, 1140),
-        "exactly two desktop memory modules standing upright, one a little behind "
-        "and to the right of the other, both seen from a low three-quarter angle so "
-        "they recede away from the camera, matte black aluminium heatspreaders with "
-        "a shallow angular relief, a row of fine gold contact pins along the bottom "
-        "edge of each, blank heatspreaders with no labels, no stickers, no text. "
-        + AM4_PART),
+        "exactly two DDR4 desktop memory modules, standard full-height U-DIMM "
+        "sticks, standing upright side by side with one a little behind and to the "
+        "right of the other, both seen from a low three-quarter angle so they "
+        "recede away from the camera. Each carries a matte black anodised aluminium "
+        "heat spreader with a shallow angular crease pressed into it, its top edge "
+        "folded over, the dark green circuit board showing as a thin line below it, "
+        "and a single row of fine gold contact pins along the bottom edge broken by "
+        "one off-centre notch. Blank heat spreaders with no labels, no stickers, no "
+        "text. " + AM4_PART),
     # Described by shape, never by name. The first render was asked for an "M.2
     # NVMe SSD" and a "2.5 inch" drive and printed those words back onto the
     # parts as garbled lettering ("M.NWC SSD", "2.5 k!/") -- Qwen-Image renders
@@ -166,20 +186,22 @@ T2I = {
         "thin board, plain unmarked surfaces, no text. "
         + AM4_PART),
     "part-ssd": ((1328, 1328),
-        "a single slim sealed metal case shaped like a flat thin card, 100 mm long "
-        "and 70 mm wide and only 7 mm thick, lying flat and seen at a three-quarter "
-        "angle from slightly above, machined from ONE piece of metal with a "
-        "brushed aluminium top face, square corners and a single fine seam running "
-        "round its edge. Completely closed on every face, nothing inside visible. "
-        "One very flat thin object, plain unmarked surfaces. " + AM4_PART),
+        "a single 2.5 inch SATA solid state drive, the standard slim rectangular "
+        "computer drive, lying flat and seen at a three-quarter angle from slightly "
+        "above with its connector edge turned towards the camera. Brushed aluminium "
+        "top lid, square corners, a fine seam running round its edge, and at the "
+        "connector edge the flat SATA data and power tongues set into a recess in "
+        "the drive's own edge. Blank lid with no label, no sticker and no text. "
+        + AM4_PART),
     "part-hdd": ((1328, 1328),
-        "a single sealed metal case 146 mm long, 102 mm wide and 26 mm thick -- a "
-        "squat flat rectangular block, lying flat and seen at a three-quarter angle "
-        "from slightly above -- with a flat brushed aluminium lid on its "
-        "upper face held down by four "
-        "recessed screws near the corners, and a plain machined side wall with a fine "
-        "seam. Completely closed on every face, nothing inside visible. One squat "
-        "rectangular object, plain unmarked surfaces. " + AM4_PART),
+        "a single 3.5 inch SATA desktop hard disk drive, the standard sealed "
+        "rectangular computer drive, lying flat and seen at a three-quarter angle "
+        "from slightly above with its connector edge turned towards the camera. A "
+        "flat brushed aluminium lid held down by recessed screws near its corners, "
+        "a plain machined side wall with a fine seam and a row of small mounting "
+        "holes, and at the connector edge the flat SATA data and power tongues set "
+        "into the drive's own edge. Blank lid with no label, no sticker and no "
+        "text. " + AM4_PART),
     "cooler": ((1328, 1328),
         "a compact low-profile desktop processor air cooler seen from above at a "
         "slight angle: a round black fan with seven curved black blades and a "
@@ -197,7 +219,9 @@ T2I_NEG = gc.NEG + (", computer tower, desktop pc case, second monitor pair, "
                     "brand logo, rgb lighting, rainbow, blue cast, "
                     "floor, ground plane, table top, desk surface, reflective "
                     "surface, reflection, cast shadow, horizon line, backdrop, "
-                    "light streak, light bar, glowing stripe, lens flare")
+                    "light streak, light bar, glowing stripe, lens flare, "
+                    "shallow depth of field, bokeh, defocused, out of focus, "
+                    "blurred edges, soft focus, motion blur, tilt shift")
 
 # Per-job negatives, for failure modes one render showed.
 JOB_NEG = {

@@ -45,7 +45,13 @@ import am4_studio as studio
 
 GEN = Path(__file__).parent / "generated" / "am4"
 DEST = Path(__file__).resolve().parents[2] / "frontend" / "public" / "images" / "am4"
-WIDTH = 1600
+#: 2400, not the 1600 install_am4.py uses for the rest of the page. That figure
+#: came from the featureSplit figure being at most ~800 CSS px; measured, it
+#: caps at 718, so 1600 really is 2.2x and the arithmetic was right. It still
+#: looked soft, because the softness was never resolution -- it was the depth
+#: of field the model drew into the plates, now fought in the prompt and the
+#: negative. 2400 costs about 60KB a plate and removes the question.
+WIDTH = 2400
 
 # horizon: where each render's own ground plane begins, as a fraction of frame
 # height, measured off a gridded proof. The canvas is one shape for all three --
@@ -99,7 +105,7 @@ def retouch(name, im):
     if name == "gpu-radeon":
         return ins.soften(im, ins.GPU_SOFTEN, radius=r(5))
     if name == "ddr4-pair" and ins.DDR4_LABELS:
-        return ins.tone_labels(im, ins.DDR4_LABELS)
+        return ins.tone_labels(im, ins.DDR4_LABELS, plate=ins.DDR4_PLATE)
     if name == "storage-set":
         # Nothing yet. M2_TOP, LID_FILLS and LID_TEXT were measured against an
         # older frame and this render moved every one of them; applied blind they
@@ -192,6 +198,15 @@ def cut_object(path, floor=14):
     object.
     """
     im = Image.open(path).convert("RGB")
+    # Before the thumbnail, so the radius is in the render's own pixels -- the
+    # same trap that let "VOLL SPHIK" survive a defocus once already.
+    import install_am4 as ins
+    boxes = ins.PART_SOFTEN.get(path.stem, [])
+    if boxes:
+        im = ins.soften(im, boxes, radius=max(2, round(5 * im.width / 1600)))
+    label = ins.PART_LABELS.get(path.stem)
+    if label:
+        im = ins.tone_labels(im, label[0], thr=225, plate=label[1])
     im.thumbnail((2000, 2000), Image.LANCZOS)
     lum = np.asarray(im.convert("L")).astype(np.uint8)
     mask = ndimage.binary_fill_holes(lum > floor)

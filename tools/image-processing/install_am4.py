@@ -51,16 +51,31 @@ CARD_FROM = {}
 # and the lamp: at card size (~370 CSS px) the full plate left them small.
 DESK_CROP = (0.26, 0.17, 0.97, 0.87)
 
-# The blank label plates on ddr4-pair, as frame fractions, re-measured off a
-# gridded proof of the high-key render. Each generation of this plate has put
-# them somewhere new -- four boxes when both modules stood square to the camera,
-# one when they were staggered, two now -- so the constant is re-measured with
-# the render rather than carried forward. Applied to the wrong frame these paint
-# dark rectangles onto clean metal.
+# The blank label plates on ddr4-pair, as frame fractions, re-measured off the
+# render that names the part ("two DDR4 desktop memory modules, standard
+# full-height U-DIMM sticks"). Naming it is what finally produced a correct
+# contact row with a correct off-centre notch, a real green PCB edge and real
+# memory chips -- and, inevitably, a sticker. Two of them, pure white and blank,
+# bright enough to read as a printing fault. tone_labels turns them into the
+# dark plate the heatspreader should have carried.
+#
+# These were not measured by eye. A near-white, low-saturation mask over the
+# frame returns the two plates as the only components above 2000px, which is
+# both quicker and more honest than reading a grid. Each generation of this
+# plate has put them somewhere new -- four boxes when both modules stood square
+# to the camera, one when they were staggered, two now -- so the constant is
+# re-measured with the render rather than carried forward. Applied to the wrong
+# frame these paint dark rectangles onto clean metal.
 #
 # The box can be generous: tone_labels only takes pixels that are bright in all
 # three channels, so the dark heatspreader inside the same rectangle is untouched.
-DDR4_LABELS = [(0.268, 0.555, 0.395, 0.890), (0.498, 0.525, 0.640, 0.868)]
+DDR4_LABELS = [(0.308, 0.560, 0.386, 0.842), (0.554, 0.559, 0.632, 0.855)]
+
+#: The heatspreader's own median beside those boxes. The default (46, 46, 50)
+#: was written for an older, lighter render; on this one the spreader sits at
+#: (16, 16, 18), so the default plate was LIGHTER than the metal around it and
+#: the toned sticker read as a grey smudge rather than as no sticker at all.
+DDR4_PLATE = (18, 18, 20)
 
 # Defocus regions on cpu-ryzen, as polygons in frame fractions, measured off a
 # gridded proof of the render. Polygons, not rectangles: the chip sits at an
@@ -82,14 +97,44 @@ CPU_SOFTEN = [
      (0.352, 0.662), (0.384, 0.608)],
 ]
 
-# Defocus region on gpu-radeon, re-measured against the high-key render.
+# Defocus regions on gpu-radeon, re-measured against the render that names the
+# part ("a full-height dual-fan desktop graphics card") rather than describing
+# its geometry. Naming it bought a correct bracket, correct fans, a real fin
+# stack and a real PCIe edge -- and, as naming always does, a PCB covered in
+# pseudo-silkscreen: "1?0 2.5", "HITVVIIG", scattered character runs. Four boxes,
+# all of them on the board, none on the shroud.
 #
-# The earlier, murkier plate left pseudo-lettering along the PCB strip; this one
-# has a clean PCB and puts its garble on the FAN HUB instead -- a debossed row of
-# characters exactly where a maker's logo sits. Unreadable at display size, and
-# precisely what this page must not carry: a mark in a logo's position is an
-# invented brand.
-GPU_SOFTEN = [(0.505, 0.468, 0.585, 0.512)]
+# The fan hubs came back clean this time, so the single hub box that stood here
+# is gone. That is the pattern worth remembering: each re-roll moves the garble
+# somewhere new, so the previous generation's coordinates are not a starting
+# point, they are a hazard. Applied to this frame, the old hub box would have
+# blurred a perfectly clean fan.
+GPU_SOFTEN = [(0.222, 0.676, 0.296, 0.718), (0.348, 0.685, 0.472, 0.757),
+              (0.652, 0.762, 0.716, 0.800), (0.258, 0.294, 0.288, 0.344)]
+
+# Pseudo-silkscreen on the two storage renders, measured per render. Naming the
+# parts ("a 2.5 inch SATA solid state drive") is what finally bought a correct
+# SATA connector -- the seven-pin data tongue and the fifteen-pin power tongue,
+# which no amount of geometry ever produced -- and it put invented white
+# lettering on the exposed PCB in the same stroke. That is the trade the NAME
+# rule in gen_am4.py describes: a correct part plus a softening box beats a
+# featureless one.
+#
+# storage_set() composites these two without going through install_am4 at all,
+# so it applies these itself. Empty list = that render showed no fault.
+PART_SOFTEN = {
+    "part-ssd": [(0.138, 0.480, 0.252, 0.532)],
+    "part-hdd": [],
+}
+
+# The blank white label each drive came back wearing, and the lid median beside
+# it. Both were found by a connected-component scan at three thresholds rather
+# than read off a grid: at 225 the largest near-white component IS the plate,
+# at 200 it bleeds into the lid, at 240 it collapses to edge highlights.
+PART_LABELS = {
+    "part-ssd": ([(0.305, 0.272, 0.802, 0.590)], (178, 178, 177)),
+    "part-hdd": ([(0.269, 0.250, 0.806, 0.600)], (182, 182, 182)),
+}
 
 # Defocus regions on desk-dual: a small logo-like mark centred on each monitor's
 # chin. Illegible, but a mark in a logo's position is an invented brand.
@@ -193,12 +238,21 @@ def restore_tower(im):
     return im
 
 
-def tone_labels(im, boxes):
-    """Darken near-white blank label plates to a dark grey plate.
+def tone_labels(im, boxes, thr=140, plate=(46, 46, 50)):
+    """Replace near-white blank label plates with a flat plate colour.
 
     "White" is the darkest channel, not luminance: the floor under the
     reflections is lit amber, bright enough to pass a luminance test, but its
     blue channel is low -- a white plate is bright in all three.
+
+    thr and plate are per-subject because the subject decides both. On the
+    memory modules the heatspreader is matte black, so anything above 140 is
+    the sticker and a dark grey plate is what should have been there. On the
+    two drives the lid is bright brushed aluminium and sits in the 180s, so 140
+    would tone the whole lid: the threshold goes to 225, which a component
+    scan shows separates plate from lid cleanly, and the fill is the lid's own
+    median so the label disappears into the metal instead of becoming a dark
+    rectangle on a silver drive.
     """
     w, h = im.size
     r, g, b = im.split()
@@ -206,11 +260,10 @@ def tone_labels(im, boxes):
     mask = Image.new("L", im.size, 0)
     for x0, y0, x1, y1 in boxes:
         box = (int(w * x0), int(h * y0), int(w * x1), int(h * y1))
-        region = white.crop(box).point(lambda v: 255 if v > 140 else 0)
+        region = white.crop(box).point(lambda v: 255 if v > thr else 0)
         mask.paste(region, box[:2])
     mask = mask.filter(ImageFilter.MaxFilter(5)).filter(ImageFilter.GaussianBlur(3))
-    plate = Image.new("RGB", im.size, (46, 46, 50))
-    return Image.composite(plate, im, mask)
+    return Image.composite(Image.new("RGB", im.size, plate), im, mask)
 
 
 def _shape(d, region, w, h, **kw):
