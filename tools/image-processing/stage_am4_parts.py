@@ -145,9 +145,8 @@ def sky_swap(im, horizon, ceiling=34, feather=0.012):
     sel = band[bl <= np.percentile(bl, 60)]
     floor_rgb = np.median(sel, axis=0) if sel.size else np.array([28.0, 28.0, 34.0])
 
-    ground = ((0.00, (16, 20, 52)), (0.34, (44, 48, 104)), (0.70, (104, 100, 146)),
-              (1.00, tuple(int(v) for v in floor_rgb)))
-    bg = studio.streaks(studio._ground(W, H, ground), at=horizon * 0.72, strength=0.26)
+    ground = studio.PLATE_GROUND[:-1] + ((1.00, tuple(int(v) for v in floor_rgb)),)
+    bg = studio._ground(W, H, ground)
 
     rows = np.arange(H)[:, None]
     sky = np.clip((ceiling - lum) / ceiling, 0, 1) * (rows < y0)
@@ -226,7 +225,7 @@ def storage_set(gap=0.030, floor=0.70, widest=0.50):
     total = sum(i.width for i in sized) + round(gap * W) * (len(sized) - 1)
     x = (W - total) // 2
     base = round(H * floor)
-    canvas = studio.streaks(studio._ground(W, H, studio.LIT_GROUND), at=0.56, strength=0.26)
+    canvas = studio._ground(W, H, studio.PLATE_GROUND)
     shadow = Image.new("L", (W, H), 0)
     d = ImageDraw.Draw(shadow)
     for im in sized:
@@ -264,9 +263,8 @@ def stage_cut(name, src, height=0.62, floor=0.80, cx=0.50):
     W, H = CANVAS
     canvas, _ = studio.compose(
         part, W, H, height=height, floor=floor, cx=cx,
-        ground=studio.LIT_GROUND, halo=(90, 94, 120), halo_at=0.30,
-        glow=(150, 104, 60), glow_at=30,
-        after_ground=lambda im: studio.streaks(im, at=0.56, strength=0.26))
+        ground=studio.PLATE_GROUND, halo=(74, 70, 64), halo_at=0.30,
+        glow=(150, 104, 60), glow_at=26)
     canvas = canvas.resize((WIDTH, round(H * WIDTH / W)), Image.LANCZOS)
     out = DEST / f"{name}.webp"
     canvas.save(out, "WEBP", quality=90, method=6)

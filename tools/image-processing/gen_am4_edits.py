@@ -149,7 +149,7 @@ def front_card():
 
     canvas, (x, y, s) = studio.compose(
         cut, CARD_W, CARD_H, height=0.58, floor=0.80, cx=0.500,
-        ground=studio.LIT_GROUND, halo=(140, 142, 170), halo_at=0.44, glow_at=40,
+        ground=studio.PLATE_GROUND, halo=(118, 108, 94), halo_at=0.44, glow_at=36,
         glow=(150, 104, 60))
     px = lambda v: round(v / CARD_W * 100, 1)
     py = lambda v: round(v / CARD_H * 100, 1)

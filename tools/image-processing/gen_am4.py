@@ -44,6 +44,20 @@ Rules that come from earlier failures in this project, not from taste:
     the part should not show. "a bare dark green circuit board covering its
     underside" was meant to say the drive has a PCB underneath; the model read it
     as an instruction and returned an open case with its board on display.
+  * A CONNECTOR cannot be described into existence, and the drives stay blank
+    because of it. The two storage prompts say "completely closed on every face,
+    plain unmarked surfaces", which is why they return featureless brushed
+    boxes -- a fair complaint about the plate, and one attempt was made to fix
+    it by describing a SATA edge as geometry: "two adjacent slot openings set
+    into the side wall, each a narrow dark recess with a small stepped notch at
+    one end". The model reads a recess-with-a-notch as something that sticks
+    out. The 2.5" came back with three protruding hinge tabs along its edge and
+    the 3.5" became a latched aluminium equipment case. This is the M.2 failure
+    again -- the model has a stronger prior for a familiar object that roughly
+    matches the words than for the unfamiliar one being described -- and it is
+    the reason the blank-box wording is deliberate rather than lazy. A drive
+    that reads as a lunchbox is worse than a drive that reads as a sealed case.
+    Do not retry this without a photograph to edit from.
   * The Ryzen chip is an edit at low denoise from a photograph, because it has
     lettering. That source is a Ryzen 7 3700X, so the model number is defocused
     afterwards -- the page sells a 5700G.

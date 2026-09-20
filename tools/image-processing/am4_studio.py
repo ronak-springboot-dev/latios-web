@@ -239,6 +239,23 @@ LIT_GROUND = ((0.00, (24, 26, 40)), (0.06, (17, 23, 73)), (0.20, (41, 48, 116)),
               (0.74, (191, 175, 186)), (0.86, (234, 223, 217)), (1.00, (150, 132, 130)))
 
 
+#: The component plates' backdrop: graphite falling to a warm horizon.
+#:
+#: LIT_GROUND below is the reference storefront's own ramp -- navy through violet
+#: to a near-white sand -- and it was sampled off their artwork and used here
+#: verbatim. On their page that is right: their accent IS blue. On this one the
+#: accent is amber, so a blue plate sat beside amber headings and amber numerals
+#: and read as borrowed, and on the light theme it was a blue rectangle dropped
+#: onto a white page.
+#:
+#: These stops are the same SHAPE of gradient -- dark overhead, light at the
+#: floor, the product standing on light -- in this page's own colour. Neutral
+#: graphite rather than a saturated amber, because a strongly tinted backdrop
+#: behind a grey component reads as a filter rather than as a studio.
+PLATE_GROUND = ((0.00, (17, 16, 15)), (0.22, (30, 28, 26)), (0.45, (52, 47, 42)),
+                (0.66, (88, 78, 66)), (0.84, (146, 129, 108)), (1.00, (183, 166, 142)))
+
+
 def _ground(W, H, stops):
     """A vertical gradient. Stops are (position, colour) pairs, or two colours."""
     if len(stops[0]) == 3:
@@ -253,6 +270,13 @@ def _ground(W, H, stops):
 
 def streaks(img, at=0.52, count=7, spread=0.22, strength=0.55, tint=(196, 214, 255)):
     """Horizontal light streaks across the backdrop, behind the subject.
+
+    UNUSED as of the move to PLATE_GROUND, and kept rather than deleted because
+    the technique is sound and only the styling was wrong for this page. Streaks
+    are a consumer-gaming cue -- the reference sells to enthusiasts, this page
+    sells to procurement -- and a plain graphite sweep reads as the product
+    photography an enterprise buyer expects. Bring them back for a page that
+    wants that energy; do not bring them back here.
 
     The reference's component sections all carry these -- long, soft, unevenly
     spaced bands of light drawn through the gradient at about the subject's

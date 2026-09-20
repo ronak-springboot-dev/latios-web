@@ -23,6 +23,11 @@
  * look like directly under a section showing real DIMMs. It stays in the spec
  * row, the footnote and the bento glyph until someone photographs one.
  *
+ * The two drives that are shown read as plain sealed enclosures because every
+ * attempt to give them a connector edge produced something else -- hinge tabs
+ * on the 2.5", a latch clasp on the 3.5". gen_am4.py records the wording and
+ * the result. Blank is the deliberate choice, not the default one.
+ *
  * Every number on this page is either a row of this model's specGroups
  * (models.js) or AMD's published figure for the Ryzen 7 5700G the spec names:
  * 8 cores, 16 threads, 3.8 GHz base, up to 4.6 GHz boost, 16 MB L3.
@@ -149,7 +154,7 @@ export default {
       "alt": "A full-height desktop graphics card with two fans, rendered",
       "flip": true,
       "stats": [
-        ["16", "GB", "Up to, Radeon RX", "Up to"],
+        ["16", "GB", "Radeon RX card memory", "Up to"],
         ["500", "W", "80+ Bronze ATX supply"]
       ],
       "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
@@ -174,7 +179,7 @@ export default {
       "headingAccent": "in the same box.",
       "body": "An M.2 SSD for the operating system and working files, with a 2.5-inch bay and a 3.5-inch bay beside it for bulk storage — all reachable from the one hand-removable side panel.",
       "image": "/images/am4/storage-set.webp",
-      "alt": "An M.2 drive, a 2.5-inch drive and a 3.5-inch drive, rendered",
+      "alt": "A 2.5-inch drive and a 3.5-inch drive shown at their true relative sizes, rendered",
       "flip": true,
       "footnote": "1× M.2 SSD (auto-switch) · 1× 2.5″ HDD/SSD · 1× 3.5″ HDD. Image is an illustration."
     },
