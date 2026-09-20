@@ -45,6 +45,7 @@ import am4_studio as studio
 
 GEN = Path(__file__).parent / "generated" / "am4"
 DEST = Path(__file__).resolve().parents[2] / "frontend" / "public" / "images" / "am4"
+LOGO = DEST.parent / "latios-wordmark-reversed.png"
 #: 2400, not the 1600 install_am4.py uses for the rest of the page. That figure
 #: came from the featureSplit figure being at most ~800 CSS px; measured, it
 #: caps at 718, so 1600 really is 2.2x and the arithmetic was right. It still
@@ -343,6 +344,149 @@ def stage_cut(name, src, height=0.62, floor=0.80, cx=0.50, matte="lum"):
     print(f"  {out.name:18s} {canvas.size}  {out.stat().st_size // 1024:>4}KB")
 
 
+#: The bento's display card: the real tower standing beside a display, on the
+#: same backdrop as every other plate on this page.
+#:
+#: It replaces a photograph of the actual desk, which was honest and looked it --
+#: shot in poor light against plywood and a bare wall, with cabling and a mouse
+#: in frame. The machine is still the photograph: front-cut.png is the approved
+#: cut of the real tower, the same one the chassis card stands on, because no
+#: Latios hardware is ever generated. Only the display is rendered, and a
+#: display is not this product -- the section's own footnote already says
+#: peripherals are not supplied.
+#:
+#: The wordmark on the screen is the real asset warped into the screen's own
+#: quadrilateral, not lettering asked of the model. That is the whole reason to
+#: build this rather than prompt it: branding has to be exactly right, and a
+#: generated wordmark never is.
+CARD = (2400, 1319)                      # 1.82:1, the bento tile's proportion
+TOWER_MM, SCREEN_MM = 354, 450           # real heights, so the two are to scale
+
+
+def _persp(dst, w, h):
+    """Coefficients mapping the destination quad back to a w x h source rect."""
+    src = [(0, 0), (w, 0), (w, h), (0, h)]
+    A, B = [], []
+    for (x, y), (u, v) in zip(dst, src):
+        A += [[x, y, 1, 0, 0, 0, -u * x, -u * y], [0, 0, 0, x, y, 1, -v * x, -v * y]]
+        B += [u, v]
+    return np.linalg.solve(np.array(A, float), np.array(B, float))
+
+
+def _screen(mon):
+    """Find the display's screen and put the real Latios wordmark on it.
+
+    The quad is measured off this render, not hardcoded: the screen is the
+    largest dark region inside the matte, and its corners are the extremes along
+    the two diagonals. A re-rolled monitor moves it, and this follows.
+    """
+    W, H = mon.size
+    a = np.asarray(mon).astype(np.int16)
+    inside = a[..., 3] > 200
+    dark = inside & (a[..., :3].max(axis=2) < 110)
+    lab, n = ndimage.label(dark)
+    if not n:
+        return mon
+    sizes = ndimage.sum(dark, lab, range(1, n + 1))
+    dark = lab == (int(np.argmax(sizes)) + 1)
+
+    ys, xs = np.nonzero(dark)
+    ssum, sdif = xs + ys, xs - ys
+    quad = [(int(xs[ssum.argmin()]), int(ys[ssum.argmin()])),      # top left
+            (int(xs[sdif.argmax()]), int(ys[sdif.argmax()])),      # top right
+            (int(xs[ssum.argmax()]), int(ys[ssum.argmax()])),      # bottom right
+            (int(xs[sdif.argmin()]), int(ys[sdif.argmin()]))]      # bottom left
+
+    cw, ch = 1920, 1080
+    content = Image.new("RGB", (cw, ch), (12, 12, 14))
+    ramp = np.linspace(0, 1, ch)[:, None] ** 1.6
+    base = np.zeros((ch, cw, 3), float)
+    for c, (lo, hi) in enumerate(((10, 34), (10, 30), (12, 30))):
+        base[..., c] = lo + (hi - lo) * ramp
+    content = Image.fromarray(base.clip(0, 255).astype("uint8"))
+
+    mark = Image.open(LOGO).convert("RGBA")
+    mw = int(cw * 0.34)
+    mark = mark.resize((mw, round(mark.height * mw / mark.width)), Image.LANCZOS)
+    content.paste(mark, ((cw - mark.width) // 2, (ch - mark.height) // 2), mark)
+
+    warped = content.transform((W, H), Image.PERSPECTIVE, _persp(quad, cw, ch),
+                               Image.BICUBIC)
+    # Fill the QUAD, not the dark mask that produced it. The mask stops at the
+    # render's own screen reflection, so compositing through it left the
+    # reflection showing as a smudge in the top left of an otherwise new screen.
+    m = Image.new("L", (W, H), 0)
+    ImageDraw.Draw(m).polygon(quad, fill=255)
+    m = Image.composite(m, Image.new("L", (W, H), 0),
+                        Image.fromarray((inside * 255).astype(np.uint8)))
+    m = m.filter(ImageFilter.GaussianBlur(1.6))
+    out = Image.composite(warped.convert("RGBA"), mon, m)
+    out.putalpha(mon.getchannel("A"))
+    return out
+
+
+def desk_card():
+    mon_src, tower_src = GEN / "monitor.png", GEN / "front-cut.png"
+    for f in (mon_src, tower_src):
+        if not f.exists():
+            print(f"  skip desk-card ({f.name} not rendered yet)")
+            return
+
+    mon = _screen(cutout(mon_src))
+    tower = Image.open(tower_src).convert("RGBA")
+    tower = tower.crop(tower.getchannel("A").point(lambda v: 255 if v > 8 else 0).getbbox())
+
+    W, H = CARD
+    floor = 0.88
+    tall = H * 0.70                                   # the display, the taller of the two
+    mon_h = round(tall)
+    mon = mon.resize((round(mon.width * mon_h / mon.height), mon_h), Image.LANCZOS)
+    tower_h = round(tall * TOWER_MM / SCREEN_MM)
+    tower = tower.resize((round(tower.width * tower_h / tower.height), tower_h), Image.LANCZOS)
+
+    canvas = studio._ground(W, H, studio.PLATE_GROUND)
+    halo = Image.new("L", (W, H), 0)
+    ImageDraw.Draw(halo).ellipse([W * 0.18, H * 0.02, W * 0.86, H * (floor - 0.06)], fill=255)
+    canvas = Image.composite(Image.new("RGB", (W, H), (78, 73, 66)), canvas,
+                             halo.filter(ImageFilter.GaussianBlur(W / 8)))
+
+    base = round(H * floor)
+    gap = round(W * 0.045)
+    total = tower.width + gap + mon.width
+    x0 = (W - total) // 2
+
+    shadow = Image.new("L", (W, H), 0)
+    d = ImageDraw.Draw(shadow)
+    x = x0
+    for im in (tower, mon):
+        d.ellipse([x - im.width * 0.08, base - H * 0.012,
+                   x + im.width * 1.08, base + H * 0.020], fill=190)
+        x += im.width + gap
+    canvas = Image.composite(Image.new("RGB", (W, H), (0, 0, 0)), canvas,
+                             shadow.filter(ImageFilter.GaussianBlur(W / 110)))
+
+    x = x0
+    for im in (tower, mon):
+        refl = im.transpose(Image.FLIP_TOP_BOTTOM)
+        ra = np.asarray(refl.getchannel("A")).astype(float)
+        fade = np.linspace(0.30, 0.0, refl.height)[:, None] ** 1.5
+        refl.putalpha(Image.fromarray((ra * fade).clip(0, 255).astype(np.uint8)))
+        canvas.paste(refl, (x, base), refl)
+        canvas.paste(im, (x, base - im.height), im)
+        x += im.width + gap
+
+    # Ramp the top to transparent, the treatment this card has always had: the
+    # tile's title sits on the card's own ground and the picture dissolves up
+    # into it, so there is no edge where the image starts. The top quarter of
+    # this composition is empty backdrop above the products, which is exactly
+    # what should be dissolving.
+    import install_am4 as ins
+    card = ins.feather(canvas, left=0, top=0.26)
+    out = DEST / "desk-card.webp"
+    card.save(out, "WEBP", quality=90, method=6, exact=True)
+    print(f"  {out.name:18s} {card.size}  {out.stat().st_size // 1024:>4}KB")
+
+
 def stage(name, src, horizon, crop=None):
     render = GEN / f"{src}.png"
     if not render.exists():
@@ -369,3 +513,5 @@ if __name__ == "__main__":
         stage_cut(name, **cfg)
     if not only or "storage-set" in only:
         storage_set()
+    if not only or "desk-card" in only:
+        desk_card()
