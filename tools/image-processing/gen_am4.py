@@ -21,6 +21,15 @@ Rules that come from earlier failures in this project, not from taste:
   * Dark ground, not gen_components.STYLE. STYLE says "light grey background",
     and appending it to dark prompts is recorded as having turned every plate
     into a pasted grey rectangle.
+  * BRIGHT lighting, though. The style string asked for "low-key lighting" for a
+    long time -- inherited from the page's dark ground -- and low-key means
+    murky. Every part came back soft and dim, which read as an AI render beside
+    a photograph. That one phrase was the single biggest quality problem here.
+  * Name the RESULT, never the equipment. Asking for light "from a large softbox
+    above and in front" drew the softbox: a white quadrilateral filling the top
+    left of the memory plate. Same failure as the similes and the millimetres --
+    anything nameable in the prompt is something the model may render. Say the
+    object is brightly and evenly lit; do not say what is lighting it.
   * No Latios hardware is ever generated from scratch. The chassis is an EDIT of
     the real photograph, and anything showing the machine itself is a photograph.
   * NO SIMILES. Every figure of speech in a prompt gets drawn literally. "as
@@ -68,11 +77,13 @@ PUBLIC = Path(__file__).resolve().parents[2] / "frontend" / "public" / "images"
 # pixel. The model is asked for the object on black and nothing else, which is
 # also the thing it does most reliably.
 AM4_PART = (
-    "ultra-detailed studio product render, one object alone on a pure black "
-    "seamless background, low-key lighting, soft key light from the upper left, "
-    "cool rim light along the far edge, no floor, no horizon, no backdrop, no "
-    "background objects, photorealistic, sharp micro detail on machined metal "
-    "and PCB surfaces, 8k"
+    "professional studio product photograph, one object alone on a pure black "
+    "seamless background, the object BRIGHTLY and EVENLY lit from above and in "
+    "front, clean specular highlights along every machined edge, no face of the "
+    "object falling into shadow, crisp sharp focus across the whole object, fine "
+    "surface texture on brushed metal and circuit board, the object fills most of "
+    "the frame, nothing else in the picture, no lamp, no light source visible, no "
+    "floor, no horizon, no backdrop, no background objects"
 )
 
 T2I = {
@@ -125,13 +136,20 @@ T2I = {
     #
     # Thickness is the other thing it gets wrong, so each says its proportions
     # twice: once in millimetres and once in plain shape words.
-    "part-m2": ((1328, 1328),
+    # A WIDE canvas, unlike the two drives. The style string asks for the object
+    # to fill most of the frame, and in a square frame that fights a 4:1 strip:
+    # the board came back square, with its contacts correctly on one edge but its
+    # proportions lost. Given a frame the right shape it can be both.
+    "part-m2": ((1664, 928),
         "a single thin bare green printed circuit board module, a narrow strip about "
         "four times as long as it is wide, lying flat and seen at a three-quarter "
         "angle from slightly above, two "
-        "blank black square chips on its upper face, one row of fine gold contacts "
-        "along one short edge with a small notch in that edge, a screw hole at the "
-        "opposite end. One flat thin board, plain unmarked surfaces, no text. "
+        "blank black square chips on its upper face, a row of fine gold contact pads "
+        "running ACROSS ONE SHORT END of the strip -- spanning the full width of that "
+        "narrow end, like the edge connector of a memory stick -- with a small notch "
+        "interrupting that row, and a semicircular screw cut-out at the far short "
+        "end. The two LONG sides of the board carry no contacts at all. One flat "
+        "thin board, plain unmarked surfaces, no text. "
         + AM4_PART),
     "part-ssd": ((1328, 1328),
         "a single slim sealed metal case shaped like a flat thin card, 100 mm long "
@@ -172,7 +190,9 @@ JOB_NEG = {
     "cooler": ", square fan frame, tower cooler, heat pipes, copper pipes, "
               "vertical heatsink, disc, ring, circular backdrop, circuit board, "
               "printed circuit pattern",
-    "part-m2": ", metal case, enclosure, lid, two objects, gold contacts at both "
+    "part-m2": ", contacts running along a long side, pads down the length of "
+               "the board, metal case, enclosure, lid, two objects, "
+               "gold contacts at both "
                "ends, dimension text, measurements printed on the board, silkscreen "
                "numbers, mm, millimetre markings",
     "part-ssd": ", open case, exposed circuit board, visible pcb, missing lid, "

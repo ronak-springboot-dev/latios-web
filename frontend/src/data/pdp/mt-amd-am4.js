@@ -3,21 +3,25 @@
  * big-number rows, a bento grid of feature cards. Amber, this product's own
  * accent.
  *
- * EVERY PICTURE HERE IS A PHOTOGRAPH. There is no generated imagery left on
- * this page, and that is the point rather than an accident.
+ * The chassis, the fascia and the desk are photographs of the real machine. The
+ * four component plates -- graphics, memory, storage, cooling -- are renders,
+ * captioned as illustrations, and they are finally good ones.
  *
- * The graphics, memory, storage and cooling plates used to be text-to-image
- * renders. They were reworked repeatedly -- restaged, re-angled, re-prompted,
- * cut four different ways -- and the objection never moved, because it was never
- * about fidelity. A diffusion model has never seen the DDR4, the drives or the
- * Radeon card Latios actually ships, so it cannot draw them; it can only draw A
- * memory module. Even a flawless render would picture a part we do not sell.
+ * What was wrong with them for a long time was one phrase. Every component
+ * prompt appended a style string that said "low-key lighting", inherited from
+ * this page's dark ground, and low-key means murky: the parts came back soft and
+ * dim and read as AI renders beside a photograph, however they were staged,
+ * angled or cut. Bright, even, high-key lighting fixed all four at once. See
+ * gen_am4.py, which now also records the three prompt habits that each cost a
+ * render: similes get drawn, numerals get silkscreened, and naming the lighting
+ * equipment puts the softbox in the frame.
  *
- * So those four are gone and their sections run on type and the real figures
- * until AMD's own partner imagery is dropped in for the Ryzen and the Radeon --
- * which is exactly what the reference page does with Intel's chip render. A
- * featureSplit with no `image` lays out as one column rather than leaving half
- * of itself empty.
+ * The storage plate shows two drives rather than three. Four renders of an M.2
+ * alternated between correct proportions with the contacts down a long edge and
+ * correct contacts on a square board -- the model treats a long thin green board
+ * with an edge connector as a DIMM, and that is the one thing an M.2 must not
+ * look like directly under a section showing real DIMMs. It stays in the spec
+ * row, the footnote and the bento glyph until someone photographs one.
  *
  * Every number on this page is either a row of this model's specGroups
  * (models.js) or AMD's published figure for the Ryzen 7 5700G the spec names:
@@ -79,8 +83,10 @@ export default {
           }
         },
         {
-          "col": 1, "size": "short", "grow": true,
+          "col": 1, "size": "short", "bleed": true, "grow": true,
           "title": "Cooling & power", "subtitle": "Fan cooler · 80+ Bronze supply",
+          "image": "/images/am4/cooler-card.webp",
+          "alt": "A round desktop fan cooler, rendered",
           "stat": ["500", "W", "ATX power"]
         },
         {
@@ -110,9 +116,10 @@ export default {
           "alt": "An AMD Ryzen processor seated in an AM4 socket"
         },
         {
-          "col": 3, "size": "half", "grow": true,
+          "col": 3, "size": "half", "bleed": true, "grow": true,
           "title": "Graphics", "subtitle": "Up to 16GB AMD Radeon RX",
-          "glyph": "gpu"
+          "image": "/images/am4/gpu-radeon.webp",
+          "alt": "A full-height desktop graphics card, rendered"
         }
       ]
     },
@@ -138,11 +145,14 @@ export default {
       "heading": "Room for a",
       "headingAccent": "Radeon RX card.",
       "body": "Integrated Radeon graphics drive two 4K displays out of the box. When a desk needs more — design review, a control-room wall, light rendering — the chassis takes a discrete AMD Radeon RX card, and the 500W supply has the headroom for it.",
+      "image": "/images/am4/gpu-radeon.webp",
+      "alt": "A full-height desktop graphics card with two fans, rendered",
+      "flip": true,
       "stats": [
         ["16", "GB", "Up to, Radeon RX", "Up to"],
         ["500", "W", "80+ Bronze ATX supply"]
       ],
-      "footnote": "A discrete graphics card is an optional configuration."
+      "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
     },
     {
       "type": "featureSplit",
@@ -150,6 +160,8 @@ export default {
       "heading": "Dual-channel DDR4,",
       "headingAccent": "up to 64GB.",
       "body": "Two U-DIMM slots at 3200 MHz. Ship a desk at 16GB today and take it to 64GB years later without changing anything else in the box.",
+      "image": "/images/am4/ddr4-pair.webp",
+      "alt": "Two desktop memory modules, rendered",
       "stats": [
         ["3200", "MHz", "Dual DDR4 channels", "Up to"],
         ["64", "GB", "Maximum supported", "Up to"]
@@ -161,7 +173,10 @@ export default {
       "heading": "A fast drive and a big one,",
       "headingAccent": "in the same box.",
       "body": "An M.2 SSD for the operating system and working files, with a 2.5-inch bay and a 3.5-inch bay beside it for bulk storage — all reachable from the one hand-removable side panel.",
-      "footnote": "1× M.2 SSD (auto-switch) · 1× 2.5″ HDD/SSD · 1× 3.5″ HDD."
+      "image": "/images/am4/storage-set.webp",
+      "alt": "An M.2 drive, a 2.5-inch drive and a 3.5-inch drive, rendered",
+      "flip": true,
+      "footnote": "1× M.2 SSD (auto-switch) · 1× 2.5″ HDD/SSD · 1× 3.5″ HDD. Image is an illustration."
     },
     {
       "type": "featureSplit",

@@ -52,8 +52,8 @@ WIDTH = 1600
 # what the page's featureSplit frames already carry -- so the parts come out the
 # same size on screen as each other.
 JOBS = {
-    "ddr4-pair":   dict(src="ddr4-pair",   horizon=0.773),
-    "gpu-radeon":  dict(src="gpu-radeon",  horizon=0.786),
+    "ddr4-pair":   dict(src="ddr4-pair",   horizon=0.841),
+    "gpu-radeon":  dict(src="gpu-radeon",  horizon=0.793),
 }
 
 # storage-set is NOT here, and that is a decision rather than an omission.
@@ -163,8 +163,22 @@ def sky_swap(im, horizon, ceiling=34, feather=0.012):
 # whatever the model felt like: M.2 2280 is 80 mm long, a 2.5-inch drive 100, a
 # 3.5-inch drive 146. `lift` raises a part off the common floor line by a
 # fraction of its own height, for the ones whose render sits them on a reflection.
+# The M.2 is NOT here, and that is a decision.
+#
+# Four renders of it alternated between two faults that the framing traded off
+# against each other: on a square canvas it came back correctly proportioned with
+# its gold contacts running down a LONG edge, and with the contacts correctly on
+# one end it came back square. On a wide canvas the proportion returned and the
+# contacts moved back to the long side. The model has a strong prior that a long
+# thin green board with an edge connector is a DIMM, and an M.2 is distinguished
+# from a DIMM by exactly the thing it keeps getting wrong.
+#
+# A board whose connector runs down its length cannot be installed in anything,
+# and sitting in the storage section directly under a memory section showing real
+# DIMMs, it would read as a RAM stick. So the plate shows the two drives, which
+# are right, and the M.2 stays in the spec row, the footnote and the bento glyph
+# until there is a photograph of one.
 STORAGE = [
-    dict(src="part-m2",  mm=80),
     dict(src="part-ssd", mm=100),
     dict(src="part-hdd", mm=146),
 ]
@@ -192,7 +206,7 @@ def cut_object(path, floor=14):
     return rgba.crop(rgba.getchannel("A").point(lambda v: 255 if v > 8 else 0).getbbox())
 
 
-def storage_set(gap=0.050, floor=0.74, widest=0.345):
+def storage_set(gap=0.030, floor=0.70, widest=0.50):
     """Three drives on one stage, sized against each other in millimetres."""
     parts = []
     for cfg in STORAGE:
@@ -217,11 +231,11 @@ def storage_set(gap=0.050, floor=0.74, widest=0.345):
     d = ImageDraw.Draw(shadow)
     for im in sized:
         y = base - im.height
-        d.ellipse([x - im.width * 0.04, base - H * 0.012,
-                   x + im.width * 1.04, base + H * 0.018], fill=150)
+        d.ellipse([x - im.width * 0.02, base - H * 0.009,
+                   x + im.width * 1.02, base + H * 0.013], fill=205)
         x += im.width + round(gap * W)
     canvas = Image.composite(Image.new("RGB", (W, H), (0, 0, 0)), canvas,
-                             shadow.filter(ImageFilter.GaussianBlur(W / 90)))
+                             shadow.filter(ImageFilter.GaussianBlur(W / 150)))
     x = (W - total) // 2
     for im in sized:
         canvas.paste(im, (x, base - im.height), im)
@@ -229,6 +243,32 @@ def storage_set(gap=0.050, floor=0.74, widest=0.345):
 
     canvas = canvas.resize((WIDTH, round(H * WIDTH / W)), Image.LANCZOS)
     out = DEST / "storage-set.webp"
+    canvas.save(out, "WEBP", quality=90, method=6)
+    print(f"  {out.name:18s} {canvas.size}  {out.stat().st_size // 1024:>4}KB")
+
+
+def stage_cut(name, src, height=0.62, floor=0.80, cx=0.50):
+    """Cut the part off its black ground and stand it on the page's backdrop.
+
+    The companion to sky_swap, and the better path when the render HAS no ground
+    of its own to keep. Bright high-key plates come back as an object on black
+    with at most a soft reflection, which cut_object handles exactly; the sky
+    swap exists for the older, murkier plates where the model drew a floor the
+    prompt had forbidden and the two could not be separated.
+    """
+    render = GEN / f"{src}.png"
+    if not render.exists():
+        print(f"  skip {name:13s} ({render.name} not rendered yet)")
+        return
+    part = cut_object(render)
+    W, H = CANVAS
+    canvas, _ = studio.compose(
+        part, W, H, height=height, floor=floor, cx=cx,
+        ground=studio.LIT_GROUND, halo=(90, 94, 120), halo_at=0.30,
+        glow=(150, 104, 60), glow_at=30,
+        after_ground=lambda im: studio.streaks(im, at=0.56, strength=0.26))
+    canvas = canvas.resize((WIDTH, round(H * WIDTH / W)), Image.LANCZOS)
+    out = DEST / f"{name}.webp"
     canvas.save(out, "WEBP", quality=90, method=6)
     print(f"  {out.name:18s} {canvas.size}  {out.stat().st_size // 1024:>4}KB")
 

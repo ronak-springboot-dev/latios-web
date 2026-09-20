@@ -51,15 +51,16 @@ CARD_FROM = {}
 # and the lamp: at card size (~370 CSS px) the full plate left them small.
 DESK_CROP = (0.26, 0.17, 0.97, 0.87)
 
-# The blank label plate on ddr4-pair, as frame fractions, re-measured off a
-# gridded proof of the SECOND render -- the one staggered in depth. The first
-# render stood both modules square to the camera and carried four of these (two
-# plates and their two reflections); this one has one plate, on the near module,
-# and a floor too dark to reflect it.
+# The blank label plates on ddr4-pair, as frame fractions, re-measured off a
+# gridded proof of the high-key render. Each generation of this plate has put
+# them somewhere new -- four boxes when both modules stood square to the camera,
+# one when they were staggered, two now -- so the constant is re-measured with
+# the render rather than carried forward. Applied to the wrong frame these paint
+# dark rectangles onto clean metal.
 #
 # The box can be generous: tone_labels only takes pixels that are bright in all
 # three channels, so the dark heatspreader inside the same rectangle is untouched.
-DDR4_LABELS = [(0.563, 0.468, 0.672, 0.802)]
+DDR4_LABELS = [(0.268, 0.555, 0.395, 0.890), (0.498, 0.525, 0.640, 0.868)]
 
 # Defocus regions on cpu-ryzen, as polygons in frame fractions, measured off a
 # gridded proof of the render. Polygons, not rectangles: the chip sits at an
@@ -81,11 +82,14 @@ CPU_SOFTEN = [
      (0.352, 0.662), (0.384, 0.608)],
 ]
 
-# Defocus regions on gpu-radeon. The model's text suppression held everywhere
-# but the PCB strip between shroud and gold fingers, where it left a line of
-# pseudo-lettering ("NOLL SHNE") and two smaller silkscreen marks. Unreadable
-# at display size, but garbled text is exactly what this page must not carry.
-GPU_SOFTEN = [(0.462, 0.679, 0.522, 0.710), (0.318, 0.660, 0.374, 0.702)]
+# Defocus region on gpu-radeon, re-measured against the high-key render.
+#
+# The earlier, murkier plate left pseudo-lettering along the PCB strip; this one
+# has a clean PCB and puts its garble on the FAN HUB instead -- a debossed row of
+# characters exactly where a maker's logo sits. Unreadable at display size, and
+# precisely what this page must not carry: a mark in a logo's position is an
+# invented brand.
+GPU_SOFTEN = [(0.505, 0.468, 0.585, 0.512)]
 
 # Defocus regions on desk-dual: a small logo-like mark centred on each monitor's
 # chin. Illegible, but a mark in a logo's position is an invented brand.
