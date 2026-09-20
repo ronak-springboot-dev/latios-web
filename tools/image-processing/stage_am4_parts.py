@@ -46,6 +46,7 @@ import am4_studio as studio
 GEN = Path(__file__).parent / "generated" / "am4"
 DEST = Path(__file__).resolve().parents[2] / "frontend" / "public" / "images" / "am4"
 LOGO = DEST.parent / "latios-wordmark-reversed.png"
+SHOOT = Path(r"C:/Ronak/Latios/Images/Latios tower")
 #: 2400, not the 1600 install_am4.py uses for the rest of the page. That figure
 #: came from the featureSplit figure being at most ~800 CSS px; measured, it
 #: caps at 718, so 1600 really is 2.2x and the arithmetic was right. It still
@@ -200,6 +201,23 @@ STORAGE = [
 
 
 _U2NET = None
+
+
+def cutout_image(im):
+    """The matte itself, for callers that already have the pixels."""
+    global _U2NET
+    from rembg import new_session, remove
+    if _U2NET is None:
+        _U2NET = new_session("u2net")
+    small = im.copy()
+    small.thumbnail((1400, 1400), Image.LANCZOS)
+    cut = remove(small, session=_U2NET, alpha_matting=True,
+                 alpha_matting_foreground_threshold=250,
+                 alpha_matting_background_threshold=15,
+                 alpha_matting_erode_size=12)
+    rgba = im.convert("RGBA")
+    rgba.putalpha(cut.getchannel("A").resize(im.size, Image.LANCZOS))
+    return rgba
 
 
 def cutout(path, name=None):
@@ -425,16 +443,81 @@ def _screen(mon):
     return out
 
 
-def desk_card():
-    mon_src, tower_src = GEN / "monitor.png", GEN / "front-cut.png"
-    for f in (mon_src, tower_src):
-        if not f.exists():
-            print(f"  skip desk-card ({f.name} not rendered yet)")
-            return
+def tower_angle():
+    """Cut the three-quarter photograph of the real machine.
 
-    mon = _screen(cutout(mon_src))
+    front-cut.png, which this card used first, is the dead-on front view the
+    chassis card stands on. Beside a display drawn in three-quarter perspective
+    it read as a flat slab: a 312 mm deep machine photographed square to the
+    camera shows no depth at all, so the eye takes it for a cardboard cut-out
+    pasted into the frame. The fault was not the lighting or the cut. It was
+    that the two objects were in different perspectives.
+
+    This frame shows the front face and the left flank, which is the view of an
+    object standing left of the camera axis -- so it pairs with the display
+    mirrored to stand right of it. Holes are filled because the matte drops the
+    bright power button out of the front panel.
+    """
+    out = GEN / "tower-angle.png"
+    if out.exists():
+        return out
+    src = SHOOT / "20260908_123421.heic"
+    if not src.exists():
+        print(f"  skip desk-card ({src.name} not found)")
+        return None
+    import pillow_heif
+    pillow_heif.register_heif_opener()
+    im = Image.open(src).convert("RGB")
+    im.thumbnail((2400, 2400), Image.LANCZOS)
+    cut = cutout_image(im)
+
+    # Three faults the raw matte has against a lit wall, in order:
+    #   - it keeps a wedge of the plywood the machine stands on, so take the
+    #     largest component only;
+    #   - it drops the bright power button out of the front panel, so fill holes;
+    #   - it leaves a speckled fringe along the top and right edges, where a
+    #     black chassis meets a bright wall, so erode a little and feather. In
+    #     the composite that fringe was the loudest tell that this was a cut-out.
+    a = np.asarray(cut.getchannel("A"))
+    soc = a > 128
+    lab, n = ndimage.label(soc)
+    if n > 1:
+        sizes = ndimage.sum(soc, lab, range(1, n + 1))
+        soc = lab == (int(np.argmax(sizes)) + 1)
+    soc = ndimage.binary_fill_holes(soc)
+    soc = ndimage.binary_erosion(soc, np.ones((5, 5), bool))
+    alpha = Image.fromarray((soc * 255).astype(np.uint8)).filter(ImageFilter.GaussianBlur(1.4))
+    cut.putalpha(alpha)
+
+    # The shoot lit this on soft overhead office light: correct colour, but flat,
+    # with no specular anywhere. Beside a render carrying crisp studio highlights
+    # that flatness reads as a sticker. A gentle S-curve is enough -- it deepens
+    # the flank and lets the fascia ribs and the chamfer catch a little light.
+    # Measured rather than assumed: the tower is already the WARMER of the two
+    # (R/B 1.09 against the display's 0.97), so nothing here touches balance.
+    arr = np.asarray(cut.convert("RGBA")).astype(np.float32)
+    v = arr[..., :3] / 255.0
+    arr[..., :3] = (np.clip(v + 0.85 * v * (1 - v) * (v - 0.42), 0, 1) * 255)
+    cut = Image.fromarray(arr.clip(0, 255).astype("uint8"), "RGBA")
+
+    cut = cut.crop(cut.getchannel("A").point(lambda v: 255 if v > 8 else 0).getbbox())
+    cut.save(out)
+    return out
+
+
+def desk_card():
+    mon_src = GEN / "monitor.png"
+    tower_src = tower_angle()
+    if not mon_src.exists() or tower_src is None:
+        print("  skip desk-card (sources not ready)")
+        return
+
+    # Mirror the display so it stands right of the camera axis, matching the
+    # tower photograph. Safe to mirror and nothing else here is: the bezel is
+    # deliberately unmarked, and the wordmark goes on AFTER the flip, so it
+    # reads the right way round.
+    mon = _screen(cutout(mon_src).transpose(Image.FLIP_LEFT_RIGHT))
     tower = Image.open(tower_src).convert("RGBA")
-    tower = tower.crop(tower.getchannel("A").point(lambda v: 255 if v > 8 else 0).getbbox())
 
     W, H = CARD
     floor = 0.88
