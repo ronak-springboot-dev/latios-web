@@ -57,10 +57,15 @@ WIDTH = 2400
 # height, measured off a gridded proof. The canvas is one shape for all three --
 # what the page's featureSplit frames already carry -- so the parts come out the
 # same size on screen as each other.
+#: Both plates now CUT rather than sky-swap. The horizons they used to carry
+#: were measured correctly and are kept here as a record; sky_swap itself is
+#: kept for a render that genuinely has a floor worth keeping, which neither of
+#: these has. See cutout() for why the swap could not work on these two.
 JOBS = {
-    "ddr4-pair":   dict(src="ddr4-pair",   horizon=0.841),
-    "gpu-radeon":  dict(src="gpu-radeon",  horizon=0.793),
+    "ddr4-pair":   dict(src="ddr4-pair",  matte="u2net", height=0.84, floor=0.88),
+    "gpu-radeon":  dict(src="gpu-radeon", matte="u2net", height=0.66, floor=0.84),
 }
+RETIRED_HORIZONS = {"ddr4-pair": 0.841, "gpu-radeon": 0.793}
 
 # storage-set is NOT here, and that is a decision rather than an omission.
 #
@@ -79,7 +84,11 @@ JOBS = {
 # image in this section not sharing the backdrop, and it is the one to redo --
 # most likely by photographing three real drives rather than describing them.
 SKIPPED = {"storage-set"}
-CANVAS = (1600, 1235)
+#: Composed at the size it ships at. This was (1600, 1235) while WIDTH was
+#: raised to 2400, which meant every plate was built at 1600 and then blown
+#: up -- a bigger file carrying no more detail. The sources are 5888 wide;
+#: there is no reason to go through a smaller canvas.
+CANVAS = (2400, 1852)
 
 
 def retouch(name, im):
@@ -189,6 +198,53 @@ STORAGE = [
 ]
 
 
+_U2NET = None
+
+
+def cutout(path, name=None):
+    """Matte by segmentation, for parts whose own faces are as black as the sky.
+
+    cut_object thresholds luminance, and sky_swap ramps on it. Both assume the
+    part is brighter than the background. Measured on these renders it is not:
+    above the horizon, a quarter of the central pixels are pure 0, because a
+    matte black heatspreader and an unlit shroud photograph exactly as dark as
+    the seamless behind them. sky_swap's ceiling of 34 therefore read the
+    heatspreaders AS sky and blended half the backdrop over them, which is what
+    shipped and what came back rejected: the modules went milky.
+
+    There is no threshold that fixes that, so this does not use one. u2net
+    segments the object and keeps every dark face inside the silhouette.
+
+    The module docstring says rembg "loses a near-black heatspreader". That was
+    true, and it was measured on the old low-key renders, which had no edge
+    anywhere for it to find. It is not true of these: proofed on magenta, both
+    plates come back whole, with clean contacts and no holes. The note stands as
+    history, not as a current constraint.
+    """
+    global _U2NET
+    from rembg import new_session, remove
+    if _U2NET is None:
+        _U2NET = new_session("u2net")
+
+    im = Image.open(path).convert("RGB")
+    if name:
+        im = retouch(name, im)            # before any resize: radii are in render pixels
+    im.thumbnail((2400, 2400), Image.LANCZOS)
+
+    # Matte on a reduced copy. u2net has a fixed input size, so a larger source
+    # buys nothing but time, and the alpha upsamples cleanly.
+    small = im.copy()
+    small.thumbnail((1400, 1400), Image.LANCZOS)
+    cut = remove(small, session=_U2NET, alpha_matting=True,
+                 alpha_matting_foreground_threshold=250,
+                 alpha_matting_background_threshold=15,
+                 alpha_matting_erode_size=12)
+    alpha = cut.getchannel("A").resize(im.size, Image.LANCZOS)
+    rgba = im.convert("RGBA")
+    rgba.putalpha(alpha)
+    return rgba.crop(alpha.point(lambda v: 255 if v > 8 else 0).getbbox())
+
+
 def cut_object(path, floor=14):
     """Alpha from luminance. A single object on black needs nothing cleverer.
 
@@ -261,7 +317,7 @@ def storage_set(gap=0.030, floor=0.70, widest=0.50):
     print(f"  {out.name:18s} {canvas.size}  {out.stat().st_size // 1024:>4}KB")
 
 
-def stage_cut(name, src, height=0.62, floor=0.80, cx=0.50):
+def stage_cut(name, src, height=0.62, floor=0.80, cx=0.50, matte="lum"):
     """Cut the part off its black ground and stand it on the page's backdrop.
 
     The companion to sky_swap, and the better path when the render HAS no ground
@@ -274,13 +330,14 @@ def stage_cut(name, src, height=0.62, floor=0.80, cx=0.50):
     if not render.exists():
         print(f"  skip {name:13s} ({render.name} not rendered yet)")
         return
-    part = cut_object(render)
+    part = cutout(render, name=src) if matte == "u2net" else cut_object(render)
     W, H = CANVAS
     canvas, _ = studio.compose(
         part, W, H, height=height, floor=floor, cx=cx,
         ground=studio.PLATE_GROUND, halo=(74, 70, 64), halo_at=0.30,
         glow=(150, 104, 60), glow_at=26)
-    canvas = canvas.resize((WIDTH, round(H * WIDTH / W)), Image.LANCZOS)
+    if canvas.width != WIDTH:
+        canvas = canvas.resize((WIDTH, round(H * WIDTH / W)), Image.LANCZOS)
     out = DEST / f"{name}.webp"
     canvas.save(out, "WEBP", quality=90, method=6)
     print(f"  {out.name:18s} {canvas.size}  {out.stat().st_size // 1024:>4}KB")
@@ -309,6 +366,6 @@ if __name__ == "__main__":
     for name, cfg in JOBS.items():
         if only and name not in only:
             continue
-        stage(name, **cfg)
+        stage_cut(name, **cfg)
     if not only or "storage-set" in only:
         storage_set()
