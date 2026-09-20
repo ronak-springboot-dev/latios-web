@@ -23,6 +23,14 @@ Rules that come from earlier failures in this project, not from taste:
     into a pasted grey rectangle.
   * No Latios hardware is ever generated from scratch. The chassis is an EDIT of
     the real photograph, and anything showing the machine itself is a photograph.
+  * NO SIMILES. Every figure of speech in a prompt gets drawn literally. "as
+    thin as a stack of three coins" returned a stack of coin-shaped plates;
+    "about three times the thickness of a phone" invites a phone into frame.
+  * NO NUMERALS either, on a part small enough to carry a label. "80 mm long and
+    22 mm wide" came back silkscreened onto the board as "80mm x 22mm". The
+    global negative suppresses text, but not text the prompt itself supplies.
+    Millimetres are safe on a big plain case and not on a circuit board; ratios
+    in words ("four times as long as it is wide") are safe on both.
   * Describe a part by its GEOMETRY, never by its name, and never name a surface
     the part should not show. "a bare dark green circuit board covering its
     underside" was meant to say the drive has a PCB underneath; the model read it
@@ -117,16 +125,26 @@ T2I = {
     #
     # Thickness is the other thing it gets wrong, so each says its proportions
     # twice: once in millimetres and once in plain shape words.
+    "part-m2": ((1328, 1328),
+        "a single thin bare green printed circuit board module, a narrow strip about "
+        "four times as long as it is wide, lying flat and seen at a three-quarter "
+        "angle from slightly above, two "
+        "blank black square chips on its upper face, one row of fine gold contacts "
+        "along one short edge with a small notch in that edge, a screw hole at the "
+        "opposite end. One flat thin board, plain unmarked surfaces, no text. "
+        + AM4_PART),
     "part-ssd": ((1328, 1328),
         "a single slim sealed metal case shaped like a flat thin card, 100 mm long "
-        "and 70 mm wide but only 7 mm thick -- as thin as a stack of three coins -- "
-        "with a brushed aluminium top face, square corners and a fine seam running "
+        "and 70 mm wide and only 7 mm thick, lying flat and seen at a three-quarter "
+        "angle from slightly above, machined from ONE piece of metal with a "
+        "brushed aluminium top face, square corners and a single fine seam running "
         "round its edge. Completely closed on every face, nothing inside visible. "
         "One very flat thin object, plain unmarked surfaces. " + AM4_PART),
     "part-hdd": ((1328, 1328),
         "a single sealed metal case 146 mm long, 102 mm wide and 26 mm thick -- a "
-        "squat flat rectangular block, about three times the thickness of a phone -- "
-        "with a flat brushed aluminium lid on its upper face held down by four "
+        "squat flat rectangular block, lying flat and seen at a three-quarter angle "
+        "from slightly above -- with a flat brushed aluminium lid on its "
+        "upper face held down by four "
         "recessed screws near the corners, and a plain machined side wall with a fine "
         "seam. Completely closed on every face, nothing inside visible. One squat "
         "rectangular object, plain unmarked surfaces. " + AM4_PART),
@@ -154,6 +172,9 @@ JOB_NEG = {
     "cooler": ", square fan frame, tower cooler, heat pipes, copper pipes, "
               "vertical heatsink, disc, ring, circular backdrop, circuit board, "
               "printed circuit pattern",
+    "part-m2": ", metal case, enclosure, lid, two objects, gold contacts at both "
+               "ends, dimension text, measurements printed on the board, silkscreen "
+               "numbers, mm, millimetre markings",
     "part-ssd": ", open case, exposed circuit board, visible pcb, missing lid, "
                "thick block, cube, tall box, two objects",
     "part-hdd": ", open case, exposed circuit board, visible pcb, missing lid, "

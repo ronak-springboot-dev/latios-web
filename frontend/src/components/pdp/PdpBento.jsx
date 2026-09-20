@@ -67,6 +67,17 @@ const Glyph = ({ name, big }) => {
         <path d="M18 54h164" {...common} strokeDasharray="2 6" />
       </svg>
     );
+  if (name === "gpu")
+    return (
+      <svg viewBox="0 0 200 96" className={size} aria-hidden="true">
+        <path d="M30 18h164v52H30z" {...common} />
+        <path d="M30 18v60M16 12h14v72H16z" {...common} />
+        <circle cx="78" cy="44" r="19" {...common} />
+        <circle cx="140" cy="44" r="19" {...common} />
+        <path d="M60 70h120v10H60z" {...common} />
+        <path d="M74 80h8M90 80h8M106 80h8M122 80h8M138 80h8" {...common} />
+      </svg>
+    );
   if (name === "drive")
     return (
       <svg viewBox="0 0 200 64" className={size} aria-hidden="true">

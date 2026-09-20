@@ -57,7 +57,10 @@ export const PdpFeatureSplit = ({
     // html.light overrides, and an inline background cannot be overridden by it
     // -- in light mode the navy fade painted a dark band across a light page.
     <Band theme={theme} data-testid={`pdp-feature-split-${index}`} className={glow === "horizon" ? "pdp-horizon" : ""}>
-      <div className={`grid grid-cols-1 md:grid-cols-2 items-center ${theme?.gap ?? "gap-10 md:gap-16"}`}>
+      {/* One column when there is no picture. A split with an empty half is a
+          hole, and these sections run without one while their imagery is sourced
+          from the part's own maker rather than invented. */}
+      <div className={`grid grid-cols-1 ${image ? "md:grid-cols-2" : ""} items-center ${theme?.gap ?? "gap-10 md:gap-16"}`}>
         <div className={flip ? "md:order-2" : ""}>
           <Reveal>
             {pill && (

@@ -38,7 +38,7 @@ import sys
 from pathlib import Path
 
 import numpy as np
-from PIL import Image, ImageFilter
+from PIL import Image, ImageDraw, ImageFilter
 from scipy import ndimage
 
 import am4_studio as studio
@@ -157,6 +157,82 @@ def sky_swap(im, horizon, ceiling=34, feather=0.012):
     return Image.fromarray(out.clip(0, 255).astype("uint8"))
 
 
+# The storage plate, assembled from three single-object renders.
+#
+# Real millimetres, so the three are to scale with each other rather than to
+# whatever the model felt like: M.2 2280 is 80 mm long, a 2.5-inch drive 100, a
+# 3.5-inch drive 146. `lift` raises a part off the common floor line by a
+# fraction of its own height, for the ones whose render sits them on a reflection.
+STORAGE = [
+    dict(src="part-m2",  mm=80),
+    dict(src="part-ssd", mm=100),
+    dict(src="part-hdd", mm=146),
+]
+
+
+def cut_object(path, floor=14):
+    """Alpha from luminance. A single object on black needs nothing cleverer.
+
+    The three-in-one plate needed a horizon and a sky swap because the model drew
+    a ground plane under it. These do not: one object per frame comes back on
+    black with only its own soft reflection, and everything above `floor` is the
+    object.
+    """
+    im = Image.open(path).convert("RGB")
+    im.thumbnail((2000, 2000), Image.LANCZOS)
+    lum = np.asarray(im.convert("L")).astype(np.uint8)
+    mask = ndimage.binary_fill_holes(lum > floor)
+    labels, n = ndimage.label(mask)
+    if n > 1:                                   # drop the reflection and any specks
+        sizes = ndimage.sum(mask, labels, range(1, n + 1))
+        mask = labels == (int(np.argmax(sizes)) + 1)
+    rgba = im.convert("RGBA")
+    rgba.putalpha(Image.fromarray((mask * 255).astype(np.uint8))
+                  .filter(ImageFilter.GaussianBlur(0.6)))
+    return rgba.crop(rgba.getchannel("A").point(lambda v: 255 if v > 8 else 0).getbbox())
+
+
+def storage_set(gap=0.050, floor=0.74, widest=0.345):
+    """Three drives on one stage, sized against each other in millimetres."""
+    parts = []
+    for cfg in STORAGE:
+        src = GEN / f"{cfg['src']}.png"
+        if not src.exists():
+            print(f"  skip storage-set ({src.name} not rendered yet)")
+            return
+        parts.append((cut_object(src), cfg["mm"]))
+
+    W, H = CANVAS
+    scale = (widest * W) / max(mm for _, mm in parts)      # px per mm
+    sized = []
+    for im, mm in parts:
+        w = round(mm * scale)
+        sized.append(im.resize((w, round(im.height * w / im.width)), Image.LANCZOS))
+
+    total = sum(i.width for i in sized) + round(gap * W) * (len(sized) - 1)
+    x = (W - total) // 2
+    base = round(H * floor)
+    canvas = studio.streaks(studio._ground(W, H, studio.LIT_GROUND), at=0.56, strength=0.26)
+    shadow = Image.new("L", (W, H), 0)
+    d = ImageDraw.Draw(shadow)
+    for im in sized:
+        y = base - im.height
+        d.ellipse([x - im.width * 0.04, base - H * 0.012,
+                   x + im.width * 1.04, base + H * 0.018], fill=150)
+        x += im.width + round(gap * W)
+    canvas = Image.composite(Image.new("RGB", (W, H), (0, 0, 0)), canvas,
+                             shadow.filter(ImageFilter.GaussianBlur(W / 90)))
+    x = (W - total) // 2
+    for im in sized:
+        canvas.paste(im, (x, base - im.height), im)
+        x += im.width + round(gap * W)
+
+    canvas = canvas.resize((WIDTH, round(H * WIDTH / W)), Image.LANCZOS)
+    out = DEST / "storage-set.webp"
+    canvas.save(out, "WEBP", quality=90, method=6)
+    print(f"  {out.name:18s} {canvas.size}  {out.stat().st_size // 1024:>4}KB")
+
+
 def stage(name, src, horizon, crop=None):
     render = GEN / f"{src}.png"
     if not render.exists():
@@ -181,3 +257,5 @@ if __name__ == "__main__":
         if only and name not in only:
             continue
         stage(name, **cfg)
+    if not only or "storage-set" in only:
+        storage_set()
