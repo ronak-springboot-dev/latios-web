@@ -135,7 +135,7 @@ export default {
             "bleed": true,
             "title": "Processor",
             "subtitle": "Up to Intel Core i7-14700",
-            "image": "/images/components/cpu-intel.webp",
+            "image": "/images/parts/cpu-lga1700.webp",
             "alt": "A processor seated in its socket"
           },
           {
@@ -145,7 +145,7 @@ export default {
             "grow": true,
             "title": "Graphics",
             "subtitle": "Intel UHD · discrete options",
-            "image": "/images/parts/gpu-workstation.webp",
+            "image": "/images/parts/gpu-lowprofile.webp",
             "alt": "A desktop graphics card, rendered"
           }
         ]
@@ -156,7 +156,7 @@ export default {
         "heading": "Fourteenth generation,",
         "headingAccent": "in eight litres.",
         "body": "The same fourteenth-generation Core line the towers run, in a chassis a third of the volume. An i7 for the seat that needs it and an i3 for the counter, on one board and one service procedure.",
-        "image": "/images/components/cpu-intel.webp",
+        "image": "/images/parts/cpu-lga1700.webp",
         "alt": "An Intel processor seated in an LGA socket",
         "stats": [
           [
@@ -207,7 +207,7 @@ export default {
         "heading": "Integrated first,",
         "headingAccent": "discrete if needed.",
         "body": "Intel UHD graphics drive the displays most desks ask for. Where a seat needs more, the chassis takes a low-profile card — which is why the cooler is a blower and the side is a vent wall rather than a vent hole.",
-        "image": "/images/parts/gpu-workstation.webp",
+        "image": "/images/parts/gpu-lowprofile.webp",
         "alt": "A single-slot low-profile professional graphics card, rendered",
         "stats": [
           [

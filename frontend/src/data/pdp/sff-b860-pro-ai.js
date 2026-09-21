@@ -69,7 +69,7 @@ export default {
             "bleed": true,
             "title": "Compact design",
             "subtitle": "8-litre slim desktop",
-            "image": "/images/sff/chassis-card.webp",
+            "image": "/images/sff/chassis-b860.webp",
             "alt": "The Latios SFF at three-quarters on a lit backdrop, with its height and width marked",
             "dims": {
               "box": [
@@ -77,15 +77,15 @@ export default {
                 1400
               ],
               "h": {
-                "x": 23.5,
-                "y1": 40,
-                "y2": 80,
+                "x": 23.7,
+                "y1": 30.0,
+                "y2": 80.0,
                 "label": "330 mm"
               },
               "d": {
-                "x1": 28,
-                "x2": 71.9,
-                "y": 82,
+                "x1": 28.2,
+                "x2": 71.7,
+                "y": 82.0,
                 "label": "296 mm"
               },
               "note": "Depth 95 mm · 4.74 kg"
@@ -138,7 +138,7 @@ export default {
             "bleed": true,
             "title": "Processor",
             "subtitle": "Up to Intel Core Ultra 9 285",
-            "image": "/images/components/cpu-intel.webp",
+            "image": "/images/parts/cpu-core-ultra.webp",
             "alt": "A processor seated in its socket"
           },
           {
@@ -148,7 +148,7 @@ export default {
             "grow": true,
             "title": "Graphics",
             "subtitle": "Up to NVIDIA RTX A4000",
-            "image": "/images/parts/gpu-workstation.webp",
+            "image": "/images/parts/gpu-lowprofile.webp",
             "alt": "A desktop graphics card, rendered"
           }
         ]
@@ -158,9 +158,9 @@ export default {
         "kicker": "Memory",
         "heading": "Four slots, not two.",
         "body": "Two channels, two slots each, up to 128GB of DDR5. The eight-litre sibling stops at two slots and 64GB, and that one row on the specification below is the whole reason this configuration exists.",
-        "image": "/images/spotlight/sff-b860-memory.webp",
-        "aspect": "aspect-[3/1]",
-        "alt": "Four DDR5 memory slots in a row, rendered on a dark ground",
+        "image": "/images/parts/ddr5-quad.webp",
+        "aspect": "aspect-[16/9]",
+        "alt": "Four DDR5 desktop memory modules, rendered",
         "stats": [
           [
             "128GB",
@@ -185,9 +185,9 @@ export default {
         "kicker": "Storage",
         "heading": "Two M.2 sockets, one of them Gen5.",
         "body": "A Gen5x4 socket for the working drive and a Gen4x4 beside it, with a 2.5-inch and a 3.5-inch bay still in the chassis behind them. Storage that keeps up with 128GB of memory rather than becoming the thing that waits.",
-        "image": "/images/spotlight/sff-b860-storage.webp",
-        "aspect": "aspect-[3/1]",
-        "alt": "An M.2 NVMe solid state drive, rendered on a dark ground",
+        "image": "/images/parts/storage-set.webp",
+        "aspect": "aspect-[16/9]",
+        "alt": "A 2.5-inch drive and a 3.5-inch drive shown at their true relative sizes, rendered",
         "columns": [
           {
             "title": "Gen5x4",
@@ -233,9 +233,9 @@ export default {
         "kicker": "Thermal",
         "heading": "A vent wall, not a vent hole.",
         "body": "A low-profile cooler sits under a fully perforated side, so air is pulled across the board rather than around it. That is how a Core Ultra 9 holds its clocks in a volume this small, and why the machine is as quiet lying flat as it is standing.",
-        "image": "/images/spotlight/sff-b860-cooling.webp",
-        "aspect": "aspect-[3/1]",
-        "alt": "A low-profile blower cooler seen from above, rendered on a dark ground",
+        "image": "/images/details/sff-cooling.webp",
+        "aspect": "aspect-[16/9]",
+        "alt": "The low-profile blower cooler inside the Latios SFF, photographed",
         "caption": "Illustration. Component appearance varies with the configuration ordered."
       },
       {
@@ -244,7 +244,7 @@ export default {
         "heading": "A professional card,",
         "headingAccent": "in eight litres.",
         "body": "Intel Arc graphics are on the Core Ultra die, which covers the desks that only need displays. Where a seat needs certified drivers, the chassis takes a single-slot low-profile professional card — the reason the cooler is a blower and the vent is a whole wall.",
-        "image": "/images/parts/gpu-workstation.webp",
+        "image": "/images/parts/gpu-lowprofile.webp",
         "alt": "A single-slot low-profile professional graphics card, rendered",
         "flip": true,
         "stats": [

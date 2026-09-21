@@ -67,7 +67,7 @@ export default {
             "bleed": true,
             "title": "Compact design",
             "subtitle": "18-litre micro tower",
-            "image": "/images/mt/chassis-card.webp",
+            "image": "/images/mt/chassis-pro.webp",
             "alt": "The Latios MT tower at three-quarters on a lit backdrop, with its height and width marked"
           },
           {
@@ -122,7 +122,7 @@ export default {
             "bleed": true,
             "title": "Processor",
             "subtitle": "Core i7-14700 to i3-14100",
-            "image": "/images/components/cpu-intel.webp",
+            "image": "/images/parts/cpu-lga1700.webp",
             "alt": "A processor seated in its socket"
           },
           {
@@ -143,7 +143,7 @@ export default {
         "heading": "Four processors,",
         "headingAccent": "one service procedure.",
         "body": "An i3 for the counter, an i5 for the desk, an i7 for the seat that renders. Each one drops into the same socket on the same H610 board, so a fleet specified across all four is still one image to deploy and one panel to open.",
-        "image": "/images/components/cpu-intel.webp",
+        "image": "/images/parts/cpu-lga1700.webp",
         "alt": "An Intel processor seated in an LGA socket",
         "stats": [
           [

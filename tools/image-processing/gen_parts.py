@@ -121,6 +121,61 @@ T2I = {
         "display output openings, and the gold PCIe edge connector running along "
         "the bottom. Plain unmarked shroud with no text and no logo. " + PART),
 
+    # Core Ultra is NOT the same package as a 14th-gen Core, and seven pages
+    # were sharing one picture across both. LGA1851 is visibly different: a
+    # squarer heat spreader with a stepped shoulder, in a taller retention
+    # frame. Showing a 1700-series chip on a Core Ultra page is the same class
+    # of error as showing an LGA socket on a Ryzen page.
+    "cpu-core-ultra": (LAND,
+        "a single modern Intel desktop processor for the LGA1851 socket, seen at "
+        "a three-quarter angle from slightly above, seated in its open socket "
+        "frame on a dark motherboard. A rectangular metal integrated heat "
+        "spreader, slightly longer than it is wide, with a stepped shoulder on "
+        "each of its four sides and a chamfered edge, held under a hinged metal "
+        "retention frame. The board around it carries fine surface-mount "
+        "components and a row of capacitors. Blank heat spreader with no writing "
+        "and no marking of any kind. " + PART),
+
+    # The SFF is eight litres and takes a LOW-PROFILE card. gpu-workstation has
+    # a full-height bracket, and it was on three SFF pages -- a card that would
+    # not close the lid.
+    "gpu-lowprofile": (WIDE,
+        "a single low-profile half-height professional graphics card, a short "
+        "single-slot PCI Express video card of the kind fitted to slim desktops, "
+        "seen from a low three-quarter angle with the bracket end nearest the "
+        "camera. A short matte black shroud barely longer than the circuit board "
+        "under it, with one small round blower fan set into it, a SHORT "
+        "half-height metal bracket cut with two display output openings, and the "
+        "gold PCIe edge connector along the bottom. The card is small and stubby, "
+        "much shorter than a full-size graphics card. Plain unmarked shroud with "
+        "no text and no logo. " + PART),
+
+    # components/cpu-intel.webp is a stock photograph on a bright red
+    # motherboard. Beside plates staged on a neutral graphite ground it is the
+    # loudest thing on five pages, and it is the wrong aesthetic rather than the
+    # wrong part. This is the same package in the same studio as everything else.
+    "cpu-lga1700": (LAND,
+        "a single modern Intel desktop processor for the LGA1700 socket, seen at "
+        "a three-quarter angle from slightly above, seated in its open socket "
+        "frame on a dark motherboard. A rectangular metal integrated heat "
+        "spreader, noticeably longer than it is wide, with a narrow raised lip "
+        "along each long side and a chamfered edge, held under a hinged metal "
+        "retention frame. The board around it carries fine surface-mount "
+        "components and a row of capacitors. Blank heat spreader with no writing "
+        "and no marking of any kind. " + PART),
+
+    # AM5 is not AM4. The AM4 pages use a real photograph of a Ryzen, which is
+    # correct for them; the two AM5 pages were borrowing it, and an AM5 heat
+    # spreader is the distinctive one with four cut-outs around its edge.
+    "cpu-ryzen-am5": (LAND,
+        "a single modern AMD Ryzen desktop processor for the AM5 socket, seen at "
+        "a three-quarter angle from slightly above, seated in its open socket "
+        "frame on a dark motherboard. A square metal integrated heat spreader "
+        "with a large rectangular notch cut out of each of its four corners, "
+        "leaving a cross-shaped centre, held under a hinged metal retention "
+        "frame. The board around it carries fine surface-mount components. Blank "
+        "heat spreader with no writing and no marking of any kind. " + PART),
+
     "m2-2280": (WIDE,
         "a single M.2 2280 NVMe solid state drive, the small bare circuit board "
         "type that screws flat onto a motherboard, lying flat and seen at a "
@@ -157,6 +212,18 @@ JOB_NEG = {
     # the package lettering softened -- two repairs, one of them large, on a part
     # that is one line in a spec table. It stays out until a photograph exists,
     # the same call the AM4 storage plate records.
+    "cpu-core-ultra": ", two processors, bare die, exposed silicon, pins "
+                       "visible, printed model number, lettering, brand logo, "
+                       "engraved text on the heat spreader",
+    "gpu-lowprofile": ", full height bracket, tall bracket, long card, "
+                      "two fans, axial fans, open shroud, rgb lighting, "
+                      "printed label, brand logo, lettering",
+    "cpu-lga1700": ", two processors, bare die, exposed silicon, pins "
+                   "visible, red motherboard, printed model number, "
+                   "lettering, brand logo, engraved text",
+    "cpu-ryzen-am5": ", two processors, bare die, pins visible, pin grid "
+                     "array, square unbroken heat spreader, printed model "
+                     "number, lettering, brand logo, engraved text",
     "m2-2280": ", memory module, dimm, ram stick, heat spreader, contacts along "
                "a long side, pads down the length of the board, gold contacts at "
                "both ends, metal case, enclosure, lid, two objects, square board, "

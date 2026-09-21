@@ -60,7 +60,7 @@ export default {
             "bleed": true,
             "title": "Compact design",
             "subtitle": "18-litre micro tower",
-            "image": "/images/mt/chassis-card.webp",
+            "image": "/images/mt/chassis-am5.webp",
             "alt": "The Latios MT tower at three-quarters on a lit backdrop, with its height and width marked",
             "dims": {
               "box": [
@@ -68,14 +68,14 @@ export default {
                 1400
               ],
               "h": {
-                "x": 14.9,
-                "y1": 22.0,
+                "x": 25.4,
+                "y1": 20.0,
                 "y2": 80.0,
                 "label": "354 mm"
               },
               "d": {
-                "x1": 19.4,
-                "x2": 80.4,
+                "x1": 29.9,
+                "x2": 70.0,
                 "y": 82.0,
                 "label": "166 mm"
               },
@@ -134,7 +134,7 @@ export default {
             "bleed": true,
             "title": "Processor",
             "subtitle": "AMD Ryzen 7 8700G with Ryzen AI",
-            "image": "/images/components/cpu-amd.webp",
+            "image": "/images/parts/cpu-ryzen-am5.webp",
             "alt": "A processor seated in its socket"
           },
           {
@@ -155,7 +155,7 @@ export default {
         "heading": "Eight cores, and an NPU",
         "headingAccent": "on the same die.",
         "body": "Zen 4 cores, Radeon 700M graphics and a Ryzen AI NPU in one package on Socket AM5, on the AMD Pro 600 chipset. The inference work that would otherwise need a card runs on silicon the machine already has.",
-        "image": "/images/components/cpu-amd.webp",
+        "image": "/images/parts/cpu-ryzen-am5.webp",
         "alt": "An AMD Ryzen processor seated in an AM5 socket",
         "stats": [
           [

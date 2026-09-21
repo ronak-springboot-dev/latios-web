@@ -70,7 +70,7 @@ export default {
             "bleed": true,
             "title": "Compact design",
             "subtitle": "18-litre micro tower",
-            "image": "/images/mt/chassis-card.webp",
+            "image": "/images/mt/chassis-ddr4.webp",
             "alt": "The Latios MT tower at three-quarters on a lit backdrop, with its height and width marked",
             "dims": {
               "box": [
@@ -78,14 +78,14 @@ export default {
                 1400
               ],
               "h": {
-                "x": 14.9,
-                "y1": 22.0,
+                "x": 10.2,
+                "y1": 20.0,
                 "y2": 80.0,
                 "label": "354 mm"
               },
               "d": {
-                "x1": 19.4,
-                "x2": 80.4,
+                "x1": 14.7,
+                "x2": 85.3,
                 "y": 82.0,
                 "label": "166 mm"
               },
@@ -144,7 +144,7 @@ export default {
             "bleed": true,
             "title": "Processor",
             "subtitle": "Up to Intel Core i9-14900",
-            "image": "/images/components/cpu-intel.webp",
+            "image": "/images/parts/cpu-lga1700.webp",
             "alt": "A processor seated in its socket"
           },
           {
@@ -165,7 +165,7 @@ export default {
         "heading": "Twenty-four cores,",
         "headingAccent": "on the cheaper bus.",
         "body": "Eight performance cores for the thread someone is waiting on, sixteen efficient ones for everything behind it. The same processor line as the DDR5 build, on a memory bus that costs less — which is the whole argument for this configuration.",
-        "image": "/images/components/cpu-intel.webp",
+        "image": "/images/parts/cpu-lga1700.webp",
         "alt": "An Intel processor seated in an LGA socket",
         "stats": [
           [

@@ -66,7 +66,7 @@ export default {
             "bleed": true,
             "title": "Compact design",
             "subtitle": "8-litre slim desktop",
-            "image": "/images/sff/chassis-card.webp",
+            "image": "/images/sff/chassis-h810.webp",
             "alt": "The Latios SFF at three-quarters on a lit backdrop, with its height and width marked",
             "dims": {
               "box": [
@@ -74,14 +74,14 @@ export default {
                 1400
               ],
               "h": {
-                "x": 23.5,
-                "y1": 40.0,
+                "x": 19.6,
+                "y1": 34.0,
                 "y2": 80.0,
                 "label": "330 mm"
               },
               "d": {
-                "x1": 28.0,
-                "x2": 71.9,
+                "x1": 24.1,
+                "x2": 75.8,
                 "y": 82.0,
                 "label": "296 mm"
               },
@@ -135,7 +135,7 @@ export default {
             "bleed": true,
             "title": "Processor",
             "subtitle": "Up to Intel Core Ultra 9 285",
-            "image": "/images/components/cpu-intel.webp",
+            "image": "/images/parts/cpu-core-ultra.webp",
             "alt": "A processor seated in its socket"
           },
           {
@@ -145,7 +145,7 @@ export default {
             "grow": true,
             "title": "Graphics",
             "subtitle": "Up to NVIDIA RTX A4000",
-            "image": "/images/parts/gpu-workstation.webp",
+            "image": "/images/parts/gpu-lowprofile.webp",
             "alt": "A desktop graphics card, rendered"
           }
         ]
@@ -156,7 +156,7 @@ export default {
         "heading": "An NPU on the package,",
         "headingAccent": "not in the slot.",
         "body": "Core Ultra 9 285 down to Ultra 5 225, each with an NPU alongside the performance and efficient cores. The inference work that would otherwise need a card runs on silicon the machine already has — which matters more in eight litres than in eighteen.",
-        "image": "/images/components/cpu-intel.webp",
+        "image": "/images/parts/cpu-core-ultra.webp",
         "alt": "An Intel processor seated in an LGA socket",
         "stats": [
           [
@@ -229,7 +229,7 @@ export default {
         "heading": "Integrated first,",
         "headingAccent": "discrete if needed.",
         "body": "Intel graphics cover the displays most desks ask for. Where a seat needs certified drivers, the chassis takes a low-profile professional card and the TFX supply has a 500W option for it.",
-        "image": "/images/parts/gpu-workstation.webp",
+        "image": "/images/parts/gpu-lowprofile.webp",
         "alt": "A single-slot low-profile professional graphics card, rendered",
         "flip": true,
         "stats": [

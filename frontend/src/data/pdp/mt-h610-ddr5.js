@@ -59,7 +59,7 @@ export default {
         {
           "col": 1, "size": "tall", "bleed": true,
           "title": "Compact design", "subtitle": "18-litre micro tower",
-          "image": "/images/mt/chassis-card.webp",
+          "image": "/images/mt/chassis-ddr5.webp",
           "alt": "The Latios MT tower at three-quarters on a lit backdrop, with its height and width marked",
           "dims": {
             "box": [1000, 1400],
@@ -98,7 +98,7 @@ export default {
         {
           "col": 3, "size": "half", "bleed": true,
           "title": "Processor", "subtitle": "Up to Intel Core i9-14900",
-          "image": "/images/components/cpu-intel.webp",
+          "image": "/images/parts/cpu-lga1700.webp",
           "alt": "An Intel processor seated in an LGA socket"
         },
         {
@@ -115,7 +115,7 @@ export default {
       "heading": "Twenty-four cores,",
       "headingAccent": "two kinds of them.",
       "body": "Eight performance cores for the thread that the operator is waiting on, sixteen efficient ones for everything running behind it. The line runs down to an i3 for kiosks and counters, on the same socket and the same board.",
-      "image": "/images/components/cpu-intel.webp",
+      "image": "/images/parts/cpu-lga1700.webp",
       "alt": "An Intel processor seated in an LGA socket",
       "stats": [
         ["8", "", "Performance cores"],

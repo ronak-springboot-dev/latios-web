@@ -64,6 +64,12 @@ JOBS = {
     "ddr5-pair":       dict(height=0.84, floor=0.88),
     "ddr5-quad":       dict(height=0.80, floor=0.88),
     "gpu-workstation": dict(height=0.66, floor=0.84),
+    "cpu-core-ultra":  dict(height=0.62, floor=0.82),
+    "cpu-lga1700":     dict(height=0.62, floor=0.82),
+    "cpu-ryzen-am5":   dict(height=0.62, floor=0.82),
+    # A low-profile card is short and stubby, so a height fraction tuned for a
+    # full-length card leaves it lost in the frame.
+    "gpu-lowprofile":  dict(height=0.50, floor=0.82),
     # m2-2280 is rendered but NOT staged: it came back with contacts on both
     # short ends. gen_parts.py records why a sixth roll is not obviously the
     # answer. Re-enable when a render passes the gate.

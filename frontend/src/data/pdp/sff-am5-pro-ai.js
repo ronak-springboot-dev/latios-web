@@ -70,7 +70,7 @@ export default {
             "bleed": true,
             "title": "Compact design",
             "subtitle": "8-litre slim desktop",
-            "image": "/images/sff/chassis-card.webp",
+            "image": "/images/sff/chassis-am5.webp",
             "alt": "The Latios SFF at three-quarters on a lit backdrop, with its height and width marked",
             "dims": {
               "box": [
@@ -78,14 +78,14 @@ export default {
                 1400
               ],
               "h": {
-                "x": 23.5,
-                "y1": 40.0,
+                "x": 32.2,
+                "y1": 18.0,
                 "y2": 80.0,
                 "label": "330 mm"
               },
               "d": {
-                "x1": 28.0,
-                "x2": 71.9,
+                "x1": 36.7,
+                "x2": 63.2,
                 "y": 82.0,
                 "label": "296 mm"
               },
@@ -139,7 +139,7 @@ export default {
             "bleed": true,
             "title": "Processor",
             "subtitle": "Ryzen 7 8700G to Ryzen 3 8300G",
-            "image": "/images/components/cpu-amd.webp",
+            "image": "/images/parts/cpu-ryzen-am5.webp",
             "alt": "A processor seated in its socket"
           },
           {
@@ -149,7 +149,7 @@ export default {
             "grow": true,
             "title": "Graphics",
             "subtitle": "Up to 16GB AMD Radeon RX",
-            "image": "/images/parts/gpu-radeon.webp",
+            "image": "/images/parts/gpu-lowprofile.webp",
             "alt": "A desktop graphics card, rendered"
           }
         ]
@@ -160,7 +160,7 @@ export default {
         "heading": "Four processors,",
         "headingAccent": "one socket.",
         "body": "Ryzen 7 8700G, Ryzen 5 8600G and 8500G, Ryzen 3 8300G — all on Socket AM5 and the AMD Pro 600 chipset, all with Radeon graphics on the die. A fleet can mix them and stay one image and one panel.",
-        "image": "/images/components/cpu-amd.webp",
+        "image": "/images/parts/cpu-ryzen-am5.webp",
         "alt": "An AMD Ryzen processor seated in an AM5 socket",
         "stats": [
           [
@@ -211,7 +211,7 @@ export default {
         "heading": "Radeon on the die,",
         "headingAccent": "and room beside it.",
         "body": "Integrated Radeon graphics cover most desks without a card at all. Where one is wanted, the chassis takes a low-profile Radeon RX — which is why the side of this machine is a vent wall rather than a vent hole.",
-        "image": "/images/parts/gpu-radeon.webp",
+        "image": "/images/parts/gpu-lowprofile.webp",
         "alt": "A desktop Radeon graphics card, rendered",
         "stats": [
           [

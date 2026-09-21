@@ -65,7 +65,7 @@ export default {
             "bleed": true,
             "title": "Compact design",
             "subtitle": "18-litre micro tower",
-            "image": "/images/mt/chassis-card.webp",
+            "image": "/images/mt/chassis-q670.webp",
             "alt": "The Latios MT tower at three-quarters on a lit backdrop, with its height and width marked",
             "dims": {
               "box": [
@@ -73,15 +73,15 @@ export default {
                 1400
               ],
               "h": {
-                "x": 14.9,
-                "y1": 22,
-                "y2": 80,
+                "x": 20.1,
+                "y1": 22.0,
+                "y2": 80.0,
                 "label": "354 mm"
               },
               "d": {
-                "x1": 19.4,
-                "x2": 80.4,
-                "y": 82,
+                "x1": 24.6,
+                "x2": 75.4,
+                "y": 82.0,
                 "label": "166 mm"
               },
               "note": "Depth 312 mm · 7.59 kg"
@@ -139,7 +139,7 @@ export default {
             "bleed": true,
             "title": "Processor",
             "subtitle": "Up to Intel Core i9-14900",
-            "image": "/images/components/cpu-intel.webp",
+            "image": "/images/parts/cpu-lga1700.webp",
             "alt": "A processor seated in its socket"
           },
           {
