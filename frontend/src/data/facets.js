@@ -139,7 +139,7 @@ export const getFacetGroups = (models, active, { show, bucketScope = null }) => 
     cpu: () => ({
       id: "cpu",
       label: "Processor",
-      options: ["amd", "intel", "xeon"].map((v) => ({
+      options: ["amd", "epyc", "intel", "xeon"].map((v) => ({
         id: v,
         label: VENDOR_LABELS[v],
         n: countFor("cpu", v),

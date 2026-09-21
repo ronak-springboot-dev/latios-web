@@ -78,7 +78,11 @@ export const TAXONOMY = [
         key: "enterprise",
         name: "Enterprise",
         children: [
-          { key: "server", name: "Server", soon: true },
+          {
+            key: "server",
+            name: "Server",
+            models: ["g4201-he", "cx270-s5062", "cx271-s3066", "cx271-s4056", "cs280-s3065", "g4101", "cx171-s4056", "cx171-s3066", "cx170-s5062"],
+          },
           {
             key: "workstation",
             name: "Workstation",

@@ -241,6 +241,65 @@ const THEMES = {
     kicker: "No bezels at all",
     shape: "sharp",
   },
+
+  // --- Server barebones ----------------------------------------------------
+  // Two accents rather than nine: these are one range in one rack, and a
+  // per-SKU colour would read as nine unrelated products. Steel for the
+  // Xeon platforms, a warmer graphite-red for the EPYC ones.
+  "g4201-he": {
+    accent: "#4d7cc7", accentSoft: "#8fb2e6",
+    density: "normal", surface: "#09090a",
+    kicker: "4U rack barebones",
+    shape: "sharp",
+  },
+  "cx270-s5062": {
+    accent: "#4d7cc7", accentSoft: "#8fb2e6",
+    density: "normal", surface: "#09090a",
+    kicker: "2U rack barebones",
+    shape: "sharp",
+  },
+  "cx271-s3066": {
+    accent: "#4d7cc7", accentSoft: "#8fb2e6",
+    density: "normal", surface: "#09090a",
+    kicker: "2U rack barebones",
+    shape: "sharp",
+  },
+  "cx271-s4056": {
+    accent: "#c2603f", accentSoft: "#e3a086",
+    density: "normal", surface: "#09090a",
+    kicker: "2U rack barebones",
+    shape: "sharp",
+  },
+  "cs280-s3065": {
+    accent: "#4d7cc7", accentSoft: "#8fb2e6",
+    density: "normal", surface: "#09090a",
+    kicker: "2U rack barebones",
+    shape: "sharp",
+  },
+  "g4101": {
+    accent: "#c2603f", accentSoft: "#e3a086",
+    density: "normal", surface: "#09090a",
+    kicker: "4U rack barebones",
+    shape: "sharp",
+  },
+  "cx171-s4056": {
+    accent: "#c2603f", accentSoft: "#e3a086",
+    density: "normal", surface: "#09090a",
+    kicker: "1U rack barebones",
+    shape: "sharp",
+  },
+  "cx171-s3066": {
+    accent: "#4d7cc7", accentSoft: "#8fb2e6",
+    density: "normal", surface: "#09090a",
+    kicker: "1U rack barebones",
+    shape: "sharp",
+  },
+  "cx170-s5062": {
+    accent: "#4d7cc7", accentSoft: "#8fb2e6",
+    density: "normal", surface: "#09090a",
+    kicker: "1U rack barebones",
+    shape: "sharp",
+  },
 };
 
 const FALLBACK = {

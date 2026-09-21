@@ -1038,6 +1038,512 @@ export const DESKTOP_FAMILIES = [
   },
 ];
 
+
+/**
+ * Server barebones.
+ *
+ * These are rack platforms Latios supplies on its MSI partnership, and the
+ * specification here is the partner's published one, transcribed rather than
+ * summarised -- slot counts, channel counts and DIMM populations are the
+ * figures a datacentre buyer specifies against, so rounding them would make
+ * the page useless.
+ *
+ * The photography is the partner's product render. Unlike dp180-* and dp80-*,
+ * which debadge.py patches, these carry no MSI mark to remove: a barebones
+ * chassis ships unbranded, and the only red plaques on the lids are service
+ * warning labels. Checked on every one of the nine before they were installed.
+ *
+ * No prices, because nothing on this site has one -- the range is enquiry-led
+ * and the spec table ends in a request to quote.
+ */
+const SERVER_FAMILY = {
+  kicker: "Server",
+  title: "Rack barebones",
+  blurb:
+    "Nine barebones platforms from one rack unit to four, single and dual socket, Intel Xeon 6 and AMD EPYC — specified to the slot.",
+  image: "/images/servers/cx270-s5062.webp",
+  models: [
+      {
+        slug: "g4201-he",
+        name: "Latios G4201-HE",
+        tag: "4U · Dual Xeon · 32 DIMM",
+        image: "/images/servers/g4201-he.webp",
+        gallery: ["/images/servers/g4201-he.webp"],
+        heroImage: "/images/servers/g4201-he.webp",
+        chips: ["4U", "Dual Intel Xeon Scalable", "32× DDR5 RDIMM"],
+        stats: [
+          ["9", "PCIe 5.0 x16"],
+          ["32", "DIMM slots"],
+          ["12", "Hot-swap bays"],
+        ],
+        intro:
+          "A four-rack-unit dual-socket platform with nine PCIe 5.0 x16 slots — built for accelerator density rather than drive count.",
+        highlights: [
+          "Dual Intel Xeon Scalable",
+          "32× DDR5 RDIMM, up to 5600MT/s",
+          "(9) PCIe 5.0 x16 slots",
+          "(12) Hot-swap 3.5\"/2.5\" drive bays support (2) NVMe + (10) SATA",
+        ],
+        features: [],
+        specGroups: [
+          {
+            group: "Processor",
+            items: [
+              ["CPU options", "Dual 4th/5th Generation Intel® Xeon® Scalable Processors"],
+              ["Form factor", "4U rack"],
+            ],
+          },
+          {
+            group: "Memory & Storage",
+            items: [
+              ["Memory", "(32) DDR5 DIMM Slots, 2DPC, up to 5600MT/s, RDIMM"],
+              ["Storage", "(12) Hot-swap 3.5\"/2.5\" drive bays support (2) NVMe + (10) SATA"],
+            ],
+          },
+          {
+            group: "Expansion & Networking",
+            items: [
+              ["Expansion", "(9) PCIe 5.0 x16 slots · (1) PCIe 4.0 x16 slot (with x8 signal)"],
+              ["Network", "(1) 1000Base-T Ethernet port (Intel® I210AT)"],
+            ],
+          },
+          {
+            group: "Management",
+            items: [
+              ["Management", "BMC ASPEED AST2600 with IPMI & DMTF Redfish Support"],
+              ["Configurations", "G4201RAS10U2-HE"],
+            ],
+          },
+        ],
+      },
+      {
+        slug: "cx270-s5062",
+        name: "Latios CX270-S5062",
+        tag: "2U · Dual Xeon 6 · DC-MHS",
+        image: "/images/servers/cx270-s5062.webp",
+        gallery: ["/images/servers/cx270-s5062.webp"],
+        heroImage: "/images/servers/cx270-s5062.webp",
+        chips: ["2U", "Dual Intel Xeon 6500/6700", "32× DDR5 RDIMM"],
+        stats: [
+          ["2", "Xeon 6 sockets"],
+          ["6400", "MT/s DDR5"],
+          ["24", "NVMe bays"],
+        ],
+        intro:
+          "Dual Xeon 6 on the DC-MHS architecture, with up to twenty-four front NVMe bays and two rear E1.S — storage and compute in two units.",
+        highlights: [
+          "Dual Intel Xeon 6500/6700",
+          "32× DDR5 RDIMM, up to 6400MT/s",
+          "Up to (6) PCIe 5.0 x16 expansion slots",
+          "(8) or (24) Front hot-swap 2.5\" U.2 PCIe 5.0 x4 NVMe bays",
+        ],
+        features: [],
+        specGroups: [
+          {
+            group: "Processor",
+            items: [
+              ["CPU options", "Dual Intel® Xeon® 6500/6700 series processors, TDP up to 350W"],
+              ["Form factor", "2U rack"],
+            ],
+          },
+          {
+            group: "Memory & Storage",
+            items: [
+              ["Memory", "(32) DDR5 RDIMM, 8 channels per CPU (2DPC), up to 6400MT/s (1DPC) and 6000MT/s (2DPC)"],
+              ["Storage", "(8) or (24) Front hot-swap 2.5\" U.2 PCIe 5.0 x4 NVMe bays · (2) Rear hot-swap E1.S · (2) M.2 22110 PCIe 5.0"],
+            ],
+          },
+          {
+            group: "Expansion & Networking",
+            items: [
+              ["Expansion", "Up to (6) PCIe 5.0 x16 expansion slots · (1) PCIe 5.0 x16 OCP3 NIC Mezzanine slot (NCSI supported)"],
+              ["Network", "(1) 1000Base-T Dedicated Server Management port"],
+            ],
+          },
+          {
+            group: "Management",
+            items: [
+              ["Management", "ASPEED AST2600 with IPMI 2.0 & DMTF Redfish · Dual BIOS & BMC"],
+              ["Configurations", "S5062X270RAU24 · S5062X270RAU8-HE · S5062X270RAU8 · S5062X270RAS12-HE"],
+            ],
+          },
+        ],
+      },
+      {
+        slug: "cx271-s3066",
+        name: "Latios CX271-S3066",
+        tag: "2U · Xeon 6 · 16 DIMM",
+        image: "/images/servers/cx271-s3066.webp",
+        gallery: ["/images/servers/cx271-s3066.webp"],
+        heroImage: "/images/servers/cx271-s3066.webp",
+        chips: ["2U", "Single Intel Xeon 6500/6700", "16× DDR5 RDIMM"],
+        stats: [
+          ["16", "DIMM slots"],
+          ["24", "NVMe bays"],
+          ["2", "OCP3 NIC slots"],
+        ],
+        intro:
+          "A single-socket Xeon 6 in two units, with two OCP3 mezzanine slots — the networking-forward member of the range.",
+        highlights: [
+          "Single Intel Xeon 6500/6700",
+          "16× DDR5 RDIMM, up to 6400MT/s",
+          "Up to (3) PCIe 5.0 x16 expansion slots",
+          "(8) or (24) Front hot-swap 2.5\" U.2 PCIe 5.0 x4 NVMe bays",
+        ],
+        features: [],
+        specGroups: [
+          {
+            group: "Processor",
+            items: [
+              ["CPU options", "Single Intel® Xeon® 6500/6700 series processor, TDP up to 350W"],
+              ["Form factor", "2U rack"],
+            ],
+          },
+          {
+            group: "Memory & Storage",
+            items: [
+              ["Memory", "(16) DDR5 RDIMM, 8 channels (2DPC), up to 6400MT/s (1DPC) and 6000MT/s (2DPC)"],
+              ["Storage", "(8) or (24) Front hot-swap 2.5\" U.2 PCIe 5.0 x4 NVMe bays · (2) M.2 22110 PCIe 5.0"],
+            ],
+          },
+          {
+            group: "Expansion & Networking",
+            items: [
+              ["Expansion", "Up to (3) PCIe 5.0 x16 expansion slots · (2) PCIe 5.0 x16 OCP3 NIC Mezzanine slots (NCSI supported)"],
+              ["Network", "(1) 1000Base-T Dedicated Server Management port"],
+            ],
+          },
+          {
+            group: "Management",
+            items: [
+              ["Management", "ASPEED AST2600 with IPMI 2.0 & DMTF Redfish · Dual BIOS & BMC"],
+              ["Configurations", "S3066X271RAU8 · S3066X271RAU24 · S3066X271RAU8-HE"],
+            ],
+          },
+        ],
+      },
+      {
+        slug: "cx271-s4056",
+        name: "Latios CX271-S4056",
+        tag: "2U · EPYC · 12 channels",
+        image: "/images/servers/cx271-s4056.webp",
+        gallery: ["/images/servers/cx271-s4056.webp"],
+        heroImage: "/images/servers/cx271-s4056.webp",
+        chips: ["2U", "Single AMD EPYC 9004/9005", "24× DDR5 RDIMM"],
+        stats: [
+          ["12", "Memory channels"],
+          ["500", "W CPU TDP"],
+          ["24", "NVMe bays"],
+        ],
+        intro:
+          "Twelve memory channels on one EPYC socket, at up to 500W — the bandwidth-per-socket answer in the range.",
+        highlights: [
+          "Single AMD EPYC 9004/9005",
+          "24× DDR5 RDIMM, 12 channels",
+          "Up to (2) PCIe 5.0 x16 expansion slots",
+          "(8) or (24) Front hot-swap 2.5\" U.2 PCIe 5.0 x4 NVMe bays",
+        ],
+        features: [],
+        specGroups: [
+          {
+            group: "Processor",
+            items: [
+              ["CPU options", "Single AMD EPYC™ 9004/9005 Series processor, TDP up to 500W"],
+              ["Form factor", "2U rack"],
+            ],
+          },
+          {
+            group: "Memory & Storage",
+            items: [
+              ["Memory", "(24) DDR5 RDIMM, 12 channels (2DPC), up to 5200MT/s"],
+              ["Storage", "(8) or (24) Front hot-swap 2.5\" U.2 PCIe 5.0 x4 NVMe bays · (2) M.2 22110 PCIe 3.0"],
+            ],
+          },
+          {
+            group: "Expansion & Networking",
+            items: [
+              ["Expansion", "Up to (2) PCIe 5.0 x16 expansion slots"],
+              ["Network", "(1) 1000Base-T Dedicated Server Management port"],
+            ],
+          },
+          {
+            group: "Management",
+            items: [
+              ["Management", "ASPEED AST2600 with IPMI 2.0 & DMTF Redfish · Dual BIOS & BMC"],
+              ["Configurations", "S4056X271RAU8 · S4056X271RAU24 · S4056X271RAU8-HE"],
+            ],
+          },
+        ],
+      },
+      {
+        slug: "cs280-s3065",
+        name: "Latios CS280-S3065",
+        tag: "2U · 24× 3.5″ · Xeon 6",
+        image: "/images/servers/cs280-s3065.webp",
+        gallery: ["/images/servers/cs280-s3065.webp"],
+        heroImage: "/images/servers/cs280-s3065.webp",
+        chips: ["2U", "Single Intel Xeon 6500/6700", "8× DDR5 RDIMM"],
+        stats: [
+          ["24", "× 3.5″ bays"],
+          ["25", "G SFP28 ×2"],
+          ["8", "DIMM slots"],
+        ],
+        intro:
+          "Twenty-four three-and-a-half-inch bays and two 25G SFP28 ports on board — the storage node of the range rather than a compute one.",
+        highlights: [
+          "Single Intel Xeon 6500/6700",
+          "8× DDR5 RDIMM, up to 6400MT/s",
+          "(2) PCIe 5.0 x16 FHHL slots",
+          "(24) Hot-swap 3.5\" SATA/SAS bays",
+        ],
+        features: [],
+        specGroups: [
+          {
+            group: "Processor",
+            items: [
+              ["CPU options", "Single Intel® Xeon® 6500/6700 series processor, TDP up to 350W"],
+              ["Form factor", "2U rack"],
+            ],
+          },
+          {
+            group: "Memory & Storage",
+            items: [
+              ["Memory", "(8) DDR5 RDIMM, 8 channels (1DPC), up to 6400MT/s"],
+              ["Storage", "(24) Hot-swap 3.5\" SATA/SAS bays · (2) Hot-swap 2.5\" U.2 NVMe · (2) M.2 22110 PCIe 5.0"],
+            ],
+          },
+          {
+            group: "Expansion & Networking",
+            items: [
+              ["Expansion", "(2) PCIe 5.0 x16 FHHL slots · (1) PCIe 5.0 x16 OCP3 NIC Mezzanine slot (NCSI supported)"],
+              ["Network", "(2) 25G SFP28 and (2) 1000Base-T Ethernet ports on board"],
+            ],
+          },
+          {
+            group: "Management",
+            items: [
+              ["Management", "ASPEED AST2600 with IPMI 2.0 & DMTF Redfish"],
+              ["Configurations", "S3065S280RAS24U2"],
+            ],
+          },
+        ],
+      },
+      {
+        slug: "g4101",
+        name: "Latios G4101",
+        tag: "4U · EPYC SP5 · Liquid option",
+        image: "/images/servers/g4101.webp",
+        gallery: ["/images/servers/g4101.webp"],
+        heroImage: "/images/servers/g4101.webp",
+        chips: ["4U", "Single AMD EPYC SP5", "12× DDR5 RDIMM"],
+        stats: [
+          ["4", "PCIe 5.0 x16"],
+          ["12", "DDR5 slots"],
+          ["500", "W SP5 TDP"],
+        ],
+        intro:
+          "A four-unit EPYC platform offered with a closed-loop liquid cooling module — the only member of the range that does not have to be air-cooled.",
+        highlights: [
+          "Single AMD EPYC SP5",
+          "12× DDR5 RDIMM, up to 6400MT/s",
+          "(4) PCIe 5.0 x16 slots",
+          "(12) Hot-swap 2.5\" U.2 PCIe 4.0 NVMe bays",
+        ],
+        features: [],
+        specGroups: [
+          {
+            group: "Processor",
+            items: [
+              ["CPU options", "Single Socket SP5, supports AMD EPYC™ 9005/9004 series processors"],
+              ["Form factor", "4U rack"],
+            ],
+          },
+          {
+            group: "Memory & Storage",
+            items: [
+              ["Memory", "(12) DDR5 DIMM Slots, 1DPC, up to 6400MT/s, RDIMM/RDIMM-3DS"],
+              ["Storage", "(12) Hot-swap 2.5\" U.2 PCIe 4.0 NVMe bays"],
+            ],
+          },
+          {
+            group: "Expansion & Networking",
+            items: [
+              ["Expansion", "(4) PCIe 5.0 x16 slots · (2) PCIe 4.0 x16 slots (x8 signal)"],
+              ["Network", "(1) 1000Base-T Dedicated Server Management Port"],
+            ],
+          },
+          {
+            group: "Management",
+            items: [
+              ["Management", "ASPEED AST2600 with IPMI & DMTF Redfish · Dual BMC Flash"],
+              ["Cooling", "Closed-loop liquid cooling module or air cooling module for CPU"],
+              ["Configurations", "G4101-01 · G4101-03 · G4101-04 · G4101-05"],
+            ],
+          },
+        ],
+      },
+      {
+        slug: "cx171-s4056",
+        name: "Latios CX171-S4056",
+        tag: "1U · EPYC · 12 NVMe",
+        image: "/images/servers/cx171-s4056.webp",
+        gallery: ["/images/servers/cx171-s4056.webp"],
+        heroImage: "/images/servers/cx171-s4056.webp",
+        chips: ["1U", "Single AMD EPYC 9004/9005", "24× DDR5 RDIMM"],
+        stats: [
+          ["24", "DIMM slots"],
+          ["12", "NVMe bays"],
+          ["1", "Rack unit"],
+        ],
+        intro:
+          "Twelve memory channels and twelve NVMe bays in a single rack unit — EPYC density where the rack is the constraint.",
+        highlights: [
+          "Single AMD EPYC 9004/9005",
+          "24× DDR5 RDIMM, 12 channels",
+          "(2) PCIe 5.0 x16 expansion slots",
+          "(12) Front hot-swap 2.5\" U.2 PCIe 5.0 x4 NVMe bays",
+        ],
+        features: [],
+        specGroups: [
+          {
+            group: "Processor",
+            items: [
+              ["CPU options", "Single AMD EPYC™ 9004/9005 Series processor, TDP up to 500W"],
+              ["Form factor", "1U rack"],
+            ],
+          },
+          {
+            group: "Memory & Storage",
+            items: [
+              ["Memory", "(24) DDR5 RDIMM, 12 channels (2DPC), up to 5200MT/s"],
+              ["Storage", "(12) Front hot-swap 2.5\" U.2 PCIe 5.0 x4 NVMe bays · (2) M.2 22110 PCIe 3.0"],
+            ],
+          },
+          {
+            group: "Expansion & Networking",
+            items: [
+              ["Expansion", "(2) PCIe 5.0 x16 expansion slots · (2) PCIe 5.0 x16 OCP3 NIC Mezzanine slots (NCSI supported)"],
+              ["Network", "(1) 1000Base-T Dedicated Server Management port"],
+            ],
+          },
+          {
+            group: "Management",
+            items: [
+              ["Management", "ASPEED AST2600 with IPMI 2.0 & DMTF Redfish · Dual BIOS & BMC"],
+              ["Configurations", "S4056X171RAU12"],
+            ],
+          },
+        ],
+      },
+      {
+        slug: "cx171-s3066",
+        name: "Latios CX171-S3066",
+        tag: "1U · Xeon 6 · 12 NVMe",
+        image: "/images/servers/cx171-s3066.webp",
+        gallery: ["/images/servers/cx171-s3066.webp"],
+        heroImage: "/images/servers/cx171-s3066.webp",
+        chips: ["1U", "Single Intel Xeon 6500/6700", "16× DDR5 RDIMM"],
+        stats: [
+          ["16", "DIMM slots"],
+          ["12", "NVMe bays"],
+          ["3", "PCIe 5.0 x16"],
+        ],
+        intro:
+          "A single-socket Xeon 6 in one rack unit, with three expansion slots and two OCP3 mezzanines still on the board.",
+        highlights: [
+          "Single Intel Xeon 6500/6700",
+          "16× DDR5 RDIMM, up to 6400MT/s",
+          "(3) PCIe 5.0 x16 expansion slots",
+          "(12) Front hot-swap 2.5\" U.2 PCIe 5.0 x4 NVMe bays",
+        ],
+        features: [],
+        specGroups: [
+          {
+            group: "Processor",
+            items: [
+              ["CPU options", "Single Intel® Xeon® 6500/6700 series processor, TDP up to 350W"],
+              ["Form factor", "1U rack"],
+            ],
+          },
+          {
+            group: "Memory & Storage",
+            items: [
+              ["Memory", "(16) DDR5 RDIMM, 8 channels (2DPC), up to 6400MT/s (1DPC) and 6000MT/s (2DPC)"],
+              ["Storage", "(12) Front hot-swap 2.5\" U.2 PCIe 5.0 x4 NVMe bays · (2) M.2 22110 PCIe 5.0"],
+            ],
+          },
+          {
+            group: "Expansion & Networking",
+            items: [
+              ["Expansion", "(3) PCIe 5.0 x16 expansion slots · (2) PCIe 5.0 x16 OCP3 NIC Mezzanine slots (NCSI supported)"],
+              ["Network", "(1) 1000Base-T Dedicated Server Management port"],
+            ],
+          },
+          {
+            group: "Management",
+            items: [
+              ["Management", "ASPEED AST2600 with IPMI 2.0 & DMTF Redfish · Dual BIOS & BMC"],
+              ["Configurations", "S3066X171RAU12"],
+            ],
+          },
+        ],
+      },
+      {
+        slug: "cx170-s5062",
+        name: "Latios CX170-S5062",
+        tag: "1U · Dual Xeon 6 · 32 DIMM",
+        image: "/images/servers/cx170-s5062.webp",
+        gallery: ["/images/servers/cx170-s5062.webp"],
+        heroImage: "/images/servers/cx170-s5062.webp",
+        chips: ["1U", "Dual Intel Xeon 6500/6700", "32× DDR5 RDIMM"],
+        stats: [
+          ["2", "Xeon 6 sockets"],
+          ["32", "DIMM slots"],
+          ["1", "Rack unit"],
+        ],
+        intro:
+          "Two Xeon 6 sockets and thirty-two DIMM slots in a single rack unit — the densest compute node in the range.",
+        highlights: [
+          "Dual Intel Xeon 6500/6700",
+          "32× DDR5 RDIMM, up to 6400MT/s",
+          "(2) PCIe 5.0 x16 expansion slots",
+          "(12) Front hot-swap 2.5\" U.2 NVMe bays",
+        ],
+        features: [],
+        specGroups: [
+          {
+            group: "Processor",
+            items: [
+              ["CPU options", "Dual Intel® Xeon® 6500/6700 series processors, TDP up to 350W"],
+              ["Form factor", "1U rack"],
+            ],
+          },
+          {
+            group: "Memory & Storage",
+            items: [
+              ["Memory", "(32) DDR5 RDIMM, 8 channels per CPU (2DPC), up to 6400MT/s (1DPC) and 6000MT/s (2DPC)"],
+              ["Storage", "(12) Front hot-swap 2.5\" U.2 NVMe bays · (2) Rear hot-swap E1.S · (2) M.2 22110 PCIe 5.0"],
+            ],
+          },
+          {
+            group: "Expansion & Networking",
+            items: [
+              ["Expansion", "(2) PCIe 5.0 x16 expansion slots · (1) PCIe 5.0 x16 OCP3 NIC Mezzanine slot (NCSI supported)"],
+              ["Network", "(1) 1000Base-T Dedicated Server Management port per node"],
+            ],
+          },
+          {
+            group: "Management",
+            items: [
+              ["Management", "ASPEED AST2600 with IPMI 2.0 & DMTF Redfish · Dual BIOS & BMC"],
+              ["Configurations", "S5062X170RAU12"],
+            ],
+          },
+        ],
+      },
+  ],
+};
+
 export const WORKSTATION_FAMILIES = [
   {
     kicker: "PROMAX AI Workstations",
@@ -1279,6 +1785,7 @@ export const WORKSTATION_FAMILIES = [
       },
     ],
   },
+  SERVER_FAMILY,
 ];
 
 const LAPTOP_FEATURES = [
@@ -2057,7 +2564,8 @@ export const getVendor = (m) => {
   return null;
 };
 
-export const VENDOR_LABELS = { amd: "AMD Ryzen", intel: "Intel Core", xeon: "Intel Xeon" };
+export const VENDOR_LABELS = { amd: "AMD Ryzen", epyc: "AMD EPYC",
+                               intel: "Intel Core", xeon: "Intel Xeon" };
 
 /** First spec row whose label matches, searched across all groups. */
 const specRow = (m, re) => {
@@ -2079,11 +2587,20 @@ const specRow = (m, re) => {
  * Processor row.
  */
 export const getProcessorFamily = (m) => {
-  const cpu = specRow(m, /^processors?$/i).toLowerCase();
+  // Server platforms label the row "CPU options" rather than "Processor",
+  // so both are read. Without this a rack barebones falls through to the
+  // name/tag guess and gets classified on its chassis name.
+  const cpu = (specRow(m, /^processors?$/i) ||
+               specRow(m, /^cpu options?$/i)).toLowerCase();
+  // EPYC is tested BEFORE amd, because it matches /\bamd\b/ and would
+  // otherwise be filed under "AMD Ryzen" -- a different product line. Three
+  // rack platforms were labelled that way until this branch existed.
+  if (/epyc/.test(cpu)) return "epyc";
   if (/xeon/.test(cpu)) return "xeon";
   if (/ryzen|athlon|\bamd\b/.test(cpu)) return "amd";
   if (/intel|\bcore\b/.test(cpu)) return "intel";
   const hay = `${m.name} ${m.tag} ${(m.chips || []).join(" ")}`.toLowerCase();
+  if (/\bepyc\b/.test(hay)) return "epyc";
   if (/\bxeon\b/.test(hay)) return "xeon";
   return getVendor(m);
 };

@@ -33,6 +33,15 @@ import p_sff_h610_ddr5 from "./sff-h610-ddr5";
 import p_sff_h810_pro_ai from "./sff-h810-pro-ai";
 import p_sp50_speakerphone from "./sp50-speakerphone";
 import p_video_soundbar_4k from "./video-soundbar-4k";
+import p_g4201_he from "./g4201-he";
+import p_cx270_s5062 from "./cx270-s5062";
+import p_cx271_s3066 from "./cx271-s3066";
+import p_cx271_s4056 from "./cx271-s4056";
+import p_cs280_s3065 from "./cs280-s3065";
+import p_g4101 from "./g4101";
+import p_cx171_s4056 from "./cx171-s4056";
+import p_cx171_s3066 from "./cx171-s3066";
+import p_cx170_s5062 from "./cx170-s5062";
 
 export const PDP = {
   "active-led": p_active_led,
@@ -63,6 +72,15 @@ export const PDP = {
   "sff-h810-pro-ai": p_sff_h810_pro_ai,
   "sp50-speakerphone": p_sp50_speakerphone,
   "video-soundbar-4k": p_video_soundbar_4k,
+  "g4201-he": p_g4201_he,
+  "cx270-s5062": p_cx270_s5062,
+  "cx271-s3066": p_cx271_s3066,
+  "cx271-s4056": p_cx271_s4056,
+  "cs280-s3065": p_cs280_s3065,
+  "g4101": p_g4101,
+  "cx171-s4056": p_cx171_s4056,
+  "cx171-s3066": p_cx171_s3066,
+  "cx170-s5062": p_cx170_s5062,
 };
 
 export const getPdp = (slug) => PDP[slug] ?? null;
