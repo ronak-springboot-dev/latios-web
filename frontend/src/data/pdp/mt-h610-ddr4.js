@@ -3,6 +3,15 @@
  * Graphite with a safety-orange accent, tight rhythm, spec-forward copy. The
  * argument here is arithmetic: DDR4 costs less, so the money buys an i9 and a
  * professional card instead of a faster memory bus.
+ *
+ * There is no port diagram, and that is deliberate. This page carried one, over
+ * a picture of dp180-2 -- which is a PROMAX render of a slim box photographed
+ * from the side, showing no ports whatsoever, under the heading "Ports the
+ * building already has". The only real rear-panel photographs in the repo are
+ * of the Q670 unit that was shot; a rear I/O shield is cut for its board, so
+ * putting the Q670 panel here would swap one wrong picture for a subtler one.
+ * The ports stay in the specification table until an H610 build is photographed.
+ * mt-amd-am4.js records the same decision for the same reason.
  */
 export default {
   sections: [
@@ -98,12 +107,6 @@ export default {
       "modelName": "Latios MT \u2014 Intel H610 DDR4",
       "heading": "Cores where the budget goes.",
       "subline": "Up to Intel Core i9-14900. Engineered, assembled and finished in Ahmedabad.",
-    },
-    {
-      "type": "ioMap",
-      "image": "/images/dp180-2.webp",
-      "heading": "Ports the building already has.",
-      "body": "HDMI 2.1 and DisplayPort for what your team buys next year; VGA and PS/2 for what is already bolted to the wall."
     },
     {
       "type": "featureGrid",

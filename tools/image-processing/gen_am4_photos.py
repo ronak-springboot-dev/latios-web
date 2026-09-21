@@ -181,13 +181,17 @@ def desk(check=False):
 
 
 def desk_card():
-    """The same frame as the bento's display card, in place of a generated room.
+    """RETIRED. stage_am4_parts.desk_card() writes this asset now.
 
-    That card used to carry a text-to-image office: a room that does not exist,
-    with monitors that are not a product, standing in for a machine we have an
-    actual photograph of. Trimmed to the card's shape and ramped along the top
-    edge, the way the generated one was, so it dissolves into the card's ground
-    with the title sitting on the ground above it rather than on the picture.
+    Kept because the crop and the ramp are still the right ones, and because a
+    photograph of the real desk may be wanted again. It is OFF the JOBS table
+    below: both functions wrote images/am4/desk-card.webp, so whichever ran last
+    won, and a bare `python gen_am4_photos.py` would have quietly reverted the
+    composed card that shipped.
+
+    The composed one won because this frame was shot in poor light against
+    plywood and a bare wall, with cabling and a mouse in shot -- honest, and it
+    looked it. See stage_am4_parts.desk_card for what replaced it.
     """
     im = _desk_frame()
     w, h = im.size
@@ -203,7 +207,7 @@ def desk_card():
     print(f"  {path.name:18s} {im2.size}  {path.stat().st_size // 1024:>4}KB")
 
 
-JOBS = {"fascia": fascia, "desk": desk, "desk-card": desk_card}
+JOBS = {"fascia": fascia, "desk": desk}      # desk-card: see its docstring
 
 if __name__ == "__main__":
     only = [a for a in sys.argv[1:] if not a.startswith("--")]

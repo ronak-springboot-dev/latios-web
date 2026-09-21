@@ -38,7 +38,9 @@ const PROMAX_GALLERY = [
   "/images/dp180-2.webp",
   "/images/dp180-3.webp",
 ];
-// Real photography of the SFF chassis, shared by all four SFF configurations.
+// Real photography of the SFF chassis AND of the board inside it, shared by the
+// three INTEL SFF configurations. sff-am5-pro-ai takes SFF_GALLERY_CHASSIS
+// instead -- see the note there.
 const SFF_GALLERY = [
   "/images/details/sff-angle.webp",
   "/images/details/sff-front.webp",
@@ -49,6 +51,21 @@ const SFF_GALLERY = [
   "/images/details/sff-interior.webp",
   "/images/details/sff-cooling.webp",
   "/images/details/sff-storage.webp",
+];
+// The same shoot, chassis only -- the SFF counterpart of MT_GALLERY_CHASSIS and
+// for the same reason. SFF_GALLERY's last six frames are of the BOARD, not the
+// box: sff-rear and sff-rear-close are the rear I/O panel, and sff-open,
+// sff-interior, sff-cooling and sff-storage are the inside, where an MSI Intel
+// board and its blower are plainly legible. On sff-am5-pro-ai, which sells a
+// Ryzen, those show the wrong machine.
+//
+// sff-label and sff-base are chassis, but the label carries a model and serial
+// line, so they stay out until someone has read what it actually says.
+const SFF_GALLERY_CHASSIS = [
+  "/images/details/sff-angle.webp",
+  "/images/details/sff-front.webp",
+  "/images/details/sff-top.webp",
+  "/images/details/sff-vent.webp",
 ];
 const MFF_GALLERY = ["/images/dp10-1.webp", "/images/dp10-2.webp"];
 
@@ -692,7 +709,7 @@ export const DESKTOP_FAMILIES = [
         name: "Latios Pro AI MT — AMD AM5",
         tag: "Ryzen 8000G AI · DDR5",
         image: "/images/fronts/mt.webp",
-        gallery: MT_GALLERY,
+        gallery: MT_GALLERY_CHASSIS,
         heroImage: HERO["mt-am5-pro-ai"],
         chips: ["Ryzen 7 8700G", "Ryzen AI", "Wi-Fi 6E"],
         stats: [
@@ -758,7 +775,7 @@ export const DESKTOP_FAMILIES = [
         name: "Latios Pro AI SFF — AMD AM5",
         tag: "Ryzen 8000G AI · 8 litres",
         image: "/images/fronts/sff.webp",
-        gallery: SFF_GALLERY,
+        gallery: SFF_GALLERY_CHASSIS,
         heroImage: HERO["sff-am5-pro-ai"],
         chips: ["Ryzen 7 8700G", "Ryzen AI", "8 litres"],
         stats: [
