@@ -1,3 +1,14 @@
+import {
+  FACET_IDS,
+  FACET_PARAM,
+  emptyFacets,
+  facetsFromSearch,
+  isDeepLinked,
+  passes,
+  getFacetGroups,
+  toggleFacet as toggleFacetIn,
+} from "@/data/facets";
+import { ProductCard } from "@/components/ProductCard";
 import { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
@@ -19,391 +30,25 @@ import { usePageMeta } from "@/hooks/usePageMeta";
 const EASE = [0.16, 1, 0.3, 1];
 
 /**
- * Sort orders offered in the rail.
- *
- * "Featured" is the authored order and keeps the editorial family sections;
- * every other order flattens them into one grid, because a sort that only
- * applies inside each section is not a sort of the results. Models with no
- * memory figure (a monitor, a speakerphone) sort last rather than as zero.
+ * The rail, the sheet and the sort orders now live in components/FacetRail so
+ * /machines can run the same controls. Behaviour is unchanged.
  */
-const SORTS = [
-  { id: "featured", label: "Featured" },
-  { id: "name", label: "Name A-Z", cmp: (a, b) => a.name.localeCompare(b.name) },
-  { id: "memory", label: "Memory: high to low",
-    cmp: (a, b) => (getMaxMemoryGB(b) ?? -1) - (getMaxMemoryGB(a) ?? -1) },
-  { id: "ai", label: "AI ready first",
-    cmp: (a, b) => Number(!!b.aiReady) - Number(!!a.aiReady) },
-];
+import {
+  SORTS,
+  liveGroups,
+  FilterRail,
+  MobileFilterBar,
+} from "@/components/FacetRail";
 
 /**
- * Filter and sort rail.
+ * One product tile. Shared by the family sections and the sorted grid.
  *
- * Lives in a sticky left column rather than a band above the grid, because the
- * band could only be reached by scrolling back to the top of the listing --
- * with fifteen towers on screen that is a long way back. The rail follows the
- * page, so the filters are reachable wherever the reader has got to.
- *
- * Four dimensions, combining as AND across groups and OR within one -- pick
- * "Micro tower" and "Small form factor" and you get both; add "AMD Ryzen" and
- * you get the AMD machines among those. Counts are computed against the other
- * active facets, so a number is always what you would actually get by clicking.
- *
- * Options with a zero count are hidden rather than shown disabled: a category
- * with no CPU in it (displays, AV) simply renders no processor group, instead of
- * a filter offering a single meaningless choice.
- *
- * On phones the rail collapses behind a "Filter & sort" button -- a 260px
- * column beside a single-column grid would leave no room for either.
+ * The markup moved to components/ProductCard so that the six independent
+ * copies of this card across the site become one. This wrapper keeps the
+ * call sites here unchanged.
  */
-/** Groups worth showing: a facet whose every option matches nothing is noise. */
-const liveGroups = (groups) => groups.filter((g) => g.options.some((o) => o.n > 0));
-
-/** The filter and sort controls themselves, shared by the rail and the sheet. */
-const FacetControls = ({ groups, active, onToggle, onClear, total, shown, sort, onSort, idPrefix }) => {
-  const activeCount = Object.values(active).reduce((n, set) => n + set.size, 0);
-  return (
-    <>
-      <div className="flex items-baseline justify-between gap-4 mb-6">
-        <p className="text-[10px] uppercase tracking-[0.25em] text-zinc-500">
-          Showing <span className="text-white">{shown}</span> of {total}
-        </p>
-        {activeCount > 0 && (
-          <button
-            onClick={onClear}
-            data-testid="facet-clear"
-            className="text-[10px] uppercase tracking-[0.25em] text-[#6f93f2] hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50 rounded"
-          >
-            Clear all
-          </button>
-        )}
-      </div>
-
-      <div className="mb-7 pb-7 border-b border-white/10">
-        <label
-          htmlFor={`${idPrefix}-sort`}
-          className="block text-[10px] uppercase tracking-[0.22em] text-zinc-600 mb-2.5"
-        >
-          Sort by
-        </label>
-        <select
-          id={`${idPrefix}-sort`}
-          value={sort}
-          onChange={(e) => onSort(e.target.value)}
-          data-testid={`${idPrefix}-sort-select`}
-          className="w-full bg-[#0A0A0A] border border-white/15 text-sm text-white px-3 py-2.5 focus:border-white/40 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50 transition-colors duration-300"
-        >
-          {SORTS.map((o) => (
-            <option key={o.id} value={o.id} className="bg-[#0A0A0A]">
-              {o.label}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      <div className="flex flex-col gap-7">
-        {liveGroups(groups).map((g) => (
-          <div key={g.id} data-testid={`facet-group-${g.id}`}>
-            <p className="text-[10px] uppercase tracking-[0.22em] text-zinc-600 mb-3">{g.label}</p>
-            <div className="flex flex-col gap-1">
-              {g.options
-                // A `soon` option is always n === 0 -- the range holds no
-                // models yet -- so it has to survive the zero-count filter that
-                // hides genuinely empty combinations.
-                .filter((o) => o.n > 0 || o.soon || active[g.id]?.has(o.id))
-                .map((o) => {
-                  const on = active[g.id]?.has(o.id);
-                  return (
-                    <button
-                      key={o.id}
-                      onClick={() => onToggle(g.id, o.id)}
-                      data-testid={`facet-${g.id}-${o.id}`}
-                      aria-pressed={!!on}
-                      className={`group flex items-center gap-3 py-1.5 text-left text-sm transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50 rounded ${
-                        on ? "text-white" : "text-zinc-400 hover:text-white"
-                      }`}
-                    >
-                      <span
-                        aria-hidden="true"
-                        className={`w-4 h-4 shrink-0 rounded-[3px] border flex items-center justify-center transition-colors duration-300 ${
-                          on
-                            ? "bg-[#1a56e8] border-[#1a56e8]"
-                            : "border-white/25 group-hover:border-white/50"
-                        }`}
-                      >
-                        {on && <Check className="w-3 h-3 text-white" strokeWidth={3} />}
-                      </span>
-                      <span className="flex-1">{o.label}</span>
-                      {o.soon ? (
-                        <span className="text-[9px] uppercase tracking-[0.18em] text-zinc-600 border border-zinc-800 rounded px-1.5 py-0.5">
-                          Soon
-                        </span>
-                      ) : (
-                        <span className="text-xs text-zinc-600 tabular-nums">{o.n}</span>
-                      )}
-                    </button>
-                  );
-                })}
-            </div>
-          </div>
-        ))}
-      </div>
-    </>
-  );
-};
-
-/**
- * Desktop: a rail that follows the page.
- *
- * It sits in a sticky left column rather than a band above the grid, because
- * the band could only be reached by scrolling back to the top of the listing --
- * with fifteen towers on screen that is a long way back.
- *
- * Four dimensions, combining as AND across groups and OR within one: pick
- * "Micro tower" and "Small form factor" and you get both; add "AMD Ryzen" and
- * you get the AMD machines among those. Counts are computed against the other
- * active facets, so a number is always what clicking it would actually yield,
- * and a zero-count option is hidden rather than shown disabled -- a category
- * with no CPU in it (displays, AV) renders no processor group at all.
- */
-const FilterRail = (props) => {
-  if (!liveGroups(props.groups).length) return null;
-  return (
-    <aside
-      className="hidden lg:block lg:sticky lg:top-28 lg:self-start lg:max-h-[calc(100vh-9rem)] lg:overflow-y-auto lg:pr-2"
-      data-testid="facet-panel"
-      aria-label="Filter and sort products"
-    >
-      <FacetControls {...props} idPrefix="rail" />
-    </aside>
-  );
-};
-
-/**
- * Phone: a pinned trigger and a sheet.
- *
- * A 240px rail beside a single-column grid would leave room for neither, and a
- * panel at the top of the listing is the thing that made filtering mean
- * scrolling back up in the first place.
- *
- * The trigger is `sticky bottom-6`, not `fixed`. Two reasons: framer-motion
- * leaves a transform on the page's <main> even after the entry animation
- * settles, and a transformed ancestor makes `position: fixed` resolve against
- * that ancestor rather than the viewport -- the button lands thousands of
- * pixels down the document. Sticky is unaffected by that, and it also gives the
- * behaviour for free: pinned above the fold for as long as the listing is on
- * screen, gone once it has been scrolled past, with no observer or scroll
- * listener. Which matters here, because Lenis drives scrolling and window
- * scroll events are not a reliable signal.
- *
- * The sheet itself does need a portal, for the same transform reason: a
- * full-screen overlay has to be measured against the viewport.
- */
-const MobileFilterBar = (props) => {
-  const [open, setOpen] = useState(false);
-  const { active, shown } = props;
-
-  useEffect(() => {
-    if (!open) return undefined;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";        // the sheet is the only scroller
-    return () => { document.body.style.overflow = prev; };
-  }, [open]);
-
-  useEffect(() => {
-    if (!open) return undefined;
-    const onKey = (e) => e.key === "Escape" && setOpen(false);
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
-
-  const activeCount = Object.values(active).reduce((n, set) => n + set.size, 0);
-  if (!liveGroups(props.groups).length) return null;
-
-  return (
-    <>
-      <div className="lg:hidden sticky bottom-6 z-40 mt-12 flex justify-center pointer-events-none">
-        <button
-          onClick={() => setOpen(true)}
-          data-testid="facet-toggle"
-          aria-expanded={open}
-          className="pointer-events-auto flex items-center gap-2.5 rounded-full border border-white/20 bg-[#111] px-6 py-3.5 text-[10px] uppercase tracking-[0.25em] text-white shadow-2xl focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
-        >
-          <SlidersHorizontal className="w-3.5 h-3.5 text-zinc-400" />
-          Filter &amp; sort
-          {activeCount > 0 && (
-            <span className="btn-blue rounded-full px-2 py-0.5 text-[9px]">{activeCount}</span>
-          )}
-        </button>
-      </div>
-
-      {open &&
-        createPortal(
-          <div
-            className="lg:hidden fixed inset-0 z-[60]"
-            data-testid="facet-sheet"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Filter and sort products"
-          >
-            <div className="absolute inset-0 bg-black/70" onClick={() => setOpen(false)} />
-            <div className="absolute inset-x-0 bottom-0 max-h-[85vh] flex flex-col border-t border-white/15 bg-[#050505]">
-              <div className="flex items-center justify-between gap-4 px-6 py-4 border-b border-white/10">
-                <span className="text-[10px] uppercase tracking-[0.25em] text-white">Filter &amp; sort</span>
-                <button
-                  onClick={() => setOpen(false)}
-                  data-testid="facet-sheet-close"
-                  aria-label="Close filters"
-                  className="text-zinc-400 hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50 rounded"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-              <div className="flex-1 overflow-y-auto px-6 py-6">
-                <FacetControls {...props} idPrefix="sheet" />
-              </div>
-              <div className="px-6 py-4 border-t border-white/10">
-                <button
-                  onClick={() => setOpen(false)}
-                  data-testid="facet-sheet-apply"
-                  className="w-full btn-blue py-3.5 text-[10px] uppercase tracking-[0.25em] focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
-                >
-                  Show {shown} {shown === 1 ? "result" : "results"}
-                </button>
-              </div>
-            </div>
-          </div>,
-          document.body
-        )}
-    </>
-  );
-};
-
-/** One product tile. Shared by the family sections and the sorted grid. */
 const ModelCard = ({ m, category, testid }) => (
-  <Link
-    to={`/${category}/${m.slug}`}
-    className="group border border-white/10 bg-[#0A0A0A] hover:border-white/25 transition-colors duration-500 p-8 md:p-10 flex flex-col h-full focus:ring-2 focus:ring-white/50 focus:outline-none"
-    data-testid={testid}
-  >
-    {m.image && (
-      <div className="mb-7 rounded-lg bg-[#f2f2f0] px-8 py-6 flex items-center justify-center aspect-[16/9] overflow-hidden">
-        <img
-          src={m.image}
-          alt={m.name}
-          loading="lazy"
-          className="max-h-full w-auto object-contain transition-transform duration-700 group-hover:scale-105"
-        />
-      </div>
-    )}
-    <div className="flex items-center gap-3 flex-wrap">
-      <span className="text-[10px] uppercase tracking-[0.35em] text-zinc-500">{m.tag}</span>
-      {m.aiReady && (
-        <span
-          data-testid={`ai-badge-${m.slug}`}
-          title="Dedicated neural processing unit"
-          className="text-[9px] uppercase tracking-[0.2em] text-[#6f93f2] border border-[#6f93f2]/40 rounded-full px-2 py-0.5"
-        >
-          AI ready
-        </span>
-      )}
-    </div>
-    <h3 className="mt-4 font-display text-2xl md:text-3xl font-black tracking-tighter text-white">
-      {m.name}
-    </h3>
-    <ul className="mt-6 space-y-2.5 flex-1">
-      {m.highlights.map((h) => (
-        <li key={h} className="text-sm text-zinc-400 flex gap-3">
-          <span className="text-zinc-600">&mdash;</span>
-          {h}
-        </li>
-      ))}
-    </ul>
-    <span
-      data-testid={`model-explore-${m.slug}`}
-      className="mt-8 inline-flex items-center gap-2 self-start btn-blue px-6 py-3 text-[10px] uppercase tracking-[0.25em] transition-colors duration-300"
-    >
-      Explore model
-      <ArrowUpRight className="w-3.5 h-3.5" />
-    </span>
-  </Link>
-);
-
-/** Every facet combination can be narrowed to nothing, so say so and offer the way out. */
-/**
- * What a range that does not ship yet says for itself.
- *
- * Keyed by bucket, with a generic fallback, so adding a range to the taxonomy
- * does not require touching this file to avoid a blank panel.
- */
-const SOON_COPY = {
-  server: {
-    heading: "Rack servers are in development.",
-    body: "The PROMAX platform already carries Xeon W, ECC memory and redundant power. The rack-mount range built on it is not shipping yet â€” tell us what the deployment looks like and we will bring you in early.",
-  },
-  supercomputer: {
-    heading: "Supercomputing, in planning.",
-    body: "Multi-node clusters for research and large-model training sit above the workstation range. Nothing is shipping yet â€” if you are scoping a build, the conversation is worth having now.",
-  },
-  aio: {
-    heading: "All-in-One is in development.",
-    body: "A display and a machine in one enclosure, on the same serviceable platform as the rest of the range. Not shipping yet.",
-  },
-  "full-tower": {
-    heading: "The full-height tower is in development.",
-    body: "A larger chassis than the 18-litre micro tower, for builds that need the expansion. Not shipping yet.",
-  },
-};
-
-const ComingSoon = ({ bucket, label, onClear }) => {
-  const copy = SOON_COPY[bucket] ?? {
-    heading: `${label} is in development.`,
-    body: "This range is named in our roadmap but is not shipping yet.",
-  };
-  return (
-    <div className="border border-white/10 bg-[#0A0A0A] p-12 text-center" data-testid="facet-soon">
-      <p className="text-[10px] uppercase tracking-[0.3em] mb-5" style={{ color: ACCENT_SOFT }}>
-        Coming soon
-      </p>
-      <p className="font-display text-2xl md:text-3xl font-semibold tracking-tight text-white">
-        {copy.heading}
-      </p>
-      <p className="mt-4 text-sm text-zinc-400 leading-relaxed max-w-[560px] mx-auto">{copy.body}</p>
-      <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
-        <Link
-          to="/#contact"
-          data-testid="facet-soon-enquire"
-          className="btn-blue px-6 py-3 text-[10px] uppercase tracking-[0.25em] focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
-        >
-          Talk to us about it
-        </Link>
-        <button
-          onClick={onClear}
-          data-testid="facet-soon-clear"
-          className="px-6 py-3 text-[10px] uppercase tracking-[0.25em] border border-white/20 text-white hover:border-white/60 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-white/40"
-        >
-          Show what ships today
-        </button>
-      </div>
-    </div>
-  );
-};
-
-const EmptyResults = ({ onClear }) => (
-  <div className="border border-white/10 bg-[#0A0A0A] p-12 text-center" data-testid="facet-empty">
-    <p className="font-display text-2xl font-black tracking-tighter text-white">
-      Nothing matches those filters.
-    </p>
-    <p className="mt-3 text-sm text-zinc-400">
-      Try removing one, or clear them and start again.
-    </p>
-    <button
-      onClick={onClear}
-      data-testid="facet-empty-clear"
-      className="mt-7 btn-blue px-6 py-3 text-[10px] uppercase tracking-[0.25em] focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
-    >
-      Clear all filters
-    </button>
-  </div>
+  <ProductCard m={m} category={category} testid={testid} />
 );
 
 const FamilyAccordion = ({ families }) => {
@@ -452,18 +97,17 @@ const FamilyAccordion = ({ families }) => {
   );
 };
 
-const FACET_IDS = ["bucket", "cpu", "memory", "ai"];
-const emptyFacets = () => Object.fromEntries(FACET_IDS.map((k) => [k, new Set()]));
-
 /**
- * Query-string name for each facet, so the mega menu can link straight to a
- * filtered listing: /towers?cpu=amd, /towers?ai=yes, /towers?b=sff.
+ * The facet engine now lives in data/facets.js, so this page and the /machines
+ * finder run one implementation rather than two that drift. Behaviour here is
+ * unchanged: the same four dimensions, the same query-string names the mega
+ * menu already emits (?b=, ?cpu=, ?mem=, ?ai=), and counts still measured
+ * against the other active facets.
  *
- * Short names because these end up in links people copy and share. Values are
- * comma-separated, matching the OR-within-a-group the panel already does, so
- * ?cpu=amd,xeon is expressible.
+ * `category` is the one dimension this page does not offer. On a category
+ * listing it would always be a single value.
  */
-const FACET_PARAM = { bucket: "b", cpu: "cpu", memory: "mem", ai: "ai" };
+const SHOW = ["bucket", "cpu", "memory", "ai"];
 
 export default function ProductPage() {
   const { category } = useParams();
@@ -472,21 +116,9 @@ export default function ProductPage() {
 
   // The mega menu links to a filtered listing rather than to routes of its own:
   // a sub-category, a processor family, or the AI-ready machines.
-  const [active, setActive] = useState(() => {
-    const f = emptyFacets();
-    FACET_IDS.forEach((id) => {
-      const raw = search.get(FACET_PARAM[id]);
-      if (raw) raw.split(",").filter(Boolean).forEach((v) => f[id].add(v));
-    });
-    return f;
-  });
+  const [active, setActive] = useState(() => facetsFromSearch(search));
 
-  const toggleFacet = (group, id) =>
-    setActive((prev) => {
-      const next = { ...prev, [group]: new Set(prev[group]) };
-      next[group].has(id) ? next[group].delete(id) : next[group].add(id);
-      return next;
-    });
+  const toggleFacet = (group, id) => setActive((prev) => toggleFacetIn(prev, group, id));
   const clearFacets = () => setActive(emptyFacets());
   const [sort, setSort] = useState("featured");
   const listingRef = useRef(null);
@@ -507,7 +139,7 @@ export default function ProductPage() {
    * /towers does not. Smooth rather than instant so the reader can see there is
    * material above them rather than being teleported into the middle of a page.
    */
-  const deepLinked = FACET_IDS.some((id) => search.get(FACET_PARAM[id]));
+  const deepLinked = isDeepLinked(search);
 
   /**
    * Scroll to the listing.
@@ -580,40 +212,10 @@ export default function ProductPage() {
     .flatMap((f) => f.models)
     .filter((m) => m.category === data.slug);
 
-  const DIMS = {
-    bucket: (m) => [m.bucket],
-    cpu: (m) => [getProcessorFamily(m)],
-    memory: (m) => [getMemoryTier(m)],
-    ai: (m) => (m.aiReady ? ["yes"] : []),
-  };
-  const passes = (m, sel) =>
-    FACET_IDS.every((id) => {
-      const chosen = sel[id];
-      if (!chosen || !chosen.size) return true;      // group inactive
-      return DIMS[id](m).some((v) => v && chosen.has(v));  // OR within a group
-    });
-
-  // Counted against the OTHER active facets, so the number on a chip is what
-  // clicking it would actually yield.
-  const countFor = (gid, oid) =>
-    catModels.filter((m) => passes(m, { ...active, [gid]: new Set([oid]) })).length;
-
-  const facetGroups = [
-    { id: "bucket", label: "Form factor",
-      // `soon` buckets are no longer filtered out: a named range that does not
-      // ship yet is still something a buyer looks for, and selecting it shows
-      // the coming-soon panel rather than an empty grid.
-      options: bucketsFor(data.slug)
-        .map((b) => ({ id: b.key, label: b.name, soon: !!b.soon,
-                       n: b.soon ? 0 : countFor("bucket", b.key) })) },
-    { id: "cpu", label: "Processor",
-      options: ["amd", "intel", "xeon"]
-        .map((v) => ({ id: v, label: VENDOR_LABELS[v], n: countFor("cpu", v) })) },
-    { id: "memory", label: "Memory",
-      options: MEMORY_TIERS.map((t) => ({ id: t.id, label: t.label, n: countFor("memory", t.id) })) },
-    { id: "ai", label: "AI ready",
-      options: [{ id: "yes", label: "AI ready", n: countFor("ai", "yes") }] },
-  ];
+  const facetGroups = getFacetGroups(catModels, active, {
+    show: SHOW,
+    bucketScope: data.slug,
+  });
 
   // The one selected bucket that has nothing in it yet, if any. Only a single
   // bucket selection counts: with two selected the result is a normal (empty)

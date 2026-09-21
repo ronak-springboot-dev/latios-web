@@ -15,6 +15,7 @@ import NewsPage from "@/pages/NewsPage";
 import NewsIndexPage from "@/pages/NewsIndexPage";
 import ApplicationPage from "@/pages/ApplicationPage";
 import ComparePage from "@/pages/ComparePage";
+import MachinesPage from "@/pages/MachinesPage";
 import AdminPage from "@/pages/AdminPage";
 import AboutPage from "@/pages/AboutPage";
 import SupportPage from "@/pages/SupportPage";
@@ -95,6 +96,9 @@ const AnimatedRoutes = () => {
         <Route path="/about" element={<AboutPage />} />
         <Route path="/support" element={<SupportPage />} />
         <Route path="/compare" element={<ComparePage />} />
+        {/* Above /:category, which is a catch-all that Navigates home on an
+            unknown slug -- registered after it, /machines would never render. */}
+        <Route path="/machines" element={<MachinesPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/news" element={<NewsIndexPage />} />
         <Route path="/news/:slug" element={<NewsPage />} />

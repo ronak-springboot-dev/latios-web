@@ -45,28 +45,38 @@ const STATS = [
 //
 // These replace nine stock photographs of other companies' hardware -- circuit
 // board macros, a DDR5 stick, an M.2 -- which read as an assembly line rather
-// than as a product range. Two of the five are now Latios machines.
+// than as a product range.
 //
-// All five are rendered with Qwen-Image-Edit-2511 from REAL photographs at low
-// denoise (0.22-0.38), which relights rather than redraws. That distinction is
-// the whole method: at 0.45 the model rewrote the lettering and Intel came back
-// as gibberish. Latios hardware is never generated from scratch, and a brand
-// mark is only ever a photographed one that survived the pass.
+// The two SILICON banners are Qwen-Image-Edit-2511 relights of real
+// photographs at low denoise (0.22-0.38), which relights rather than redraws.
+// That distinction is the whole method: at 0.45 the model rewrote the lettering
+// and Intel came back as gibberish. A brand mark here is only ever a
+// photographed one that survived the pass. The two CPU photographs are a Ryzen
+// 5 3600 and a Core i5-9400F, both 2019 parts, so their model-number lines
+// carry a depth-of-field falloff -- subtraction, not invention -- because a
+// legible model number on the hero is a claim about what is in the box, and
+// "RTX 2080" is why a banner was pulled from here before.
 //
-// The rule this file already recorded still holds -- a legible model number on
-// the hero is a claim about what is in the box, and "RTX 2080" is why a banner
-// was pulled from here before. The two CPU photographs are a Ryzen 5 3600 and a
-// Core i5-9400F, both 2019 parts, so their model-number lines carry a
-// depth-of-field falloff. Nothing is added or restyled: AMD, RYZEN and INTEL
-// CORE are exactly as photographed, and only the dating text is out of focus.
-// The GPU needed none of it -- that shroud carries the mark and no number.
+// The two LATIOS banners are no longer generated at all. They were, and both
+// failed the gate qwen_scenes.py sets: the tower's bezel wordmark came back
+// garbled with an invented gold badge beside the USB-C port, and it was live
+// here. A laptop banner was worse -- the lid read LAITOS and the palmrest
+// carried two fabricated stickers aping an NVIDIA GeForce badge and an AMD
+// Ryzen badge -- and it has been deleted.
+//
+// make_banners.py builds them from images/fronts/*.webp instead: real
+// photographic cut-outs of the real machines, carrying the real wordmark,
+// stood on a drawn ground by the same am4_studio.compose() that stages the
+// component plates. Nothing about the product is invented, so there is nothing
+// left for the gate to catch.
 //
 // Still worth doing properly: current partner-kit artwork from Intel, AMD and
-// NVIDIA would beat all of this, and photographs of the silicon Latios actually
-// ships would beat it further.
+// NVIDIA would beat the silicon two, and photographs of the silicon Latios
+// actually ships would beat them further.
 const BANNER_POOL = [
   "/images/banner/banner-latios-tower.webp",
   "/images/banner/banner-intel-cpu.webp",
+  "/images/banner/banner-latios-sff.webp",
   "/images/banner/banner-amd-cpu.webp",
   "/images/banner/banner-nvidia-gpu.webp",
 ];
