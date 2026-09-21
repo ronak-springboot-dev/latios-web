@@ -359,15 +359,6 @@ export default {
         ]
       },
       {
-        "type": "spotlight",
-        "kicker": "In motion",
-        "heading": "Specified for managed fleets.",
-        "body": "Up to Intel Core i9-14900. Engineered, assembled and finished in Ahmedabad.",
-        "video": "/videos/mt-q670-ddr5-loop.mp4",
-        "poster": "/images/posters/mt-q670-ddr5-loop.webp",
-        "alt": "Latios MT — Intel Q670 DDR5 turning on a studio background"
-      },
-      {
         "type": "featureGrid",
         "cols": 3,
         "heading": "Chosen on the tender, not the spec sheet.",
