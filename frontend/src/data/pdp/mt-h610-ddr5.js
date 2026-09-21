@@ -1,7 +1,33 @@
 /**
- * Latios MT — Intel H610 DDR5.  Design language: built around the bus.
- * Electric blue, motion devices, a marquee. Where the DDR4 build argues cost,
- * this one argues bandwidth — so the page leads with movement and numbers.
+ * Latios MT — Intel H610 DDR5.  Rebuilt on the mt-amd-am4 design language:
+ * split features with big-number rows, a bento grid, no motion devices.
+ *
+ * What went, and why. This page ran a scroll-driven reveal, an autoplaying
+ * video loop and a marquee — three animations carrying content that the copy
+ * already says. The reveal's five captions are now the argument of the feature
+ * sections; the video's heading and subline were a repeat of the hero's; the
+ * marquee was the specification table read aloud. Nothing that was true has
+ * been dropped, only the movement that was carrying it.
+ *
+ * Every number is a row of this model's specGroups in models.js, or Intel's
+ * published figure for the Core i9-14900 that the CPU row names: 24 cores, 8
+ * performance and 16 efficient.
+ *
+ * What is deliberately NOT here:
+ *
+ *   - No board, socket, interior or rear-panel photograph, though MT_GALLERY
+ *     carries all four. The unit the shoot photographed is the Q670 build —
+ *     mt-q670-ddr5.js says so, and pins its port map to it on that basis. A
+ *     rear I/O shield is cut for its board, so those frames are evidence about
+ *     Q670, not about H610. The ports stay in the specification table until an
+ *     H610 build is photographed. Same call mt-h610-ddr4.js records.
+ *   - No benchmark chart. The spec sheet has no scores, and a chart is a claim.
+ *
+ * The chassis images live under /images/am4/ for historical reasons and are
+ * shared deliberately: the MT is one box across all six configurations, which
+ * shoot_deploy.py already establishes, and they differ by board, CPU and
+ * memory rather than by case. The component plates come from the shared
+ * library in /images/parts/, rendered once and reused by spec match.
  */
 export default {
   sections: [
@@ -9,139 +35,160 @@ export default {
       "type": "hero"
     },
     {
-      "type": "marquee",
-      "items": [
-        "DDR5-5600",
-        "Core i9-14900",
-        "24 cores",
-        "64GB",
-        "TPM 2.0",
-        "18 litres",
-        "500W 80+ Bronze",
-        "Made in India"
-      ]
-    },
-    {
-      "type": "reveal",
-      "manifest": { "frames": 64, "width": 1400, "height": 1120, "pattern": "/reveal/mt-h610-ddr5/{i}.webp" },
-      "height": 260,
-      "kicker": "Inside",
-      "heading": "Two slots, twice the bus.",
-      "body": "Scroll to open it. The difference between this and the DDR4 build is standing right there.",
-      "steps": [
-        {
-          "at": 0.0,
-          "label": "Closed",
-          "text": "The same 18-litre box. Everything that changed is inside it."
-        },
-        {
-          "at": 0.28,
-          "label": "Panel off",
-          "text": "Hand-removable. No service manual required."
-        },
-        {
-          "at": 0.52,
-          "label": "DDR5-5600",
-          "text": "Two U-DIMM slots at 5600 MT/s — considerably more data per cycle than the DDR4 build of the same machine."
-        },
-        {
-          "at": 0.74,
-          "label": "Cooling",
-          "text": "A tower cooler with a clear intake path, tuned for sustained boost rather than short bursts."
-        },
-        {
-          "at": 0.92,
-          "label": "Security",
-          "text": "Discrete TPM 2.0 on the board, with military-grade certification behind it."
-        }
-      ]
-    },
-    {
-      "type": "statWall",
-      "align": "center",
-      "heading": "Bandwidth is the whole argument.",
+      "type": "featureSplit",
+      "pill": "Latios MT · H610 DDR5",
+      "heading": "The same machine,",
+      "headingAccent": "on a faster bus.",
+      "body": "Twelfth through fourteenth generation Intel Core on the H610 chipset, with DDR5 at 5600 MT/s instead of DDR4 at 3200 — in the same 18-litre chassis, opened by hand, serviced from one side.",
+      "image": "/images/am4/hero-front.webp",
+      "alt": "The Latios MT tower from the front, its ribbed fascia and Latios wordmark lit against a warm horizon glow",
+      "glow": "horizon",
+      "frame": "rounded",
       "stats": [
-        [
-          "5600",
-          "MT/s DDR5",
-          "Where simulation and heavy virtualisation actually notice"
-        ],
-        [
-          "24",
-          "Cores",
-          "Core i9-14900, eight performance and sixteen efficient"
-        ],
-        [
-          "64GB",
-          "Dual channel",
-          "Two U-DIMM slots"
-        ]
-      ]
+        ["24", "cores", "Up to Core i9-14900"],
+        ["5600", "MT/s", "DDR5 dual channel"],
+        ["18", "L", "Chassis volume"]
+      ],
+      "statCols": 3
     },
     {
-      "type": "video",
-      "src": "/videos/mt-h610-ddr5-loop.mp4",
-      "poster": "/images/posters/mt-h610-ddr5-loop.webp",
-      "modelName": "Latios MT \u2014 Intel H610 DDR5",
-      "heading": "Built around the bus.",
-      "subline": "Up to Intel Core i9-14900. Engineered, assembled and finished in Ahmedabad.",
-    },
-    {
-      "type": "featureGrid",
-      "heading": "The rest is unchanged, on purpose.",
-      "items": [
+      "type": "bento",
+      "stage": true,
+      "heading": "Everything a desk needs, in eighteen litres.",
+      "cards": [
         {
-          "icon": "Cpu",
-          "title": "Up to Core i9-14900",
-          "desc": "Twelfth to fourteenth generation on the H610 chipset."
+          "col": 1, "size": "tall", "bleed": true,
+          "title": "Compact design", "subtitle": "18-litre micro tower",
+          "image": "/images/am4/chassis-card.webp",
+          "alt": "The Latios MT tower from the front on a lit backdrop, with its height and width marked",
+          "dims": {
+            "box": [1000, 1400],
+            "h": { "x": 26.2, "y1": 22.1, "y2": 80.0, "label": "354 mm" },
+            "d": { "x1": 30.7, "x2": 69.3, "y": 82.0, "label": "166 mm" },
+            "note": "Depth 312 mm · 7.59 kg"
+          }
         },
         {
-          "icon": "MemoryStick",
-          "title": "DDR5 at 5600MT/s",
-          "desc": "The reason to pick this build over its DDR4 twin."
+          "col": 1, "size": "short", "bleed": true, "grow": true,
+          "title": "Cooling & power", "subtitle": "Fan cooler · 80+ Bronze supply",
+          "image": "/images/am4/cooler-card.webp",
+          "alt": "A round desktop fan cooler, rendered",
+          "stat": ["500", "W", "ATX power"]
         },
         {
-          "icon": "ShieldCheck",
-          "title": "Hardware TPM 2.0",
-          "desc": "Secured firmware and a discrete module, standard on every unit."
+          "col": 2, "size": "small",
+          "title": "Memory", "subtitle": "Dual-channel DDR5-5600 · up to 64GB",
+          "glyph": "dimm"
         },
         {
-          "icon": "Usb",
-          "title": "Complete I/O",
-          "desc": "Front USB-C Gen 2; HDMI 2.1, DisplayPort, VGA and PS/2 behind."
+          "col": 2, "size": "small",
+          "title": "Storage", "subtitle": "M.2 · 2.5″ bay · 3.5″ bay",
+          "glyph": "drive"
         },
         {
-          "icon": "Wifi",
-          "title": "Wi-Fi 6E + 1G LAN",
-          "desc": "Wired and wireless options for docked or roaming desks."
+          "col": 2, "size": "text",
+          "title": "Wi-Fi 6E · TPM 2.0", "subtitle": "Secured firmware and a discrete module · Kensington · padlock"
         },
         {
-          "icon": "Wrench",
-          "title": "Serviced from one side",
-          "desc": "Memory, M.2 and both drive bays behind a single panel."
+          "col": 2, "size": "short", "bleed": true, "foot": true, "grow": true,
+          "title": "4K display output", "subtitle": "HDMI 2.1 4K@60 · DisplayPort · VGA",
+          "image": "/images/am4/desk-card.webp",
+          "alt": "The Latios MT on a desk beside a display showing the Latios wallpaper"
+        },
+        {
+          "col": 3, "size": "half", "bleed": true,
+          "title": "Processor", "subtitle": "Up to Intel Core i9-14900",
+          "image": "/images/components/cpu-intel.webp",
+          "alt": "An Intel processor seated in an LGA socket"
+        },
+        {
+          "col": 3, "size": "half", "bleed": true, "grow": true,
+          "title": "Graphics", "subtitle": "Up to NVIDIA RTX A4000",
+          "image": "/images/parts/gpu-workstation.webp",
+          "alt": "A single-slot professional graphics card, rendered"
         }
       ]
     },
     {
-      "type": "band",
-      "kicker": "Built around the bus",
-      "items": [
-        {"src": "/bands/mt-h610-ddr5-0.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 Intel H610 DDR5 - The same Core i9, on a faster bus"},
-        {"src": "/bands/mt-h610-ddr5-1.webp", "w": 1200, "h": 1523, "alt": "Latios MT \u2014 Intel H610 DDR5 - 64GB of DDR5 at 5600 MT/s"},
-        {"src": "/bands/mt-h610-ddr5-2.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 Intel H610 DDR5 - Hardware TPM 2.0, standard"}
+      "type": "featureSplit",
+      "pill": "Core i9-14900",
+      "heading": "Twenty-four cores,",
+      "headingAccent": "two kinds of them.",
+      "body": "Eight performance cores for the thread that the operator is waiting on, sixteen efficient ones for everything running behind it. The line runs down to an i3 for kiosks and counters, on the same socket and the same board.",
+      "image": "/images/components/cpu-intel.webp",
+      "alt": "An Intel processor seated in an LGA socket",
+      "stats": [
+        ["8", "", "Performance cores"],
+        ["16", "", "Efficient cores"],
+        ["24", "", "Cores in total"],
+        ["12–14", "Gen", "On one socket"]
+      ],
+      "footnote": "Figures are Intel's published specification for the Core i9-14900. Lower configurations in this line have fewer cores. The processor shown is an illustration, not the part supplied."
+    },
+    {
+      "type": "featureSplit",
+      "pill": "Memory",
+      "heading": "DDR5-5600,",
+      "headingAccent": "and that is the argument.",
+      "body": "Two U-DIMM slots at 5600 MT/s. This is the one row that separates this build from its DDR4 twin, and it is the row that simulation, heavy virtualisation and large spreadsheets actually notice.",
+      "image": "/images/parts/ddr5-pair.webp",
+      "alt": "Two DDR5 desktop memory modules, rendered",
+      "flip": true,
+      "stats": [
+        ["5600", "MT/s", "Dual DDR5 channels"],
+        ["64", "GB", "Maximum supported", "Up to"]
+      ],
+      "footnote": "Image is an illustration, not the modules supplied."
+    },
+    {
+      "type": "featureSplit",
+      "pill": "Graphics",
+      "heading": "Room for a",
+      "headingAccent": "professional card.",
+      "body": "Integrated Intel graphics cover the desks that only need displays. Where a seat needs certified drivers — CAD, design review, a control-room wall — the chassis takes a single-slot professional card, and the 500W supply has the headroom for it.",
+      "image": "/images/parts/gpu-workstation.webp",
+      "alt": "A single-slot blower-style professional graphics card, rendered",
+      "stats": [
+        ["A4000", "", "NVIDIA RTX class", "Up to"],
+        ["500", "W", "80+ Bronze ATX supply"]
+      ],
+      "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
+    },
+    {
+      "type": "featureSplit",
+      "pill": "Design",
+      "heading": "Extruded lines, and the mark",
+      "headingAccent": "that earns them.",
+      "body": "The fascia is drawn as one extrusion — a field of fine ribs broken by a single band, with the Latios wordmark cut into it. It is the part of the machine a desk actually looks at, and it is photographed rather than rendered.",
+      "image": "/images/am4/fascia.webp",
+      "alt": "A close photograph of the Latios MT’s ribbed front panel, with the Latios wordmark",
+      "aspect": "aspect-[16/10]",
+      "flip": true,
+      "stats": [
+        ["18", "L", "312 × 166 × 354 mm"],
+        ["7.59", "kg", "Weight"]
       ]
     },
-{
+    {
+      "type": "featureSplit",
+      "pill": "On the desk",
+      "heading": "Eighteen litres,",
+      "headingAccent": "beside the screen.",
+      "body": "It stands upright in the footprint of a ream of paper, so it shares a desk with the display rather than competing with it — and drives 4K over HDMI 2.1 and DisplayPort without a card in the slot.",
+      "image": "/images/am4/desk-photo.webp",
+      "alt": "The Latios MT standing on a desk beside a monitor showing the Latios wallpaper",
+      "aspect": "aspect-[16/10]",
+      "footnote": "Photographed. Display and peripherals are not supplied."
+    },
+    {
       "type": "compare",
       "heading": "Against the rest of the MT range.",
-      "rows": [
-        "CPU options",
-        "Chipset",
-        "Memory"
-      ]
+      "rows": ["CPU options", "Chipset", "Memory", "Graphics"]
     },
     {
-      "type": "specTeaser"
+      "type": "specTable",
+      "heading": "Every number that matters.",
+      "body": "Every MT configuration on this chassis, side by side. The rows that differ are the decision."
     }
   ],
 };
