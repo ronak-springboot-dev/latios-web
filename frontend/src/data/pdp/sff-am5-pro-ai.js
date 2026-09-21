@@ -229,16 +229,16 @@ export default {
         "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
       },
       {
-        "type": "featureSplit",
-        "pill": "On the counter",
-        "heading": "Small enough",
-        "headingAccent": "for the front desk.",
-        "body": "Eight litres fits where a tower does not — a reception counter, a kiosk, a consulting room — with Ryzen AI on the die for the inference work those desks are starting to do locally.",
-        "image": "/images/scenes/sff-reception.webp",
-        "alt": "A Latios machine on a working desk, photographed and composited into a studio scene",
-        "aspect": "aspect-[16/10]",
-        "footnote": "The machine is photographed. The room is a studio composite — furniture, display and peripherals are not supplied.",
-        "flip": true
+        "type": "band",
+        "kicker": "An NPU in eight litres",
+        "items": [
+          {
+            "src": "/images/scenes/sff-reception-band.webp",
+            "w": 2000,
+            "h": 1115,
+            "alt": "The Latios SFF on a reception counter beside a display, with its core count, memory speed and volume set over it"
+          }
+        ]
       },
       {
         "type": "compare",

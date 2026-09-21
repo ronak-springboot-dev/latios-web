@@ -247,15 +247,16 @@ export default {
         ]
       },
       {
-        "type": "featureSplit",
-        "pill": "On the desk",
-        "heading": "Eight litres,",
-        "headingAccent": "under the monitor.",
-        "body": "Ninety-five millimetres thick, so it stands beside a display on a shallow desk or lies flat beneath one. The same hand-removable panel discipline as the tower, in a third of the volume.",
-        "image": "/images/scenes/sff-desk.webp",
-        "alt": "A Latios machine on a working desk, photographed and composited into a studio scene",
-        "aspect": "aspect-[16/10]",
-        "footnote": "The machine is photographed. The room is a studio composite — furniture, display and peripherals are not supplied."
+        "type": "band",
+        "kicker": "Eight litres",
+        "items": [
+          {
+            "src": "/images/scenes/sff-desk-band.webp",
+            "w": 2000,
+            "h": 1115,
+            "alt": "The Latios SFF on a home office desk beside a display, with its volume, weight and processor set over it"
+          }
+        ]
       },
       {
         "type": "band",

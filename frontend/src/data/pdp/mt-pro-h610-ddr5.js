@@ -212,16 +212,16 @@ export default {
         "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
       },
       {
-        "type": "featureSplit",
-        "pill": "On the desk",
-        "heading": "One box,",
-        "headingAccent": "four specifications.",
-        "body": "The same chassis whichever processor the order names, so a studio running an i3 at reception and an i7 at the workstation still buys one shape, one panel and one spare part.",
-        "image": "/images/scenes/mt-studio.webp",
-        "alt": "A Latios machine on a working desk, photographed and composited into a studio scene",
-        "aspect": "aspect-[16/10]",
-        "footnote": "The machine is photographed. The room is a studio composite — furniture, display and peripherals are not supplied.",
-        "flip": true
+        "type": "band",
+        "kicker": "The Pro build",
+        "items": [
+          {
+            "src": "/images/scenes/mt-studio-band.webp",
+            "w": 2000,
+            "h": 1115,
+            "alt": "The Latios MT on a design studio desk, with the range's processor options, memory ceiling and SKU count set over it"
+          }
+        ]
       },
       {
         "type": "compare",

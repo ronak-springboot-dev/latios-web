@@ -69,26 +69,44 @@ export const PdpBand = ({ theme, heading, kicker, body, items = [] }) => {
         </Reveal>
       )}
 
-      <Reveal>
-        {/* Portrait on the left at its true height, squares stacked on the
-            right at theirs. `items-start` so neither column stretches the
-            other — the columns end at different heights and that is fine. */}
-        <div
-          // Its own measure, narrower than the band container. The assets carry
-          // baked type, so the section is made compact by scaling the whole
-          // grid down rather than by cropping anything.
-          className={`grid gap-4 md:gap-6 md:grid-cols-2 items-start mx-auto max-w-[1080px] ${
-            heading ? "mt-12" : ""
-          }`}
-        >
-          <Figure item={portrait} />
-          <div className="grid gap-4 md:gap-6 content-start">
-            {rest.map((item) => (
-              <Figure key={item.src} item={item} />
-            ))}
+      {/* One wide asset is a different animal from the portrait-plus-squares
+          trio this section was built for. Dropped into that grid it takes a
+          single column of a 1080px measure and lands about 450px wide, at which
+          the baked headline is unreadable -- the same failure as cropping it,
+          arrived at by scaling instead.
+
+          So a lone item gets the full measure and nothing else. Still
+          object-contain, still at the asset's own aspect: the rule at the top
+          of this file is that baked type is never cropped OR stretched, and
+          "too small to read" is the third way to break it. */}
+      {items.length === 1 ? (
+        <Reveal>
+          <div className={`mx-auto max-w-[1240px] ${heading ? "mt-12" : ""}`}>
+            <Figure item={items[0]} />
           </div>
-        </div>
-      </Reveal>
+        </Reveal>
+      ) : (
+        <Reveal>
+          {/* Portrait on the left at its true height, squares stacked on the
+              right at theirs. `items-start` so neither column stretches the
+              other — the columns end at different heights and that is fine. */}
+          <div
+            // Its own measure, narrower than the band container. The assets carry
+            // baked type, so the section is made compact by scaling the whole
+            // grid down rather than by cropping anything.
+            className={`grid gap-4 md:gap-6 md:grid-cols-2 items-start mx-auto max-w-[1080px] ${
+              heading ? "mt-12" : ""
+            }`}
+          >
+            <Figure item={portrait} />
+            <div className="grid gap-4 md:gap-6 content-start">
+              {rest.map((item) => (
+                <Figure key={item.src} item={item} />
+              ))}
+            </div>
+          </div>
+        </Reveal>
+      )}
     </Band>
   );
 };

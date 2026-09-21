@@ -273,15 +273,16 @@ export default {
         "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
       },
       {
-        "type": "featureSplit",
-        "pill": "On the desk",
-        "heading": "Specified once,",
-        "headingAccent": "deployed everywhere.",
-        "body": "The managed estate's point is that every seat is the same seat. One image, one service procedure, one panel that comes off by hand — whether the desk is a control room or an office.",
-        "image": "/images/scenes/mt-control.webp",
-        "alt": "A Latios machine on a working desk, photographed and composited into a studio scene",
-        "aspect": "aspect-[16/10]",
-        "footnote": "The machine is photographed. The room is a studio composite — furniture, display and peripherals are not supplied."
+        "type": "band",
+        "kicker": "Specified for managed fleets",
+        "items": [
+          {
+            "src": "/images/scenes/mt-control-band.webp",
+            "w": 2000,
+            "h": 1115,
+            "alt": "The Latios MT on a control room desk beside three displays, with its memory speed, core count and graphics support set over it"
+          }
+        ]
       },
       {
         "type": "ioMap",
