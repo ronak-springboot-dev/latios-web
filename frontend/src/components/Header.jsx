@@ -659,6 +659,7 @@ export const Header = () => {
                 data-testid="mega-quick-links"
               >
                 {[
+                  ["All Machines", "/machines"],
                   ["Compare Models", "/compare"],
                   ["Support Center", "/support"],
                   ["About Latios", "/about"],

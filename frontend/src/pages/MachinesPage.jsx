@@ -158,6 +158,40 @@ export default function MachinesPage() {
               </div>
             )}
 
+            {/* Technology partners.
+
+                Posters rather than logos on a strip. Every readable character
+                is set type and every mark is a real composited asset --
+                make_posters.py records why neither may be generated. The
+                heading is the wording AboutPage already uses: "Technology
+                Partners", not official or authorised, because nothing in this
+                codebase claims that. */}
+            <div className="mt-16 border-t border-white/10 pt-12" data-testid="machines-partners">
+              <h2 className="font-display text-2xl md:text-3xl font-black tracking-tighter text-white">
+                Technology partners.
+              </h2>
+              <p className="mt-3 max-w-2xl text-sm text-zinc-400">
+                The silicon inside every Latios machine, and the platforms the
+                range is specified across.
+              </p>
+              <div className="mt-8 grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+                {[
+                  ["poster-intel", "Intel® Core™ processors"],
+                  ["poster-amd", "AMD Ryzen™ processors"],
+                  ["poster-nvidia", "NVIDIA® RTX™ professional graphics"],
+                ].map(([file, alt]) => (
+                  <img
+                    key={file}
+                    src={`/images/posters/${file}.webp`}
+                    alt={alt}
+                    loading="lazy"
+                    className="w-full rounded-lg border border-white/10"
+                    data-testid={`partner-${file}`}
+                  />
+                ))}
+              </div>
+            </div>
+
             <div className="mt-14 border-t border-white/10 pt-10 flex flex-wrap items-center justify-between gap-6">
               <p className="text-sm text-zinc-400 max-w-md">
                 Not sure which one? Put two side by side, or tell us what the desk
