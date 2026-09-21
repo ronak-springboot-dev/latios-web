@@ -118,13 +118,20 @@ def band(name, side, accent, kicker, head, body, figs):
     img = side_scrim(img, side, strength=210, power=3.0)
     d = ImageDraw.Draw(img)
 
-    col = round(W * 0.40)                      # the type column
+    # Sizes are FRACTIONS of the canvas, so the type holds its proportion
+    # whatever the scene is rendered at. The first pass used fixed points
+    # and a 60px headline on a 2000px canvas came out at 27px on the page:
+    # readable, but not something that commands the frame the way the
+    # reference posters do.
+    u = W / 2000.0
+    col = round(W * 0.46)                      # the type column
     pad = round(W * 0.055)
     x = pad if side == "left" else W - col - pad
-    y0 = round(H * 0.20)
+    y0 = round(H * 0.155)
 
-    f_head = font("Outfit", 60, 800)
-    f_body = font("Manrope", 23, 400)
+    f_head = font("Outfit", round(94 * u), 800)
+    f_body = font("Manrope", round(29 * u), 400)
+    f_fig = font("Outfit", round(56 * u), 700)
     head_lines = head.splitlines()
     body_lines = wrap(d, body, f_body, col)
 
@@ -134,43 +141,90 @@ def band(name, side, accent, kicker, head, body, figs):
     # line disappeared into it. A ramp strong enough to fix that darkened the
     # whole photograph, which was the complaint in the first place. A local
     # panel fixes legibility where it is needed and leaves the room alone.
-    block_h = 26 + 46 + len(head_lines) * 66 + 14 + len(body_lines) * 34 + 26 + 62
+    lh_head, lh_body = round(102 * u), round(42 * u)
+    block_h = (round(34 * u) + round(58 * u) + len(head_lines) * lh_head
+               + round(18 * u) + len(body_lines) * lh_body + round(34 * u)
+               + round(86 * u))
+    # The panel is sized to the CONTENT, not to the column. `col` is the wrap
+    # measure for the body; the headline is hand-broken and obeys no such
+    # limit, and mt-control's "deployed everywhere." is 980px against a 920px
+    # column -- so its last word sat off the end of the panel, on bare glass,
+    # and ran past the page margin as well. Measure every line that will be
+    # drawn and let the block be as wide as it needs to be.
+    fig_w = sum(max(d.textlength(v, font=f_fig), 40 * u) + round(W * 0.038)
+                for v, _ in figs) - round(W * 0.038)
+    content_w = max([d.textlength(l, font=f_head) for l in head_lines]
+                    + [d.textlength(l, font=f_body) for l in body_lines]
+                    + [fig_w, col * 0.72])
+    content_w = min(content_w, W - 2 * pad)
+    # Re-anchor a right-hand block so a wide headline grows into the frame
+    # rather than off the edge of it.
+    if side == "right":
+        x = W - pad - round(content_w)
+
     m = round(W * 0.022)
+
+    # And the panel's opacity is MEASURED, not fixed. A single value cannot
+    # serve six rooms: under the type block these scenes run from a mean
+    # luminance of 86 (mt-office, a dim corner) to 157 (sff-desk, a white wall
+    # beside a window). A fill tuned for the dark end let the supporting line on
+    # the two bright rooms sit at barely any contrast; one tuned for the bright
+    # end would print a black slab across the dark ones.
+    #
+    # So measure what the type will actually land on -- after the side ramp,
+    # which itself decays fast and leaves the far end of the column almost
+    # untouched -- and solve for the fill that brings it down to TARGET:
+    #
+    #     out = L*(1-a) + 9*a   =>   a = (L - TARGET) / (L - 9)
+    #
+    # against p85 rather than the mean, so a bright streak through the block
+    # (a lamp arm, a window reveal) is covered rather than averaged away.
+    TARGET = 58
+    reg = img.crop((max(0, x - m), max(0, y0 - m),
+                    min(W, x + round(content_w) + m),
+                    min(H, y0 + block_h + m))).convert("L")
+    lum = sorted(reg.getdata())[int(len(reg.getdata()) * 0.85)]
+    a = 0.0 if lum <= TARGET else (lum - TARGET) / max(1.0, lum - 9.0)
+    fill = int(round(min(0.80, max(0.42, a)) * 255))
+
     panel = Image.new("L", img.size, 0)
     ImageDraw.Draw(panel).rounded_rectangle(
-        [x - m, y0 - m, x + col + m, y0 + block_h + m],
-        radius=round(W * 0.012), fill=150)
+        [x - m, y0 - m, x + round(content_w) + m, y0 + block_h + m],
+        radius=round(W * 0.012), fill=fill)
     panel = panel.filter(ImageFilter.GaussianBlur(round(W * 0.016)))
     img = Image.composite(Image.new("RGB", img.size, (8, 9, 12)), img, panel)
     d = ImageDraw.Draw(img)
 
     y = y0
-    d.rectangle([x, y, x + round(W * 0.035), y + 4], fill=accent)
-    y += 26
-    text(d, (x, y), kicker.upper(), font("Manrope", 21, 600), MUTED, tracking=6)
-    y += 46
+    d.rectangle([x, y, x + round(W * 0.042), y + round(5 * u)], fill=accent)
+    y += round(34 * u)
+    text(d, (x, y), kicker.upper(), font("Manrope", round(26 * u), 600), MUTED,
+         tracking=round(8 * u))
+    y += round(58 * u)
 
     for line in head_lines:
-        text(d, (x, y), line, f_head, INK, tracking=-1)
-        y += 66
-    y += 14
+        text(d, (x, y), line, f_head, INK, tracking=round(-2 * u))
+        y += lh_head
+    y += round(18 * u)
 
     for line in body_lines:
         text(d, (x, y), line, f_body, BODY)
-        y += 34
-    y += 26
+        y += lh_body
+    y += round(34 * u)
 
     # The figures, in a row. Value in the accent, unit under it -- the same
     # reading order the stat rows on the page itself use.
     fx = x
     for val, unit in figs:
-        w = text(d, (fx, y), val, font("Outfit", 40, 700), accent)
-        text(d, (fx, y + 46), unit.upper(), font("Manrope", 16, 600), MUTED, tracking=3)
-        fx += max(w, 40) + round(W * 0.035)
+        w = text(d, (fx, y), val, f_fig, accent)
+        text(d, (fx, y + round(64 * u)), unit.upper(),
+             font("Manrope", round(20 * u), 600), MUTED, tracking=round(4 * u))
+        fx += max(w, 40 * u) + round(W * 0.038)
 
     out = OUT / f"{name}-band.webp"
     img.save(out, "WEBP", quality=90, method=6)
-    print(f"  {out.name:24s} {img.size}  {out.stat().st_size // 1024:>4}KB")
+    print(f"  {out.name:24s} {img.size}  {out.stat().st_size // 1024:>4}KB"
+          f"  p85 {lum:>3} -> panel {fill}")
 
 
 if __name__ == "__main__":
