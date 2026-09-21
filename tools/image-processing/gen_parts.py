@@ -19,7 +19,7 @@ The plates are keyed to the spec rows in models.js, not to pages:
     ddr5-quad        4x DDR5 U-DIMM          sff-b860-pro-ai (4 slots, 128GB)
     ddr5-sodimm      2x DDR5 SO-DIMM         mff-dp10 (not in this tranche)
     gpu-workstation  single-blower pro card  anything speccing "up to RTX A4000"
-    m2-2280          one M.2 NVMe SSD        every page with an M.2 row
+    m2-2280          one M.2 NVMe SSD        NOT SHIPPING -- see JOB_NEG below
     cooler           tower/downdraft cooler  all MT/SFF
 
 gpu-workstation is a SEPARATE plate from the AM4 page's gpu-radeon on purpose.
@@ -54,18 +54,33 @@ os.environ.setdefault("LATIOS_UNET", "2511")
 
 OUT = Path(__file__).parent / "generated" / "components-lib"
 
-#: Identical to gen_am4.AM4_PART. Imported rather than copied would be better,
-#: but gen_am4 is a page module and this is a library module; duplicating ten
-#: lines beats making the library depend on one page's file.
+#: gen_am4.AM4_PART, with one deliberate difference: a LIGHT seamless instead of
+#: a black one.
+#:
+#: The AM4 page renders its parts on black because two of its plates keep the
+#: render's own ground (sky_swap) rather than cutting it off. This library always
+#: cuts, and a cut wants contrast. Measured on the first ddr5-pair roll, which
+#: came back on black: u2net returned a partial, see-through alpha across the
+#: matte black heat spreaders, and binarising it at 60, 110 or 160 did not
+#: recover them -- it deleted them. A black module against a black seamless has
+#: no edge for a segmenter to find, which is the same fact that made sky_swap
+#: fail on the AM4 memory plate, arriving from the other direction.
+#:
+#: On a light ground the same part cuts cleanly, and the plate is then staged on
+#: PLATE_GROUND anyway, so the render's ground is never seen. What must NOT
+#: happen is appending gen_components.STYLE to get this: that is recorded in
+#: gen_am4.py as having turned every plate into a pasted grey rectangle, because
+#: STYLE keeps the ground rather than replacing it.
 PART = (
-    "professional studio product photograph, one object alone on a pure black "
-    "seamless background, the object BRIGHTLY and EVENLY lit from above and in "
-    "front, clean specular highlights along every machined edge, no face of the "
-    "object falling into shadow, crisp sharp focus across the whole object, fine "
-    "surface texture on brushed metal and circuit board, deep depth of field with "
-    "the near edge and the far edge equally sharp, every part of the object in "
-    "focus, the object fills most of the frame, nothing else in the picture, no "
-    "lamp, no light source visible, no floor, no horizon, no backdrop, no "
+    "professional studio product photograph, one object alone on a plain smooth "
+    "light grey seamless background, the object BRIGHTLY and EVENLY lit from "
+    "above and in front, clean specular highlights along every machined edge, no "
+    "face of the object falling into shadow, the object clearly separated from "
+    "the background at every edge, crisp sharp focus across the whole object, "
+    "fine surface texture on brushed metal and circuit board, deep depth of field "
+    "with the near edge and the far edge equally sharp, every part of the object "
+    "in focus, the object fills most of the frame, nothing else in the picture, "
+    "no lamp, no light source visible, no horizon, no backdrop objects, no "
     "background objects"
 )
 
@@ -127,10 +142,21 @@ JOB_NEG = {
     "gpu-workstation": ", two fans, three fans, dual fan, axial fans, open "
                        "shroud, transparent shroud, rgb lighting, printed label, "
                        "brand logo, lettering",
-    # The M.2 has failed four times, always the same way: the model has a strong
-    # prior that a long thin green board with an edge connector is a DIMM, and a
-    # DIMM is the one thing it must not resemble -- it sits under a memory
-    # section showing real DIMMs. These negatives name that failure directly.
+    # FIVE failures now, and the fifth is the most interesting. Naming the part
+    # and asking for contacts "across ONE SHORT END only" with "the long edges
+    # bare board" finally bought the right SHAPE -- correct 4:1 proportion, two
+    # memory packages, a mounting cut-out at the far end, contacts on a short
+    # edge. And then it put a second contact strip on the other short end too,
+    # with "gold contacts at both ends" sitting in this very negative list.
+    #
+    # So the prior is narrower than it looked. It is not that the model thinks a
+    # long green board is a DIMM; it is that it will not leave an end of one
+    # BARE. That is worth knowing before anyone spends a sixth render on it.
+    #
+    # Not shipped. The plate would need the wrong contact row painted out and
+    # the package lettering softened -- two repairs, one of them large, on a part
+    # that is one line in a spec table. It stays out until a photograph exists,
+    # the same call the AM4 storage plate records.
     "m2-2280": ", memory module, dimm, ram stick, heat spreader, contacts along "
                "a long side, pads down the length of the board, gold contacts at "
                "both ends, metal case, enclosure, lid, two objects, square board, "
@@ -139,9 +165,9 @@ JOB_NEG = {
 }
 
 NEG = gc.NEG + (", computer tower, desktop pc case, brand logo, rgb lighting, "
-                "rainbow, blue cast, floor, ground plane, table top, desk "
-                "surface, reflective surface, reflection, cast shadow, horizon "
-                "line, backdrop, light streak, lens flare, shallow depth of "
+                "rainbow, blue cast, dark background, black background, table "
+                "top, desk surface, reflective surface, reflection, horizon "
+                "line, light streak, lens flare, shallow depth of "
                 "field, bokeh, defocused, out of focus, blurred edges, soft "
                 "focus, motion blur, tilt shift")
 

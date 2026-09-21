@@ -76,26 +76,31 @@ const THEMES = {
     accent: "#e2571f", accentSoft: "#f5926a",
     density: "tight", surface: "#0a0a0a",
     kicker: "Cores where the budget goes",
+    shape: "sharp",
   },
   "mt-h610-ddr5": {
     accent: "#2f7bff", accentSoft: "#83aeff",
     density: "normal", surface: "#07090d",
     kicker: "Built around the bus",
+    shape: "sharp",
   },
   "mt-pro-h610-ddr5": {
     accent: "#8fa3b8", accentSoft: "#c3d0dc",
     density: "airy", surface: "#0a0b0c",
     kicker: "The Pro build",
+    shape: "sharp",
   },
   "mt-q670-ddr5": {
     accent: "#3d6ea8", accentSoft: "#8fb3d6",
     density: "normal", surface: "#080a0c",
     kicker: "Specified for managed fleets",
+    shape: "sharp",
   },
   "mt-am5-pro-ai": {
     accent: "#8b5cf6", accentSoft: "#c4aefc",
     density: "normal", surface: "#0a080f",
     kicker: "Ryzen AI, on the die",
+    shape: "sharp",
   },
 
   // --- SFF small-form-factor ----------------------------------------------
@@ -103,21 +108,25 @@ const THEMES = {
     accent: "#18b6c4", accentSoft: "#7fdbe4",
     density: "airy", surface: "#06090a",
     kicker: "Eight litres",
+    shape: "sharp",
   },
   "sff-am5-pro-ai": {
     accent: "#7c5cf0", accentSoft: "#b9a6f8",
     density: "airy", surface: "#08070d",
     kicker: "An NPU in eight litres",
+    shape: "sharp",
   },
   "sff-b860-pro-ai": {
     accent: "#12a5b8", accentSoft: "#79d3de",
     density: "normal", surface: "#06090a",
     kicker: "Core Ultra, small footprint",
+    shape: "sharp",
   },
   "sff-h810-pro-ai": {
     accent: "#2aa198", accentSoft: "#8bcfc9",
     density: "normal", surface: "#06090a",
     kicker: "Volume rollout",
+    shape: "sharp",
   },
 
   // --- MFF mini PC ---------------------------------------------------------
@@ -125,6 +134,7 @@ const THEMES = {
     accent: "#9aa0a6", accentSoft: "#cfd3d6",
     density: "tight", surface: "#0a0a0a",
     kicker: "1.1 litres",
+    shape: "sharp",
   },
 
   // --- PROMAX workstations -------------------------------------------------
@@ -132,87 +142,104 @@ const THEMES = {
     accent: "#ff7a18", accentSoft: "#ffb373",
     density: "normal", surface: "#080706",
     kicker: "Workstation class",
+    shape: "sharp",
   },
   "promax-t2-w880": {
     accent: "#ff5f3d", accentSoft: "#ffa189",
     density: "normal", surface: "#080605",
     kicker: "Unlocked, error-corrected",
+    shape: "sharp",
   },
   "promax-t2-w680": {
     accent: "#ffa62b", accentSoft: "#ffcd84",
     density: "normal", surface: "#080706",
     kicker: "Twenty-four cores",
+    shape: "sharp",
   },
   "promax-t4-plus": {
     accent: "#ff4d16", accentSoft: "#ff9670",
     density: "airy", surface: "#050403",
     kicker: "The top of the range",
+    shape: "sharp",
   },
   // --- laptops, audio and video --------------------------------------------
   "pro-14": {
     accent: "#4f9cf9", accentSoft: "#a5cbfd",
     density: "normal", surface: "#070a0e",
     kicker: "Business, in aluminium",
+    shape: "sharp",
   },
   "notebook-14": {
     accent: "#2dd4bf", accentSoft: "#99ece0",
     density: "normal", surface: "#050c0b",
     kicker: "The everyday notebook",
+    shape: "sharp",
   },
   "archer-ltg540z": {
     accent: "#e0245e", accentSoft: "#f087a6",
     density: "normal", surface: "#0d0509",
     kicker: "300Hz of overkill",
+    shape: "sharp",
   },
   "sp50-speakerphone": {
     accent: "#26c6a6", accentSoft: "#89e2d1",
     density: "airy", surface: "#050b0a",
     kicker: "Every voice, heard",
+    shape: "sharp",
   },
   "pro-video-soundbar": {
     accent: "#3fbf7f", accentSoft: "#95dfba",
     density: "normal", surface: "#050b08",
     kicker: "One bar, one cable",
+    shape: "sharp",
   },
   "video-soundbar-4k": {
     accent: "#2fa36b", accentSoft: "#8ad3ae",
     density: "normal", surface: "#050a07",
     kicker: "Framed automatically",
+    shape: "sharp",
   },
   "hps-controller": {
     accent: "#8bb33d", accentSoft: "#c3d98c",
     density: "normal", surface: "#080a05",
     kicker: "Structured discussion",
+    shape: "sharp",
   },
   "pro-web-camera": {
     accent: "#d06be0", accentSoft: "#e9b3f1",
     density: "tight", surface: "#0b060c",
     kicker: "Plug and play",
+    shape: "sharp",
   },
   "pro-ptz-camera": {
     accent: "#a45de8", accentSoft: "#d0aef4",
     density: "normal", surface: "#09060d",
     kicker: "It follows the room",
+    shape: "sharp",
   },
   "pro-monitor": {
     accent: "#5b8def", accentSoft: "#aec5f7",
     density: "normal", surface: "#06080d",
     kicker: "Colour you can trust",
+    shape: "sharp",
   },
   "in-series-lfd": {
     accent: "#4067c9", accentSoft: "#9db3e6",
     density: "airy", surface: "#05070c",
     kicker: "Seen from the back row",
+    shape: "sharp",
   },
   "pro-ifp": {
     accent: "#e07a3f", accentSoft: "#f0bb9c",
     density: "normal", surface: "#0c0806",
     kicker: "Touch. Share. Create.",
+    shape: "sharp",
   },
   "active-led": {
     accent: "#ff3d6e", accentSoft: "#ff9eb6",
     density: "airy", surface: "#0c0407",
     kicker: "No bezels at all",
+    shape: "sharp",
   },
 };
 

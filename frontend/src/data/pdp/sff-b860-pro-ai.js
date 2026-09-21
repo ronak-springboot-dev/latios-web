@@ -9,8 +9,21 @@
  * specification rather than illustrated near it.
  *
  * Memory leads, because four slots instead of two is the whole reason this
- * configuration exists — and the board's own silkscreen names all four, which
- * is better evidence than a render of a memory module could ever be.
+ * configuration exists, and the spotlight shows the SLOTS rather than modules
+ * standing on a plate: what is being sold here is the board, not the DIMMs.
+ *
+ * Those three spotlight images ARE renders, whatever the shoot-like filenames
+ * suggest, and their alt text and captions already say so. An earlier note here
+ * claimed the board's own silkscreen named all four slots and was better
+ * evidence than a render could be; it is not, because the image IS the render.
+ * Corrected rather than deleted, because the reasoning about slots over modules
+ * still holds and is why no memory plate was added here.
+ *
+ * Graphics had no picture at all while the specification said "up to RTX
+ * A4000". It gets one from the shared library in images/parts, and a
+ * single-slot blower card rather than the dual-fan consumer one on the AM4
+ * page: in eight litres a full-height dual-fan card does not fit, so the wrong
+ * plate would contradict the chassis as well as the spec row.
  */
 export default {
   sections: [

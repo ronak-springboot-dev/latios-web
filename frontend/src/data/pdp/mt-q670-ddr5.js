@@ -12,6 +12,14 @@
  * The comparison stays late rather than early: the reference page earns its
  * side-by-side by showing the thing first, and Q670-versus-H610 is a decision
  * a reader makes after they have seen the chassis open, not before.
+ *
+ * The memory and graphics plates are NOT photographs and are captioned as
+ * illustrations. They come from the shared library in images/parts, rendered
+ * once and reused by spec match rather than per page -- a render costs 7-10
+ * minutes, and these two plates serve every DDR5 MT and SFF page between them.
+ * The card is the single-slot blower kind on purpose: this page sells "up to
+ * RTX A4000", and the dual-fan consumer card on the AM4 page would be the wrong
+ * class of part, which is the same error as showing the wrong socket.
  */
 export default {
   sections: [
@@ -137,6 +145,35 @@ export default {
         {"src": "/bands/mt-q670-ddr5-1.webp", "w": 1200, "h": 1523, "alt": "Latios MT — Intel Q670 DDR5 - Up to a Core i9-14900"},
         {"src": "/bands/mt-q670-ddr5-2.webp", "w": 1200, "h": 1163, "alt": "Latios MT — Intel Q670 DDR5 - DDR5 at full chipset bandwidth"}
       ]
+    },
+    {
+      "type": "featureSplit",
+      "pill": "Memory",
+      "heading": "DDR5-5600,",
+      "headingAccent": "at full chipset bandwidth.",
+      "body": "Two U-DIMM slots running at 5600 MHz. Ship a fleet at 16GB and take any seat in it to 64GB later without opening a second purchase order for anything else.",
+      "image": "/images/parts/ddr5-pair.webp",
+      "alt": "Two DDR5 desktop memory modules, rendered",
+      "stats": [
+        ["5600", "MHz", "Dual DDR5 channels"],
+        ["64", "GB", "Maximum supported", "Up to"]
+      ],
+      "footnote": "Image is an illustration, not the modules supplied."
+    },
+    {
+      "type": "featureSplit",
+      "pill": "Graphics",
+      "heading": "Room for a",
+      "headingAccent": "professional card.",
+      "body": "Integrated Intel graphics drive the desks that only need a display. Where a seat needs certified drivers — CAD, design review, a control-room wall — the chassis takes a single-slot professional card, and the 500W supply has the headroom for it.",
+      "image": "/images/parts/gpu-workstation.webp",
+      "alt": "A single-slot blower-style professional graphics card, rendered",
+      "flip": true,
+      "stats": [
+        ["A4000", "", "NVIDIA RTX class", "Up to"],
+        ["500", "W", "80+ Bronze ATX supply"]
+      ],
+      "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
     },
     {
       "type": "ioMap",
