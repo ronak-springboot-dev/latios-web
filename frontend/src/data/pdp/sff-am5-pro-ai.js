@@ -229,6 +229,18 @@ export default {
         "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
       },
       {
+        "type": "featureSplit",
+        "pill": "On the counter",
+        "heading": "Small enough",
+        "headingAccent": "for the front desk.",
+        "body": "Eight litres fits where a tower does not — a reception counter, a kiosk, a consulting room — with Ryzen AI on the die for the inference work those desks are starting to do locally.",
+        "image": "/images/scenes/sff-reception.webp",
+        "alt": "A Latios machine on a working desk, photographed and composited into a studio scene",
+        "aspect": "aspect-[16/10]",
+        "footnote": "The machine is photographed. The room is a studio composite — furniture, display and peripherals are not supplied.",
+        "flip": true
+      },
+      {
         "type": "compare",
         "heading": "Against the rest of the SFF range.",
         "rows": [

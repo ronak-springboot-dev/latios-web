@@ -272,6 +272,17 @@ export default {
         ]
       },
       {
+        "type": "featureSplit",
+        "pill": "On the desk",
+        "heading": "Eighteen litres,",
+        "headingAccent": "beside the screen.",
+        "body": "It stands upright in the footprint of a ream of paper, so it shares a desk with the display rather than competing with it — and drives 4K over HDMI 2.1 and DisplayPort without a card in the slot.",
+        "image": "/images/scenes/mt-office.webp",
+        "alt": "A Latios machine on a working desk, photographed and composited into a studio scene",
+        "aspect": "aspect-[16/10]",
+        "footnote": "The machine is photographed. The room is a studio composite — furniture, display and peripherals are not supplied."
+      },
+      {
         "type": "specTable",
         "heading": "Every number that matters.",
         "body": "Every MT configuration on this chassis, side by side. The rows that differ are the decision."

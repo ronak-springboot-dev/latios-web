@@ -270,6 +270,17 @@ export default {
         ]
       },
       {
+        "type": "featureSplit",
+        "pill": "In the lab",
+        "heading": "One bench,",
+        "headingAccent": "one specification.",
+        "body": "A room of identical seats is the point: two 2.5-gigabit ports on every one, an NPU on every package, and eight litres that leaves the bench to the work rather than to the machine.",
+        "image": "/images/scenes/sff-lab.webp",
+        "alt": "A Latios machine on a working desk, photographed and composited into a studio scene",
+        "aspect": "aspect-[16/10]",
+        "footnote": "The machine is photographed. The room is a studio composite — furniture, display and peripherals are not supplied."
+      },
+      {
         "type": "band",
         "kicker": "Volume rollout",
         "items": [
