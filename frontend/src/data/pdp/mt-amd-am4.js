@@ -59,7 +59,7 @@ export default {
       "heading": "The everyday",
       "headingAccent": "workhorse.",
       "body": "AMD Ryzen 5000G processing with Radeon graphics on the die, dual-channel DDR4 and a full array of I/O, in an 18-litre chassis your IT team can open by hand.",
-      "image": "/images/am4/hero-front.webp",
+      "image": "/images/mt/hero-front.webp",
       "alt": "The Latios MT tower from the front, its ribbed fascia and Latios wordmark lit against a warm horizon glow",
       "glow": "horizon",
       "frame": "rounded",
@@ -78,19 +78,19 @@ export default {
         {
           "col": 1, "size": "tall", "bleed": true,
           "title": "Compact design", "subtitle": "18-litre micro tower",
-          "image": "/images/am4/chassis-card.webp",
-          "alt": "The Latios MT tower from the front on a lit backdrop, with its height and width marked",
+          "image": "/images/mt/chassis-card.webp",
+          "alt": "The Latios MT tower at three-quarters on a lit backdrop, with its height and width marked",
           "dims": {
             "box": [1000, 1400],
-            "h": { "x": 26.2, "y1": 22.1, "y2": 80.0, "label": "354 mm" },
-            "d": { "x1": 30.7, "x2": 69.3, "y": 82.0, "label": "166 mm" },
+            "h": { "x": 14.9, "y1": 22.0, "y2": 80.0, "label": "354 mm" },
+            "d": { "x1": 19.4, "x2": 80.4, "y": 82.0, "label": "166 mm" },
             "note": "Depth 312 mm · 7.59 kg"
           }
         },
         {
           "col": 1, "size": "short", "bleed": true, "grow": true,
           "title": "Cooling & power", "subtitle": "Fan cooler · 80+ Bronze supply",
-          "image": "/images/am4/cooler-card.webp",
+          "image": "/images/mt/cooler-card.webp",
           "alt": "A round desktop fan cooler, rendered",
           "stat": ["500", "W", "ATX power"]
         },
@@ -111,7 +111,7 @@ export default {
         {
           "col": 2, "size": "short", "bleed": true, "foot": true, "grow": true,
           "title": "4K display output", "subtitle": "HDMI 4K@60 · DisplayPort 1.4 · VGA (opt)",
-          "image": "/images/am4/desk-card.webp",
+          "image": "/images/mt/desk-card.webp",
           "alt": "The Latios MT on a desk beside a display showing the Latios wallpaper"
         },
         {
@@ -123,7 +123,7 @@ export default {
         {
           "col": 3, "size": "half", "bleed": true, "grow": true,
           "title": "Graphics", "subtitle": "Up to 16GB AMD Radeon RX",
-          "image": "/images/am4/gpu-radeon.webp",
+          "image": "/images/parts/gpu-radeon.webp",
           "alt": "A full-height desktop graphics card, rendered"
         }
       ]
@@ -150,7 +150,7 @@ export default {
       "heading": "Room for a",
       "headingAccent": "Radeon RX card.",
       "body": "Integrated Radeon graphics drive two 4K displays out of the box. When a desk needs more — design review, a control-room wall, light rendering — the chassis takes a discrete AMD Radeon RX card, and the 500W supply has the headroom for it.",
-      "image": "/images/am4/gpu-radeon.webp",
+      "image": "/images/parts/gpu-radeon.webp",
       "alt": "A full-height desktop graphics card with two fans, rendered",
       "flip": true,
       "stats": [
@@ -165,7 +165,7 @@ export default {
       "heading": "Dual-channel DDR4,",
       "headingAccent": "up to 64GB.",
       "body": "Two U-DIMM slots at 3200 MHz. Ship a desk at 16GB today and take it to 64GB years later without changing anything else in the box.",
-      "image": "/images/am4/ddr4-pair.webp",
+      "image": "/images/parts/ddr4-pair.webp",
       "alt": "Two desktop memory modules, rendered",
       "stats": [
         ["3200", "MHz", "Dual DDR4 channels", "Up to"],
@@ -178,7 +178,7 @@ export default {
       "heading": "A fast drive and a big one,",
       "headingAccent": "in the same box.",
       "body": "An M.2 SSD for the operating system and working files, with a 2.5-inch bay and a 3.5-inch bay beside it for bulk storage — all reachable from the one hand-removable side panel.",
-      "image": "/images/am4/storage-set.webp",
+      "image": "/images/parts/storage-set.webp",
       "alt": "A 2.5-inch drive and a 3.5-inch drive shown at their true relative sizes, rendered",
       "flip": true,
       "footnote": "1× M.2 SSD (auto-switch) · 1× 2.5″ HDD/SSD · 1× 3.5″ HDD. Image is an illustration."
@@ -189,7 +189,7 @@ export default {
       "heading": "Extruded lines, and the mark",
       "headingAccent": "that earns them.",
       "body": "The fascia is drawn as one extrusion — a field of fine ribs broken by a single band, with the Latios wordmark cut into it. It is the part of the machine a desk actually looks at, and the only part of this page photographed rather than rendered.",
-      "image": "/images/am4/fascia.webp",
+      "image": "/images/mt/fascia.webp",
       "alt": "A close photograph of the Latios MT’s ribbed front panel, with the Latios wordmark",
       "aspect": "aspect-[16/10]",
       "stats": [
@@ -203,7 +203,7 @@ export default {
       "heading": "Eighteen litres,",
       "headingAccent": "beside the screen.",
       "body": "It stands upright in the footprint of a ream of paper, so it shares a desk with the display rather than competing with it — and drives two 4K screens from HDMI and DisplayPort without a card in the slot.",
-      "image": "/images/am4/desk-photo.webp",
+      "image": "/images/mt/desk-photo.webp",
       "alt": "The Latios MT standing on a desk beside a monitor showing the Latios wallpaper",
       "aspect": "aspect-[16/10]",
       "flip": true,

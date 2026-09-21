@@ -23,11 +23,11 @@
  *     H610 build is photographed. Same call mt-h610-ddr4.js records.
  *   - No benchmark chart. The spec sheet has no scores, and a chart is a claim.
  *
- * The chassis images live under /images/am4/ for historical reasons and are
- * shared deliberately: the MT is one box across all six configurations, which
- * shoot_deploy.py already establishes, and they differ by board, CPU and
- * memory rather than by case. The component plates come from the shared
- * library in /images/parts/, rendered once and reused by spec match.
+ * The chassis images live under /images/mt/ and are shared deliberately: the
+ * MT is one box across all six configurations, which shoot_deploy.py already
+ * establishes, and they differ by board, CPU and memory rather than by case.
+ * The component plates come from /images/parts/, rendered once and reused by
+ * spec match. Only cpu-ryzen is still page-specific enough to live in am4/.
  */
 export default {
   sections: [
@@ -40,7 +40,7 @@ export default {
       "heading": "The same machine,",
       "headingAccent": "on a faster bus.",
       "body": "Twelfth through fourteenth generation Intel Core on the H610 chipset, with DDR5 at 5600 MT/s instead of DDR4 at 3200 — in the same 18-litre chassis, opened by hand, serviced from one side.",
-      "image": "/images/am4/hero-front.webp",
+      "image": "/images/mt/hero-front.webp",
       "alt": "The Latios MT tower from the front, its ribbed fascia and Latios wordmark lit against a warm horizon glow",
       "glow": "horizon",
       "frame": "rounded",
@@ -59,19 +59,19 @@ export default {
         {
           "col": 1, "size": "tall", "bleed": true,
           "title": "Compact design", "subtitle": "18-litre micro tower",
-          "image": "/images/am4/chassis-card.webp",
-          "alt": "The Latios MT tower from the front on a lit backdrop, with its height and width marked",
+          "image": "/images/mt/chassis-card.webp",
+          "alt": "The Latios MT tower at three-quarters on a lit backdrop, with its height and width marked",
           "dims": {
             "box": [1000, 1400],
-            "h": { "x": 26.2, "y1": 22.1, "y2": 80.0, "label": "354 mm" },
-            "d": { "x1": 30.7, "x2": 69.3, "y": 82.0, "label": "166 mm" },
+            "h": { "x": 14.9, "y1": 22.0, "y2": 80.0, "label": "354 mm" },
+            "d": { "x1": 19.4, "x2": 80.4, "y": 82.0, "label": "166 mm" },
             "note": "Depth 312 mm · 7.59 kg"
           }
         },
         {
           "col": 1, "size": "short", "bleed": true, "grow": true,
           "title": "Cooling & power", "subtitle": "Fan cooler · 80+ Bronze supply",
-          "image": "/images/am4/cooler-card.webp",
+          "image": "/images/mt/cooler-card.webp",
           "alt": "A round desktop fan cooler, rendered",
           "stat": ["500", "W", "ATX power"]
         },
@@ -92,7 +92,7 @@ export default {
         {
           "col": 2, "size": "short", "bleed": true, "foot": true, "grow": true,
           "title": "4K display output", "subtitle": "HDMI 2.1 4K@60 · DisplayPort · VGA",
-          "image": "/images/am4/desk-card.webp",
+          "image": "/images/mt/desk-card.webp",
           "alt": "The Latios MT on a desk beside a display showing the Latios wallpaper"
         },
         {
@@ -160,7 +160,7 @@ export default {
       "heading": "Extruded lines, and the mark",
       "headingAccent": "that earns them.",
       "body": "The fascia is drawn as one extrusion — a field of fine ribs broken by a single band, with the Latios wordmark cut into it. It is the part of the machine a desk actually looks at, and it is photographed rather than rendered.",
-      "image": "/images/am4/fascia.webp",
+      "image": "/images/mt/fascia.webp",
       "alt": "A close photograph of the Latios MT’s ribbed front panel, with the Latios wordmark",
       "aspect": "aspect-[16/10]",
       "flip": true,
@@ -175,7 +175,7 @@ export default {
       "heading": "Eighteen litres,",
       "headingAccent": "beside the screen.",
       "body": "It stands upright in the footprint of a ream of paper, so it shares a desk with the display rather than competing with it — and drives 4K over HDMI 2.1 and DisplayPort without a card in the slot.",
-      "image": "/images/am4/desk-photo.webp",
+      "image": "/images/mt/desk-photo.webp",
       "alt": "The Latios MT standing on a desk beside a monitor showing the Latios wallpaper",
       "aspect": "aspect-[16/10]",
       "footnote": "Photographed. Display and peripherals are not supplied."

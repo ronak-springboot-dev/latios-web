@@ -1,122 +1,230 @@
 /**
- * Latios Pro MT — Intel H610 DDR5.  Design language: the Pro build.
- * Steel, restrained, airy. Fewer sections and more whitespace than its
- * siblings — this one is sold on temperament rather than on peak numbers.
+ * Latios Pro MT — Intel H610 DDR5.  Rebuilt on the mt-amd-am4 design
+ * language: split features with big-number rows, a bento grid, no motion.
+ *
+ * The scroll-driven reveal, the video loop and the marquee are gone. All
+ * three carried content the copy already says.
+ *
+ * The bento's chassis card carries NO dimension callouts here, and that is
+ * deliberate. This model's Dimensions row reads 168 x 335.1 x 369.4 mm and
+ * also says 18 litres, which those figures do not make -- they come to
+ * about 20.8. Every other MT reads 312 x 166 x 354. Until someone says
+ * which is right, this page states no measurement it cannot stand behind.
+ *
+ * No board, socket, interior or rear-panel photograph, though MT_GALLERY
+ * carries all four. The unit the shoot photographed is the Q670 build --
+ * mt-q670-ddr5.js says so and pins its port map to it -- and a rear I/O
+ * shield is cut for its board, so those frames are evidence about Q670 and
+ * not about this machine. The ports stay in the specification table until
+ * this build is photographed.
+ *
+ * Chassis images come from /images/mt/, shared across the MT range because
+ * the MT is one box; component plates come from /images/parts/, rendered
+ * once and reused by spec match.
  */
 export default {
-  sections: [
-    {
-      "type": "hero"
-    },
-    {
-      "type": "banner",
-      "image": "/images/components/board-neutral.webp",
-      "kicker": "The Pro build",
-      "headline": "Tuned for the ninth hour, not the first minute.",
-      "subline": "Twenty cores of Core i7-14700 with a cooling profile set for sustained boost rather than short bursts."
-    },
-    {
-      "type": "reveal",
-      "manifest": { "frames": 64, "width": 1400, "height": 1120, "pattern": "/reveal/mt-pro-h610-ddr5/{i}.webp" },
-      "height": 260,
-      "kicker": "Inside",
-      "heading": "Built to hold its clocks.",
-      "body": "Scroll to open it. What separates the Pro build is thermal, and thermal is a matter of what is in the box.",
-      "steps": [
-        {
-          "at": 0.0,
-          "label": "Closed",
-          "text": "18 litres, 7.59 kg. Quiet enough for an open office at full load."
-        },
-        {
-          "at": 0.3,
-          "label": "Panel off",
-          "text": "One panel, by hand. The same service story as the rest of the range."
-        },
-        {
-          "at": 0.55,
-          "label": "Cooling",
-          "text": "A tower cooler with copper heatpipes over the socket, and a clear front-to-back air path."
-        },
-        {
-          "at": 0.78,
-          "label": "Memory",
-          "text": "Two DDR5 U-DIMM slots up to 64GB, keeping twenty cores fed across applications."
-        },
-        {
-          "at": 0.93,
-          "label": "Graphics",
-          "text": "A full-height slot for an RTX A4000-class card with certified drivers."
-        }
-      ]
-    },
-    {
-      "type": "stickySplit",
-      "kicker": "Sustained load",
-      "heading": "Peak numbers are the easy part.",
-      "body": "Any machine can hit its boost clock once. The Pro build is specified around what happens on the ninth hour of a render queue.",
-      "points": [
-        "Core i7-14700, twenty cores",
-        "Cooling profile set for sustained boost",
-        "Certified professional graphics drivers",
-        "dTPM 2.0 with hardware TPM support"
-      ],
-      "media": [
-        {
-          "src": "/images/components/cpu-intel.webp",
-          "caption": "Fourteenth-generation Intel silicon in socket."
-        },
-        {
-          "src": "/images/ddr5.webp",
-          "caption": "Dual-channel DDR5 across two U-DIMM slots."
-        },
-        {
-          "src": "/images/details/mt-panel.webp",
-          "caption": "The panel that comes off by hand."
-        }
-      ]
-    },
-    {
-      "type": "statWall",
-      "align": "left",
-      "heading": "What it holds, not what it peaks at.",
-      "stats": [
-        [
-          "20",
-          "Cores, Core i7-14700",
-          "Also i5-14500 and i3-14100 on the same board"
+    "sections": [
+      {
+        "type": "hero"
+      },
+      {
+        "type": "featureSplit",
+        "pill": "Latios Pro MT · H610 DDR5",
+        "heading": "One platform,",
+        "headingAccent": "four price points.",
+        "body": "Core i7-14700 down to Core i3-14100 on the same board and the same chassis, with DDR5 on every one of them. A fleet can mix all four and still be one service procedure, one image and one spare part.",
+        "image": "/images/mt/hero-front.webp",
+        "alt": "The Latios MT tower from the front, its ribbed fascia and Latios wordmark lit against a warm horizon glow",
+        "glow": "horizon",
+        "frame": "rounded",
+        "stats": [
+          [
+            "i7",
+            "14700",
+            "Top of the line"
+          ],
+          [
+            "64",
+            "GB",
+            "DDR5 ceiling"
+          ],
+          [
+            "4",
+            "SKUs",
+            "On one board"
+          ]
         ],
-        [
-          "64GB",
-          "DDR5",
-          "Two U-DIMM slots"
-        ],
-        [
-          "18 L",
-          "Chassis",
-          "312 × 166 × 354 mm, 7.59 kg"
+        "statCols": 3
+      },
+      {
+        "type": "bento",
+        "stage": true,
+        "heading": "Everything a desk needs, in one chassis.",
+        "cards": [
+          {
+            "col": 1,
+            "size": "tall",
+            "bleed": true,
+            "title": "Compact design",
+            "subtitle": "18-litre micro tower",
+            "image": "/images/mt/chassis-card.webp",
+            "alt": "The Latios MT tower at three-quarters on a lit backdrop, with its height and width marked"
+          },
+          {
+            "col": 1,
+            "size": "short",
+            "bleed": true,
+            "grow": true,
+            "title": "Cooling & power",
+            "subtitle": "Fan cooler · 80+ Bronze supply",
+            "image": "/images/mt/cooler-card.webp",
+            "alt": "A round desktop fan cooler, rendered",
+            "stat": [
+              "500",
+              "W",
+              "ATX power"
+            ]
+          },
+          {
+            "col": 2,
+            "size": "small",
+            "title": "Memory",
+            "subtitle": "Dual-channel DDR5 · up to 64GB",
+            "glyph": "dimm"
+          },
+          {
+            "col": 2,
+            "size": "small",
+            "title": "Storage",
+            "subtitle": "M.2 · 2.5″ bay · 3.5″ bay",
+            "glyph": "drive"
+          },
+          {
+            "col": 2,
+            "size": "text",
+            "title": "Wi-Fi 6E AX211 · dTPM 2.0",
+            "subtitle": "Intel I219-V 1G LAN · hardware TPM support · Kensington · padlock"
+          },
+          {
+            "col": 2,
+            "size": "short",
+            "bleed": true,
+            "foot": true,
+            "grow": true,
+            "title": "4K display output",
+            "subtitle": "HDMI 2.1 4K@60 · DisplayPort · VGA",
+            "image": "/images/mt/desk-card.webp",
+            "alt": "A Latios desktop on a desk beside a display showing the Latios wallpaper"
+          },
+          {
+            "col": 3,
+            "size": "half",
+            "bleed": true,
+            "title": "Processor",
+            "subtitle": "Core i7-14700 to i3-14100",
+            "image": "/images/components/cpu-intel.webp",
+            "alt": "A processor seated in its socket"
+          },
+          {
+            "col": 3,
+            "size": "half",
+            "bleed": true,
+            "grow": true,
+            "title": "Graphics",
+            "subtitle": "Up to NVIDIA RTX A4000",
+            "image": "/images/parts/gpu-workstation.webp",
+            "alt": "A desktop graphics card, rendered"
+          }
         ]
-      ]
-    },
-    {
-      "type": "band",
-      "kicker": "The Pro build",
-      "items": [
-        {"src": "/bands/mt-pro-h610-ddr5-0.webp", "w": 1200, "h": 1163, "alt": "Latios Pro MT \u2014 Intel H610 DDR5 - Core i7-14700, tuned for sustained load"},
-        {"src": "/bands/mt-pro-h610-ddr5-1.webp", "w": 1200, "h": 1523, "alt": "Latios Pro MT \u2014 Intel H610 DDR5 - Professional graphics, certified drivers"},
-        {"src": "/bands/mt-pro-h610-ddr5-2.webp", "w": 1200, "h": 1163, "alt": "Latios Pro MT \u2014 Intel H610 DDR5 - 64GB DDR5, dual channel"}
-      ]
-    },
-{
-  "type": "video",
-  "src": "/videos/mt-pro-h610-ddr5-loop.mp4",
-  "poster": "/images/posters/mt-pro-h610-ddr5-loop.webp",
-  "modelName": "Latios Pro MT \u2014 Intel H610 DDR5",
-  "heading": "The Pro build.",
-  "subline": "Intel Core i7-14700 / i5-14500 / i3-14100. Engineered, assembled and finished in Ahmedabad.",
-},
-{
-      "type": "specTeaser"
-    }
-  ],
-};
+      },
+      {
+        "type": "featureSplit",
+        "pill": "Processor",
+        "heading": "Four processors,",
+        "headingAccent": "one service procedure.",
+        "body": "An i3 for the counter, an i5 for the desk, an i7 for the seat that renders. Each one drops into the same socket on the same H610 board, so a fleet specified across all four is still one image to deploy and one panel to open.",
+        "image": "/images/components/cpu-intel.webp",
+        "alt": "An Intel processor seated in an LGA socket",
+        "stats": [
+          [
+            "i7-14700",
+            "",
+            "Top of the line"
+          ],
+          [
+            "i3-14100",
+            "",
+            "Entry"
+          ],
+          [
+            "14",
+            "Gen",
+            "Intel Core"
+          ]
+        ],
+        "footnote": "Configurations vary by order. The processor shown is an illustration, not the part supplied."
+      },
+      {
+        "type": "featureSplit",
+        "pill": "Memory",
+        "heading": "DDR5 across",
+        "headingAccent": "the whole line.",
+        "body": "Two U-DIMM slots on every configuration, including the i3. The entry seat and the workstation seat run the same memory architecture, so an upgrade later is a module rather than a machine.",
+        "image": "/images/parts/ddr5-pair.webp",
+        "alt": "Two DDR5 desktop memory modules, rendered",
+        "flip": true,
+        "stats": [
+          [
+            "64",
+            "GB",
+            "Maximum supported",
+            "Up to"
+          ],
+          [
+            "2",
+            "slots",
+            "Dual channel U-DIMM"
+          ]
+        ],
+        "footnote": "Image is an illustration, not the modules supplied."
+      },
+      {
+        "type": "featureSplit",
+        "pill": "Graphics",
+        "heading": "Room for a",
+        "headingAccent": "professional card.",
+        "body": "Integrated Intel graphics cover the desks that only need displays. Where a seat needs certified drivers, the chassis takes a single-slot professional card and the 500W supply has the headroom for it.",
+        "image": "/images/parts/gpu-workstation.webp",
+        "alt": "A single-slot blower-style professional graphics card, rendered",
+        "stats": [
+          [
+            "A4000",
+            "",
+            "NVIDIA RTX class",
+            "Up to"
+          ],
+          [
+            "500",
+            "W",
+            "80+ Bronze ATX supply"
+          ]
+        ],
+        "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
+      },
+      {
+        "type": "compare",
+        "heading": "Against the rest of the MT range.",
+        "rows": [
+          "CPU options",
+          "Chipset",
+          "Memory",
+          "Graphics"
+        ]
+      },
+      {
+        "type": "specTable",
+        "heading": "Every number that matters.",
+        "body": "Every MT configuration on this chassis, side by side. The rows that differ are the decision."
+      }
+    ]
+  };
