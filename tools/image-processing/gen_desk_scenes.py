@@ -63,34 +63,57 @@ STYLE = (
 )
 
 SCENES = {
+    #: v2. The first version asked for "an uncluttered stretch of bare desktop to
+    #: the right of the monitors" and the model put a coffee cup in it and ended
+    #: the desk two-thirds across the frame. Measuring the composite showed the
+    #: tower standing where there was NO DESK AT ALL -- more than half of it
+    #: past the desk's right end, in front of the window. Two changes: the desk
+    #: is told to run off the edge of the frame, so the empty area has depth
+    #: behind it, and every prop that kept landing in that area is named in the
+    #: negative. The camera also comes up off the desk a little: at eye level
+    #: with the surface there is no visible plane for a product to stand on, and
+    #: "floating" is what that looks like.
     "mt-office": (WIDE,
-        "a tidy corporate office desk seen from a low three-quarter angle: a "
-        "light oak desktop with two slim black monitors on a central stand, both "
-        "switched on showing plain abstract dark charts, a black keyboard and "
-        "mouse in front of them, a closed notebook and a pen to one side, a "
-        "ceramic cup of coffee, and an uncluttered stretch of bare desktop to the right "
-        "of the monitors. A mesh office chair is pushed back, "
-        "empty. Morning light from a window on the left. " + STYLE),
+        "a tidy corporate office desk seen from a three-quarter angle slightly "
+        "above the desk surface: a light oak desktop that runs off the right "
+        "edge of the frame, two slim black monitors on a stand at the left of "
+        "the desk, both switched on showing plain abstract dark charts, a black "
+        "keyboard and mouse in front of them, a closed notebook and a pen at the "
+        "far left, and the whole right half of the desk is bare empty wood with "
+        "nothing standing on it. A mesh office chair is pushed back, empty. "
+        "Morning light from a window on the left. " + STYLE),
 
+    #: v2, for the same reason: the potted plant and the graphics tablet took
+    #: the right of the desk and left no run of surface a tower could stand on.
     "mt-studio": (WIDE,
-        "a design studio desk seen from a low three-quarter angle: a pale birch "
-        "desktop against a white brick wall, one wide monitor switched on showing "
-        "a plain dark abstract layout, a mechanical keyboard, a graphics tablet "
-        "and stylus, a small potted plant, a stack of colour swatches, and bare floor beside the desk leg. Warm "
+        "a design studio desk seen from a three-quarter angle slightly above the "
+        "desk surface: a pale birch desktop against a white brick wall, running "
+        "off the right edge of the frame, one wide monitor at the left switched "
+        "on showing a plain dark abstract layout, a mechanical keyboard and a "
+        "stack of colour swatches in front of it, and the whole right half of "
+        "the desk is bare empty wood with nothing standing on it. Warm "
         "afternoon light. " + STYLE),
 
+    #: v2. "a bare stretch of desktop at the right end" came back with the
+    #: headset in it and the desk's front edge rising away, so a tower placed
+    #: there overhung the front of the desk however high it was put.
     "mt-control": (WIDE,
-        "a control room desk seen from a low three-quarter angle: a dark grey "
-        "desktop with three monitors in a row, all switched on showing plain "
-        "abstract dark dashboards, a black keyboard, a headset resting beside it, "
-        "and a bare stretch of desktop at the right end. Cool even ceiling "
-        "light, dim room. " + STYLE),
+        "a control room desk seen from a three-quarter angle slightly above the "
+        "desk surface: a long dark grey desktop that runs off the right edge of "
+        "the frame, three monitors in a row at the left, all switched on showing "
+        "plain abstract dark dashboards, a black keyboard in front of them, and "
+        "the whole right half of the desk is bare empty surface with nothing "
+        "standing on it. Cool even ceiling light, dim room. " + STYLE),
 
+    #: v2. The desk ended just past the lamp, so the only clear surface was the
+    #: last few percent of the frame and the machine perched on the end of it.
     "sff-desk": (WIDE,
-        "a compact home-office desk seen from a low three-quarter angle: a narrow "
-        "walnut desktop against a plain painted wall, one monitor on a slim arm "
+        "a compact home-office desk seen from a three-quarter angle slightly "
+        "above the desk surface: a deep walnut desktop against a plain painted "
+        "wall, running off the right edge of the frame, one monitor at the left "
         "switched on showing a plain dark abstract image, a low-profile keyboard "
-        "and mouse, a small lamp, and bare desktop under the monitor arm. Soft daylight. " + STYLE),
+        "and mouse in front of it, and the whole right half of the desk is bare "
+        "empty wood with nothing standing on it. Soft daylight. " + STYLE),
 
     "sff-reception": (WIDE,
         "a reception counter seen from a low three-quarter angle: a pale stone "
@@ -98,21 +121,31 @@ SCENES = {
         "screen, a keyboard, a card reader, a small tray, and a bare stretch of counter top to the left. Bright even daylight, "
         "clean minimal lobby behind, out of focus. " + STYLE),
 
+    #: v2, same correction: the bench's far edge sat exactly where the machine
+    #: went, which put the background benches directly behind it at the same
+    #: height and made it read as floating in the room.
     "sff-lab": (WIDE,
-        "a university computer lab bench seen from a low three-quarter angle: a "
-        "light laminate bench, one monitor switched on showing a plain dark "
-        "abstract screen, a keyboard and mouse, a notebook and a pen, and bare bench top beside the monitor. Even "
-        "fluorescent daylight, rows of identical benches out of focus behind. "
-        + STYLE),
+        "a university computer lab bench seen from a three-quarter angle "
+        "slightly above the bench surface: a deep light laminate bench that runs "
+        "off the right edge of the frame, one monitor at the left switched on "
+        "showing a plain dark abstract screen, a keyboard and mouse and a "
+        "notebook in front of it, and the whole right half of the bench is bare "
+        "empty laminate with nothing standing on it. Even fluorescent daylight, "
+        "rows of identical benches out of focus behind. " + STYLE),
 }
 
 #: The room must arrive EMPTY of computers. Anything the model puts on the desk
 #: in the machine's place has to be cut out again, and an invented tower wearing
 #: an invented wordmark is exactly what this pipeline exists to avoid.
+#: The props are in here by name because they are what filled the space the
+#: prompt reserved. "an uncluttered stretch of bare desktop" reads to the model
+#: as a description of a desk, not as a constraint; naming the objects it keeps
+#: reaching for is what actually clears the area.
 NEG = gc.NEG + (
     ", desktop computer, computer tower, pc case, server, mini pc, laptop, "
     "person, people, man, woman, hands, face, figure, "
     "text, lettering, words, logos, brand names, badges, stickers, watermark, "
+    "coffee cup, mug, potted plant, table lamp, graphics tablet, headphones, "
     "clutter, mess, cables everywhere, blurry, out of focus"
 )
 
