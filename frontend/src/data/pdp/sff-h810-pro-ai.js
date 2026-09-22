@@ -27,6 +27,20 @@ export default {
         "type": "hero"
       },
       {
+        "type": "band",
+        "items": [
+          {
+            "src": "/images/scenes/sff-lab-band.webp",
+            "w": 2560,
+            "h": 1120,
+            "alt": "The Latios SFF on a teaching lab bench beside a display, with its network ports, memory ceiling and volume set over it",
+            "srcSm": "/images/scenes/sff-lab-band-sm.webp",
+            "wSm": 1200,
+            "hSm": 1500
+          }
+        ]
+      },
+      {
         "type": "featureSplit",
         "pill": "Latios Pro AI SFF · H810",
         "heading": "Core Ultra,",
@@ -267,18 +281,6 @@ export default {
             "kg",
             "Weight"
           ]
-        ]
-      },
-      {
-        "type": "band",
-        "kicker": "Volume rollout",
-        "items": [
-          {
-            "src": "/images/scenes/sff-lab-band.webp",
-            "w": 2000,
-            "h": 1115,
-            "alt": "The Latios SFF on a teaching lab bench beside a display, with its network ports, memory ceiling and volume set over it"
-          }
         ]
       },
       {

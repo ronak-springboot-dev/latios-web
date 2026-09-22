@@ -27,6 +27,20 @@ export default {
         "type": "hero"
       },
       {
+        "type": "band",
+        "items": [
+          {
+            "src": "/images/scenes/mt-control-band.webp",
+            "w": 2560,
+            "h": 1120,
+            "alt": "The Latios MT on a control room desk beside three displays, with its memory speed, core count and graphics support set over it",
+            "srcSm": "/images/scenes/mt-control-band-sm.webp",
+            "wSm": 1200,
+            "hSm": 1500
+          }
+        ]
+      },
+      {
         "type": "statWall",
         "align": "center",
         "heading": "The chipset is the product.",
@@ -271,18 +285,6 @@ export default {
           ]
         ],
         "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
-      },
-      {
-        "type": "band",
-        "kicker": "Specified for managed fleets",
-        "items": [
-          {
-            "src": "/images/scenes/mt-control-band.webp",
-            "w": 2000,
-            "h": 1115,
-            "alt": "The Latios MT on a control room desk beside three displays, with its memory speed, core count and graphics support set over it"
-          }
-        ]
       },
       {
         "type": "ioMap",

@@ -75,17 +75,41 @@ console.log(`assets           ${refs.size - broken}/${refs.size} resolve`);
 // rendered as "4GB". A comment promising the crop was harmless is what stood in
 // for a check last time, so now there is a check.
 const png = (buf) => [buf.readUInt32BE(16), buf.readUInt32BE(20)];
-const webpVP8X = (buf) => {
-  // RIFF/WEBP: VP8X carries canvas size as two 24-bit little-endian (n-1)
-  const i = buf.indexOf("VP8X");
-  if (i < 0) return null;
-  const r = (o) => buf[o] | (buf[o + 1] << 8) | (buf[o + 2] << 16);
-  return [r(i + 12) + 1, r(i + 16) + 1];
+
+// A WEBP is one of three things and this reads all three, because reading only
+// one of them made this whole check a no-op.
+//
+// It used to look for VP8X alone — the EXTENDED form, which a file only carries
+// when it needs alpha, animation or metadata. Every band on disk is written by
+// Pillow at quality 90 with no alpha, so every one of them is a plain lossy
+// `VP8 `, VP8X was never present, dims() returned null, and the comparison below
+// was skipped for all of them. The line printed "30/30 match the files on disk"
+// while matching nothing. Verified by declaring a deliberately wrong height and
+// watching it still pass.
+const webp = (buf) => {
+  const at = (tag) => buf.indexOf(tag, 12);
+  let i = at("VP8X");
+  if (i >= 0) {
+    const r = (o) => buf[o] | (buf[o + 1] << 8) | (buf[o + 2] << 16);
+    return [r(i + 12) + 1, r(i + 16) + 1];   // canvas size, 24-bit LE, n-1
+  }
+  i = at("VP8L");
+  if (i >= 0) {
+    const b = buf.readUInt32LE(i + 9);        // after the 0x2f signature byte
+    return [(b & 0x3fff) + 1, ((b >> 14) & 0x3fff) + 1];
+  }
+  i = at("VP8 ");
+  if (i >= 0) {
+    const d = i + 8;                          // 3-byte frame tag, then 9d 01 2a
+    if (buf[d + 3] !== 0x9d || buf[d + 4] !== 0x01 || buf[d + 5] !== 0x2a) return null;
+    return [buf.readUInt16LE(d + 6) & 0x3fff, buf.readUInt16LE(d + 8) & 0x3fff];
+  }
+  return null;
 };
 const dims = (file) => {
   const b = readFileSync(file);
   if (b.slice(1, 4).toString() === "PNG") return png(b);
-  if (b.slice(0, 4).toString() === "RIFF") return webpVP8X(b);
+  if (b.slice(0, 4).toString() === "RIFF") return webp(b);
   return null;
 };
 
@@ -96,19 +120,29 @@ for (const bad of ["object-cover", "h-full ", "md:h-full"]) {
     fail(`PdpBand Figure uses \`${bad}\` — baked type must never be cropped`);
 }
 
+// /images/scenes/ as well as /bands/. This check only ever matched /bands/,
+// which meant the six scene posters — the assets with the MOST type baked into
+// them — were the ones it did not cover, and a declared dimension could drift
+// from disk unnoticed. `srcSm` is checked the same way: it is a second baked
+// asset and gets a second chance to be wrong.
+// No `\{` anchor: `srcSm` sits after `alt`, not at the head of its object, so
+// anchoring on the brace would match `src` and quietly skip the second asset.
+// The backreference is what keeps the trio consistent — `src` must be followed
+// by `w`/`h` and `srcSm` by `wSm`/`hSm`, never a mix.
+const BAKED = /"src(Sm)?":\s*"(\/(?:bands|images\/scenes)\/[^"]+)",\s*"w\1":\s*(\d+),\s*"h\1":\s*(\d+)/g;
 let bands = 0, wrong = 0;
 for (const f of pages) {
   const src = readFileSync(join(PDP, f), "utf8");
-  const re = /\{\s*"src":\s*"(\/bands\/[^"]+)",\s*"w":\s*(\d+),\s*"h":\s*(\d+)/g;
+  const re = new RegExp(BAKED.source, "g");
   let m;
   while ((m = re.exec(src))) {
     bands += 1;
-    const file = join(PUB, m[1].slice(1));
+    const file = join(PUB, m[2].slice(1));
     if (!existsSync(file)) continue;                 // already reported above
     const d = dims(file);
-    if (d && (d[0] !== Number(m[2]) || d[1] !== Number(m[3]))) {
+    if (d && (d[0] !== Number(m[3]) || d[1] !== Number(m[4]))) {
       wrong += 1;
-      fail(`${f}: ${m[1]} is ${d[0]}x${d[1]} on disk, page declares ${m[2]}x${m[3]}`);
+      fail(`${f}: ${m[2]} is ${d[0]}x${d[1]} on disk, page declares ${m[3]}x${m[4]}`);
     }
   }
 }

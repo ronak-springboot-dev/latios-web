@@ -31,6 +31,20 @@ export default {
         "type": "hero"
       },
       {
+        "type": "band",
+        "items": [
+          {
+            "src": "/images/scenes/mt-office-band.webp",
+            "w": 2560,
+            "h": 1120,
+            "alt": "The Latios MT on an office desk beside two displays, with the model's core count, memory ceiling and volume set over it",
+            "srcSm": "/images/scenes/mt-office-band-sm.webp",
+            "wSm": 1200,
+            "hSm": 1500
+          }
+        ]
+      },
+      {
         "type": "featureSplit",
         "pill": "Latios MT · H610 DDR4",
         "heading": "Where the money",
@@ -269,18 +283,6 @@ export default {
           "Chipset",
           "Memory",
           "Graphics"
-        ]
-      },
-      {
-        "type": "band",
-        "kicker": "Cores where the budget goes",
-        "items": [
-          {
-            "src": "/images/scenes/mt-office-band.webp",
-            "w": 2000,
-            "h": 1115,
-            "alt": "The Latios MT on an office desk beside two displays, with the model's core count, memory ceiling and volume set over it"
-          }
         ]
       },
       {

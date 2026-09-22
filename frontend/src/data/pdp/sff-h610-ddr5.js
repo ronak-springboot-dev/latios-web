@@ -27,6 +27,20 @@ export default {
         "type": "hero"
       },
       {
+        "type": "band",
+        "items": [
+          {
+            "src": "/images/scenes/sff-desk-band.webp",
+            "w": 2560,
+            "h": 1120,
+            "alt": "The Latios SFF on a home office desk beside a display, with its volume, weight and processor set over it",
+            "srcSm": "/images/scenes/sff-desk-band-sm.webp",
+            "wSm": 1200,
+            "hSm": 1500
+          }
+        ]
+      },
+      {
         "type": "featureSplit",
         "pill": "Latios Pro SFF · H610",
         "heading": "Eight litres,",
@@ -244,18 +258,6 @@ export default {
             "kg",
             "Weight"
           ]
-        ]
-      },
-      {
-        "type": "band",
-        "kicker": "Eight litres",
-        "items": [
-          {
-            "src": "/images/scenes/sff-desk-band.webp",
-            "w": 2000,
-            "h": 1115,
-            "alt": "The Latios SFF on a home office desk beside a display, with its volume, weight and processor set over it"
-          }
         ]
       },
       {

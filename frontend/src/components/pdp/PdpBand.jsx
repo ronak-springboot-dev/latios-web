@@ -35,27 +35,58 @@ export const PdpBand = ({ theme, heading, kicker, body, items = [] }) => {
 
   // `aspect-ratio` from the asset's own dimensions, so the figure reserves the
   // right space before the lazy image decodes and never letterboxes after.
-  const Figure = ({ item, className = "" }) => (
-    <figure
-      // corner-shape is the superellipse; browsers that do not know it ignore
-      // the declaration and keep the radius, which is what shipped before.
-      className={`overflow-hidden rounded-[28px] [corner-shape:squircle] bg-[#0a0a0c] ${className}`}
-      style={{ aspectRatio: `${item.w} / ${item.h}` }}
-    >
-      <img
-        src={item.src}
-        alt={item.alt}
-        width={item.w}
-        height={item.h}
-        loading="lazy"
-        decoding="async"
-        // `contain`, not `cover`: the figure already matches the asset's aspect,
-        // so this only ever protects against a rounding difference — and if one
-        // occurs it letterboxes rather than eating a character.
-        className="w-full h-full object-contain"
-      />
-    </figure>
-  );
+  //
+  // An item may carry a second, portrait asset in `srcSm`/`wSm`/`hSm`. That is
+  // the third failure mode in the note above — too small to read. A wide scene
+  // poster is 2560px carrying a 116px headline; on a phone the figure is about
+  // 327px, so that headline arrives at 15px. No amount of care in the layout
+  // fixes it, because the type is in the pixels. So those assets ship twice,
+  // the narrow one with its field stacked above the photograph and its type set
+  // for that width, and the breakpoint here matches the one make_scene_bands.py
+  // sized it against.
+  const SM = "(max-width: 767px)";
+  const Figure = ({ item, className = "" }) => {
+    const two = Boolean(item.srcSm && item.wSm && item.hSm);
+    // One class per asset, so two figures with different aspects on the same
+    // page cannot overwrite each other's rule.
+    const id = `bandfig-${item.src.replace(/\W+/g, "")}`;
+    return (
+      <figure
+        // corner-shape is the superellipse; browsers that do not know it ignore
+        // the declaration and keep the radius, which is what shipped before.
+        className={`overflow-hidden rounded-[28px] [corner-shape:squircle] bg-[#0a0a0c] ${
+          two ? id : ""
+        } ${className}`}
+        // With two assets the aspect comes from the stylesheet instead, because
+        // an inline style outranks the media rule that has to override it.
+        style={two ? undefined : { aspectRatio: `${item.w} / ${item.h}` }}
+      >
+        {two && (
+          <style>{
+            `.${id}{aspect-ratio:${item.w}/${item.h}}` +
+            `@media ${SM}{.${id}{aspect-ratio:${item.wSm}/${item.hSm}}}`
+          }</style>
+        )}
+        <picture className="block w-full h-full">
+          {two && (
+            <source media={SM} srcSet={item.srcSm} width={item.wSm} height={item.hSm} />
+          )}
+          <img
+            src={item.src}
+            alt={item.alt}
+            width={item.w}
+            height={item.h}
+            loading="lazy"
+            decoding="async"
+            // `contain`, not `cover`: the figure already matches the asset's
+            // aspect, so this only ever protects against a rounding difference
+            // — and if one occurs it letterboxes rather than eating a character.
+            className="w-full h-full object-contain"
+          />
+        </picture>
+      </figure>
+    );
+  };
 
   return (
     <Band theme={theme} data-testid="showcase-bands">

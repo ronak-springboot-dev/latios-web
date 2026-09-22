@@ -31,6 +31,20 @@ export default {
         "type": "hero"
       },
       {
+        "type": "band",
+        "items": [
+          {
+            "src": "/images/scenes/sff-reception-band.webp",
+            "w": 2560,
+            "h": 1120,
+            "alt": "The Latios SFF on a reception counter beside a display, with its core count, memory speed and volume set over it",
+            "srcSm": "/images/scenes/sff-reception-band-sm.webp",
+            "wSm": 1200,
+            "hSm": 1500
+          }
+        ]
+      },
+      {
         "type": "featureSplit",
         "pill": "Latios Pro AI SFF · AM5",
         "heading": "Ryzen AI,",
@@ -227,18 +241,6 @@ export default {
           ]
         ],
         "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
-      },
-      {
-        "type": "band",
-        "kicker": "An NPU in eight litres",
-        "items": [
-          {
-            "src": "/images/scenes/sff-reception-band.webp",
-            "w": 2000,
-            "h": 1115,
-            "alt": "The Latios SFF on a reception counter beside a display, with its core count, memory speed and volume set over it"
-          }
-        ]
       },
       {
         "type": "compare",

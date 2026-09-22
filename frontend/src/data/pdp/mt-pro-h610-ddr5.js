@@ -28,6 +28,20 @@ export default {
         "type": "hero"
       },
       {
+        "type": "band",
+        "items": [
+          {
+            "src": "/images/scenes/mt-studio-band.webp",
+            "w": 2560,
+            "h": 1120,
+            "alt": "The Latios MT on a design studio desk, with the range's processor options, memory ceiling and SKU count set over it",
+            "srcSm": "/images/scenes/mt-studio-band-sm.webp",
+            "wSm": 1200,
+            "hSm": 1500
+          }
+        ]
+      },
+      {
         "type": "featureSplit",
         "pill": "Latios Pro MT · H610 DDR5",
         "heading": "One platform,",
@@ -210,18 +224,6 @@ export default {
           ]
         ],
         "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
-      },
-      {
-        "type": "band",
-        "kicker": "The Pro build",
-        "items": [
-          {
-            "src": "/images/scenes/mt-studio-band.webp",
-            "w": 2000,
-            "h": 1115,
-            "alt": "The Latios MT on a design studio desk, with the range's processor options, memory ceiling and SKU count set over it"
-          }
-        ]
       },
       {
         "type": "compare",
