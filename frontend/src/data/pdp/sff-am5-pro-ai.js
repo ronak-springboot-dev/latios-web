@@ -243,16 +243,6 @@ export default {
         "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
       },
       {
-        "type": "compare",
-        "heading": "Against the rest of the SFF range.",
-        "rows": [
-          "CPU options",
-          "Chipset",
-          "Memory",
-          "Graphics"
-        ]
-      },
-      {
         "type": "band",
         "kicker": "An NPU in eight litres",
         "items": [
@@ -279,7 +269,7 @@ export default {
       {
         "type": "specTable",
         "heading": "Every number that matters.",
-        "body": "Every SFF configuration on this chassis, side by side. The rows that differ are the decision."
+        "body": "The full sheet for this build. Ryzen AI on AM5 is the only eight-litre Latios on this platform."
       }
     ]
   };

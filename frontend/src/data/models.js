@@ -2531,8 +2531,40 @@ export const ALL_MODELS = ALL_FAMILIES.flatMap((f) => f.models);
  * Exported because both the spec sheet and the PDP comparison section need it,
  * and two definitions would eventually disagree.
  */
-export const familyKey = (m) =>
-  `${m.category}|${m.name.split(" — ")[0]}|${m.gallery?.[0] ?? m.slug}`;
+/**
+ * What counts as a SIBLING — the set a model is shown beside in the spec
+ * matrix, the specification tab and the comparison section.
+ *
+ * THE VENDOR IS PART OF THE KEY, and that is the point of it. Latios sells both
+ * platforms; it does not sell Intel against AMD. The old key put every MT build
+ * in one table, so the AMD AM4 page opened its specification on a column of
+ * itself beside three Intel columns — a page whose job is to sell AM4, arguing
+ * the case for H610 next to it. Grouping by vendor means an AMD page compares
+ * AM4 with AM5 and an Intel page compares H610 with Q670, which is the choice a
+ * buyer is actually making once they have picked a platform.
+ *
+ * THE MARKETING TIER IS NOT part of the key, and that is what stops the vendor
+ * split from emptying the table. It used to key on the name prefix, so "Latios
+ * MT", "Latios Pro MT" and "Latios Pro AI MT" were three different families
+ * even though they are one chassis. Add the vendor to that and the AMD MT page
+ * would have been left comparing itself with nothing. Keyed on the chassis
+ * instead — gallery[0], the lead photograph, which is per chassis — the AMD MT
+ * page gets AM4 beside AM5 Pro AI, and the Intel MT page gets its four boards.
+ *
+ * A vendorless product (a monitor, a speakerphone) contributes an empty vendor
+ * and so still groups on the chassis alone, which is what it did before.
+ *
+ * Some groups come out as one. sff-am5-pro-ai is the only AMD SFF and mff-dp10
+ * the only mini PC, so those pages render a plain specification rather than a
+ * matrix — PdpSpecTable already handles family.length === 1 by dropping the
+ * "show the differences" toggle and titling the column "Specification". One
+ * honest column beats four columns making the wrong argument.
+ */
+export const familyKey = (m) => {
+  const fam = getProcessorFamily(m);
+  const vendor = fam === "epyc" ? "amd" : fam === "xeon" ? "intel" : fam ?? "";
+  return `${m.category}|${m.gallery?.[0] ?? m.slug}|${vendor}`;
+};
 
 /**
  * Product loop video for a model, if its chassis has actually been photographed.

@@ -400,7 +400,7 @@ export default {
       {
         "type": "specTable",
         "heading": "Every number that matters.",
-        "body": "Every Pro AI SFF configuration on this chassis, side by side. The rows that differ are the decision."
+        "body": "Every Intel SFF configuration on this chassis, side by side. The rows that differ are the decision."
       }
     ]
   };

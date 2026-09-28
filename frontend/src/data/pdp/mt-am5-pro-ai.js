@@ -270,7 +270,7 @@ export default {
       },
       {
         "type": "compare",
-        "heading": "Against the rest of the MT range.",
+        "heading": "Against the other AMD MT build.",
         "rows": [
           "CPU options",
           "Chipset",
@@ -281,7 +281,7 @@ export default {
       {
         "type": "specTable",
         "heading": "Every number that matters.",
-        "body": "Every MT configuration on this chassis, side by side. The rows that differ are the decision."
+        "body": "Every AMD MT configuration on this chassis, side by side. The rows that differ are the decision."
       }
     ]
   };

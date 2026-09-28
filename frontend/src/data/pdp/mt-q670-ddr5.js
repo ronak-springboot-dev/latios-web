@@ -424,7 +424,7 @@ export default {
       {
         "type": "specTable",
         "heading": "Every number that matters.",
-        "body": "Every MT configuration on this chassis, side by side. The rows that differ are the decision."
+        "body": "Every Intel MT configuration on this chassis, side by side. The rows that differ are the decision."
       }
     ]
   };

@@ -249,13 +249,13 @@ export default {
     },
     {
       "type": "compare",
-      "heading": "AM4, or one of the Intel boards?",
+      "heading": "AM4, or AM5 with the NPU?",
       "rows": ["CPU options", "Chipset", "Memory", "Graphics"]
     },
     {
       "type": "specTable",
       "heading": "Every number that matters.",
-      "body": "Every MT configuration on this chassis, side by side. The rows that differ are the decision."
+      "body": "Every AMD MT configuration on this chassis, side by side. The rows that differ are the decision."
     }
   ]
 };
