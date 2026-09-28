@@ -89,14 +89,14 @@ export default {
               ],
               "h": {
                 "x": 23.5,
-                "y1": 40.0,
-                "y2": 80.0,
+                "y1": 40,
+                "y2": 80,
                 "label": "330 mm"
               },
               "d": {
-                "x1": 28.0,
+                "x1": 28,
                 "x2": 71.9,
-                "y": 82.0,
+                "y": 82,
                 "label": "296 mm"
               },
               "note": "Depth 95 mm · 4.74 kg"
@@ -165,100 +165,67 @@ export default {
         ]
       },
       {
-        "type": "featureSplit",
-        "pill": "Core i7-14700",
-        "heading": "Fourteenth generation,",
-        "headingAccent": "in eight litres.",
+        "type": "spotlight",
+        "kicker": "Core i7-14700",
+        "heading": "Fourteenth generation, in eight litres.",
         "body": "The same fourteenth-generation Core line the towers run, in a chassis a third of the volume. An i7 for the seat that needs it and an i3 for the counter, on one board and one service procedure.",
         "image": "/images/parts/cpu-lga1700.webp",
         "alt": "An Intel processor seated in an LGA socket",
+        "aspect": "aspect-[21/9]",
+        "align": "center",
         "stats": [
           [
             "i7-14700",
-            "",
             "Top of the line"
           ],
           [
-            "14",
-            "Gen",
+            "14Gen",
             "Intel Core"
           ],
           [
-            "8",
-            "L",
+            "8L",
             "Chassis volume"
           ]
         ],
-        "footnote": "Configurations vary by order. The processor shown is an illustration, not the part supplied."
+        "caption": "Configurations vary by order. The processor shown is an illustration, not the part supplied."
       },
       {
-        "type": "featureSplit",
-        "pill": "Memory",
-        "heading": "DDR5,",
-        "headingAccent": "in the small box.",
-        "body": "Two U-DIMM slots, up to 64GB. The slim chassis gives up a card slot and a drive bay against the tower; it does not give up the memory architecture.",
-        "image": "/images/parts/ddr5-pair.webp",
-        "alt": "Two DDR5 desktop memory modules, rendered",
-        "flip": true,
+        "type": "video",
+        "src": "/videos/sff-h610-ddr5-loop.mp4",
+        "poster": "/images/posters/sff-h610-ddr5-loop.webp",
+        "modelName": "Latios Pro SFF — Intel H610",
+        "heading": "Eight litres, and nothing missing.",
+        "subline": "Up to Core i7-14700 in a 95mm chassis. Engineered, assembled and finished in Ahmedabad."
+      },
+      {
+        "type": "statWall",
+        "align": "center",
+        "heading": "Eight litres, and nothing missing.",
+        "body": "Fourteenth-generation Core, DDR5 and a discrete slot, in a third of the tower's volume.",
         "stats": [
           [
-            "64",
-            "GB",
-            "Maximum supported",
-            "Up to"
+            "i7",
+            "14700",
+            "Fourteenth generation, in eight litres"
           ],
-          [
-            "2",
-            "slots",
-            "Dual channel U-DIMM"
-          ]
-        ],
-        "footnote": "Image is an illustration, not the modules supplied."
-      },
-      {
-        "type": "featureSplit",
-        "pill": "Graphics",
-        "heading": "Integrated first,",
-        "headingAccent": "discrete if needed.",
-        "body": "Intel UHD graphics drive the displays most desks ask for. Where a seat needs more, the chassis takes a low-profile card — which is why the cooler is a blower and the side is a vent wall rather than a vent hole.",
-        "image": "/images/parts/gpu-lowprofile.webp",
-        "alt": "A single-slot low-profile professional graphics card, rendered",
-        "stats": [
-          [
-            "UHD",
-            "",
-            "Intel integrated"
-          ],
-          [
-            "500",
-            "W",
-            "TFX supply option"
-          ]
-        ],
-        "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
-      },
-      {
-        "type": "featureSplit",
-        "pill": "Design",
-        "heading": "Flat under a monitor,",
-        "headingAccent": "or upright beside one.",
-        "body": "Ninety-five millimetres thick, so it lies under a display on a shallow desk or stands on end in the gap beside it. The same hand-removable panel discipline as the tower, in a third of the volume.",
-        "image": "/images/details/sff-top.webp",
-        "alt": "The Latios SFF seen from above, showing its perforated top",
-        "aspect": "aspect-[16/10]",
-        "flip": true,
-        "stats": [
           [
             "8",
-            "L",
+            "Litres",
             "95 × 296 × 330 mm"
           ],
           [
             "4.74",
             "kg",
-            "Weight"
+            "Flat under a monitor, or upright beside one"
           ]
         ]
+      },
+      {
+        "type": "video",
+        "src": "/videos/platform-intel.mp4",
+        "poster": "/images/posters/platform-intel.webp",
+        "heading": "Built on Intel.",
+        "subline": "Twelfth to fourteenth generation Core, in eight litres."
       },
       {
         "type": "band",

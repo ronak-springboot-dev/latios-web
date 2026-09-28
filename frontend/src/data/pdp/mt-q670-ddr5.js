@@ -41,6 +41,14 @@ export default {
         ]
       },
       {
+        "type": "video",
+        "src": "/videos/mt-q670-ddr5-loop.mp4",
+        "poster": "/images/posters/mt-q670-ddr5-loop.webp",
+        "modelName": "Latios MT — Intel Q670 DDR5",
+        "heading": "Specified once.",
+        "subline": "Q670 with vPro-class manageability, up to Core i9-14900. Engineered, assembled and finished in Ahmedabad."
+      },
+      {
         "type": "statWall",
         "align": "center",
         "heading": "The chipset is the product.",
@@ -88,14 +96,14 @@ export default {
               ],
               "h": {
                 "x": 20.1,
-                "y1": 22.0,
-                "y2": 80.0,
+                "y1": 22,
+                "y2": 80,
                 "label": "354 mm"
               },
               "d": {
                 "x1": 24.6,
                 "x2": 75.4,
-                "y": 82.0,
+                "y": 82,
                 "label": "166 mm"
               },
               "note": "Depth 312 mm · 7.59 kg"
@@ -409,6 +417,13 @@ export default {
             "desc": "Standard parts, hand-removable panel, decade-long availability."
           }
         ]
+      },
+      {
+        "type": "video",
+        "src": "/videos/platform-intel.mp4",
+        "poster": "/images/posters/platform-intel.webp",
+        "heading": "Built on Intel.",
+        "subline": "Twelfth to fourteenth generation Core, and Core Ultra."
       },
       {
         "type": "compare",

@@ -70,6 +70,14 @@ export default {
         "statCols": 3
       },
       {
+        "type": "video",
+        "src": "/videos/sff-h810-pro-ai-loop.mp4",
+        "poster": "/images/posters/sff-h810-pro-ai-loop.webp",
+        "modelName": "Latios Pro AI SFF — Intel H810",
+        "heading": "Core Ultra, and two 2.5G ports.",
+        "subline": "An NPU on the package and dual 2.5-gigabit networking, in eight litres. Engineered, assembled and finished in Ahmedabad."
+      },
+      {
         "type": "bento",
         "stage": true,
         "heading": "Everything a desk needs, in eight litres.",
@@ -89,14 +97,14 @@ export default {
               ],
               "h": {
                 "x": 19.6,
-                "y1": 34.0,
-                "y2": 80.0,
+                "y1": 34,
+                "y2": 80,
                 "label": "330 mm"
               },
               "d": {
                 "x1": 24.1,
                 "x2": 75.8,
-                "y": 82.0,
+                "y": 82,
                 "label": "296 mm"
               },
               "note": "Depth 95 mm · 4.74 kg"
@@ -165,123 +173,79 @@ export default {
         ]
       },
       {
-        "type": "featureSplit",
-        "pill": "Core Ultra",
-        "heading": "An NPU on the package,",
-        "headingAccent": "not in the slot.",
+        "type": "spotlight",
+        "kicker": "Core Ultra",
+        "heading": "An NPU on the package, not in the slot.",
         "body": "Core Ultra 9 285 down to Ultra 5 225, each with an NPU alongside the performance and efficient cores. The inference work that would otherwise need a card runs on silicon the machine already has — which matters more in eight litres than in eighteen.",
         "image": "/images/parts/cpu-core-ultra.webp",
         "alt": "An Intel processor seated in an LGA socket",
+        "aspect": "aspect-[21/9]",
+        "align": "center",
         "stats": [
           [
-            "Ultra 9",
-            "285",
+            "Ultra 9285",
             "Top of the line"
           ],
           [
-            "Ultra 5",
-            "225",
+            "Ultra 5225",
             "Entry"
           ],
           [
             "NPU",
-            "",
             "On package"
           ]
         ],
-        "footnote": "Configurations vary by order. The processor shown is an illustration, not the part supplied."
+        "caption": "Configurations vary by order. The processor shown is an illustration, not the part supplied."
       },
       {
-        "type": "featureSplit",
-        "pill": "Memory",
-        "heading": "DDR5,",
-        "headingAccent": "two slots deep.",
-        "body": "Two U-DIMM slots, up to 64GB. The B860 build in the same chassis takes four and reaches 128GB; this one trades that for a lower entry price on the same footprint.",
-        "image": "/images/parts/ddr5-pair.webp",
-        "alt": "Two DDR5 desktop memory modules, rendered",
-        "flip": true,
+        "type": "statWall",
+        "align": "center",
+        "heading": "Specified for the volume rollout.",
+        "body": "An NPU on every package and two 2.5-gigabit ports on every seat.",
         "stats": [
           [
-            "64",
-            "GB",
-            "Maximum supported",
-            "Up to"
+            "2",
+            "× 2.5GbE",
+            "Two ports on every seat, not one"
           ],
           [
-            "2",
-            "slots",
-            "Dual channel U-DIMM"
+            "64",
+            "GB DDR5",
+            "Two slots deep"
+          ],
+          [
+            "8",
+            "Litres",
+            "95 × 296 × 330 mm, flat or upright"
           ]
-        ],
-        "footnote": "Image is an illustration, not the modules supplied."
+        ]
       },
       {
-        "type": "featureSplit",
-        "pill": "Network",
-        "heading": "Two 2.5-gigabit ports,",
-        "headingAccent": "not one.",
+        "type": "spotlight",
+        "kicker": "Network",
+        "heading": "Two 2.5-gigabit ports, not one.",
         "body": "Two Intel I226-V controllers, with Wi-Fi 7 or Wi-Fi 6E beside them. Enough for a machine that is a workstation on one segment and a capture or control node on another, without a card in a chassis that has little room for one.",
         "image": "/images/details/sff-vent.webp",
         "alt": "The perforated side panel of the Latios SFF",
-        "aspect": "aspect-[16/10]",
+        "aspect": "aspect-[16/9]",
+        "align": "center",
         "stats": [
           [
-            "2",
-            "× 2.5G",
+            "2× 2.5G",
             "Intel I226-V"
           ],
           [
             "BE200",
-            "",
             "Wi-Fi 7 option"
           ]
         ]
       },
       {
-        "type": "featureSplit",
-        "pill": "Graphics",
-        "heading": "Integrated first,",
-        "headingAccent": "discrete if needed.",
-        "body": "Intel graphics cover the displays most desks ask for. Where a seat needs certified drivers, the chassis takes a low-profile professional card and the TFX supply has a 500W option for it.",
-        "image": "/images/parts/gpu-lowprofile.webp",
-        "alt": "A single-slot low-profile professional graphics card, rendered",
-        "flip": true,
-        "stats": [
-          [
-            "A4000",
-            "",
-            "NVIDIA RTX class",
-            "Up to"
-          ],
-          [
-            "500",
-            "W",
-            "TFX supply option"
-          ]
-        ],
-        "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
-      },
-      {
-        "type": "featureSplit",
-        "pill": "Design",
-        "heading": "Flat under a monitor,",
-        "headingAccent": "or upright beside one.",
-        "body": "Ninety-five millimetres thick, so it lies under a display on a shallow desk or stands on end in the gap beside it. The same hand-removable panel discipline as the tower, in a third of the volume.",
-        "image": "/images/details/sff-top.webp",
-        "alt": "The Latios SFF seen from above, showing its perforated top",
-        "aspect": "aspect-[16/10]",
-        "stats": [
-          [
-            "8",
-            "L",
-            "95 × 296 × 330 mm"
-          ],
-          [
-            "4.74",
-            "kg",
-            "Weight"
-          ]
-        ]
+        "type": "video",
+        "src": "/videos/platform-intel.mp4",
+        "poster": "/images/posters/platform-intel.webp",
+        "heading": "Built on Intel.",
+        "subline": "Core Ultra with an NPU on the package, across the rollout."
       },
       {
         "type": "band",

@@ -31,6 +31,14 @@ export default {
         "type": "hero"
       },
       {
+        "type": "video",
+        "src": "/videos/sff-b860-pro-ai-loop.mp4",
+        "poster": "/images/posters/sff-b860-pro-ai-loop.webp",
+        "modelName": "Latios Pro AI SFF — Intel B860",
+        "heading": "Eight litres, B860.",
+        "subline": "Core Ultra with an NPU on the package, in a 95mm chassis. Engineered, assembled and finished in Ahmedabad."
+      },
+      {
         "type": "statWall",
         "align": "center",
         "heading": "Twice the ceiling of its sibling.",
@@ -78,14 +86,14 @@ export default {
               ],
               "h": {
                 "x": 23.7,
-                "y1": 30.0,
-                "y2": 80.0,
+                "y1": 30,
+                "y2": 80,
                 "label": "330 mm"
               },
               "d": {
                 "x1": 28.2,
                 "x2": 71.7,
-                "y": 82.0,
+                "y": 82,
                 "label": "296 mm"
               },
               "note": "Depth 95 mm · 4.74 kg"
@@ -385,6 +393,13 @@ export default {
             "desc": "Enterprise posture at desk-side footprint."
           }
         ]
+      },
+      {
+        "type": "video",
+        "src": "/videos/platform-intel.mp4",
+        "poster": "/images/posters/platform-intel.webp",
+        "heading": "Built on Intel.",
+        "subline": "Twelfth to fourteenth generation Core, and Core Ultra."
       },
       {
         "type": "compare",

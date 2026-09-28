@@ -50,6 +50,42 @@ export default {
         "statCols": 3
       },
       {
+        "type": "statWall",
+        "align": "center",
+        "heading": "An NPU on the die, not in the budget.",
+        "body": "Ryzen 8000G puts neural processing on the same package as the cores and the graphics.",
+        "stats": [
+          [
+            "8",
+            "Cores, 16 threads",
+            "Ryzen 7 8700G on socket AM5"
+          ],
+          [
+            "16",
+            "TOPS NPU",
+            "On the die, for local inference"
+          ],
+          [
+            "5200",
+            "MT/s DDR5",
+            "Two slots, shared with the integrated graphics"
+          ],
+          [
+            "18",
+            "Litres",
+            "The same chassis as every other MT"
+          ]
+        ]
+      },
+      {
+        "type": "video",
+        "src": "/videos/mt-am5-pro-ai-loop.mp4",
+        "poster": "/images/posters/mt-am5-pro-ai-loop.webp",
+        "modelName": "Latios Pro AI MT — AMD AM5",
+        "heading": "The AI build.",
+        "subline": "Ryzen 8000G with an NPU on the die. Engineered, assembled and finished in Ahmedabad."
+      },
+      {
         "type": "bento",
         "stage": true,
         "heading": "Everything a desk needs, in eighteen litres.",
@@ -69,14 +105,14 @@ export default {
               ],
               "h": {
                 "x": 25.4,
-                "y1": 20.0,
-                "y2": 80.0,
+                "y1": 20,
+                "y2": 80,
                 "label": "354 mm"
               },
               "d": {
                 "x1": 29.9,
-                "x2": 70.0,
-                "y": 82.0,
+                "x2": 70,
+                "y": 82,
                 "label": "166 mm"
               },
               "note": "Depth 312 mm · 7.59 kg"
@@ -150,111 +186,29 @@ export default {
         ]
       },
       {
-        "type": "featureSplit",
-        "pill": "Ryzen 7 8700G",
-        "heading": "Eight cores, and an NPU",
-        "headingAccent": "on the same die.",
+        "type": "spotlight",
+        "kicker": "Ryzen 7 8700G",
+        "heading": "Eight cores, and an NPU on the same die.",
         "body": "Zen 4 cores, Radeon 700M graphics and a Ryzen AI NPU in one package on Socket AM5, on the AMD Pro 600 chipset. The inference work that would otherwise need a card runs on silicon the machine already has.",
         "image": "/images/parts/cpu-ryzen-am5.webp",
         "alt": "An AMD Ryzen processor seated in an AM5 socket",
+        "aspect": "aspect-[21/9]",
+        "align": "center",
         "stats": [
           [
             "8",
-            "",
             "Zen 4 cores"
           ],
           [
             "700M",
-            "",
             "Radeon graphics"
           ],
           [
             "AM5",
-            "",
             "Socket"
           ]
         ],
-        "footnote": "Figures are AMD's published specification for the Ryzen 7 8700G. The processor shown is an illustration, not the part supplied."
-      },
-      {
-        "type": "featureSplit",
-        "pill": "Memory",
-        "heading": "DDR5-5200,",
-        "headingAccent": "feeding the NPU too.",
-        "body": "Two U-DIMM slots at 5200 MHz. Integrated graphics and an on-die NPU both draw on system memory rather than their own, so the memory row on this configuration is doing more work than it does elsewhere in the range.",
-        "image": "/images/parts/ddr5-pair.webp",
-        "alt": "Two DDR5 desktop memory modules, rendered",
-        "flip": true,
-        "stats": [
-          [
-            "5200",
-            "MHz",
-            "Dual DDR5 channels"
-          ],
-          [
-            "64",
-            "GB",
-            "Maximum supported",
-            "Up to"
-          ]
-        ],
-        "footnote": "Image is an illustration, not the modules supplied."
-      },
-      {
-        "type": "featureSplit",
-        "pill": "Graphics",
-        "heading": "Radeon on the die,",
-        "headingAccent": "and room for more.",
-        "body": "Radeon 700M graphics are built into the processor, so most desks never need a discrete card at all. When one does — design review, a control-room wall, light rendering — the chassis takes a Radeon RX card and the 500W supply has the headroom.",
-        "image": "/images/parts/gpu-radeon.webp",
-        "alt": "A full-height desktop graphics card with two fans, rendered",
-        "stats": [
-          [
-            "16",
-            "GB",
-            "Radeon RX card memory",
-            "Up to"
-          ],
-          [
-            "500",
-            "W",
-            "80+ Bronze ATX supply"
-          ]
-        ],
-        "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
-      },
-      {
-        "type": "featureSplit",
-        "pill": "Storage",
-        "heading": "A fast drive and a big one,",
-        "headingAccent": "in the same box.",
-        "body": "An M.2 SSD for the operating system and working files, with a 2.5-inch and a 3.5-inch bay beside it for bulk storage — all reachable from the one hand-removable side panel.",
-        "image": "/images/parts/storage-set.webp",
-        "alt": "A 2.5-inch drive and a 3.5-inch drive shown at their true relative sizes, rendered",
-        "flip": true,
-        "footnote": "Image is an illustration. Drive types and capacities vary with the configuration ordered."
-      },
-      {
-        "type": "featureSplit",
-        "pill": "Design",
-        "heading": "Extruded lines, and the mark",
-        "headingAccent": "that earns them.",
-        "body": "The fascia is drawn as one extrusion — a field of fine ribs broken by a single band, with the Latios wordmark cut into it. It is the part of the machine a desk actually looks at, and it is photographed rather than rendered.",
-        "image": "/images/mt/fascia.webp",
-        "alt": "A close photograph of the Latios MT’s ribbed front panel, with the Latios wordmark",
-        "aspect": "aspect-[16/10]",
-        "stats": [
-          [
-            "18",
-            "L",
-            "312 × 166 × 354 mm"
-          ],
-          [
-            "7.59",
-            "kg",
-            "Weight"
-          ]
-        ]
+        "caption": "Figures are AMD's published specification for the Ryzen 7 8700G. The processor shown is an illustration, not the part supplied."
       },
       {
         "type": "featureSplit",
@@ -267,6 +221,13 @@ export default {
         "aspect": "aspect-[16/10]",
         "flip": true,
         "footnote": "Photographed. Display and peripherals are not supplied."
+      },
+      {
+        "type": "video",
+        "src": "/videos/platform-amd.mp4",
+        "poster": "/images/posters/platform-amd.webp",
+        "heading": "Built on AMD.",
+        "subline": "Ryzen processors with Radeon graphics and an NPU on the die."
       },
       {
         "type": "compare",

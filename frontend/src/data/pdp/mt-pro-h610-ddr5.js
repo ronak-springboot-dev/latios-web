@@ -71,6 +71,62 @@ export default {
         "statCols": 3
       },
       {
+        "type": "statWall",
+        "align": "center",
+        "heading": "One platform, four price points.",
+        "body": "The same board, chassis and panel whichever processor the order names.",
+        "stats": [
+          [
+            "4",
+            "Processors",
+            "Core i7-14700 down to i3-14100, one socket"
+          ],
+          [
+            "5600",
+            "MT/s DDR5",
+            "Two U-DIMM slots on every configuration, including the i3"
+          ],
+          [
+            "1",
+            "Service procedure",
+            "One shape, one panel, one spare part"
+          ]
+        ]
+      },
+      {
+        "type": "spotlight",
+        "kicker": "Processor",
+        "heading": "Four processors, one service procedure.",
+        "body": "An i3 for the counter, an i5 for the desk, an i7 for the seat that renders. Each one drops into the same socket on the same H610 board, so a fleet specified across all four is still one image to deploy and one panel to open.",
+        "image": "/images/parts/cpu-lga1700.webp",
+        "alt": "An Intel processor seated in an LGA socket",
+        "aspect": "aspect-[21/9]",
+        "align": "center",
+        "stats": [
+          [
+            "i7-14700",
+            "Top of the line"
+          ],
+          [
+            "i3-14100",
+            "Entry"
+          ],
+          [
+            "14Gen",
+            "Intel Core"
+          ]
+        ],
+        "caption": "Configurations vary by order. The processor shown is an illustration, not the part supplied."
+      },
+      {
+        "type": "video",
+        "src": "/videos/mt-pro-h610-ddr5-loop.mp4",
+        "poster": "/images/posters/mt-pro-h610-ddr5-loop.webp",
+        "modelName": "Latios Pro MT — Intel H610 DDR5",
+        "heading": "One box, four specifications.",
+        "subline": "Core i7-14700 down to i3-14100 on the same board. Engineered, assembled and finished in Ahmedabad."
+      },
+      {
         "type": "bento",
         "stage": true,
         "heading": "Everything a desk needs, in one chassis.",
@@ -152,78 +208,11 @@ export default {
         ]
       },
       {
-        "type": "featureSplit",
-        "pill": "Processor",
-        "heading": "Four processors,",
-        "headingAccent": "one service procedure.",
-        "body": "An i3 for the counter, an i5 for the desk, an i7 for the seat that renders. Each one drops into the same socket on the same H610 board, so a fleet specified across all four is still one image to deploy and one panel to open.",
-        "image": "/images/parts/cpu-lga1700.webp",
-        "alt": "An Intel processor seated in an LGA socket",
-        "stats": [
-          [
-            "i7-14700",
-            "",
-            "Top of the line"
-          ],
-          [
-            "i3-14100",
-            "",
-            "Entry"
-          ],
-          [
-            "14",
-            "Gen",
-            "Intel Core"
-          ]
-        ],
-        "footnote": "Configurations vary by order. The processor shown is an illustration, not the part supplied."
-      },
-      {
-        "type": "featureSplit",
-        "pill": "Memory",
-        "heading": "DDR5 across",
-        "headingAccent": "the whole line.",
-        "body": "Two U-DIMM slots on every configuration, including the i3. The entry seat and the workstation seat run the same memory architecture, so an upgrade later is a module rather than a machine.",
-        "image": "/images/parts/ddr5-pair.webp",
-        "alt": "Two DDR5 desktop memory modules, rendered",
-        "flip": true,
-        "stats": [
-          [
-            "64",
-            "GB",
-            "Maximum supported",
-            "Up to"
-          ],
-          [
-            "2",
-            "slots",
-            "Dual channel U-DIMM"
-          ]
-        ],
-        "footnote": "Image is an illustration, not the modules supplied."
-      },
-      {
-        "type": "featureSplit",
-        "pill": "Graphics",
-        "heading": "Room for a",
-        "headingAccent": "professional card.",
-        "body": "Integrated Intel graphics cover the desks that only need displays. Where a seat needs certified drivers, the chassis takes a single-slot professional card and the 500W supply has the headroom for it.",
-        "image": "/images/parts/gpu-workstation.webp",
-        "alt": "A single-slot blower-style professional graphics card, rendered",
-        "stats": [
-          [
-            "A4000",
-            "",
-            "NVIDIA RTX class",
-            "Up to"
-          ],
-          [
-            "500",
-            "W",
-            "80+ Bronze ATX supply"
-          ]
-        ],
-        "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
+        "type": "video",
+        "src": "/videos/platform-intel.mp4",
+        "poster": "/images/posters/platform-intel.webp",
+        "heading": "Built on Intel.",
+        "subline": "Twelfth to fourteenth generation Core, across the whole line."
       },
       {
         "type": "compare",

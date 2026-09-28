@@ -74,6 +74,14 @@ export default {
         "statCols": 3
       },
       {
+        "type": "video",
+        "src": "/videos/mt-h610-ddr4-loop.mp4",
+        "poster": "/images/posters/mt-h610-ddr4-loop.webp",
+        "modelName": "Latios MT — Intel H610 DDR4",
+        "heading": "Where the money goes.",
+        "subline": "Up to Core i9-14900 on the cheaper bus. Engineered, assembled and finished in Ahmedabad."
+      },
+      {
         "type": "bento",
         "stage": true,
         "heading": "Everything a desk needs, in eighteen litres.",
@@ -93,14 +101,14 @@ export default {
               ],
               "h": {
                 "x": 10.2,
-                "y1": 20.0,
-                "y2": 80.0,
+                "y1": 20,
+                "y2": 80,
                 "label": "354 mm"
               },
               "d": {
                 "x1": 14.7,
                 "x2": 85.3,
-                "y": 82.0,
+                "y": 82,
                 "label": "166 mm"
               },
               "note": "Depth 312 mm · 7.59 kg"
@@ -174,106 +182,63 @@ export default {
         ]
       },
       {
-        "type": "featureSplit",
-        "pill": "Core i9-14900",
-        "heading": "Twenty-four cores,",
-        "headingAccent": "on the cheaper bus.",
+        "type": "spotlight",
+        "kicker": "Core i9-14900",
+        "heading": "Twenty-four cores, on the cheaper bus.",
         "body": "Eight performance cores for the thread someone is waiting on, sixteen efficient ones for everything behind it. The same processor line as the DDR5 build, on a memory bus that costs less — which is the whole argument for this configuration.",
         "image": "/images/parts/cpu-lga1700.webp",
         "alt": "An Intel processor seated in an LGA socket",
+        "aspect": "aspect-[21/9]",
+        "align": "center",
         "stats": [
           [
             "8",
-            "",
             "Performance cores"
           ],
           [
             "16",
-            "",
             "Efficient cores"
           ],
           [
             "24",
-            "",
             "Cores in total"
           ],
           [
-            "12–14",
-            "Gen",
+            "12–14Gen",
             "On one socket"
           ]
         ],
-        "footnote": "Figures are Intel's published specification for the Core i9-14900. Lower configurations in this line have fewer cores. The processor shown is an illustration, not the part supplied."
+        "caption": "Figures are Intel's published specification for the Core i9-14900. Lower configurations in this line have fewer cores. The processor shown is an illustration, not the part supplied."
       },
       {
-        "type": "featureSplit",
-        "pill": "Memory",
-        "heading": "DDR4-3200,",
-        "headingAccent": "and the money it frees.",
-        "body": "Two U-DIMM slots at 3200 MHz. Ship a desk at 16GB today and take it to 64GB years later without changing anything else in the box — and spend the difference on the card in the slot rather than the bus underneath it.",
-        "image": "/images/parts/ddr4-pair.webp",
-        "alt": "Two DDR4 desktop memory modules, rendered",
-        "flip": true,
+        "type": "statWall",
+        "align": "left",
+        "heading": "The cheaper bus, and what it frees.",
+        "body": "DDR4 on H610 leaves budget for an i9 and a professional card instead of a faster memory controller.",
         "stats": [
+          [
+            "24",
+            "Cores",
+            "Up to Core i9-14900, eight performance and sixteen efficient"
+          ],
           [
             "3200",
-            "MHz",
-            "Dual DDR4 channels"
+            "MT/s DDR4",
+            "Two U-DIMM slots, dual channel, to 64GB"
           ],
-          [
-            "64",
-            "GB",
-            "Maximum supported",
-            "Up to"
-          ]
-        ],
-        "footnote": "Image is an illustration, not the modules supplied."
-      },
-      {
-        "type": "featureSplit",
-        "pill": "Graphics",
-        "heading": "Room for a",
-        "headingAccent": "professional card.",
-        "body": "Integrated Intel graphics cover the desks that only need displays. Where a seat needs certified drivers — CAD, design review, a control-room wall — the chassis takes a single-slot professional card, and the 500W supply has the headroom for it.",
-        "image": "/images/parts/gpu-workstation.webp",
-        "alt": "A single-slot blower-style professional graphics card, rendered",
-        "stats": [
           [
             "A4000",
-            "",
-            "NVIDIA RTX class",
-            "Up to"
-          ],
-          [
-            "500",
-            "W",
-            "80+ Bronze ATX supply"
-          ]
-        ],
-        "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
-      },
-      {
-        "type": "featureSplit",
-        "pill": "Design",
-        "heading": "Extruded lines, and the mark",
-        "headingAccent": "that earns them.",
-        "body": "The fascia is drawn as one extrusion — a field of fine ribs broken by a single band, with the Latios wordmark cut into it. It is the part of the machine a desk actually looks at, and it is photographed rather than rendered.",
-        "image": "/images/mt/fascia.webp",
-        "alt": "A close photograph of the Latios MT’s ribbed front panel, with the Latios wordmark",
-        "aspect": "aspect-[16/10]",
-        "flip": true,
-        "stats": [
-          [
-            "18",
-            "L",
-            "312 × 166 × 354 mm"
-          ],
-          [
-            "7.59",
-            "kg",
-            "Weight"
+            "Graphics ready",
+            "A full-height slot for a professional card"
           ]
         ]
+      },
+      {
+        "type": "video",
+        "src": "/videos/platform-intel.mp4",
+        "poster": "/images/posters/platform-intel.webp",
+        "heading": "Built on Intel.",
+        "subline": "Twelfth to fourteenth generation Core, on the chipset this build is specified around."
       },
       {
         "type": "compare",

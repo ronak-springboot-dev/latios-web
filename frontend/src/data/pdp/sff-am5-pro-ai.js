@@ -74,6 +74,37 @@ export default {
         "statCols": 3
       },
       {
+        "type": "video",
+        "src": "/videos/sff-am5-pro-ai-loop.mp4",
+        "poster": "/images/posters/sff-am5-pro-ai-loop.webp",
+        "modelName": "Latios Pro AI SFF — AMD AM5",
+        "heading": "Ryzen AI, in eight litres.",
+        "subline": "Ryzen 8000G with an NPU on the die, in a 95mm chassis. Engineered, assembled and finished in Ahmedabad."
+      },
+      {
+        "type": "statWall",
+        "align": "left",
+        "heading": "Ryzen AI, in eight litres.",
+        "body": "Everything the tower puts on this platform, in a third of the volume.",
+        "stats": [
+          [
+            "8",
+            "Cores",
+            "Ryzen 8000G on socket AM5"
+          ],
+          [
+            "5200",
+            "MT/s DDR5",
+            "Shared with the integrated graphics"
+          ],
+          [
+            "8",
+            "Litres",
+            "95 × 296 × 330 mm, flat or upright"
+          ]
+        ]
+      },
+      {
         "type": "bento",
         "stage": true,
         "heading": "Everything a desk needs, in eight litres.",
@@ -93,14 +124,14 @@ export default {
               ],
               "h": {
                 "x": 32.2,
-                "y1": 18.0,
-                "y2": 80.0,
+                "y1": 18,
+                "y2": 80,
                 "label": "330 mm"
               },
               "d": {
                 "x1": 36.7,
                 "x2": 63.2,
-                "y": 82.0,
+                "y": 82,
                 "label": "296 mm"
               },
               "note": "Depth 95 mm · 4.74 kg"
@@ -169,78 +200,36 @@ export default {
         ]
       },
       {
-        "type": "featureSplit",
-        "pill": "Ryzen 8000G",
-        "heading": "Four processors,",
-        "headingAccent": "one socket.",
+        "type": "spotlight",
+        "kicker": "Ryzen 8000G",
+        "heading": "Four processors, one socket.",
         "body": "Ryzen 7 8700G, Ryzen 5 8600G and 8500G, Ryzen 3 8300G — all on Socket AM5 and the AMD Pro 600 chipset, all with Radeon graphics on the die. A fleet can mix them and stay one image and one panel.",
         "image": "/images/parts/cpu-ryzen-am5.webp",
         "alt": "An AMD Ryzen processor seated in an AM5 socket",
+        "aspect": "aspect-[21/9]",
+        "align": "center",
         "stats": [
           [
             "8700G",
-            "",
             "Ryzen 7, top of line"
           ],
           [
             "8300G",
-            "",
             "Ryzen 3, entry"
           ],
           [
             "AM5",
-            "",
             "Socket"
           ]
         ],
-        "footnote": "Figures are AMD's published specifications. The processor shown is an illustration, not the part supplied."
+        "caption": "Figures are AMD's published specifications. The processor shown is an illustration, not the part supplied."
       },
       {
-        "type": "featureSplit",
-        "pill": "Memory",
-        "heading": "DDR5-5200,",
-        "headingAccent": "shared with the graphics.",
-        "body": "Two U-DIMM slots at 5200 MHz. Radeon graphics on the die draw on system memory rather than their own, so this row does more work on this configuration than it does on a build with a card in the slot.",
-        "image": "/images/parts/ddr5-pair.webp",
-        "alt": "Two DDR5 desktop memory modules, rendered",
-        "flip": true,
-        "stats": [
-          [
-            "5200",
-            "MHz",
-            "Dual DDR5 channels"
-          ],
-          [
-            "64",
-            "GB",
-            "Maximum supported",
-            "Up to"
-          ]
-        ],
-        "footnote": "Image is an illustration, not the modules supplied."
-      },
-      {
-        "type": "featureSplit",
-        "pill": "Graphics",
-        "heading": "Radeon on the die,",
-        "headingAccent": "and room beside it.",
-        "body": "Integrated Radeon graphics cover most desks without a card at all. Where one is wanted, the chassis takes a low-profile Radeon RX — which is why the side of this machine is a vent wall rather than a vent hole.",
-        "image": "/images/parts/gpu-lowprofile.webp",
-        "alt": "A desktop Radeon graphics card, rendered",
-        "stats": [
-          [
-            "16",
-            "GB",
-            "Radeon RX card memory",
-            "Up to"
-          ],
-          [
-            "500",
-            "W",
-            "TFX supply option"
-          ]
-        ],
-        "footnote": "A discrete graphics card is an optional configuration. Image is an illustration, not the card supplied."
+        "type": "video",
+        "src": "/videos/platform-amd.mp4",
+        "poster": "/images/posters/platform-amd.webp",
+        "heading": "Built on AMD.",
+        "subline": "Ryzen processors with Radeon graphics and an NPU on the die."
       },
       {
         "type": "band",
