@@ -185,6 +185,38 @@ body {
 html.light .pdp-page {
     background-color: #f4f4f2;
 }
+/* Which accent pair is live, chosen by theme rather than by the component.
+
+   themeVars puts BOTH grounds' colours on the PDP root as --pdp-accent-dk and
+   --pdp-accent-lt, and these two rules decide which becomes --pdp-accent. That
+   indirection exists because the 52 places that read the accent do it through
+   inline `style={{ color: ACCENT }}`, and an inline custom property cannot be
+   overridden by a stylesheet — so the switch has to happen upstream of them,
+   on the element that carries the values.
+
+   Both rules target the same element the inline vars sit on, which is what
+   makes `var(--pdp-accent-dk)` resolve to that element's own value rather than
+   the document root's. The fallbacks are the brand blue, for anything outside a
+   PDP that reads these names. */
+[style*="--pdp-accent-dk"] {
+    --pdp-accent: var(--pdp-accent-dk, #1a56e8);
+    --pdp-accent-soft: var(--pdp-accent-soft-dk, #6f93f2);
+}
+html.light [style*="--pdp-accent-dk"] {
+    --pdp-accent: var(--pdp-accent-lt, #1a56e8);
+    --pdp-accent-soft: var(--pdp-accent-soft-lt, #6f93f2);
+}
+/* The oversized watermark numerals behind the manifesto chapters.
+
+   They were `text-white/10`, which is a tenth of white — invisible the moment
+   the page behind them became light, and the whole section lost its one piece
+   of character. Ink rather than paper, flipped per theme. */
+.ghost-figure {
+    color: rgba(255, 255, 255, 0.1);
+}
+html.light .ghost-figure {
+    color: rgba(10, 10, 12, 0.08);
+}
 .pdp-card {
     background-color: color-mix(in srgb, var(--pdp-surface, #0a0a0a) 88%, #ffffff 12%);
 }
@@ -220,27 +252,12 @@ html.light .pdp-page {
         color: transparent;
     }
 }
-/* The light theme's pairing, in the same place, which this file already insists
-   on: "the light theme is a sheet of overrides and a backdrop that exists only
-   in dark mode is how pages have broken silently before."
-
-   accentSoft is a tint meant for dark ground. On #f4f4f2 the pale end of the
-   ramp lands around 1.6:1 against the page, which is not a heading -- and it
-   was already that way before this gradient, as a flat accentSoft fill. So the
-   light theme ramps DOWN from the accent into a darker mix of itself instead of
-   up into the tint, and keeps the same left-to-right technique. */
-html.light .pdp-grad {
-    color: var(--pdp-accent, #1a56e8);
-}
-@supports ((background-clip: text) or (-webkit-background-clip: text)) {
-    html.light .pdp-grad {
-        background-image: linear-gradient(
-            92deg,
-            color-mix(in srgb, var(--pdp-accent, #1a56e8) 74%, #000000),
-            var(--pdp-accent, #1a56e8) 78%
-        );
-    }
-}
+/* No light-specific ramp here any more, and that is the point of the change
+   above. This rule used to mix its own darker end, because --pdp-accent was a
+   single dark-ground colour and the pale end of the ramp fell to about 1.6:1 on
+   #f4f4f2. Now both --pdp-accent and --pdp-accent-soft are already the
+   light-ground pair whenever html.light is on, so the one ramp above is correct
+   in both themes and a second one here would darken what is already dark. */
 /* The reference's recurring backdrop: dark at the top, warming to a glow at the
    horizon, in this product's own accent. Paired with its light-theme rule in the
    same place, because the light theme is a sheet of overrides and a backdrop
@@ -271,6 +288,23 @@ html.light .pdp-card {
 }
 html.light .pdp-stage-band {
     background-color: #000000;
+}
+/* A staged band stays black in light mode, so the accent inside it has to stay
+   the DARK-ground one. The switch that picks the light pair sits on the PDP
+   root, which is an ancestor of this, so it cannot be scoped around a subtree —
+   the subtree has to claim the dark pair back. `var(--pdp-accent-dk)` resolves
+   here because custom properties inherit, so the root's inline value is still
+   in scope.
+
+   Same reasoning as the six text-colour overrides below it: a block that is
+   deliberately dark in both themes needs every colour token re-pinned, and the
+   accent is a colour token. Caught by a contrast sweep — a 48px figure on a
+   staged card measured 2.96:1 with the light accent on it. */
+html.light .pdp-stage-band,
+html.light .pdp-stage-card,
+html.light .keep-dark {
+    --pdp-accent: var(--pdp-accent-dk, #1a56e8);
+    --pdp-accent-soft: var(--pdp-accent-soft-dk, #6f93f2);
 }
 html.light .pdp-stage-band .text-white {
     color: #ffffff !important;
@@ -369,11 +403,25 @@ html.light .text-zinc-300 {
 html.light .text-zinc-400 {
     color: #52525b !important;
 }
+/* The muted scale, re-spaced so every step is readable.
+
+   zinc-600 was #9d9da6, which is 2.44:1 on #f4f4f2. It carries the smallest
+   text on the site — the 8px gallery badge, the 10px copyright line — where
+   AA wants 4.5:1, so the subtlest token was also the one least able to afford
+   being subtle. Found by sweeping computed colours against their effective
+   backgrounds rather than by looking.
+
+   Both values move rather than just the failing one, so the three steps stay
+   visibly apart instead of collapsing onto each other:
+
+       zinc-400  #52525b  6.84:1
+       zinc-500  #5d5d65  5.74:1
+       zinc-600  #6f6f77  4.48:1 */
 html.light .text-zinc-500 {
-    color: #6b6b72 !important;
+    color: #5d5d65 !important;
 }
 html.light .text-zinc-600 {
-    color: #9d9da6 !important;
+    color: #6f6f77 !important;
 }
 html.light .text-zinc-700 {
     color: #d4d4d8 !important;

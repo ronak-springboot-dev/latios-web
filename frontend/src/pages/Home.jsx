@@ -436,7 +436,7 @@ export default function Home() {
                 <div className="md:col-span-1 flex items-center md:items-start gap-4">
                   <span
                     aria-hidden="true"
-                    className="font-display font-black tracking-tighter text-5xl md:text-6xl leading-none text-white/10 select-none"
+                    className="ghost-figure font-display font-black tracking-tighter text-5xl md:text-6xl leading-none select-none"
                   >
                     {ch.n}
                   </span>

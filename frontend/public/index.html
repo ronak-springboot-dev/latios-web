@@ -30,6 +30,22 @@
         Learn how to configure a non-root public URL by running `npm run build`.
         -->
         <title>Latios — Enterprise Hardware, Made in India</title>
+        <!-- Theme, set BEFORE the first paint.
+
+             The site is light by default now. ThemeToggle applies the class in
+             an effect, which runs after React mounts and therefore after the
+             browser has already painted a frame — so a light default applied
+             there alone would show a black flash on every cold load, and a
+             returning dark user would get the mirror of it. This is the
+             standard fix: one blocking script in <head> that reads the same
+             localStorage key and sets the same class, so the very first paint
+             is already correct. ThemeToggle stays the single owner of the key;
+             this only replays its decision earlier.
+
+             Wrapped in try/catch because localStorage throws rather than
+             returning null in a private window with site data blocked, and an
+             exception here would stop the page rendering at all. -->
+        <script>try{if(localStorage.getItem("latios-theme")!=="dark"){document.documentElement.classList.add("light")}}catch(e){document.documentElement.classList.add("light")}</script>
         <script>window.addEventListener("error",function(e){if(e.error instanceof DOMException&&e.error.name==="DataCloneError"&&e.message&&e.message.includes("PerformanceServerTiming")){e.stopImmediatePropagation();e.preventDefault()}},true);</script>
         <script src="https://assets.emergent.sh/scripts/emergent-main.js"></script>
     </head>

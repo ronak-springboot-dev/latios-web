@@ -324,9 +324,55 @@ export const getTheme = (slug) => {
  * literal Tailwind class names, so a section that swaps `bg-[#0A0A0A]` for a
  * bare `var()` loses its light-mode rule and turns black on a white page.
  */
+/**
+ * The same accent, re-mixed for a light ground.
+ *
+ * Every accent in this file was chosen against a near-black surface, and on
+ * #f4f4f2 they wash out: measured on mt-amd-am4, the accent lands at 2.64:1 and
+ * accentSoft at 1.67:1. Large display type needs 3:1 and the 11px pills that
+ * use accentSoft need 4.5:1, so in light mode the PDP was failing both.
+ *
+ * Rather than hand-pick 56 second colours, the light pair is DERIVED: convert
+ * to linear light, scale until the contrast against the page hits the target,
+ * convert back. That keeps each product's hue exactly — an amber page stays
+ * amber — and only moves it as far down as legibility requires.
+ *
+ * accent goes darker than accentSoft, which is the reverse of their
+ * relationship on black and the reason the gradient still runs the same
+ * direction: on a dark ground the ramp goes from the saturated accent up into
+ * its tint, and on a light one it goes from the deepest mix up toward the page.
+ */
+const PAGE_LIGHT_L = 0.894; // relative luminance of #f4f4f2
+
+const toLinear = (v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+const toSrgb = (v) => (v <= 0.0031308 ? v * 12.92 : 1.055 * v ** (1 / 2.4) - 0.055);
+
+const onLight = (hex, ratio) => {
+  const m = /^#?([0-9a-f]{6})$/i.exec(hex || "");
+  if (!m) return hex;
+  const rgb = [0, 2, 4].map((i) => parseInt(m[1].slice(i, i + 2), 16) / 255);
+  const lin = rgb.map(toLinear);
+  const L = 0.2126 * lin[0] + 0.7152 * lin[1] + 0.0722 * lin[2];
+  const want = (PAGE_LIGHT_L + 0.05) / ratio - 0.05;
+  if (!(L > 0) || want >= L) return hex;           // already dark enough
+  const k = want / L;
+  return (
+    "#" +
+    lin
+      .map((c) => Math.round(Math.min(1, Math.max(0, toSrgb(c * k))) * 255)
+        .toString(16).padStart(2, "0"))
+      .join("")
+  );
+};
+
 export const themeVars = (theme) => ({
-  "--pdp-accent": theme.accent,
-  "--pdp-accent-soft": theme.accentSoft,
+  // The ground-specific pair goes in; index.css picks which one becomes
+  // --pdp-accent. It must NOT set --pdp-accent itself: that would be an inline
+  // custom property, and no light stylesheet can override one of those.
+  "--pdp-accent-dk": theme.accent,
+  "--pdp-accent-soft-dk": theme.accentSoft,
+  "--pdp-accent-lt": onLight(theme.accent, 6.0),
+  "--pdp-accent-soft-lt": onLight(theme.accentSoft, 4.6),
   "--pdp-surface": theme.surface,
   "--pdp-radius": theme.radius,
   "--pdp-card-radius": theme.card,
