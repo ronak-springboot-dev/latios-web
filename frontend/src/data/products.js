@@ -56,7 +56,12 @@ export const CATEGORIES = [
     model: "Latios MT · SFF · MFF",
     title: ["BUSINESS,", "UNSTOPPABLE."],
     tagline: "Be your window to the world.",
-    hero: "/images/latios-mt.webp",
+    // The family, not one box. Laptops get a lineup here — several machines
+    // together on a light set, so the accordion panel says "a range" before a
+    // word is read — and Desktops got a single tower while the category sells
+    // three chassis and eleven configurations. make_family_lineup.py stands the
+    // real MT, SFF and DP10 cut-outs together at their true relative heights.
+    hero: "/images/desktops-hero.webp",
     intro:
       "Eleven commercial configurations across three chassis — the 18-litre micro tower, the eight-litre small form factor and the DP10 mini PC — from Ryzen 3 to Core i9. Every one tool-friendly, TPM-secured and built to be opened, not replaced.",
     chapters: [

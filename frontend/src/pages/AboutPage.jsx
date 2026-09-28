@@ -163,7 +163,9 @@ export default function AboutPage() {
             <p className="kicker-sq justify-center text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-10">
               Technology Partners
             </p>
-            <PartnerStrip className="h-8 md:h-10 w-auto" testid="partners-strip" />
+            {/* `size`, not a height class: the strip is two marks at two
+                scales now, so one height cannot set both. */}
+            <PartnerStrip size="lg" testid="partners-strip" />
             <p className="mt-6 text-[10px] text-zinc-600 max-w-md mx-auto leading-relaxed">
               All third-party trademarks, logos, and brand names displayed are the property of
               their respective owners.

@@ -55,9 +55,6 @@ export const TAXONOMY = [
           // live. It is a desktop chassis, so it sits with the other two.
           { key: "mini-pc", name: "Mini PC", models: ["mff-dp10"] },
           { key: "aio", name: "All-in-One", soon: true },
-          // A full-height tower as distinct from the 18-litre micro tower
-          // above. Nothing ships in it yet.
-          { key: "full-tower", name: "Tower", soon: true },
         ],
       },
     ],

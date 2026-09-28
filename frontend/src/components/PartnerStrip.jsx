@@ -1,10 +1,32 @@
 /**
- * "Powered by Intel / AMD / Windows — Make in India".
+ * "Powered by Intel / AMD / Windows", and separately, Make in India.
  *
- * The supplied artwork is drawn for a light background: its "Powered by", the
- * AMD wordmark and the Make in India lion are black, so on this site's near
- * black page they disappear. It was previously sat on a white plate to cope,
- * which turned into a black slab on the light theme (index.css inverts
+ * TWO GROUPS, NOT ONE ROW, and the reason is measured. The supplied artwork is
+ * a single 764x68 image. The Make in India lion sits at x 614..764 inside it --
+ * a fifth of the lockup -- and it is the only PICTORIAL mark among four
+ * logotypes: dense cogwheel line art with "MAKE IN INDIA" knocked out of it in
+ * reverse. Rendering the whole strip at one height scaled that lion to about
+ * 62px wide, at which its knocked-out type is four pixels of cap height and the
+ * cogwork collapses into grey noise. On the light theme it was white letters
+ * inside a mid-grey animal, which is close to no contrast at all.
+ *
+ * Scaling the whole strip up was not the fix: the other four marks do not need
+ * it, and the row would then shout over the paragraph it sits under.
+ * split_partner_lockup.py cuts the artwork at x 606 instead -- the gap between
+ * the Windows wordmark and the lion -- so the origin mark can be set at the
+ * size it needs while the silicon row stays where it was. The lion renders
+ * around 88px wide here, still a DOWNSCALE from its 150px master; it is never
+ * upscaled, because the detail is not there to invent.
+ *
+ * The split is also the more correct arrangement. Make in India is an origin
+ * mark, not a silicon partner, and it was sitting inside a lockup that reads
+ * "Powered by" -- a sentence it is not part of. A rule between the two groups
+ * says that, and the sizes stop competing.
+ *
+ * THE INK. The supplied artwork is drawn for a light background: its "Powered
+ * by", the AMD wordmark and the Make in India lion are black, so on this site's
+ * near-black page they disappear. It was previously sat on a white plate to
+ * cope, which turned into a black slab on the light theme (index.css inverts
  * bg-white under html.light) and a white slab on the dark one. Either way a
  * rectangle floating on the page.
  *
@@ -17,25 +39,64 @@
  *
  * These are third-party trademarks and the reversed copy is DERIVED, not
  * official. Intel, AMD and Microsoft all publish reversed assets in their
- * partner kits; dropping those in over
- * public/images/Group-29-reversed.png is the right thing to do before launch.
+ * partner kits; dropping those in over images/partners/*-reversed.png is the
+ * right thing to do before launch. Nothing here is redrawn -- both pieces are
+ * exact crops of what was supplied.
  */
-export const PartnerStrip = ({ className = "h-6 md:h-7 w-auto", testid }) => (
-  <span className="inline-flex items-center" data-testid={testid}>
+
+//: The two heights are set from the artwork, not picked. The silicon row's ink
+//: is 40px of its 40px crop and the lion's is 68px of its 68px crop, so equal
+//: CSS heights would print the lion at nearly three times the logotypes'
+//: weight. `mark` is roughly 2.2x `row`, which is the ratio the combined strip
+//: already had -- the lion just gets the width it needed at that ratio.
+const SIZES = {
+  sm: { row: "h-4 md:h-5", mark: "h-9 md:h-10", rule: "h-5 md:h-6" },
+  lg: { row: "h-5 md:h-6", mark: "h-11 md:h-12", rule: "h-7 md:h-8" },
+};
+
+const Pair = ({ src, alt, className, testid }) => (
+  <>
     <img
-      src="/images/Group-29.png"
-      alt="Powered by Intel, AMD, Windows — Make in India"
+      src={`/images/partners/${src}.png`}
+      alt={alt}
       loading="lazy"
-      className={`${className} themed-ink`}
+      className={`${className} w-auto themed-ink`}
       data-testid={testid ? `${testid}-light` : undefined}
     />
     <img
-      src="/images/Group-29-reversed.png"
-      alt="Powered by Intel, AMD, Windows — Make in India"
+      src={`/images/partners/${src}-reversed.png`}
+      alt={alt}
       aria-hidden="true"
       loading="lazy"
-      className={`${className} themed-reversed`}
+      className={`${className} w-auto themed-reversed`}
       data-testid={testid ? `${testid}-reversed` : undefined}
     />
-  </span>
+  </>
 );
+
+export const PartnerStrip = ({ size = "sm", className = "", testid }) => {
+  const s = SIZES[size] ?? SIZES.sm;
+  return (
+    <span
+      className={`inline-flex items-center gap-4 md:gap-5 ${className}`}
+      data-testid={testid}
+    >
+      <Pair
+        src="powered-by"
+        alt="Powered by Intel, AMD and Windows"
+        className={s.row}
+        testid={testid}
+      />
+      <span
+        aria-hidden="true"
+        className={`${s.rule} w-px bg-zinc-500/30 shrink-0`}
+      />
+      <Pair
+        src="make-in-india"
+        alt="Make in India"
+        className={s.mark}
+        testid={testid ? `${testid}-origin` : undefined}
+      />
+    </span>
+  );
+};

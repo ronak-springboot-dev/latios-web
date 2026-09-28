@@ -78,7 +78,15 @@ const BANNER_POOL = [
   "/images/banner/banner-intel-cpu.webp",
   "/images/banner/banner-latios-sff.webp",
   "/images/banner/banner-amd-cpu.webp",
-  "/images/banner/banner-nvidia-gpu.webp",
+  // Was banner-nvidia-gpu.webp: a dark, low-contrast fan ring floating in a
+  // grey field, with no board, bracket or shroud to it -- and named for a
+  // vendor whose mark is not in the picture and, per the rule above, never can
+  // be. gen_gpu_banner.py replaces it with a full-height professional
+  // workstation card of the kind the PROMAX range actually takes, generated
+  // brand-free and then gated: the render put invented silkscreen on the PCB
+  // and invented glyphs on the bracket, and finish_gpu_banner.py patches both
+  // out with debadge.py's own functions.
+  "/images/banner/banner-pro-gpu.webp",
 ];
 /**
  * Hero copy per category, keyed by category slug.
@@ -390,33 +398,56 @@ export default function Home() {
 
       <EditorialMarquee items={["LAPTOPS", "TOWERS", "AUDIO", "VIDEO"]} />
 
-      {/* MANIFESTO CHAPTERS */}
-      <section className="max-w-[1600px] mx-auto px-6 md:px-12 py-28 md:py-40" data-testid="manifesto-section">
+      {/* MANIFESTO CHAPTERS
+          A ruled list, not three floating rows.
+
+          This was `space-y-36` between chapters, each one a pair of half-width
+          columns with `gap-20` between them and the sides alternating. Three
+          short headings and three short paragraphs cannot fill a 1600px measure
+          that way: every row left a half-empty column, the 144px between rows
+          meant the next one was off-screen, and the alternation moved the body
+          copy side to side so the eye had nowhere to settle. The section was
+          mostly the space around it.
+
+          A 12-column grid with a rule under each chapter fixes all three at
+          once. The columns are 5 and 6 rather than 6 and 6, so the heading
+          column ends roughly where a heading of this length ends and the body
+          gets the wider half. The rules give the section its structure back,
+          which is what lets the space between chapters drop to something a
+          reader crosses in one movement. */}
+      <section className="max-w-[1600px] mx-auto px-6 md:px-12 py-24 md:py-32" data-testid="manifesto-section">
         <Reveal>
           <p className="kicker-sq text-xs uppercase tracking-[0.35em] text-zinc-500 mb-6">The Manifesto</p>
+          <h2 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white max-w-2xl leading-[1.05]">
+            Three things we will not trade away.
+          </h2>
         </Reveal>
-        <div className="space-y-24 md:space-y-36 mt-16">
+        <div className="mt-14 border-t border-white/10">
           {MANIFESTO.map((ch, i) => (
-            <Reveal key={ch.n} delay={0.05}>
+            <Reveal key={ch.n} delay={i * 0.06}>
               <div
-                className={`relative flex flex-col md:flex-row md:items-center gap-10 md:gap-20 ${
-                  i % 2 === 1 ? "md:flex-row-reverse" : ""
-                }`}
+                className="grid md:grid-cols-12 gap-5 md:gap-10 border-b border-white/10 py-10 md:py-14"
                 data-testid={`manifesto-chapter-${ch.n}`}
               >
-                <span
-                  aria-hidden="true"
-                  className="absolute -top-10 md:-top-16 font-display font-black tracking-tighter text-[8rem] md:text-[14rem] leading-none text-white/[0.04] select-none pointer-events-none"
-                >
-                  {ch.n}
-                </span>
-                <div className="relative md:w-1/2">
-                  <ch.icon className="w-8 h-8 text-zinc-500 mb-6" strokeWidth={1.25} />
-                  <h3 className="font-display text-3xl md:text-5xl font-black tracking-tighter text-white leading-[1.05]">
+                {/* The ghost number survives the rewrite -- it is the section's
+                    one piece of character -- but it is set IN a column now
+                    rather than absolutely positioned over the row, where it was
+                    what forced the top margin the rows had to be spaced around. */}
+                <div className="md:col-span-1 flex items-center md:items-start gap-4">
+                  <span
+                    aria-hidden="true"
+                    className="font-display font-black tracking-tighter text-5xl md:text-6xl leading-none text-white/10 select-none"
+                  >
+                    {ch.n}
+                  </span>
+                </div>
+                <div className="md:col-span-5 flex items-start gap-4">
+                  <ch.icon className="w-6 h-6 md:w-7 md:h-7 text-zinc-500 shrink-0 mt-1.5" strokeWidth={1.25} />
+                  <h3 className="font-display text-2xl md:text-4xl font-black tracking-tighter text-white leading-[1.08]">
                     {ch.heading}
                   </h3>
                 </div>
-                <p className="relative md:w-1/2 text-base md:text-lg text-zinc-400 leading-relaxed md:border-l md:border-white/10 md:pl-12">
+                <p className="md:col-span-6 text-base md:text-lg text-zinc-400 leading-relaxed md:pl-10 md:border-l md:border-white/10">
                   {ch.body}
                 </p>
               </div>
