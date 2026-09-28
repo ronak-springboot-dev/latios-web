@@ -70,14 +70,6 @@ export default {
         "statCols": 3
       },
       {
-        "type": "video",
-        "src": "/videos/sff-h810-pro-ai-loop.mp4",
-        "poster": "/images/posters/sff-h810-pro-ai-loop.webp",
-        "modelName": "Latios Pro AI SFF — Intel H810",
-        "heading": "Core Ultra, and two 2.5G ports.",
-        "subline": "An NPU on the package and dual 2.5-gigabit networking, in eight litres. Engineered, assembled and finished in Ahmedabad."
-      },
-      {
         "type": "bento",
         "stage": true,
         "heading": "Everything a desk needs, in eight litres.",

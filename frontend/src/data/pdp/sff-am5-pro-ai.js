@@ -74,14 +74,6 @@ export default {
         "statCols": 3
       },
       {
-        "type": "video",
-        "src": "/videos/sff-am5-pro-ai-loop.mp4",
-        "poster": "/images/posters/sff-am5-pro-ai-loop.webp",
-        "modelName": "Latios Pro AI SFF — AMD AM5",
-        "heading": "Ryzen AI, in eight litres.",
-        "subline": "Ryzen 8000G with an NPU on the die, in a 95mm chassis. Engineered, assembled and finished in Ahmedabad."
-      },
-      {
         "type": "statWall",
         "align": "left",
         "heading": "Ryzen AI, in eight litres.",

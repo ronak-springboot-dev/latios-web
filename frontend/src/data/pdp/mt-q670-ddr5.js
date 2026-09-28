@@ -41,14 +41,6 @@ export default {
         ]
       },
       {
-        "type": "video",
-        "src": "/videos/mt-q670-ddr5-loop.mp4",
-        "poster": "/images/posters/mt-q670-ddr5-loop.webp",
-        "modelName": "Latios MT — Intel Q670 DDR5",
-        "heading": "Specified once.",
-        "subline": "Q670 with vPro-class manageability, up to Core i9-14900. Engineered, assembled and finished in Ahmedabad."
-      },
-      {
         "type": "statWall",
         "align": "center",
         "heading": "The chipset is the product.",

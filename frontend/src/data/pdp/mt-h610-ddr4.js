@@ -74,14 +74,6 @@ export default {
         "statCols": 3
       },
       {
-        "type": "video",
-        "src": "/videos/mt-h610-ddr4-loop.mp4",
-        "poster": "/images/posters/mt-h610-ddr4-loop.webp",
-        "modelName": "Latios MT — Intel H610 DDR4",
-        "heading": "Where the money goes.",
-        "subline": "Up to Core i9-14900 on the cheaper bus. Engineered, assembled and finished in Ahmedabad."
-      },
-      {
         "type": "stickySplit",
         "kicker": "Inside",
         "heading": "Serviceable,",

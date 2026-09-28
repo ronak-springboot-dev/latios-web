@@ -31,14 +31,6 @@ export default {
         "type": "hero"
       },
       {
-        "type": "video",
-        "src": "/videos/sff-b860-pro-ai-loop.mp4",
-        "poster": "/images/posters/sff-b860-pro-ai-loop.webp",
-        "modelName": "Latios Pro AI SFF — Intel B860",
-        "heading": "Eight litres, B860.",
-        "subline": "Core Ultra with an NPU on the package, in a 95mm chassis. Engineered, assembled and finished in Ahmedabad."
-      },
-      {
         "type": "statWall",
         "align": "center",
         "heading": "Twice the ceiling of its sibling.",

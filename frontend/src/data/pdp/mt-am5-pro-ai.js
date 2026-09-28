@@ -78,14 +78,6 @@ export default {
         ]
       },
       {
-        "type": "video",
-        "src": "/videos/mt-am5-pro-ai-loop.mp4",
-        "poster": "/images/posters/mt-am5-pro-ai-loop.webp",
-        "modelName": "Latios Pro AI MT — AMD AM5",
-        "heading": "The AI build.",
-        "subline": "Ryzen 8000G with an NPU on the die. Engineered, assembled and finished in Ahmedabad."
-      },
-      {
         "type": "bento",
         "stage": true,
         "heading": "Everything a desk needs, in eighteen litres.",

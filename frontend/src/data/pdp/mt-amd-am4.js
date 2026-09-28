@@ -54,14 +54,6 @@ export default {
         "type": "hero"
       },
       {
-        "type": "video",
-        "src": "/videos/mt-amd-am4-loop.mp4",
-        "poster": "/images/posters/mt-amd-am4-loop.webp",
-        "modelName": "Latios MT — AMD AM4",
-        "heading": "Eighteen litres.",
-        "subline": "Ryzen 7 5700G with Radeon graphics on the die. Engineered, assembled and finished in Ahmedabad."
-      },
-      {
         "type": "featureSplit",
         "pill": "Latios MT · AM4",
         "heading": "The everyday",

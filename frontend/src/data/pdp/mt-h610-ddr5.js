@@ -164,14 +164,6 @@ export default {
         ]
       },
       {
-        "type": "video",
-        "src": "/videos/mt-h610-ddr5-loop.mp4",
-        "poster": "/images/posters/mt-h610-ddr5-loop.webp",
-        "modelName": "Latios MT — Intel H610 DDR5",
-        "heading": "The faster bus.",
-        "subline": "The same machine as the DDR4 build, on DDR5-5600. Engineered, assembled and finished in Ahmedabad."
-      },
-      {
         "type": "spotlight",
         "kicker": "Core i9-14900",
         "body": "Eight performance cores for the thread that the operator is waiting on, sixteen efficient ones for everything running behind it. The line runs down to an i3 for kiosks and counters, on the same socket and the same board.",

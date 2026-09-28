@@ -218,14 +218,6 @@ export default {
         "headingAccent": "in eight litres."
       },
       {
-        "type": "video",
-        "src": "/videos/sff-h610-ddr5-loop.mp4",
-        "poster": "/images/posters/sff-h610-ddr5-loop.webp",
-        "modelName": "Latios Pro SFF — Intel H610",
-        "heading": "Eight litres, and nothing missing.",
-        "subline": "Up to Core i7-14700 in a 95mm chassis. Engineered, assembled and finished in Ahmedabad."
-      },
-      {
         "type": "statWall",
         "align": "center",
         "heading": "Eight litres, and nothing missing.",

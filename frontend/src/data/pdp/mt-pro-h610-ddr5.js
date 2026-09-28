@@ -147,14 +147,6 @@ export default {
         ]
       },
       {
-        "type": "video",
-        "src": "/videos/mt-pro-h610-ddr5-loop.mp4",
-        "poster": "/images/posters/mt-pro-h610-ddr5-loop.webp",
-        "modelName": "Latios Pro MT — Intel H610 DDR5",
-        "heading": "One box, four specifications.",
-        "subline": "Core i7-14700 down to i3-14100 on the same board. Engineered, assembled and finished in Ahmedabad."
-      },
-      {
         "type": "bento",
         "stage": true,
         "heading": "Everything a desk needs, in one chassis.",
