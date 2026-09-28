@@ -400,7 +400,7 @@ export default function ProductPage() {
                   ) : matched.length === 0 ? (
                     <EmptyResults onClear={clearFacets} />
                   ) : (
-                    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 md:gap-8">
+                    <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-6">
                       {sorted.map((m, i) => (
                         <Reveal key={m.slug} delay={Math.min(i, 5) * 0.06}>
                           <ModelCard m={m} category={data.slug} testid={`model-card-sorted-${i}`} />
@@ -437,7 +437,7 @@ export default function ProductPage() {
                         </h2>
                         <p className="text-zinc-400 max-w-2xl mb-14 leading-relaxed">{fam.blurb}</p>
                       </Reveal>
-                      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 md:gap-8">
+                      <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-5 md:gap-6">
                         {models.map((m, i) => (
                           <Reveal key={m.name} delay={i * 0.06}>
                             <ModelCard m={m} category={data.slug} testid={`model-card-${fi}-${i}`} />

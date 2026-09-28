@@ -4,7 +4,22 @@
  * There were six of these, inline and independent — the category grid, the
  * "more from the range" strip, the applications page, two in the header and one
  * on the compare page — all rendering the same three or four fields and drifting
- * apart. This is the one, and `variant` covers what actually differed.
+ * apart. This is the one.
+ *
+ * It is COMPACT on purpose. The listing was `grid-cols-1 xl:grid-cols-2`, which
+ * is one card per row below 1280px, and at 630x792 each that made the 33
+ * desktop models about 26,000px of scrolling. The reference listing puts three
+ * across at 326x588 and gets a range you can take in. Everything here is sized
+ * for that: a 4:3 plate instead of 16:9, the name at text-xl instead of
+ * text-3xl, and the specification as ruled rows.
+ *
+ * The three `highlights` bullets are gone. They were most of the height, and
+ * they were the one part of the card a reader could not compare across products
+ * — free prose in a tile whose whole job is to line up against its neighbours.
+ * They are still on the product page itself.
+ *
+ * A `variant` prop used to gate the spec list. Both call sites are listings and
+ * neither passed it, so it was a switch with one position.
  *
  * The layout follows the reference storefront's card, with one substitution
  * that decides the whole design: where that card puts a price, an MRP and a
@@ -56,11 +71,10 @@ export const ProductCard = ({
   m,
   category,
   testid,
-  variant = "full",
   compare = null,
 }) => {
   const to = `/${category || m.category}/${m.slug}`;
-  const specs = variant === "full" ? summarise(m) : [];
+  const specs = summarise(m);
 
   return (
     <div
@@ -87,11 +101,11 @@ export const ProductCard = ({
 
       <Link
         to={to}
-        className="p-8 md:p-10 flex flex-col h-full focus:ring-2 focus:ring-white/50 focus:outline-none"
+        className="p-5 md:p-6 flex flex-col h-full focus:ring-2 focus:ring-white/50 focus:outline-none"
         data-testid={testid ? `${testid}-link` : undefined}
       >
         {m.image && (
-          <div className="mb-7 rounded-lg bg-[#f2f2f0] px-8 py-6 flex items-center justify-center aspect-[16/9] overflow-hidden">
+          <div className="mb-5 rounded-lg bg-[#f2f2f0] px-6 py-5 flex items-center justify-center aspect-[4/3] overflow-hidden">
             <img
               src={m.image}
               alt={m.name}
@@ -101,8 +115,8 @@ export const ProductCard = ({
           </div>
         )}
 
-        <div className="flex items-center gap-3 flex-wrap">
-          <span className="text-[10px] uppercase tracking-[0.35em] text-zinc-500">{m.tag}</span>
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="text-[9px] uppercase tracking-[0.3em] text-zinc-500">{m.tag}</span>
           {m.aiReady && (
             <span
               data-testid={`ai-badge-${m.slug}`}
@@ -114,40 +128,39 @@ export const ProductCard = ({
           )}
         </div>
 
-        <h3 className="mt-4 font-display text-2xl md:text-3xl font-black tracking-tighter text-white">
+        <h3 className="mt-2.5 font-display text-lg md:text-xl font-bold tracking-tight text-white leading-snug">
           {m.name}
         </h3>
 
+        {/* The specification as RULED ROWS, which is the reference's own shape:
+            one fact per line with a hairline between, so four of them scan as a
+            block rather than as a paragraph. It replaced an icon list that read
+            as prose at this width, and it is the reason the card fits a
+            three-across grid at all. */}
         {!!specs.length && (
-          <dl className="mt-6 space-y-2" data-testid={testid ? `${testid}-specs` : undefined}>
+          <dl
+            className="mt-4 border-t border-white/10"
+            data-testid={testid ? `${testid}-specs` : undefined}
+          >
             {specs.map(({ icon: Icon, label }) => (
-              <div key={label} className="flex items-start gap-3">
-                <Icon className="w-3.5 h-3.5 mt-0.5 shrink-0 text-zinc-600" aria-hidden="true" />
-                <dd className="text-[13px] leading-snug text-zinc-300">{label}</dd>
+              <div key={label} className="flex items-center gap-2.5 border-b border-white/10 py-2">
+                <Icon className="w-3 h-3 shrink-0 text-zinc-600" aria-hidden="true" />
+                <dd className="text-xs leading-snug text-zinc-300 truncate" title={label}>
+                  {label}
+                </dd>
               </div>
             ))}
           </dl>
         )}
 
-        {variant === "full" && !!(m.highlights || []).length && (
-          <ul className="mt-5 space-y-2 flex-1 border-t border-white/5 pt-5">
-            {m.highlights.slice(0, 3).map((h) => (
-              <li key={h} className="text-sm text-zinc-400 flex gap-3">
-                <span className="text-zinc-600">&mdash;</span>
-                {h}
-              </li>
-            ))}
-          </ul>
-        )}
-
-        {variant !== "full" && <div className="flex-1" />}
+        <div className="flex-1" />
 
         <span
           data-testid={`model-explore-${m.slug}`}
-          className="mt-8 inline-flex items-center gap-2 self-start btn-blue px-6 py-3 text-[10px] uppercase tracking-[0.25em] transition-colors duration-300"
+          className="mt-5 inline-flex items-center gap-1.5 self-start text-[10px] uppercase tracking-[0.25em] text-white border-b border-white/30 pb-1 group-hover:border-white transition-colors duration-300"
         >
           Explore model
-          <ArrowUpRight className="w-3.5 h-3.5" />
+          <ArrowUpRight className="w-3 h-3" />
         </span>
       </Link>
     </div>
