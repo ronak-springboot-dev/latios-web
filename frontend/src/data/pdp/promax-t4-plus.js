@@ -135,8 +135,6 @@ export default {
         "type": "exploded",
         "heading": "What goes in it.",
         "body": "The T4 Plus is specified around its parts rather than shipped as a sealed unit. Memory, storage, cooling and power are all chosen at order and all replaceable in service.",
-        "video": "/videos/components-loop.mp4",
-        "poster": "/images/posters/components-loop.webp",
         "parts": [
           {
             "name": "DDR5 ECC module",
