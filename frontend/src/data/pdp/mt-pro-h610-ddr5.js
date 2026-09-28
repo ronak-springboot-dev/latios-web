@@ -96,7 +96,6 @@ export default {
       {
         "type": "spotlight",
         "kicker": "Processor",
-        "heading": "Four processors, one service procedure.",
         "body": "An i3 for the counter, an i5 for the desk, an i7 for the seat that renders. Each one drops into the same socket on the same H610 board, so a fleet specified across all four is still one image to deploy and one panel to open.",
         "image": "/images/parts/cpu-lga1700.webp",
         "alt": "An Intel processor seated in an LGA socket",
@@ -116,7 +115,9 @@ export default {
             "Intel Core"
           ]
         ],
-        "caption": "Configurations vary by order. The processor shown is an illustration, not the part supplied."
+        "caption": "Configurations vary by order. The processor shown is an illustration, not the part supplied.",
+        "heading": "Four processors,",
+        "headingAccent": "one service procedure."
       },
       {
         "type": "video",

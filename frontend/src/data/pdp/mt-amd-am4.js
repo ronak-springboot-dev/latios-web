@@ -221,7 +221,6 @@ export default {
       {
         "type": "spotlight",
         "kicker": "Ryzen 7 5700G",
-        "heading": "Eight cores, and the graphics on the same die.",
         "body": "The Ryzen 7 5700G tops a Socket AM4 line-up that runs down to the Ryzen 3 5305G, on the AMD Pro 500 chipset. Radeon graphics are built into the processor, so most desks never need a discrete card at all.",
         "image": "/images/am4/cpu-ryzen.webp",
         "alt": "An AMD Ryzen processor seated in an AM4 socket under a warm key light",
@@ -245,7 +244,9 @@ export default {
             "L3 cache"
           ]
         ],
-        "caption": "Figures are AMD's published specification for the Ryzen 7 5700G. Ryzen 5 5600G/5605G and Ryzen 3 5305G configurations have fewer cores and lower clocks. The processor shown is a Ryzen 7 of an earlier generation."
+        "caption": "Figures are AMD's published specification for the Ryzen 7 5700G. Ryzen 5 5600G/5605G and Ryzen 3 5305G configurations have fewer cores and lower clocks. The processor shown is a Ryzen 7 of an earlier generation.",
+        "heading": "Eight cores, and the graphics",
+        "headingAccent": "on the same die."
       },
       {
         "type": "featureSplit",

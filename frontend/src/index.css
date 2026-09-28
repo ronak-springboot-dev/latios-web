@@ -188,6 +188,59 @@ html.light .pdp-page {
 .pdp-card {
     background-color: color-mix(in srgb, var(--pdp-surface, #0a0a0a) 88%, #ffffff 12%);
 }
+/* The accented phrase of a heading, as a gradient rather than a flat colour.
+
+   This is the reference storefront's most recognisable typographic move: every
+   feature heading on it puts its first phrase in a colour ramp and the rest in
+   plain ink. Ours already split the heading in two -- `heading` plus
+   `headingAccent` -- and rendered the second half in a flat accent, so the
+   structure was there and only the fill was missing.
+
+   The ramp runs accent -> accentSoft, NOT the reference's fixed blue-purple-
+   pink. theme.js gives every product its own accent on purpose, and a hardcoded
+   rainbow would override twenty-eight deliberate decisions with one. This keeps
+   the technique and the per-product identity.
+
+   Guarded, and the guard matters: `color: transparent` with a clipped
+   background is invisible text anywhere the clip is not supported. The fallback
+   colour is declared first and only replaced inside @supports, so the worst
+   case is the flat accent this already had. */
+.pdp-grad {
+    color: var(--pdp-accent-soft, #6f93f2);
+}
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+    .pdp-grad {
+        background-image: linear-gradient(
+            92deg,
+            var(--pdp-accent, #1a56e8),
+            var(--pdp-accent-soft, #6f93f2) 78%
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+    }
+}
+/* The light theme's pairing, in the same place, which this file already insists
+   on: "the light theme is a sheet of overrides and a backdrop that exists only
+   in dark mode is how pages have broken silently before."
+
+   accentSoft is a tint meant for dark ground. On #f4f4f2 the pale end of the
+   ramp lands around 1.6:1 against the page, which is not a heading -- and it
+   was already that way before this gradient, as a flat accentSoft fill. So the
+   light theme ramps DOWN from the accent into a darker mix of itself instead of
+   up into the tint, and keeps the same left-to-right technique. */
+html.light .pdp-grad {
+    color: var(--pdp-accent, #1a56e8);
+}
+@supports ((background-clip: text) or (-webkit-background-clip: text)) {
+    html.light .pdp-grad {
+        background-image: linear-gradient(
+            92deg,
+            color-mix(in srgb, var(--pdp-accent, #1a56e8) 74%, #000000),
+            var(--pdp-accent, #1a56e8) 78%
+        );
+    }
+}
 /* The reference's recurring backdrop: dark at the top, warming to a glow at the
    horizon, in this product's own accent. Paired with its light-theme rule in the
    same place, because the light theme is a sheet of overrides and a backdrop

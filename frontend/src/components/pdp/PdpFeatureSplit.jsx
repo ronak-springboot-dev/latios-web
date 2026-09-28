@@ -73,7 +73,10 @@ export const PdpFeatureSplit = ({
             )}
             <BandHeading>
               {heading}
-              {headingAccent && <> <span style={{ color: ACCENT_SOFT }}>{headingAccent}</span></>}
+              {/* .pdp-grad, not an inline colour: the accented phrase is a
+                  gradient now, and it needs an @supports guard that an inline
+                  style cannot carry. See index.css. */}
+              {headingAccent && <> <span className="pdp-grad">{headingAccent}</span></>}
             </BandHeading>
           </Reveal>
 

@@ -31,6 +31,7 @@ export const PdpSpotlight = ({
   model,
   kicker,
   heading,
+  headingAccent,
   body,
   image,
   video,
@@ -45,9 +46,20 @@ export const PdpSpotlight = ({
 }) => {
   if (!image && !video && !heading) return null;
 
+  // The accented phrase, same split featureSplit has used from the start:
+  // plain ink for the first part, the product's accent ramp for the second.
+  // SectionHead renders `heading` as children, so a node is fine here.
+  const head = headingAccent ? (
+    <>
+      {heading} <span className="pdp-grad">{headingAccent}</span>
+    </>
+  ) : (
+    heading
+  );
+
   return (
     <Band theme={theme} data-testid={`pdp-spotlight-${index}`}>
-      <SectionHead theme={theme} kicker={kicker} heading={heading} body={body} align={align} />
+      <SectionHead theme={theme} kicker={kicker} heading={head} body={body} align={align} />
 
       {(image || video) && (
         <Reveal delay={0.1}>

@@ -175,7 +175,6 @@ export default {
       {
         "type": "spotlight",
         "kicker": "Core Ultra",
-        "heading": "An NPU on the package, not in the slot.",
         "body": "Core Ultra 9 285 down to Ultra 5 225, each with an NPU alongside the performance and efficient cores. The inference work that would otherwise need a card runs on silicon the machine already has — which matters more in eight litres than in eighteen.",
         "image": "/images/parts/cpu-core-ultra.webp",
         "alt": "An Intel processor seated in an LGA socket",
@@ -195,7 +194,9 @@ export default {
             "On package"
           ]
         ],
-        "caption": "Configurations vary by order. The processor shown is an illustration, not the part supplied."
+        "caption": "Configurations vary by order. The processor shown is an illustration, not the part supplied.",
+        "heading": "An NPU on the package,",
+        "headingAccent": "not in the slot."
       },
       {
         "type": "statWall",
@@ -223,7 +224,6 @@ export default {
       {
         "type": "spotlight",
         "kicker": "Network",
-        "heading": "Two 2.5-gigabit ports, not one.",
         "body": "Two Intel I226-V controllers, with Wi-Fi 7 or Wi-Fi 6E beside them. Enough for a machine that is a workstation on one segment and a capture or control node on another, without a card in a chassis that has little room for one.",
         "image": "/images/details/sff-vent.webp",
         "alt": "The perforated side panel of the Latios SFF",
@@ -238,7 +238,9 @@ export default {
             "BE200",
             "Wi-Fi 7 option"
           ]
-        ]
+        ],
+        "heading": "Two 2.5-gigabit ports,",
+        "headingAccent": "not one."
       },
       {
         "type": "video",

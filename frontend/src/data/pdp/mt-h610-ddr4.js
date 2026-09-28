@@ -184,7 +184,6 @@ export default {
       {
         "type": "spotlight",
         "kicker": "Core i9-14900",
-        "heading": "Twenty-four cores, on the cheaper bus.",
         "body": "Eight performance cores for the thread someone is waiting on, sixteen efficient ones for everything behind it. The same processor line as the DDR5 build, on a memory bus that costs less — which is the whole argument for this configuration.",
         "image": "/images/parts/cpu-lga1700.webp",
         "alt": "An Intel processor seated in an LGA socket",
@@ -208,7 +207,9 @@ export default {
             "On one socket"
           ]
         ],
-        "caption": "Figures are Intel's published specification for the Core i9-14900. Lower configurations in this line have fewer cores. The processor shown is an illustration, not the part supplied."
+        "caption": "Figures are Intel's published specification for the Core i9-14900. Lower configurations in this line have fewer cores. The processor shown is an illustration, not the part supplied.",
+        "heading": "Twenty-four cores,",
+        "headingAccent": "on the cheaper bus."
       },
       {
         "type": "statWall",

@@ -167,7 +167,6 @@ export default {
       {
         "type": "spotlight",
         "kicker": "Core i7-14700",
-        "heading": "Fourteenth generation, in eight litres.",
         "body": "The same fourteenth-generation Core line the towers run, in a chassis a third of the volume. An i7 for the seat that needs it and an i3 for the counter, on one board and one service procedure.",
         "image": "/images/parts/cpu-lga1700.webp",
         "alt": "An Intel processor seated in an LGA socket",
@@ -187,7 +186,9 @@ export default {
             "Chassis volume"
           ]
         ],
-        "caption": "Configurations vary by order. The processor shown is an illustration, not the part supplied."
+        "caption": "Configurations vary by order. The processor shown is an illustration, not the part supplied.",
+        "heading": "Fourteenth generation,",
+        "headingAccent": "in eight litres."
       },
       {
         "type": "video",

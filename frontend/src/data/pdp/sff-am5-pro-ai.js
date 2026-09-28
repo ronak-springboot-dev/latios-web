@@ -202,7 +202,6 @@ export default {
       {
         "type": "spotlight",
         "kicker": "Ryzen 8000G",
-        "heading": "Four processors, one socket.",
         "body": "Ryzen 7 8700G, Ryzen 5 8600G and 8500G, Ryzen 3 8300G — all on Socket AM5 and the AMD Pro 600 chipset, all with Radeon graphics on the die. A fleet can mix them and stay one image and one panel.",
         "image": "/images/parts/cpu-ryzen-am5.webp",
         "alt": "An AMD Ryzen processor seated in an AM5 socket",
@@ -222,7 +221,9 @@ export default {
             "Socket"
           ]
         ],
-        "caption": "Figures are AMD's published specifications. The processor shown is an illustration, not the part supplied."
+        "caption": "Figures are AMD's published specifications. The processor shown is an illustration, not the part supplied.",
+        "heading": "Four processors,",
+        "headingAccent": "one socket."
       },
       {
         "type": "video",

@@ -188,7 +188,6 @@ export default {
       {
         "type": "spotlight",
         "kicker": "Ryzen 7 8700G",
-        "heading": "Eight cores, and an NPU on the same die.",
         "body": "Zen 4 cores, Radeon 700M graphics and a Ryzen AI NPU in one package on Socket AM5, on the AMD Pro 600 chipset. The inference work that would otherwise need a card runs on silicon the machine already has.",
         "image": "/images/parts/cpu-ryzen-am5.webp",
         "alt": "An AMD Ryzen processor seated in an AM5 socket",
@@ -208,7 +207,9 @@ export default {
             "Socket"
           ]
         ],
-        "caption": "Figures are AMD's published specification for the Ryzen 7 8700G. The processor shown is an illustration, not the part supplied."
+        "caption": "Figures are AMD's published specification for the Ryzen 7 8700G. The processor shown is an illustration, not the part supplied.",
+        "heading": "Eight cores, and an NPU",
+        "headingAccent": "on the same die."
       },
       {
         "type": "featureSplit",

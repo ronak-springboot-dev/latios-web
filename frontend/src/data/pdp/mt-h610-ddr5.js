@@ -174,7 +174,6 @@ export default {
       {
         "type": "spotlight",
         "kicker": "Core i9-14900",
-        "heading": "Twenty-four cores, two kinds of them.",
         "body": "Eight performance cores for the thread that the operator is waiting on, sixteen efficient ones for everything running behind it. The line runs down to an i3 for kiosks and counters, on the same socket and the same board.",
         "image": "/images/parts/cpu-lga1700.webp",
         "alt": "An Intel processor seated in an LGA socket",
@@ -198,7 +197,9 @@ export default {
             "On one socket"
           ]
         ],
-        "caption": "Figures are Intel's published specification for the Core i9-14900. Lower configurations in this line have fewer cores. The processor shown is an illustration, not the part supplied."
+        "caption": "Figures are Intel's published specification for the Core i9-14900. Lower configurations in this line have fewer cores. The processor shown is an illustration, not the part supplied.",
+        "heading": "Twenty-four cores,",
+        "headingAccent": "two kinds of them."
       },
       {
         "type": "statWall",
@@ -226,7 +227,6 @@ export default {
       {
         "type": "spotlight",
         "kicker": "Memory",
-        "heading": "DDR5-5600, and that is the argument.",
         "body": "Two U-DIMM slots at 5600 MT/s. This is the one row that separates this build from its DDR4 twin, and it is the row that simulation, heavy virtualisation and large spreadsheets actually notice.",
         "image": "/images/parts/ddr5-pair.webp",
         "alt": "Two DDR5 desktop memory modules, rendered",
@@ -242,7 +242,9 @@ export default {
             "Maximum supported"
           ]
         ],
-        "caption": "Image is an illustration, not the modules supplied."
+        "caption": "Image is an illustration, not the modules supplied.",
+        "heading": "DDR5-5600,",
+        "headingAccent": "and that is the argument."
       },
       {
         "type": "featureSplit",
