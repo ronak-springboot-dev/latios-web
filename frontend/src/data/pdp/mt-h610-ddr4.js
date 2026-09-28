@@ -82,6 +82,33 @@ export default {
         "subline": "Up to Core i9-14900 on the cheaper bus. Engineered, assembled and finished in Ahmedabad."
       },
       {
+        "type": "stickySplit",
+        "kicker": "Inside",
+        "heading": "Serviceable,",
+        "headingAccent": "not disposable.",
+        "body": "Standard parts in standard slots. The money the DDR4 bus saves goes into the processor, and everything inside stays replaceable.",
+        "points": [
+          "Dual-channel DDR4-3200 · up to 64GB",
+          "M.2 · 2.5″ bay · 3.5″ bay",
+          "Fan cooler · 80+ Bronze supply"
+        ],
+        "caption": "Component illustrations. Memory, storage and cooling are shown as representative parts, not as photographs of this machine's interior.",
+        "media": [
+          {
+            "src": "/images/internals/memory.webp",
+            "caption": "Dual-channel DDR4-3200 · up to 64GB"
+          },
+          {
+            "src": "/images/internals/storage.webp",
+            "caption": "M.2 · 2.5″ bay · 3.5″ bay"
+          },
+          {
+            "src": "/images/internals/cooling.webp",
+            "caption": "Fan cooler · 80+ Bronze supply"
+          }
+        ]
+      },
+      {
         "type": "bento",
         "stage": true,
         "heading": "Everything a desk needs, in eighteen litres.",

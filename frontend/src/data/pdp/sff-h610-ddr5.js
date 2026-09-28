@@ -165,6 +165,33 @@ export default {
         ]
       },
       {
+        "type": "stickySplit",
+        "kicker": "Inside",
+        "heading": "Small,",
+        "headingAccent": "and still openable.",
+        "body": "Ninety-five millimetres thick, with the memory, the drive and the cooler all behind one panel and no special tools.",
+        "points": [
+          "Dual-channel DDR5 · up to 64GB",
+          "M.2 NVMe · 2.5″ bay",
+          "Fan cooler · TFX supply"
+        ],
+        "caption": "Component illustrations. Memory, storage and cooling are shown as representative parts, not as photographs of this machine's interior.",
+        "media": [
+          {
+            "src": "/images/internals/memory.webp",
+            "caption": "Dual-channel DDR5 · up to 64GB"
+          },
+          {
+            "src": "/images/internals/storage.webp",
+            "caption": "M.2 NVMe · 2.5″ bay"
+          },
+          {
+            "src": "/images/internals/cooling.webp",
+            "caption": "Fan cooler · TFX supply"
+          }
+        ]
+      },
+      {
         "type": "spotlight",
         "kicker": "Core i7-14700",
         "body": "The same fourteenth-generation Core line the towers run, in a chassis a third of the volume. An i7 for the seat that needs it and an i3 for the counter, on one board and one service procedure.",

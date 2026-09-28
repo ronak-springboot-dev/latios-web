@@ -237,6 +237,33 @@ export default {
         ]
       },
       {
+        "type": "stickySplit",
+        "kicker": "Inside",
+        "heading": "Four slots,",
+        "headingAccent": "in eight litres.",
+        "body": "B860 carries four U-DIMM slots to 128GB and a second M.2, which is workstation capacity in a chassis that fits under a monitor.",
+        "points": [
+          "Four DDR5 U-DIMM slots · up to 128GB",
+          "2× M.2 · 2.5″ bay · 3.5″ bay",
+          "Blower cooler · TFX supply"
+        ],
+        "caption": "Component illustrations. Memory, storage and cooling are shown as representative parts, not as photographs of this machine's interior.",
+        "media": [
+          {
+            "src": "/images/internals/memory.webp",
+            "caption": "Four DDR5 U-DIMM slots · up to 128GB"
+          },
+          {
+            "src": "/images/internals/storage.webp",
+            "caption": "2× M.2 · 2.5″ bay · 3.5″ bay"
+          },
+          {
+            "src": "/images/internals/cooling.webp",
+            "caption": "Blower cooler · TFX supply"
+          }
+        ]
+      },
+      {
         "type": "spotlight",
         "kicker": "Thermal",
         "heading": "A vent wall, not a vent hole.",

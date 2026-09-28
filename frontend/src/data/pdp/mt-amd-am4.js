@@ -219,6 +219,33 @@ export default {
         ]
       },
       {
+        "type": "stickySplit",
+        "kicker": "Inside",
+        "heading": "Opens by hand,",
+        "headingAccent": "and stays open.",
+        "body": "A panel off without tools, standard parts inside, and spares that ship for a decade. The eighteen-litre chassis is built to be worked on rather than replaced.",
+        "points": [
+          "Dual-channel DDR4-3200 · up to 64GB",
+          "M.2 · 2.5″ bay · 3.5″ bay",
+          "Fan cooler · 80+ Bronze supply"
+        ],
+        "caption": "Component illustrations. Memory, storage and cooling are shown as representative parts, not as photographs of this machine's interior.",
+        "media": [
+          {
+            "src": "/images/internals/memory.webp",
+            "caption": "Dual-channel DDR4-3200 · up to 64GB"
+          },
+          {
+            "src": "/images/internals/storage.webp",
+            "caption": "M.2 · 2.5″ bay · 3.5″ bay"
+          },
+          {
+            "src": "/images/internals/cooling.webp",
+            "caption": "Fan cooler · 80+ Bronze supply"
+          }
+        ]
+      },
+      {
         "type": "spotlight",
         "kicker": "Ryzen 7 5700G",
         "body": "The Ryzen 7 5700G tops a Socket AM4 line-up that runs down to the Ryzen 3 5305G, on the AMD Pro 500 chipset. Radeon graphics are built into the processor, so most desks never need a discrete card at all.",

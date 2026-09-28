@@ -450,14 +450,25 @@ export const PdpBleed = ({ theme, kicker, heading, body, image, flip = false, in
 );
 
 /** Copy pinned while a column of media scrolls past it. */
-export const PdpStickySplit = ({ theme, kicker, heading, body, points = [], media = [] }) => {
+export const PdpStickySplit = ({
+  theme, kicker, heading, headingAccent, body, points = [], media = [], caption,
+}) => {
   if (!media.length) return null;
+  // Same accented phrase the featureSplits and spotlights carry, so a heading
+  // reads the same wherever it appears. See .pdp-grad in index.css.
+  const head = headingAccent ? (
+    <>
+      {heading} <span className="pdp-grad">{headingAccent}</span>
+    </>
+  ) : (
+    heading
+  );
   return (
     <Band theme={theme} data-testid="pdp-sticky-split">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-20">
         <div className="md:sticky md:top-28 md:self-start">
           <Kicker>{kicker}</Kicker>
-          <BandHeading>{heading}</BandHeading>
+          <BandHeading>{head}</BandHeading>
           {body && <p className="mt-5 text-zinc-400 leading-relaxed max-w-md">{body}</p>}
           {!!points.length && (
             <ul className="mt-7 space-y-3">
@@ -468,6 +479,16 @@ export const PdpStickySplit = ({ theme, kicker, heading, body, points = [], medi
                 </li>
               ))}
             </ul>
+          )}
+          {/* The disclosure line, in the pinned column so it stays beside the
+              pictures the whole way down. mt-amd-am4's docstring set this
+              convention for generated component art -- "renders, captioned as
+              illustrations" -- and these plates are exactly that: real
+              components, not photographs of this machine's own insides. */}
+          {caption && (
+            <p className="mt-8 text-[11px] text-zinc-600 leading-relaxed max-w-md">
+              {caption}
+            </p>
           )}
         </div>
         <div className="space-y-6">

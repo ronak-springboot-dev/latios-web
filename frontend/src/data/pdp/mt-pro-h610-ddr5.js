@@ -120,6 +120,33 @@ export default {
         "headingAccent": "one service procedure."
       },
       {
+        "type": "stickySplit",
+        "kicker": "Inside",
+        "heading": "One service procedure,",
+        "headingAccent": "four machines.",
+        "body": "Whichever processor the order names, the memory, the bays and the cooler are in the same places behind the same panel.",
+        "points": [
+          "Dual-channel DDR5 · up to 64GB",
+          "M.2 · 2.5″ bay · 3.5″ bay",
+          "Fan cooler · 80+ Bronze supply"
+        ],
+        "caption": "Component illustrations. Memory, storage and cooling are shown as representative parts, not as photographs of this machine's interior.",
+        "media": [
+          {
+            "src": "/images/internals/memory.webp",
+            "caption": "Dual-channel DDR5 · up to 64GB"
+          },
+          {
+            "src": "/images/internals/storage.webp",
+            "caption": "M.2 · 2.5″ bay · 3.5″ bay"
+          },
+          {
+            "src": "/images/internals/cooling.webp",
+            "caption": "Fan cooler · 80+ Bronze supply"
+          }
+        ]
+      },
+      {
         "type": "video",
         "src": "/videos/mt-pro-h610-ddr5-loop.mp4",
         "poster": "/images/posters/mt-pro-h610-ddr5-loop.webp",

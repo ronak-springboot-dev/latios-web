@@ -200,6 +200,33 @@ export default {
         ]
       },
       {
+        "type": "stickySplit",
+        "kicker": "Inside",
+        "heading": "Eight litres,",
+        "headingAccent": "still serviceable.",
+        "body": "The small chassis gives up the third bay and nothing else. Memory, the drive and the cooler are all reachable.",
+        "points": [
+          "Dual-channel DDR5-5200 · up to 64GB",
+          "M.2 NVMe · 2.5″ bay",
+          "Fan cooler · TFX supply"
+        ],
+        "caption": "Component illustrations. Memory, storage and cooling are shown as representative parts, not as photographs of this machine's interior.",
+        "media": [
+          {
+            "src": "/images/internals/memory.webp",
+            "caption": "Dual-channel DDR5-5200 · up to 64GB"
+          },
+          {
+            "src": "/images/internals/storage.webp",
+            "caption": "M.2 NVMe · 2.5″ bay"
+          },
+          {
+            "src": "/images/internals/cooling.webp",
+            "caption": "Fan cooler · TFX supply"
+          }
+        ]
+      },
+      {
         "type": "spotlight",
         "kicker": "Ryzen 8000G",
         "body": "Ryzen 7 8700G, Ryzen 5 8600G and 8500G, Ryzen 3 8300G — all on Socket AM5 and the AMD Pro 600 chipset, all with Radeon graphics on the die. A fleet can mix them and stay one image and one panel.",

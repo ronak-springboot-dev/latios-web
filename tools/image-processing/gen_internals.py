@@ -73,6 +73,20 @@ PLATES = {
     "cooling": "a low-profile processor cooler with a copper fin stack and two "
                "copper heatpipes over a dark circuit board, a black fan above "
                "it, " + LIGHT,
+    # REJECTED, and left here as the record rather than deleted.
+    #
+    # The roll came back with "Ufttho" and "U8i0|l" stamped on the bracket under
+    # the ports -- the model trying to write USB and failing, which is the exact
+    # thing the negative prompt already forbids and the exact thing this project
+    # has a file of examples of. It is patchable; it was not worth patching,
+    # because the composition was wrong too: three RJ45 jacks and two USB ports
+    # on a shallow bracket reads as a network switch, and the display outputs
+    # that were asked for never appeared.
+    #
+    # A port cluster is also the LEAST valuable of the four here. Two pages
+    # already carry an ioMap section built from their own spec rows, and every
+    # page lists its I/O in the spec table. Three good plates beat four with one
+    # that needs an apology.
     "io": "a row of rear panel connectors on a metal bracket seen close up, "
           "stacked USB ports, an ethernet jack and display outputs, plain "
           "unmarked metal shielding, " + LIGHT,

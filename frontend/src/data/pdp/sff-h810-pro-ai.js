@@ -243,6 +243,33 @@ export default {
         "headingAccent": "not one."
       },
       {
+        "type": "stickySplit",
+        "kicker": "Inside",
+        "heading": "Built for the",
+        "headingAccent": "volume rollout.",
+        "body": "A room of identical seats is serviced as one machine: the same memory, the same drive, the same cooler, in the same places.",
+        "points": [
+          "Dual-channel DDR5 · up to 64GB",
+          "M.2 NVMe SSD",
+          "Active fan cooler · TFX supply"
+        ],
+        "caption": "Component illustrations. Memory, storage and cooling are shown as representative parts, not as photographs of this machine's interior.",
+        "media": [
+          {
+            "src": "/images/internals/memory.webp",
+            "caption": "Dual-channel DDR5 · up to 64GB"
+          },
+          {
+            "src": "/images/internals/storage.webp",
+            "caption": "M.2 NVMe SSD"
+          },
+          {
+            "src": "/images/internals/cooling.webp",
+            "caption": "Active fan cooler · TFX supply"
+          }
+        ]
+      },
+      {
         "type": "video",
         "src": "/videos/platform-intel.mp4",
         "poster": "/images/posters/platform-intel.webp",

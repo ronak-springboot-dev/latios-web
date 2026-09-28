@@ -247,6 +247,33 @@ export default {
         "headingAccent": "and that is the argument."
       },
       {
+        "type": "stickySplit",
+        "kicker": "Inside",
+        "heading": "The faster bus,",
+        "headingAccent": "and room beside it.",
+        "body": "DDR5-5600 in two U-DIMM slots, with the drive bays and the cooler reachable behind the same hand-removable panel.",
+        "points": [
+          "Dual-channel DDR5-5600 · up to 64GB",
+          "M.2 · 2.5″ bay · 3.5″ bay",
+          "Fan cooler · 80+ Bronze supply"
+        ],
+        "caption": "Component illustrations. Memory, storage and cooling are shown as representative parts, not as photographs of this machine's interior.",
+        "media": [
+          {
+            "src": "/images/internals/memory.webp",
+            "caption": "Dual-channel DDR5-5600 · up to 64GB"
+          },
+          {
+            "src": "/images/internals/storage.webp",
+            "caption": "M.2 · 2.5″ bay · 3.5″ bay"
+          },
+          {
+            "src": "/images/internals/cooling.webp",
+            "caption": "Fan cooler · 80+ Bronze supply"
+          }
+        ]
+      },
+      {
         "type": "featureSplit",
         "pill": "On the desk",
         "heading": "Eighteen litres,",

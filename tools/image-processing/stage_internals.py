@@ -29,7 +29,9 @@ OUT = Path(__file__).resolve().parents[2] / "frontend" / "public" / "images" / "
 #: losing the subject. The renders arrive square and 4x upscaled.
 SIZE = (1600, 1200)
 
-PLATES = ["memory", "storage", "cooling", "io"]
+#: "io" is generated but NOT staged -- it came back with invented lettering
+#: on the bracket and the wrong subject. See gen_internals.py.
+PLATES = ["memory", "storage", "cooling"]
 
 
 def stage(name):
