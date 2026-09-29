@@ -67,15 +67,6 @@ export default {
     },
 
     {
-      "type": "band",
-      "kicker": "Ryzen AI, on the die",
-      "items": [
-        {"src": "/bands/mt-am5-pro-ai-0.webp", "w": 1200, "h": 1163, "alt": "Latios Pro AI MT \u2014 AMD AM5 - Ryzen 7 8700G on Socket AM5"},
-        {"src": "/bands/mt-am5-pro-ai-1.webp", "w": 1200, "h": 1523, "alt": "Latios Pro AI MT \u2014 AMD AM5 - Ryzen AI, on the processor"},
-        {"src": "/bands/mt-am5-pro-ai-2.webp", "w": 1200, "h": 1163, "alt": "Latios Pro AI MT \u2014 AMD AM5 - DDR5, dual channel"}
-      ]
-    },
-    {
       "type": "video",
       "src": "/videos/mt-am5-pro-ai-loop.mp4",
       "poster": "/images/posters/mt-am5-pro-ai-loop.webp",
@@ -117,19 +108,6 @@ export default {
           "title": "Same service story",
           "desc": "Whatever board is inside, the box opens the same way."
         }
-      ]
-    },
-    {
-      "type": "marquee",
-      "items": [
-        "Ryzen 7 8700G",
-        "Ryzen AI NPU",
-        "Radeon 700M",
-        "DDR5-5200",
-        "AMD Pro 600",
-        "Wi-Fi 6E",
-        "dTPM 2.0",
-        "18 litres"
       ]
     },
     {

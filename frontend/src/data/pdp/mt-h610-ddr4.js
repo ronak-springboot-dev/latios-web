@@ -72,15 +72,6 @@ export default {
         }
       ]
     },
-    {
-      "type": "band",
-      "kicker": "Cores where the budget goes",
-      "items": [
-        {"src": "/bands/mt-h610-ddr4-0.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 Intel H610 DDR4 - One socket, an i3 kiosk to a 24-core i9"},
-        {"src": "/bands/mt-h610-ddr4-1.webp", "w": 1200, "h": 1523, "alt": "Latios MT \u2014 Intel H610 DDR4 - DDR4, where budget matters more than bus width"},
-        {"src": "/bands/mt-h610-ddr4-2.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 Intel H610 DDR4 - Room for an RTX A4000"}
-      ]
-    },
 {
       "type": "compare",
       "heading": "DDR4 or DDR5 on the same board?",

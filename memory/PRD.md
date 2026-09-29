@@ -20,6 +20,13 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-09-29, update 37 — capability tabs, sibling rollout, cleaner persona photos)
+- CAPABILITY IMAGE-SWAP TABS: new shared section type `capabilityTabs` (PdpCapabilityTabs in sections.jsx, registered in PdpRenderer) — a Minisforum "Core Capability Upgrades" style block: tab row (Processor / Memory / Serviceability) crossfades a big product still (data-testid capability-image) + caption (spec/title/text). Tab clicks are user interaction, so the crossfade is intentional (scroll animations still off). Added to mt-amd-am4, reusing the three freed /bands/mt-amd-am4-*.webp renders.
+- SIBLING ROLLOUT (5 MT pages: mt-h610-ddr4/-ddr5, mt-pro-h610-ddr5, mt-q670-ddr5, mt-am5-pro-ai): theme.js accents unified to the Minisforum blue (#2f6bff / #8fb4ff, density normal, surface #06080f); decluttered by removing every marquee + band section from their data files (balanced-brace script). All verified rgb(47,107,255), no marquee/band, HTTP 200, no console errors.
+- CLEANER PERSONA PHOTOS: audiences on mt-amd-am4 now use 4 bright, brand-neutral lifestyle shots sourced via vision_expert and hosted locally at /images/personas/{enterprise,education,government,frontoffice}.jpg (replacing the grittier ops/factory + product-desk shots). All load at 1600px.
+- Testing agent: A/B/C all pass — capability tabs swap 3 distinct images + captions with blue active state; 4 persona images load from /images/personas/; 5 sibling pages blue + decluttered with no errors.
+
+
 ## Implemented (2026-09-29, update 36 — mt-amd-am4 recoloured to Minisforum blue + decluttered)
 - User still felt the page didn't match the reference's cleanliness/colour. Scoped to mt-amd-am4 ONLY (theme.js entry + data/pdp/mt-amd-am4.js):
   - COLOUR COMBINATION: accent amber (#d98324) → Minisforum blue (#2f6bff, soft #8fb4ff); surface cooled to #06080f; density tight → normal (more whitespace). Now every glow/button/kicker/stat/spec-line reads blue (verified button rgb(47,107,255)).

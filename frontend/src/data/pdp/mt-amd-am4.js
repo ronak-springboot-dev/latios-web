@@ -53,6 +53,37 @@ export default {
     },
 
     {
+      type: "capabilityTabs",
+      heading: "Core capability | upgrades.",
+      body:
+        "Three decisions define this build. Switch between them to see what each " +
+        "one buys — the cores, the memory, and the panel that comes off by hand.",
+      tabs: [
+        {
+          label: "Processor",
+          image: "/bands/mt-amd-am4-0.webp",
+          spec: "Up to Ryzen 7 5700G · 8C/16T",
+          title: "Eight cores, graphics on the die.",
+          text: "The Ryzen 7 5700G tops a Socket AM4 line-up that runs down to the Ryzen 3 5305G — with Radeon graphics built in, so most desks never need a discrete card.",
+        },
+        {
+          label: "Memory",
+          image: "/bands/mt-amd-am4-1.webp",
+          spec: "Dual-channel DDR4-3200",
+          title: "64GB across two slots.",
+          text: "Two U-DIMM slots ship at 16GB and finish at 64GB of dual-channel DDR4-3200 — enough headroom to keep heavy multitasking instant for years.",
+        },
+        {
+          label: "Serviceability",
+          image: "/bands/mt-amd-am4-2.webp",
+          spec: "Tool-free side panel",
+          title: "Opens by hand, in seconds.",
+          text: "One hand-removable panel, standard parts inside and spares that ship for a decade. Built to be worked on rather than replaced.",
+        },
+      ],
+    },
+
+    {
       type: "reveal",
       manifest: { frames: 64, width: 1400, height: 1120, pattern: "/reveal/mt-amd-am4/{i}.webp" },
       height: 260,
@@ -89,7 +120,7 @@ export default {
           heading: "Fleets that stay current, not retired",
           desc: "Standard tools, standard parts, TPM 2.0 at the metal. Roll out hundreds of units knowing each one can be serviced or upgraded in minutes, not truck-rolls.",
           bullets: ["TPM 2.0 + secured firmware", "Tool-fast memory and drive access", "Legacy VGA / PS/2 alongside USB-C"],
-          image: "/images/ops.webp",
+          image: "/images/personas/enterprise.jpg",
         },
         {
           id: "education",
@@ -97,7 +128,7 @@ export default {
           heading: "Labs that survive the semester",
           desc: "Radeon graphics onboard handle coding labs, design coursework and exam kiosks — with padlock loops that keep hardware exactly where you left it.",
           bullets: ["Ryzen 5/7 options for every budget", "Kensington + padlock physical security", "Wi-Fi 6E for dense classrooms"],
-          image: "/images/home-setup.webp",
+          image: "/images/personas/education.jpg",
         },
         {
           id: "government",
@@ -105,7 +136,7 @@ export default {
           heading: "GeM-ready, Made in India",
           desc: "Designed, manufactured and supported at our Ahmedabad facility. Direct public-sector procurement through GeM with local lifecycle support.",
           bullets: ["GeM-registered OEM", "ISO 9001 / 14001 / 27001 certified plant", "Decade-long parts availability"],
-          image: "/images/factory.jpg",
+          image: "/images/personas/government.jpg",
         },
         {
           id: "frontoffice",
@@ -113,7 +144,7 @@ export default {
           heading: "A workhorse that disappears into the desk",
           desc: "Quiet fan cooling, an 18-litre footprint and every port accounting teams still rely on — from receipt printers to dual displays.",
           bullets: ["Only 312 × 166 × 354 mm", "Dual-display 4K out of the box", "Up to 500W 80+ Bronze PSU headroom"],
-          image: "/images/office.webp",
+          image: "/images/personas/frontoffice.jpg",
         },
       ],
     },

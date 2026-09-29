@@ -84,15 +84,6 @@ export default {
     },
 
     {
-      "type": "band",
-      "kicker": "Specified for managed fleets",
-      "items": [
-        {"src": "/bands/mt-q670-ddr5-0.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 Intel Q670 DDR5 - Q670: the chipset IT actually asks for"},
-        {"src": "/bands/mt-q670-ddr5-1.webp", "w": 1200, "h": 1523, "alt": "Latios MT \u2014 Intel Q670 DDR5 - Up to a Core i9-14900"},
-        {"src": "/bands/mt-q670-ddr5-2.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 Intel Q670 DDR5 - DDR5 at full chipset bandwidth"}
-      ]
-    },
-    {
       "type": "video",
       "src": "/videos/mt-q670-ddr5-loop.mp4",
       "poster": "/images/posters/mt-q670-ddr5-loop.webp",

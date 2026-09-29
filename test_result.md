@@ -139,14 +139,15 @@ frontend:
 
 metadata:
   created_by: "main_agent"
-  version: "1.3"
-  test_sequence: 2
+  version: "1.4"
+  test_sequence: 3
   run_ui: false
 
 test_plan:
   current_focus:
-    - "PDP typography + look-and-feel polish (mt-amd-am4)"
-    - "Remove scroll-driven animations across PDP"
+    - "Interactive capability tabs on mt-amd-am4"
+    - "New audience photos from /images/personas/"
+    - "Blue palette + declutter on 5 sibling pages"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -164,3 +165,49 @@ agent_communication:
     -message: "BLUE COLOR SCHEME REDESIGN: Re-verify the restyled Latios page at http://localhost:3000/towers/mt-amd-am4. Page was re-themed to Minisforum-style BLUE colour combination (#2f6bff) and decluttered. Verify: 1) LOAD (HTTP 200, no console errors), 2) BLUE ACCENT (button background-color should be blue with red channel << blue channel, hero kicker square blue, stat-wall big numbers blue, feature spec lines blue), 3) CINEMATIC BANNER (full-bleed dark banner with BLUE accent floor-glow at bottom, two-tone headline 'Built to be opened. Built to last.', banner image loads), 4) DECLUTTER (NO scrolling text marquee data-testid='pdp-marquee', NO 3-image band data-testid='pdp-band'), 5) I/O MAP (data-testid='pdp-io-map' shows /images/details/mt-rear.webp, naturalWidth>0), 6) 8 feature tiles with blue spec lines, static serviceability band (no canvas, no 'Scroll to open'), audiences tabs all load images, Overview/Specification tabs work, 7) NO scroll entrance animations (sections visible at opacity 1)."
     -agent: "testing"
     -message: "✅ BLUE REDESIGN VERIFIED - Comprehensive verification of BLUE color scheme redesign at http://localhost:3000/towers/mt-amd-am4 (React dev server). ALL 7 VERIFICATION POINTS PASSED: (1) LOAD: HTTP 200, zero console errors. (2) BLUE ACCENT: Confirmed #2f6bff blue color scheme throughout - 'Enquire about this build' button background-color is rgb(47, 107, 255) where red channel (47) << blue channel (255), hero kicker square is rgb(47, 107, 255), stat wall big numbers are BLUE, feature spec lines are blue rgb(143, 180, 255). (3) CINEMATIC BANNER: Full-bleed dark banner with BLUE accent floor-glow at bottom (via .pdp-cine::after CSS), banner image loads (1400x1120), two-tone headline 'Built to be opened. Built to last.' renders correctly with NO visible pipe character. (4) DECLUTTER: CONFIRMED - NO scrolling text marquee (data-testid='pdp-marquee' does NOT exist), NO 3-image band (data-testid='pdp-band' does NOT exist), page feels cleaner with generous spacing. (5) I/O MAP: Clean studio rear-panel image /images/details/mt-rear.webp loads successfully (naturalWidth: 2560), not broken. (6) REST WORKS: 8 feature tiles with blue spec lines (data-testid='showcase-features'), static serviceability band (data-testid='pdp-reveal', NO canvas, NO 'Scroll to open' text), all 4 audiences tabs load images correctly (enterprise: 1216x768, education: 1216x912, government: 1400x1285, frontoffice: 1600x992), Overview/Specification tabs work. (7) NO SCROLL ENTRANCE ANIMATIONS: All sections immediately visible at opacity 1.0, no fade/parallax. Screenshots captured: 01-cinematic-banner.png, 02-io-map.png, 03-feature-grid.png, 04-audiences.png, 05-specification-tab.png, 06-hero-section.png, 07-audiences-detailed.png, 08-banner-full.png, 09-features-full.png, 10-io-map-full.png, 11-stat-wall.png. NO broken images on MT AMD AM4 page. BLUE redesign complete and working perfectly."
+    -agent: "main"
+    -message: "NEW VERIFICATION REQUEST: Verify three additions on the Latios React dev app. Capture screenshots for each. A) INTERACTIVE CAPABILITY TABS — on /towers/mt-amd-am4, find section data-testid='pdp-capability-tabs' (heading 'Core capability upgrades.'). It has a row of tabs (data-testid='capability-tab-0', -1, -2 labelled Processor / Memory / Serviceability) and a large image (data-testid='capability-image') plus a caption (data-testid='capability-caption'). Click each tab in turn and CONFIRM the image src CHANGES on each click (record the three src values — they must be three different /bands/mt-amd-am4-*.webp files) and the caption title text changes. Confirm the active tab is highlighted blue. Confirm no broken image (naturalWidth>0) for each. Capture a screenshot of this section with tab 1 active. B) NEW AUDIENCE PHOTOS — on the same page, section data-testid='showcase-audiences': click each tab audience-tab-enterprise / -education / -government / -frontoffice and confirm each panel image loads (naturalWidth>0) and the src now points under /images/personas/ (enterprise.jpg, education.jpg, government.jpg, frontoffice.jpg). Capture a screenshot. C) BLUE PALETTE + DECLUTTER ON SIBLING PAGES — visit each of these 5 URLs and for each confirm: HTTP 200, no console errors, the model page renders (data-testid='model-showcase' exists), the accent is BLUE (check that the hero kicker square or the enquire/accent button computed color has blue dominant — red channel much lower than blue), and there is NO scrolling marquee (data-testid='pdp-marquee' absent) and NO image band (data-testid='pdp-band' absent): mt-h610-ddr4, mt-h610-ddr5, mt-pro-h610-ddr5, mt-q670-ddr5, mt-am5-pro-ai. Capture a screenshot of one sibling page (mt-h610-ddr5) showing the blue accent."
+    -agent: "testing"
+    -message: "✅ ALL THREE ADDITIONS VERIFIED SUCCESSFULLY - Comprehensive testing completed for all three verification requests. TEST A (INTERACTIVE CAPABILITY TABS): Section found at data-testid='pdp-capability-tabs' with heading 'Core capability upgrades.' All 3 tabs present and working: Tab 0 (Processor) shows /bands/mt-amd-am4-0.webp (naturalWidth: 1200) with caption 'Eight cores, graphics on the die.', Tab 1 (Memory) shows /bands/mt-amd-am4-1.webp (naturalWidth: 1200) with caption '64GB across two slots.', Tab 2 (Serviceability) shows /bands/mt-amd-am4-2.webp (naturalWidth: 1200) with caption 'Opens by hand, in seconds.' All three image sources are DIFFERENT and match expected path pattern. All caption texts are DIFFERENT. Active tabs highlighted with blue accent rgb(47, 107, 255). No broken images. Screenshot: test-a-capability-tabs-tab1.jpg. TEST B (NEW AUDIENCE PHOTOS): All 4 audience tabs work correctly at data-testid='showcase-audiences'. All images load from /images/personas/ directory: enterprise.jpg (naturalWidth: 1600), education.jpg (naturalWidth: 1600), government.jpg (naturalWidth: 1600), frontoffice.jpg (naturalWidth: 1600). No broken images. Screenshot: test-b-audience-photos.jpg. TEST C (BLUE PALETTE + DECLUTTER ON SIBLING PAGES): All 5 sibling pages verified successfully - mt-h610-ddr4, mt-h610-ddr5, mt-pro-h610-ddr5, mt-q670-ddr5, mt-am5-pro-ai. All pages: HTTP 200, no console errors, model-showcase exists, blue accent confirmed rgb(47, 107, 255) where red=47 << blue=255, NO marquee (data-testid='pdp-marquee' absent), NO band (data-testid='pdp-band' absent). Screenshot: test-c-sibling-mt-h610-ddr5.jpg. All verification requirements met with no issues found."
+  - task: "Interactive capability tabs on mt-amd-am4"
+    implemented: true
+    working: true
+    file: "frontend/src/components/pdp/sections.jsx, frontend/src/data/pdp/mt-amd-am4.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "Added interactive capability tabs section (PdpCapabilityTabs component) with 3 tabs: Processor, Memory, Serviceability. Each tab displays a different product image (/bands/mt-amd-am4-0.webp, -1.webp, -2.webp) and caption. Tabs are clickable and swap the large image and caption text with smooth crossfade animation. Active tab is highlighted with blue accent color."
+        -working: true
+        -agent: "testing"
+        -comment: "✅ VERIFIED - Interactive capability tabs working perfectly. Section found at data-testid='pdp-capability-tabs' with heading 'Core capability upgrades.' All 3 tabs present: Tab 0 (Processor), Tab 1 (Memory), Tab 2 (Serviceability). Clicking each tab successfully changes the image and caption: Tab 0 shows /bands/mt-amd-am4-0.webp (naturalWidth: 1200) with caption 'Eight cores, graphics on the die.', Tab 1 shows /bands/mt-amd-am4-1.webp (naturalWidth: 1200) with caption '64GB across two slots.', Tab 2 shows /bands/mt-amd-am4-2.webp (naturalWidth: 1200) with caption 'Opens by hand, in seconds.' All three image sources are DIFFERENT and match expected path pattern /bands/mt-amd-am4-*.webp. All caption texts are DIFFERENT. Active tabs are highlighted with blue accent color rgb(47, 107, 255). No broken images (all naturalWidth > 0). Screenshot captured: test-a-capability-tabs-tab1.jpg showing Tab 1 (Memory) active."
+  - task: "New audience photos from /images/personas/"
+    implemented: true
+    working: true
+    file: "frontend/src/data/pdp/mt-amd-am4.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "Updated audience section images to use new photos from /images/personas/ directory. Changed image paths for all 4 audience tabs: enterprise.jpg, education.jpg, government.jpg, frontoffice.jpg. These replace the previous placeholder images."
+        -working: true
+        -agent: "testing"
+        -comment: "✅ VERIFIED - New audience photos working correctly. All 4 audience tabs (enterprise, education, government, frontoffice) found at data-testid='showcase-audiences'. Clicking each tab successfully loads the correct image from /images/personas/ directory: enterprise tab shows /images/personas/enterprise.jpg (naturalWidth: 1600), education tab shows /images/personas/education.jpg (naturalWidth: 1600), government tab shows /images/personas/government.jpg (naturalWidth: 1600), frontoffice tab shows /images/personas/frontoffice.jpg (naturalWidth: 1600). All images load successfully with no broken images. All image paths correctly point to /images/personas/ directory with expected filenames. Screenshot captured: test-b-audience-photos.jpg."
+  - task: "Blue palette + declutter on 5 sibling pages"
+    implemented: true
+    working: true
+    file: "frontend/src/data/pdp/mt-h610-ddr4.js, mt-h610-ddr5.js, mt-pro-h610-ddr5.js, mt-q670-ddr5.js, mt-am5-pro-ai.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+        -working: "NA"
+        -agent: "main"
+        -comment: "Applied blue color scheme (#2f6bff) and decluttered 5 sibling MT pages: mt-h610-ddr4, mt-h610-ddr5, mt-pro-h610-ddr5, mt-q670-ddr5, mt-am5-pro-ai. Removed scrolling marquee (pdp-marquee) and image band (pdp-band) sections from all pages. Blue accent applied to buttons, kicker squares, stat numbers, and feature spec lines."
+        -working: true
+        -agent: "testing"
+        -comment: "✅ VERIFIED - Blue palette and declutter successfully applied to all 5 sibling pages. Comprehensive verification completed: (1) mt-h610-ddr4: HTTP 200, no console errors, model-showcase exists, blue accent confirmed rgb(47, 107, 255) where red=47 << blue=255, NO marquee (data-testid='pdp-marquee' absent), NO band (data-testid='pdp-band' absent). (2) mt-h610-ddr5: HTTP 200, no console errors, model-showcase exists, blue accent confirmed rgb(47, 107, 255), NO marquee, NO band. (3) mt-pro-h610-ddr5: HTTP 200, no console errors, model-showcase exists, blue accent confirmed rgb(47, 107, 255), NO marquee, NO band. (4) mt-q670-ddr5: HTTP 200, no console errors, model-showcase exists, blue accent confirmed rgb(47, 107, 255), NO marquee, NO band. (5) mt-am5-pro-ai: HTTP 200, no console errors, model-showcase exists, blue accent confirmed rgb(47, 107, 255), NO marquee, NO band. All pages load successfully with blue accent color (red channel much lower than blue channel) on enquire buttons. No scrolling marquee or image band elements found on any page. Screenshot captured: test-c-sibling-mt-h610-ddr5.jpg showing blue accent on mt-h610-ddr5 page."

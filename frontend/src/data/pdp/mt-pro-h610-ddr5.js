@@ -98,15 +98,6 @@ export default {
         ]
       ]
     },
-    {
-      "type": "band",
-      "kicker": "The Pro build",
-      "items": [
-        {"src": "/bands/mt-pro-h610-ddr5-0.webp", "w": 1200, "h": 1163, "alt": "Latios Pro MT \u2014 Intel H610 DDR5 - Core i7-14700, tuned for sustained load"},
-        {"src": "/bands/mt-pro-h610-ddr5-1.webp", "w": 1200, "h": 1523, "alt": "Latios Pro MT \u2014 Intel H610 DDR5 - Professional graphics, certified drivers"},
-        {"src": "/bands/mt-pro-h610-ddr5-2.webp", "w": 1200, "h": 1163, "alt": "Latios Pro MT \u2014 Intel H610 DDR5 - 64GB DDR5, dual channel"}
-      ]
-    },
 {
   "type": "video",
   "src": "/videos/mt-pro-h610-ddr5-loop.mp4",

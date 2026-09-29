@@ -9,19 +9,6 @@ export default {
       "type": "hero"
     },
     {
-      "type": "marquee",
-      "items": [
-        "DDR5-5600",
-        "Core i9-14900",
-        "24 cores",
-        "64GB",
-        "TPM 2.0",
-        "18 litres",
-        "500W 80+ Bronze",
-        "Made in India"
-      ]
-    },
-    {
       "type": "reveal",
       "manifest": { "frames": 64, "width": 1400, "height": 1120, "pattern": "/reveal/mt-h610-ddr5/{i}.webp" },
       "height": 260,
@@ -120,15 +107,6 @@ export default {
           "title": "Serviced from one side",
           "desc": "Memory, M.2 and both drive bays behind a single panel."
         }
-      ]
-    },
-    {
-      "type": "band",
-      "kicker": "Built around the bus",
-      "items": [
-        {"src": "/bands/mt-h610-ddr5-0.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 Intel H610 DDR5 - The same Core i9, on a faster bus"},
-        {"src": "/bands/mt-h610-ddr5-1.webp", "w": 1200, "h": 1523, "alt": "Latios MT \u2014 Intel H610 DDR5 - 64GB of DDR5 at 5600 MT/s"},
-        {"src": "/bands/mt-h610-ddr5-2.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 Intel H610 DDR5 - Hardware TPM 2.0, standard"}
       ]
     },
 {
