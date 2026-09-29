@@ -20,6 +20,17 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-09-29, update 35 — Minisforum AI-X1-Pro cinematic design language)
+- User: "copy the same design language/typography/look/feel but for Latios — it's not eye-catching enough." Adopted the AI-X1-Pro signature patterns into the SHARED PDP so they roll out to every model page:
+  - BIG TWO-TONE HEADINGS: BandHeading now splits a "muted lead | bold white tail" string (e.g. "The numbers | that decide a fleet."); banner + spec-teaser support it too. mt-amd-am4 headings converted to two-tone.
+  - CINEMATIC BANNER: PdpBanner rebuilt as a 72–84vh full-bleed dark stage (.pdp-cine) with an accent floor-glow + vignette and a large two-tone headline. mt-amd-am4 opens with a dramatic dark chassis still (/reveal frame) headed "Built to be opened. | Built to last."
+  - THREE-TIER FEATURE STRIP: feature tiles gained an accent UPPERCASE spec line between the benefit title and description (Ryzen 7 5700G · 8C/16T, DUAL-CHANNEL DDR4-3200, etc.).
+  - GLOW LANGUAGE: .pdp-glow (accent bloom) behind the hero product and inside the banner; .pdp-cine vignette; .pdp-blend helper for white-ground catalogue shots.
+- Section order reworked to a rich Minisforum flow: hero → cinematic banner → marquee → stat wall → three-tier features → image band → static serviceability → video loop → audience tabs → I/O map → compare → spec teaser. All two-tone.
+- Testing agent 9/9 pass: banner + glow render, two-tone headings show NO literal "|", 8 three-tier feature tiles, hero glow, static serviceability (no canvas/no "Scroll to open"), all 4 audience images load, no scroll entrance animations, no console errors. (dp180-1.webp flagged naturalWidth 0 is a transient off-screen lazy-load in the range strip; file is a valid 483KB image.)
+- ROLL-OUT: the shared upgrades apply to all PDP pages automatically; per-model work remaining = convert each model's headings to two-tone, add feature `spec` lines, and set a cinematic banner image.
+
+
 ## Implemented (2026-09-29, update 34 — PDP visual polish + scroll animations removed)
 - Reference shifted to Minisforum MS-02-Ultra / AI-X1-Pro. Reworked the SHARED PDP band system (rolls out to every product page): new typography language (.pdp-display calmer tracking + balanced wraps, .pdp-lead editorial intros, accent-tinted eyebrows), soft-lit product stage (.pdp-stage), accent icon-chip feature tiles with hover lift (.pdp-tile/.pdp-icon-chip), refined banner overlay gradient
 - Fixed wrong/off-product imagery on mt-amd-am4 with the real Latios MT photos already in the repo: I/O map → details/mt-rear-close.webp (was dp180-2, a different product); audiences education → home-setup.webp (was av-ifp panel), frontoffice → office.webp (was av-monitor)

@@ -119,6 +119,9 @@ frontend:
         -working: true
         -agent: "testing"
         -comment: "✅ VERIFIED - Typography and visual polish working perfectly. Hero section displays correctly with product title 'Latios MT — AMD AM4', gallery with 10 thumbnails, 3 chips, intro paragraph, 3 stat tiles, configurator with Processor/Memory/Storage options, and CTAs. Feature grid shows 8 tiles with accent icon chips and hover effects. All images load correctly: I/O map (naturalWidth: 2560), and all 4 audience tabs (enterprise: 1216, education: 1216, government: 1400, frontoffice: 1600). Page loads with HTTP 200, no console errors. Screenshots captured."
+        -working: true
+        -agent: "testing"
+        -comment: "✅ REDESIGN VERIFIED - Minisforum-style redesign complete and working. CINEMATIC BANNER: Full-bleed dark banner with dramatic chassis image (1400x1120), two-tone headline 'Built to be opened. Built to last.' renders correctly (grey lead + white tail, NO visible pipe). TWO-TONE HEADINGS: All 6 section headings render as styled two-tone text with NO literal '|' visible. THREE-TIER FEATURE GRID: All 8 tiles have accent icon chip, bold benefit title, UPPERCASE spec line (e.g. 'UP TO RYZEN 7 5700G · 8C/16T'), and description. HERO GLOW: Product stage with .pdp-glow element and image (2560x1600). All MT AMD AM4 page images load correctly. 9/9 verification points passed."
   - task: "Remove scroll-driven animations across PDP"
     implemented: true
     working: true
@@ -136,8 +139,8 @@ frontend:
 
 metadata:
   created_by: "main_agent"
-  version: "1.2"
-  test_sequence: 1
+  version: "1.3"
+  test_sequence: 2
   run_ui: false
 
 test_plan:
@@ -153,3 +156,7 @@ agent_communication:
     -message: "Please VISUALLY verify http://localhost:3000/desktops/mt-amd-am4 (dev). 1) Page loads with no console errors. 2) Sections are visible immediately on scroll WITHOUT fade-up/translate entrance animations and WITHOUT parallax image drift. 3) The 'It opens by hand' (Serviceability) section is now a static two-column band with a heading, a numbered steps list (Closed/Panel off/Cooling/Memory and storage/Expansion) and a single chassis image — it must NOT be a tall sticky scroll-scrubbed sequence and must NOT contain the text 'Scroll to open'. 4) Feature grid shows accent icon chips with hover lift. 5) The I/O map image and audience-tab images load (no broken images). Capture screenshots of the hero, feature grid, the Serviceability band, and audiences. This is a static/CSS visual change; no backend involved."
     -agent: "testing"
     -message: "✅ ALL TESTS PASSED - Comprehensive testing completed on http://localhost:3000/desktops/mt-amd-am4. Both high-priority tasks verified and working correctly: (1) PDP typography + look-and-feel polish: Hero section displays all elements correctly, feature grid has 8 tiles with icon chips, all images load properly. (2) Scroll-driven animations removed: Sections are immediately visible (opacity 1.0) with no entrance animations, Serviceability section is now static (no canvas, no 'Scroll to open' text), has 5 service steps with correct labels. Page loads with HTTP 200, no console errors. Overview/Specification tabs work correctly. Screenshots captured: 01-hero-section.png, 02-serviceability-section.png, 03-feature-grid.png, 04-audiences-section.png, 05-specification-tab.png. Ready for production."
+    -agent: "main"
+    -message: "NEW REDESIGN REQUEST: Visually verify the redesigned Latios product page with Minisforum-style cinematic dark banners, big two-tone headings, three-tier feature blocks. Verify: 1) LOAD with no errors/broken images, 2) CINEMATIC BANNER with two-tone headline 'Built to be opened. | Built to last.' (no visible pipe), 3) TWO-TONE SECTION HEADINGS (no visible pipes), 4) THREE-TIER FEATURE GRID (8 tiles with icon chip, benefit title, uppercase spec, description), 5) HERO PRODUCT GLOW, 6) SERVICEABILITY static (no canvas, no 'Scroll to open'), 7) AUDIENCES (4 tabs with images), 8) NO scroll entrance animations."
+    -agent: "testing"
+    -message: "✅ REDESIGN VERIFICATION COMPLETE - All 8 verification points PASSED (9/9 tests). CINEMATIC BANNER: Full-bleed dark banner found with dramatic chassis image (1400x1120), two-tone headline 'Built to be opened. Built to last.' renders correctly (grey + white, NO visible pipe character). TWO-TONE HEADINGS: Checked 6 section headings - NONE contain literal '|' character (all render as two-tone styled text). THREE-TIER FEATURE GRID: All 8 tiles present with correct structure (accent icon chip, bold benefit title, UPPERCASE spec line, description). HERO GLOW: Product stage with glow element and image loaded (2560x1600). SERVICEABILITY: STATIC two-column band confirmed - NO canvas element, NO 'Scroll to open' text, 5 numbered steps (Closed, Panel off, Cooling, Memory and storage, Expansion), single chassis image loaded (1400x1120). AUDIENCES: All 4 tabs (enterprise/education/government/frontoffice) work correctly, all images load (1216x768, 1216x912, 1400x1285, 1600x992). NO SCROLL ANIMATIONS: All sections immediately visible at opacity 1.0. Page loads HTTP 200, zero console errors. Screenshots: 01-cinematic-banner.png, 02-feature-grid.png, 03-hero-stage.png, 04-serviceability.png, 05-audiences.png. MINOR NOTE: 1 broken image found (/images/dp180-1.webp) but this is NOT part of MT AMD AM4 page - appears to be from different product (PROMAX T2). All MT AMD AM4 page images load correctly."

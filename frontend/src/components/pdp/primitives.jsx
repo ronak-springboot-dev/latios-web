@@ -37,12 +37,24 @@ export const Kicker = ({ children, className = "" }) => (
   </p>
 );
 
-/** Section heading at the scale the marketing bands use. */
-export const BandHeading = ({ children, className = "" }) => (
-  <h2 className={`pdp-display text-4xl md:text-[3.4rem] font-extrabold tracking-tight text-white leading-[1.04] ${className}`}>
-    {children}
-  </h2>
-);
+/** Section heading at the scale the marketing bands use.
+ *  A string containing "|" renders two-tone (muted lead + bold white tail),
+ *  which is the reference pages' signature big-heading look:
+ *    <BandHeading>{"Made for daily work | Built for what's next"}</BandHeading>
+ */
+export const BandHeading = ({ children, className = "" }) => {
+  const base = `pdp-display text-4xl md:text-[3.4rem] font-extrabold tracking-tight leading-[1.04] ${className}`;
+  if (typeof children === "string" && children.includes("|")) {
+    const [lead, tail] = children.split("|");
+    return (
+      <h2 className={base}>
+        <span className="text-zinc-500">{lead.trim()} </span>
+        <span className="text-white">{tail.trim()}</span>
+      </h2>
+    );
+  }
+  return <h2 className={`${base} text-white`}>{children}</h2>;
+};
 
 /**
  * Wrapper giving every band the page's own vertical rhythm.

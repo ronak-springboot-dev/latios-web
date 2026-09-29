@@ -130,26 +130,29 @@ export const PdpHero = ({ model, theme, datasheet, onViewSpecs, onEnquire, confi
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16">
         <div>
-          <motion.div
-            key={i}
-            initial={{ opacity: 0, scale: 0.985 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease: EASE }}
-            className="pdp-stage rounded-xl aspect-[4/3] flex items-center justify-center overflow-hidden"
-            data-testid="showcase-stage"
-          >
-            {isTurntable ? (
-              <div className="w-full p-6">
-                <ModelTurntable frames={model.gallery} name={model.name} />
-              </div>
-            ) : (
-              <img
-                src={model.gallery[i]}
-                alt={`${model.name} view ${i + 1}`}
-                className="max-h-[85%] w-auto object-contain"
-              />
-            )}
-          </motion.div>
+          <div className="relative">
+            <div className="pdp-glow" style={{ inset: "6% 2% -6% 2%", opacity: 0.28 }} aria-hidden="true" />
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, scale: 0.985 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.5, ease: EASE }}
+              className="relative pdp-stage rounded-xl aspect-[4/3] flex items-center justify-center overflow-hidden"
+              data-testid="showcase-stage"
+            >
+              {isTurntable ? (
+                <div className="w-full p-6">
+                  <ModelTurntable frames={model.gallery} name={model.name} />
+                </div>
+              ) : (
+                <img
+                  src={model.gallery[i]}
+                  alt={`${model.name} view ${i + 1}`}
+                  className="max-h-[85%] w-auto object-contain"
+                />
+              )}
+            </motion.div>
+          </div>
           <div className="mt-4 flex gap-3 overflow-x-auto pb-1" data-testid="showcase-thumbs">
             {model.gallery.map((src, n) => (
               <button
@@ -248,30 +251,50 @@ export const PdpHero = ({ model, theme, datasheet, onViewSpecs, onEnquire, confi
 
 /* --------------------------------------------------------------- banners -- */
 
-export const PdpBanner = ({ model, theme, image, headline, subline, kicker }) => (
-  <section className="relative" data-testid="showcase-banner">
-    <ParallaxImage src={image || model.heroImage} alt={model.name} aspect="aspect-[21/9] md:aspect-[21/7]" />
-    <div
-      className="keep-dark absolute inset-0 flex items-center justify-center text-center px-6"
-      style={{ background: "radial-gradient(120% 120% at 50% 35%, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.55) 60%, rgba(5,5,5,0.82) 100%)" }}
-    >
-      <Reveal>
-        <p className="kicker-sq justify-center text-[10px] uppercase tracking-[0.4em] text-zinc-200 mb-6">
-          {kicker ?? theme?.kicker ?? "Engineering the future"}
-        </p>
-        <h2
-          className="pdp-display text-4xl md:text-[4.2rem] font-extrabold tracking-tight text-white leading-[1.0] max-w-4xl"
-          data-testid="showcase-banner-headline"
+export const PdpBanner = ({ model, theme, image, headline, subline, kicker, align = "center" }) => {
+  const left = align === "left";
+  const title = headline ?? model.name;
+  const twoTone = typeof title === "string" && title.includes("|");
+  const [lead, tail] = twoTone ? title.split("|") : [null, title];
+  return (
+    <section className="pdp-cine keep-dark relative border-t border-white/10" data-testid="showcase-banner">
+      <div className="relative min-h-[72vh] md:min-h-[84vh]">
+        <img
+          src={image || model.heroImage}
+          alt={model.name}
+          loading="lazy"
+          className="absolute inset-0 w-full h-full object-cover"
+        />
+        {/* .pdp-cine::after paints the vignette + accent floor-glow over the image */}
+        <div
+          className={`relative z-10 h-full min-h-[72vh] md:min-h-[84vh] flex flex-col justify-center px-6 md:px-12 max-w-[1600px] mx-auto ${
+            left ? "items-start text-left" : "items-center text-center"
+          }`}
         >
-          {headline ?? model.name}
-        </h2>
-        <p className="pdp-lead mt-6 text-base md:text-lg text-zinc-200 max-w-2xl mx-auto">
-          {subline ?? model.intro}
-        </p>
-      </Reveal>
-    </div>
-  </section>
-);
+          <p className={`kicker-sq text-[10px] uppercase tracking-[0.4em] text-zinc-300 mb-6 ${left ? "" : "justify-center"}`}>
+            {kicker ?? theme?.kicker ?? "Engineering the future"}
+          </p>
+          <h2
+            className="pdp-display text-[2.9rem] md:text-[5rem] font-extrabold tracking-tight leading-[0.98] max-w-4xl"
+            data-testid="showcase-banner-headline"
+          >
+            {twoTone ? (
+              <>
+                <span className="text-zinc-400">{lead.trim()} </span>
+                <span className="text-white">{tail.trim()}</span>
+              </>
+            ) : (
+              <span className="text-white">{tail}</span>
+            )}
+          </h2>
+          <p className={`pdp-lead mt-6 text-base md:text-xl text-zinc-200 max-w-2xl ${left ? "" : "mx-auto"}`}>
+            {subline ?? model.intro}
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+};
 
 /* ---------------------------------------------------- the big-number band -- */
 
@@ -355,6 +378,11 @@ export const PdpFeatureGrid = ({ theme, heading, items = [] }) => {
                   <Icon className="w-6 h-6 transition-transform duration-300 group-hover:scale-110" style={{ color: ACCENT_SOFT }} />
                 </span>
                 <h3 className="mt-6 pdp-display text-lg md:text-xl font-bold tracking-tight text-white">{f.title}</h3>
+                {f.spec && (
+                  <p className="mt-1.5 text-[11px] uppercase tracking-[0.18em]" style={{ color: ACCENT_SOFT }}>
+                    {f.spec}
+                  </p>
+                )}
                 <p className="mt-3 text-sm text-zinc-400 leading-relaxed">{f.desc}</p>
               </div>
             </Reveal>
@@ -720,9 +748,7 @@ export const PdpSpecTeaser = ({ theme, onViewSpecs, heading, body }) => (
   <Band theme={theme} data-testid="showcase-spec-teaser">
     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
       <Reveal>
-        <h2 className="pdp-display text-2xl md:text-4xl font-extrabold tracking-tight text-white leading-[1.05]">
-          {heading ?? "Every number that matters."}
-        </h2>
+        <BandHeading>{heading ?? "Every number that matters."}</BandHeading>
         <p className="mt-3 text-sm text-zinc-500">
           {body ?? "Compare all configurations side by side in the full specification sheet."}
         </p>

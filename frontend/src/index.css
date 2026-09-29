@@ -555,3 +555,42 @@ html.light .keep-dark .hover\:bg-zinc-300:hover {
         var(--pdp-accent, #1a56e8) 0%,
         transparent 60%);
 }
+
+/* ---------- Cinematic glow language (Minisforum-grade) ----------
+   A soft accent bloom used behind product stills on near-black so the
+   hardware appears lit rather than pasted onto a flat panel. */
+.pdp-glow {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(70px);
+    opacity: 0.5;
+    pointer-events: none;
+    background: radial-gradient(circle,
+        color-mix(in srgb, var(--pdp-accent, #1a56e8) 85%, transparent) 0%,
+        transparent 70%);
+}
+
+/* Full-bleed cinematic banner: a dark stage with an accent floor-glow and a
+   vignette so a big two-tone headline sits confidently over the artwork. */
+.pdp-cine {
+    position: relative;
+    background: #050505;
+    overflow: hidden;
+}
+.pdp-cine::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background:
+        radial-gradient(90% 60% at 50% 118%,
+            color-mix(in srgb, var(--pdp-accent, #1a56e8) 45%, transparent) 0%,
+            transparent 60%),
+        linear-gradient(to bottom, rgba(5,5,5,0.55) 0%, rgba(5,5,5,0) 30%, rgba(5,5,5,0.85) 100%);
+}
+
+/* Product photographed on white: multiply blends the white ground into the
+   dark stage so a catalogue shot reads as a lit hero without a re-shoot. */
+.pdp-blend {
+    mix-blend-mode: multiply;
+}
