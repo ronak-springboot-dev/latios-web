@@ -20,6 +20,14 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-09-29, update 34 — PDP visual polish + scroll animations removed)
+- Reference shifted to Minisforum MS-02-Ultra / AI-X1-Pro. Reworked the SHARED PDP band system (rolls out to every product page): new typography language (.pdp-display calmer tracking + balanced wraps, .pdp-lead editorial intros, accent-tinted eyebrows), soft-lit product stage (.pdp-stage), accent icon-chip feature tiles with hover lift (.pdp-tile/.pdp-icon-chip), refined banner overlay gradient
+- Fixed wrong/off-product imagery on mt-amd-am4 with the real Latios MT photos already in the repo: I/O map → details/mt-rear-close.webp (was dp180-2, a different product); audiences education → home-setup.webp (was av-ifp panel), frontoffice → office.webp (was av-monitor)
+- USER ASK: removed all scroll-driven animations. Reveal is now a static passthrough (no whileInView fade/translate); ParallaxImage is a static framed image (no scroll drift, hover spotlight kept); PdpReveal's tall sticky scroll-scrubbed canvas ("Scroll to open") is now a STATIC two-column band (heading + numbered service steps + one open-chassis still, onError → details/mt-interior.webp); ModelPage standard hero parallax (imgY/fade) removed
+- Testing agent verified /desktops/mt-amd-am4: HTTP 200, no console errors, sections at opacity 1 with no entrance animation, Serviceability band static (no canvas, no "Scroll to open"), 8 feature tiles, all I/O + 4 audience images load, tabs work
+- ROLL-OUT: because the PDP components are shared, the other model pages inherit the typography + no-scroll-animation changes automatically; per-model imagery fixes (like the I/O/audience swaps) still need doing page by page
+
+
 ## Implemented (2026-08-23, update 33 — Minisforum-style product showcase for mt-amd-am4)
 - /towers/mt-amd-am4 rebuilt as a Minisforum MS-02-Ultra-style PDP (this model only, per user): PDP hero with breadcrumb + image gallery (4 thumbs + 360° turntable thumb with drag) + buy box (title, chips, intro, 3 stats, Enquire/Datasheet/Full-specification CTAs, Made-in-India assurance line) → Overview/Specification tabs → full-bleed banner with headline → 8-card feature icon grid → "One platform. Every team." audience tab switcher (Enterprise IT / Education / Government / Front Office & SMB, animated panel swap) → 2 full-bleed split story sections → spec teaser → existing range strip + CTA
 - New files: /data/showcase.js (SHOWCASE content map — add per-model entries to roll out), /components/ModelShowcase.jsx; ModelPage branches on SHOWCASE[slug]

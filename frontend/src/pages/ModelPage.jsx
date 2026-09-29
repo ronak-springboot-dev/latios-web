@@ -1,6 +1,6 @@
 import { Fragment, useRef, useState } from "react";
 import { Link, Navigate, useParams } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion } from "framer-motion";
 import { ArrowLeft, ArrowRight, ArrowUpRight, ChevronLeft, ChevronRight, FileDown } from "lucide-react";
 import { KineticText } from "@/components/KineticText";
 import { Reveal } from "@/components/Reveal";
@@ -23,15 +23,8 @@ export default function ModelPage() {
     model ? `${model.name} | Latios` : "Latios",
     model ? model.intro : ""
   );
-  const heroRef = useRef(null);
   const stripRef = useRef(null);
   const scrollStrip = (dir) => stripRef.current?.scrollBy({ left: dir * 472, behavior: "smooth" });
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-  const imgY = useTransform(scrollYProgress, [0, 1], ["0%", "22%"]);
-  const fade = useTransform(scrollYProgress, [0, 0.8], [1, 0.2]);
 
   if (!model) return <Navigate to="/" replace />;
 
@@ -341,18 +334,16 @@ export default function ModelPage() {
     >
       {/* HERO — standard models only; a PDP brings its own hero section */}
       {!pdp && (
-        <section ref={heroRef} className="keep-dark relative h-[92vh] overflow-hidden flex items-end">
+        <section className="keep-dark relative h-[92vh] overflow-hidden flex items-end">
           <motion.img
             src={model.heroImage}
             alt={model.name}
-            style={{ y: imgY }}
-            className="absolute inset-0 w-full h-[120%] object-cover"
+            className="absolute inset-0 w-full h-full object-cover"
             data-testid="model-hero-image"
           />
           <div className="absolute inset-0 bg-black/55" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-black/30" />
           <motion.div
-            style={{ opacity: fade }}
             className="relative z-10 max-w-[1600px] mx-auto px-6 md:px-12 pb-16 md:pb-24 w-full"
           >
             <Link

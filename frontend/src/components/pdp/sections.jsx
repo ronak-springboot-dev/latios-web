@@ -135,7 +135,7 @@ export const PdpHero = ({ model, theme, datasheet, onViewSpecs, onEnquire, confi
             initial={{ opacity: 0, scale: 0.985 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, ease: EASE }}
-            className="rounded-lg bg-[#f2f2f0] aspect-[4/3] flex items-center justify-center overflow-hidden"
+            className="pdp-stage rounded-xl aspect-[4/3] flex items-center justify-center overflow-hidden"
             data-testid="showcase-stage"
           >
             {isTurntable ? (
@@ -187,11 +187,12 @@ export const PdpHero = ({ model, theme, datasheet, onViewSpecs, onEnquire, confi
         >
           <Kicker>{model.tag}</Kicker>
           <h1
-            className="font-display text-4xl md:text-5xl font-black tracking-tighter text-white leading-[1.02]"
+            className="pdp-display text-[2.6rem] md:text-[3.6rem] font-extrabold tracking-tight text-white leading-[1.0]"
             data-testid="showcase-title"
           >
             {model.name}
           </h1>
+          <div className="mt-4 pdp-rule w-16" aria-hidden="true" />
           <div className="mt-6 flex flex-wrap gap-2.5" data-testid="showcase-chips">
             {model.chips.map((c) => (
               <span key={c} className="border border-white/15 rounded-full px-4 py-1.5 text-[10px] uppercase tracking-[0.2em] text-zinc-300">
@@ -199,14 +200,14 @@ export const PdpHero = ({ model, theme, datasheet, onViewSpecs, onEnquire, confi
               </span>
             ))}
           </div>
-          <p className="mt-6 text-zinc-400 leading-relaxed max-w-xl" data-testid="showcase-intro">
+          <p className="pdp-lead mt-7 text-base md:text-lg text-zinc-300 max-w-xl" data-testid="showcase-intro">
             {model.intro}
           </p>
 
           <div className="mt-8 grid grid-cols-3 border-t border-l border-white/10" data-testid="showcase-stats">
             {model.stats.map(([v, l]) => (
               <div key={l} className="border-r border-b border-white/10 p-4 md:p-5">
-                <div className="font-display text-xl md:text-2xl font-black tracking-tighter text-white">{v}</div>
+                <div className="pdp-display text-2xl md:text-3xl font-extrabold tracking-tight text-white">{v}</div>
                 <div className="mt-1 text-[9px] uppercase tracking-[0.2em] text-zinc-500">{l}</div>
               </div>
             ))}
@@ -250,18 +251,21 @@ export const PdpHero = ({ model, theme, datasheet, onViewSpecs, onEnquire, confi
 export const PdpBanner = ({ model, theme, image, headline, subline, kicker }) => (
   <section className="relative" data-testid="showcase-banner">
     <ParallaxImage src={image || model.heroImage} alt={model.name} aspect="aspect-[21/9] md:aspect-[21/7]" />
-    <div className="keep-dark absolute inset-0 bg-black/45 flex items-center justify-center text-center px-6">
+    <div
+      className="keep-dark absolute inset-0 flex items-center justify-center text-center px-6"
+      style={{ background: "radial-gradient(120% 120% at 50% 35%, rgba(0,0,0,0.22) 0%, rgba(0,0,0,0.55) 60%, rgba(5,5,5,0.82) 100%)" }}
+    >
       <Reveal>
-        <p className="kicker-sq justify-center text-[10px] uppercase tracking-[0.35em] text-zinc-200 mb-5">
+        <p className="kicker-sq justify-center text-[10px] uppercase tracking-[0.4em] text-zinc-200 mb-6">
           {kicker ?? theme?.kicker ?? "Engineering the future"}
         </p>
         <h2
-          className="font-display text-3xl md:text-6xl font-black tracking-tighter text-white leading-[1.02] max-w-4xl"
+          className="pdp-display text-4xl md:text-[4.2rem] font-extrabold tracking-tight text-white leading-[1.0] max-w-4xl"
           data-testid="showcase-banner-headline"
         >
           {headline ?? model.name}
         </h2>
-        <p className="mt-5 text-sm md:text-base text-zinc-200 max-w-2xl mx-auto">
+        <p className="pdp-lead mt-6 text-base md:text-lg text-zinc-200 max-w-2xl mx-auto">
           {subline ?? model.intro}
         </p>
       </Reveal>
@@ -294,9 +298,9 @@ export const PdpStatWall = ({ theme, heading, body, stats = [], align = "center"
       }`}>
         {stats.map(([value, label, note], n) => (
           <Reveal key={label} delay={n * 0.06}>
-            <div className="bg-[#0A0A0A] p-8 md:p-10 h-full">
+            <div className="pdp-tile bg-[#0A0A0A] p-8 md:p-10 h-full">
               <div
-                className="font-display font-black tracking-tighter leading-[0.95] text-4xl md:text-6xl"
+                className="pdp-display font-extrabold tracking-tight leading-[0.92] text-4xl md:text-6xl"
                 style={{ color: ACCENT }}
               >
                 {value}
@@ -346,9 +350,11 @@ export const PdpFeatureGrid = ({ theme, heading, items = [] }) => {
           const Icon = ICONS[f.icon] ?? Cpu; // an unknown name would render undefined and crash
           return (
             <Reveal key={f.title} delay={n * 0.05}>
-              <div className="group bg-[#0A0A0A] p-8 h-full hover:bg-white/5 transition-colors duration-300" data-testid={`showcase-feature-${n}`}>
-                <Icon className="w-7 h-7 transition-transform duration-300 group-hover:scale-110" style={{ color: ACCENT_SOFT }} />
-                <h3 className="mt-5 font-display text-lg font-bold tracking-tight text-white">{f.title}</h3>
+              <div className="pdp-tile group bg-[#0A0A0A] p-8 h-full hover:bg-white/[0.04]" data-testid={`showcase-feature-${n}`}>
+                <span className="pdp-icon-chip">
+                  <Icon className="w-6 h-6 transition-transform duration-300 group-hover:scale-110" style={{ color: ACCENT_SOFT }} />
+                </span>
+                <h3 className="mt-6 pdp-display text-lg md:text-xl font-bold tracking-tight text-white">{f.title}</h3>
                 <p className="mt-3 text-sm text-zinc-400 leading-relaxed">{f.desc}</p>
               </div>
             </Reveal>
@@ -402,10 +408,10 @@ export const PdpAudiences = ({ theme, heading, items = [] }) => {
           </div>
           <div>
             <Kicker className="mb-4">{aud.label}</Kicker>
-            <h3 className="font-display text-2xl md:text-4xl font-black tracking-tighter text-white leading-[1.05]">
+            <h3 className="pdp-display text-2xl md:text-4xl font-extrabold tracking-tight text-white leading-[1.05]">
               {aud.heading}
             </h3>
-            <p className="mt-5 text-zinc-400 leading-relaxed">{aud.desc}</p>
+            <p className="pdp-lead mt-5 text-zinc-300">{aud.desc}</p>
             <ul className="mt-6 space-y-3" data-testid="audience-bullets">
               {(aud.bullets ?? []).map((b) => (
                 <li key={b} className="flex gap-3 text-sm text-zinc-300">
@@ -432,10 +438,10 @@ export const PdpBleed = ({ kicker, heading, body, image, flip = false, index = 0
       <div className="md:[direction:ltr] flex items-center p-8 md:p-16 lg:p-24">
         <Reveal>
           <Kicker>{kicker}</Kicker>
-          <h3 className="font-display text-2xl md:text-4xl font-black tracking-tighter text-white leading-[1.05]">
+          <h3 className="pdp-display text-2xl md:text-4xl font-extrabold tracking-tight text-white leading-[1.05]">
             {heading}
           </h3>
-          <p className="mt-5 text-zinc-400 leading-relaxed max-w-md">{body}</p>
+          <p className="pdp-lead mt-5 text-zinc-300 max-w-md">{body}</p>
         </Reveal>
       </div>
     </div>
@@ -693,7 +699,7 @@ export const PdpThermal = ({ model, theme, src, poster, kicker, heading, body, s
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-px bg-white/10 border border-white/10">
             {stats.map(([value, label]) => (
               <div key={label} className="bg-[#0A0A0A] p-7">
-                <div className="font-display text-2xl md:text-3xl font-black tracking-tighter"
+                <div className="pdp-display text-2xl md:text-3xl font-extrabold tracking-tight"
                      style={{ color: ACCENT }}>{value}</div>
                 <div className="mt-2 text-xs text-zinc-400">{label}</div>
               </div>
@@ -714,7 +720,7 @@ export const PdpSpecTeaser = ({ theme, onViewSpecs, heading, body }) => (
   <Band theme={theme} data-testid="showcase-spec-teaser">
     <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
       <Reveal>
-        <h2 className="font-display text-2xl md:text-4xl font-black tracking-tighter text-white leading-[1.05]">
+        <h2 className="pdp-display text-2xl md:text-4xl font-extrabold tracking-tight text-white leading-[1.05]">
           {heading ?? "Every number that matters."}
         </h2>
         <p className="mt-3 text-sm text-zinc-500">

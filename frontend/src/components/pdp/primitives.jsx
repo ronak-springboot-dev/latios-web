@@ -32,14 +32,14 @@ export const GhostButton = ({ as: As = "button", children, className = "", ...re
 );
 
 export const Kicker = ({ children, className = "" }) => (
-  <p className={`kicker-sq text-[10px] uppercase tracking-[0.35em] text-zinc-500 mb-5 ${className}`}>
+  <p className={`kicker-sq text-[10px] uppercase tracking-[0.4em] text-zinc-400 mb-5 ${className}`}>
     {children}
   </p>
 );
 
 /** Section heading at the scale the marketing bands use. */
 export const BandHeading = ({ children, className = "" }) => (
-  <h2 className={`font-display text-3xl md:text-5xl font-black tracking-tighter text-white leading-[1.05] ${className}`}>
+  <h2 className={`pdp-display text-4xl md:text-[3.4rem] font-extrabold tracking-tight text-white leading-[1.04] ${className}`}>
     {children}
   </h2>
 );

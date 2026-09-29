@@ -78,7 +78,7 @@ export default {
     },
     {
       type: "ioMap",
-      image: "/images/dp180-2.webp",
+      image: "/images/details/mt-rear-close.webp",
       heading: "New docks and decade-old projectors.",
       body:
         "The reason this chassis outlives its purchase order: USB-C Gen 2 at the " +
@@ -119,7 +119,7 @@ export default {
           heading: "Labs that survive the semester",
           desc: "Radeon graphics onboard handle coding labs, design coursework and exam kiosks — with padlock loops that keep hardware exactly where you left it.",
           bullets: ["Ryzen 5/7 options for every budget", "Kensington + padlock physical security", "Wi-Fi 6E for dense classrooms"],
-          image: "/images/av-ifp.jpg",
+          image: "/images/home-setup.webp",
         },
         {
           id: "government",
@@ -135,7 +135,7 @@ export default {
           heading: "A workhorse that disappears into the desk",
           desc: "Quiet fan cooling, an 18-litre footprint and every port accounting teams still rely on — from receipt printers to dual displays.",
           bullets: ["Only 312 × 166 × 354 mm", "Dual-display 4K out of the box", "Up to 500W 80+ Bronze PSU headroom"],
-          image: "/images/av-monitor.jpg",
+          image: "/images/office.webp",
         },
       ],
     },
