@@ -20,6 +20,14 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-09-29, update 36 — mt-amd-am4 recoloured to Minisforum blue + decluttered)
+- User still felt the page didn't match the reference's cleanliness/colour. Scoped to mt-amd-am4 ONLY (theme.js entry + data/pdp/mt-amd-am4.js):
+  - COLOUR COMBINATION: accent amber (#d98324) → Minisforum blue (#2f6bff, soft #8fb4ff); surface cooled to #06080f; density tight → normal (more whitespace). Now every glow/button/kicker/stat/spec-line reads blue (verified button rgb(47,107,255)).
+  - CLEANLINESS: removed the scrolling text marquee and the 3-image stacked band; leaner flow = hero → cinematic banner → stat wall → three-tier features → static serviceability → video loop → audience tabs → I/O map → compare → spec teaser.
+  - IMAGERY: I/O map now uses the clean studio rear-panel shot details/mt-rear.webp (was the gritty macro mt-rear-close). Banner keeps the dramatic dark chassis still with a BLUE floor-glow.
+- Testing agent 7/7 pass: blue accent everywhere, blue-glow cinematic banner, no marquee/band, clean rear image loads, 8 blue-spec feature tiles, static serviceability, all audience images load, tabs work, no scroll animations, no console errors, no broken images.
+
+
 ## Implemented (2026-09-29, update 35 — Minisforum AI-X1-Pro cinematic design language)
 - User: "copy the same design language/typography/look/feel but for Latios — it's not eye-catching enough." Adopted the AI-X1-Pro signature patterns into the SHARED PDP so they roll out to every model page:
   - BIG TWO-TONE HEADINGS: BandHeading now splits a "muted lead | bold white tail" string (e.g. "The numbers | that decide a fleet."); banner + spec-teaser support it too. mt-amd-am4 headings converted to two-tone.

@@ -22,15 +22,6 @@ export default {
     },
 
     {
-      type: "marquee",
-      items: [
-        "Ryzen 7 5700G", "Radeon graphics onboard", "64GB DDR4-3200",
-        "18-litre chassis", "TPM 2.0", "Wi-Fi 6E", "Tool-free service",
-        "Made in India", "GeM registered",
-      ],
-    },
-
-    {
       type: "statWall",
       align: "left",
       heading: "The numbers | that decide a fleet.",
@@ -59,16 +50,6 @@ export default {
         { icon: "ShieldCheck", title: "Hardware root of trust", spec: "TPM 2.0 · Kensington · Padlock", desc: "Certified for environments where failure isn't an option." },
         { icon: "Wrench", title: "Service in seconds", spec: "Tool-free side panel", desc: "Memory and drive swaps take minutes, keeping fleets current for years." },
       ],
-    },
-
-    {
-      "type": "band",
-      "kicker": "The everyday workhorse",
-      "items": [
-        {"src": "/bands/mt-amd-am4-0.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 AMD AM4 - Eight Ryzen cores, Radeon graphics on the die"},
-        {"src": "/bands/mt-amd-am4-1.webp", "w": 1200, "h": 1523, "alt": "Latios MT \u2014 AMD AM4 - Dual-channel DDR4-3200, up to 64GB"},
-        {"src": "/bands/mt-amd-am4-2.webp", "w": 1200, "h": 1163, "alt": "Latios MT \u2014 AMD AM4 - Open it by hand, in seconds"}
-      ]
     },
 
     {
@@ -139,7 +120,7 @@ export default {
 
     {
       type: "ioMap",
-      image: "/images/details/mt-rear-close.webp",
+      image: "/images/details/mt-rear.webp",
       heading: "New docks | and decade-old projectors.",
       body:
         "The reason this chassis outlives its purchase order: USB-C Gen 2 at the " +
