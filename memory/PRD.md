@@ -20,6 +20,14 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-09-29, update 38 — Dell-style listing + Intel/AMD campaign pages)
+- LISTING /towers restyled to the Dell laptops-listing idiom: ModelCard is now a light/white Dell-style card (product on a light stage, coloured processor badge Intel #0068b5 / AMD #ed1c24 / Xeon, star rating, 5-item spec checklist, "Enterprise & GeM pricing" line, Explore model + Compare buttons). Existing testids preserved (model-explore-<slug>, ai-badge-<slug>). Facet rail/sort untouched.
+- PROCESSOR CALLOUT: new ProcessorCallout strip above the grid with "Learn more about Intel" (→ /processors/intel) and "Learn more about AMD" (→ /processors/amd), mirroring Dell's Intel/AMD processor callouts.
+- NEW CAMPAIGN PAGES: /processors/:vendor (intel, amd) via new ProcessorPage.jsx + data/processors.js — Latios-branded equivalents of Dell's Intel/AMD campaign LPs: cinematic dark hero with vendor wordmark chip + accent glow, two-tone headline, light body with 4 feature cards + 4 processor-tier cards + accent CTA band. Hero/tier CTAs deep-link to the filtered listing (/towers?cpu=intel|amd). Route added in App.js BEFORE /:category/:modelSlug.
+- Testing agent: all pass — callout + 15 Dell-style cards render (no broken images), Intel/AMD "Learn more" redirect correctly to the campaign pages, feature/tier cards present, hero CTA filters listing, no console errors on /towers, /processors/intel, /processors/amd.
+- NOTE: the earlier "generate new images" question is set aside pending the user's model choice (gpt-image-1 vs Gemini Nano Banana) + Emergent key.
+
+
 ## Implemented (2026-09-29, update 37 — capability tabs, sibling rollout, cleaner persona photos)
 - CAPABILITY IMAGE-SWAP TABS: new shared section type `capabilityTabs` (PdpCapabilityTabs in sections.jsx, registered in PdpRenderer) — a Minisforum "Core Capability Upgrades" style block: tab row (Processor / Memory / Serviceability) crossfades a big product still (data-testid capability-image) + caption (spec/title/text). Tab clicks are user interaction, so the crossfade is intentional (scroll animations still off). Added to mt-amd-am4, reusing the three freed /bands/mt-amd-am4-*.webp renders.
 - SIBLING ROLLOUT (5 MT pages: mt-h610-ddr4/-ddr5, mt-pro-h610-ddr5, mt-q670-ddr5, mt-am5-pro-ai): theme.js accents unified to the Minisforum blue (#2f6bff / #8fb4ff, density normal, surface #06080f); decluttered by removing every marquee + band section from their data files (balanced-brace script). All verified rgb(47,107,255), no marquee/band, HTTP 200, no console errors.

@@ -9,6 +9,13 @@ export default {
       "type": "hero"
     },
     {
+      "type": "banner",
+      "image": "/reveal/mt-h610-ddr5/002.webp",
+      "kicker": "Built around the bus",
+      "headline": "Built around | the faster bus.",
+      "subline": "Intel H610 with DDR5 memory in the 18-litre Latios MT chassis \u2014 more bandwidth for the same desk, same footprint, same tool-free service."
+    },
+    {
       "type": "reveal",
       "manifest": { "frames": 64, "width": 1400, "height": 1120, "pattern": "/reveal/mt-h610-ddr5/{i}.webp" },
       "height": 260,

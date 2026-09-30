@@ -10,6 +10,13 @@ export default {
     },
     {
       "type": "banner",
+      "image": "/reveal/mt-pro-h610-ddr5/002.webp",
+      "kicker": "The Pro build",
+      "headline": "The Pro build, | fleet-ready.",
+      "subline": "The Pro configuration of the Latios MT \u2014 steel, restraint and DDR5 headroom, built to roll out across a floor and stay current for years."
+    },
+    {
+      "type": "banner",
       "image": "/images/components/board-neutral.webp",
       "kicker": "The Pro build",
       "headline": "Tuned for the ninth hour, not the first minute.",

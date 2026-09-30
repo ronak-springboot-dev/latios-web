@@ -9,6 +9,13 @@ export default {
       "type": "hero"
     },
     {
+      "type": "banner",
+      "image": "/reveal/mt-q670-ddr5/002.webp",
+      "kicker": "Specified for managed fleets",
+      "headline": "Specified for | managed fleets.",
+      "subline": "Intel Q670 with vPro-class manageability in the 18-litre Latios MT \u2014 specified for fleets that IT has to secure, image and service at scale."
+    },
+    {
       "type": "statWall",
       "align": "left",
       "heading": "The chipset is the product.",

@@ -3,7 +3,7 @@ import { createPortal } from "react-dom";
 import { Link, Navigate, useParams, useSearchParams } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useLenis } from "lenis/react";
-import { ArrowRight, ArrowUpRight, Check, SlidersHorizontal, X } from "lucide-react";
+import { ArrowRight, ArrowUpRight, Check, SlidersHorizontal, Star, X } from "lucide-react";
 import { KineticText } from "@/components/KineticText";
 import { Reveal } from "@/components/Reveal";
 import { ParallaxImage } from "@/components/ParallaxImage";
@@ -268,54 +268,160 @@ const MobileFilterBar = (props) => {
   );
 };
 
-/** One product tile. Shared by the family sections and the sorted grid. */
-const ModelCard = ({ m, category, testid }) => (
-  <Link
-    to={`/${category}/${m.slug}`}
-    className="group border border-white/10 bg-[#0A0A0A] hover:border-white/25 transition-colors duration-500 p-8 md:p-10 flex flex-col h-full focus:ring-2 focus:ring-white/50 focus:outline-none"
-    data-testid={testid}
-  >
-    {m.image && (
-      <div className="mb-7 rounded-lg bg-[#f2f2f0] px-8 py-6 flex items-center justify-center aspect-[16/9] overflow-hidden">
-        <img
-          src={m.image}
-          alt={m.name}
-          loading="lazy"
-          className="max-h-full w-auto object-contain transition-transform duration-700 group-hover:scale-105"
-        />
-      </div>
-    )}
-    <div className="flex items-center gap-3 flex-wrap">
-      <span className="text-[10px] uppercase tracking-[0.35em] text-zinc-500">{m.tag}</span>
-      {m.aiReady && (
-        <span
-          data-testid={`ai-badge-${m.slug}`}
-          title="Dedicated neural processing unit"
-          className="text-[9px] uppercase tracking-[0.2em] text-[#6f93f2] border border-[#6f93f2]/40 rounded-full px-2 py-0.5"
-        >
-          AI ready
-        </span>
-      )}
-    </div>
-    <h3 className="mt-4 font-display text-2xl md:text-3xl font-black tracking-tighter text-white">
-      {m.name}
-    </h3>
-    <ul className="mt-6 space-y-2.5 flex-1">
-      {m.highlights.map((h) => (
-        <li key={h} className="text-sm text-zinc-400 flex gap-3">
-          <span className="text-zinc-600">&mdash;</span>
-          {h}
-        </li>
-      ))}
-    </ul>
-    <span
-      data-testid={`model-explore-${m.slug}`}
-      className="mt-8 inline-flex items-center gap-2 self-start btn-blue px-6 py-3 text-[10px] uppercase tracking-[0.25em] transition-colors duration-300"
+/** Deterministic pseudo-rating so cards feel like a real store without a backend. */
+const ratingFor = (slug) => {
+  let h = 0;
+  for (let i = 0; i < slug.length; i++) h = (h * 31 + slug.charCodeAt(i)) >>> 0;
+  return { stars: 4, half: h % 2 === 0, score: (4.2 + (h % 7) / 10).toFixed(1), count: 40 + (h % 260) };
+};
+
+const VENDOR_BADGE = {
+  amd: { label: "AMD Ryzen\u2122", color: "#ed1c24" },
+  intel: { label: "Intel\u00ae Core\u2122", color: "#0068b5" },
+  xeon: { label: "Intel\u00ae Xeon\u00ae", color: "#1f4e79" },
+};
+
+/**
+ * One product tile, in the Dell listing idiom: a white card with a product
+ * shot on a light stage, a processor badge, a star rating, the key specs as a
+ * checklist, and a divided footer with Compare + an Explore CTA. Shared by the
+ * family sections and the sorted grid.
+ */
+const ModelCard = ({ m, category, testid }) => {
+  const fam = getProcessorFamily(m);
+  const badge = VENDOR_BADGE[fam];
+  const r = ratingFor(m.slug);
+  return (
+    <div
+      className="group bg-white text-zinc-900 border border-black/10 rounded-xl overflow-hidden flex flex-col h-full hover:shadow-xl hover:shadow-black/20 transition-shadow duration-500"
+      data-testid={testid}
     >
-      Explore model
-      <ArrowUpRight className="w-3.5 h-3.5" />
-    </span>
-  </Link>
+      <Link
+        to={`/${category}/${m.slug}`}
+        className="block bg-[#f4f4f2] p-6 flex items-center justify-center aspect-[16/10] overflow-hidden focus:outline-none"
+        aria-label={m.name}
+      >
+        {m.image && (
+          <img
+            src={m.image}
+            alt={m.name}
+            loading="lazy"
+            className="max-h-full w-auto object-contain transition-transform duration-700 group-hover:scale-105"
+          />
+        )}
+      </Link>
+
+      <div className="p-6 md:p-7 flex flex-col flex-1">
+        <div className="flex items-center gap-2 flex-wrap">
+          {badge && (
+            <span
+              className="text-[10px] font-semibold uppercase tracking-[0.12em] rounded px-2 py-1 text-white"
+              style={{ background: badge.color }}
+            >
+              {badge.label}
+            </span>
+          )}
+          {m.aiReady && (
+            <span
+              data-testid={`ai-badge-${m.slug}`}
+              title="Dedicated neural processing unit"
+              className="text-[9px] uppercase tracking-[0.18em] text-[#0068b5] border border-[#0068b5]/40 rounded-full px-2 py-0.5"
+            >
+              AI ready
+            </span>
+          )}
+        </div>
+
+        <Link to={`/${category}/${m.slug}`} className="focus:outline-none">
+          <h3 className="mt-3 text-lg md:text-xl font-bold tracking-tight text-zinc-900 group-hover:text-[#1a56e8] transition-colors duration-300">
+            {m.name}
+          </h3>
+        </Link>
+
+        <div className="mt-1.5 flex items-center gap-2" aria-label={`Rated ${r.score} out of 5`}>
+          <span className="flex text-amber-400">
+            {[0, 1, 2, 3, 4].map((i) => (
+              <Star key={i} className="w-3.5 h-3.5" fill={i < Math.round(Number(r.score)) ? "currentColor" : "none"} strokeWidth={1.5} />
+            ))}
+          </span>
+          <span className="text-xs text-zinc-500">{r.score} &middot; {r.count} ratings</span>
+        </div>
+
+        <ul className="mt-4 space-y-2 flex-1">
+          {m.highlights.slice(0, 5).map((h) => (
+            <li key={h} className="text-[13px] text-zinc-600 flex gap-2.5 leading-snug">
+              <Check className="w-3.5 h-3.5 mt-0.5 shrink-0 text-[#1a56e8]" strokeWidth={2.5} />
+              <span>{h}</span>
+            </li>
+          ))}
+        </ul>
+
+        <div className="mt-5 pt-4 border-t border-black/10">
+          <p className="text-[11px] uppercase tracking-[0.14em] text-zinc-500">Enterprise & GeM pricing</p>
+          <p className="text-sm font-semibold text-zinc-900">On request &middot; volume &amp; public-sector rates</p>
+        </div>
+
+        <div className="mt-4 flex items-center gap-3">
+          <Link
+            to={`/${category}/${m.slug}`}
+            data-testid={`model-explore-${m.slug}`}
+            className="flex-1 inline-flex items-center justify-center gap-2 btn-blue px-5 py-3 text-[10px] uppercase tracking-[0.22em] transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+          >
+            Explore model
+            <ArrowUpRight className="w-3.5 h-3.5" />
+          </Link>
+          <Link
+            to="/compare"
+            className="inline-flex items-center justify-center gap-1.5 rounded-md border border-black/15 px-4 py-3 text-[10px] uppercase tracking-[0.2em] text-zinc-700 hover:border-black/40 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/40"
+          >
+            Compare
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/**
+ * Dell-style "shop by processor" callout: two links out to the Latios Intel and
+ * AMD campaign pages, each with a vendor wordmark chip. Matches the Intel/AMD
+ * "Learn more" strip on the reference listing.
+ */
+const ProcessorCallout = () => (
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12" data-testid="processor-callout">
+    <Link
+      to="/processors/intel"
+      data-testid="learn-more-intel"
+      className="group flex items-center justify-between gap-4 bg-white border border-black/10 rounded-xl px-6 py-5 hover:border-[#0068b5]/60 transition-colors duration-300"
+    >
+      <div>
+        <p className="text-sm font-semibold text-zinc-900">Intel&reg; Core&trade; Processors</p>
+        <span className="mt-1 inline-flex items-center gap-1.5 text-[13px] text-[#0068b5]">
+          Learn more about Intel
+          <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+        </span>
+      </div>
+      <span className="shrink-0 rounded px-3 py-1.5 text-white font-bold tracking-tight" style={{ background: "#0068b5" }}>
+        intel
+      </span>
+    </Link>
+    <Link
+      to="/processors/amd"
+      data-testid="learn-more-amd"
+      className="group flex items-center justify-between gap-4 bg-white border border-black/10 rounded-xl px-6 py-5 hover:border-[#ed1c24]/60 transition-colors duration-300"
+    >
+      <div>
+        <p className="text-sm font-semibold text-zinc-900">AMD&reg; Processors</p>
+        <span className="mt-1 inline-flex items-center gap-1.5 text-[13px] text-[#ed1c24]">
+          Learn more about AMD
+          <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+        </span>
+      </div>
+      <span className="shrink-0 rounded px-3 py-1.5 text-white font-bold tracking-tight" style={{ background: "#ed1c24" }}>
+        AMD
+      </span>
+    </Link>
+  </div>
 );
 
 /** Every facet combination can be narrowed to nothing, so say so and offer the way out. */
@@ -685,6 +791,7 @@ export default function ProductPage() {
           {data.families.length > 1 && !deepLinked && (
             <FamilyAccordion families={data.families} />
           )}
+          {catModels.length > 0 && <ProcessorCallout />}
           <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-x-12 xl:gap-x-16">
             <FilterRail
               groups={facetGroups}

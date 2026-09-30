@@ -10,6 +10,13 @@ export default {
       "type": "hero"
     },
     {
+      "type": "banner",
+      "image": "/reveal/mt-h610-ddr4/002.webp",
+      "kicker": "The value build",
+      "headline": "Cores where | the budget goes.",
+      "subline": "Intel H610 with cost-right DDR4 in the 18-litre Latios MT chassis \u2014 every rupee spent on cores and storage, not on the label."
+    },
+    {
       "type": "statWall",
       "align": "left",
       "heading": "Where the money actually goes.",

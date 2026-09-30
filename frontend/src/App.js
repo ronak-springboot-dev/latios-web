@@ -18,6 +18,7 @@ import ComparePage from "@/pages/ComparePage";
 import AdminPage from "@/pages/AdminPage";
 import AboutPage from "@/pages/AboutPage";
 import SupportPage from "@/pages/SupportPage";
+import ProcessorPage from "@/pages/ProcessorPage";
 
 /**
  * Top of the page on a new navigation, back where you were on Back.
@@ -99,6 +100,7 @@ const AnimatedRoutes = () => {
         <Route path="/news" element={<NewsIndexPage />} />
         <Route path="/news/:slug" element={<NewsPage />} />
         <Route path="/applications/:slug" element={<ApplicationPage />} />
+        <Route path="/processors/:vendor" element={<ProcessorPage />} />
         <Route path="/:category/:modelSlug" element={<ModelPage />} />
         <Route path="/:category" element={<ProductPage />} />
         <Route path="*" element={<Home />} />

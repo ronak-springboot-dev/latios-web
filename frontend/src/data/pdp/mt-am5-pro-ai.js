@@ -9,6 +9,13 @@ export default {
       "type": "hero"
     },
     {
+      "type": "banner",
+      "image": "/reveal/mt-am5-pro-ai/002.webp",
+      "kicker": "Ryzen AI, on the die",
+      "headline": "Ryzen AI, | on every desk.",
+      "subline": "AMD Ryzen AI on Socket AM5 in the 18-litre Latios MT \u2014 on-device acceleration and DDR5 headroom for the desks that do the heavy lifting."
+    },
+    {
       "type": "statWall",
       "align": "center",
       "heading": "The accelerator is already inside.",
