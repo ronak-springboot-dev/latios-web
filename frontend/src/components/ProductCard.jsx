@@ -34,8 +34,8 @@
  * a card cannot drift away from the spec table on the page it links to.
  */
 import { Link } from "react-router-dom";
-import { ArrowUpRight, Cpu, MemoryStick, HardDrive, MonitorCheck } from "lucide-react";
-import { getMaxMemoryGB } from "@/data/models";
+import { ArrowUpRight, Check, Cpu, MemoryStick, HardDrive, MonitorCheck } from "lucide-react";
+import { getMaxMemoryGB, getProcessorFamily } from "@/data/models";
 
 /** First spec row whose label matches, across all groups. */
 const row = (m, re) => {
@@ -67,6 +67,24 @@ export const summarise = (m) => {
   return out;
 };
 
+/**
+ * The processor badge, in each vendor's own colour.
+ *
+ * Set as TYPE on a coloured chip, never the vendor's logo -- the same rule the
+ * partner strip and the platform bands follow. "Intel Core" in Outfit on Intel
+ * blue is a description; a drawn Intel mark would be a trademark this project
+ * has no artwork for and must not invent.
+ *
+ * Keyed on getProcessorFamily, which reads the model's own Processor row, so a
+ * badge cannot disagree with the spec table it sits above.
+ */
+const VENDOR_BADGE = {
+  amd: { label: "AMD Ryzen™", color: "#ed1c24" },
+  epyc: { label: "AMD EPYC™", color: "#ed1c24" },
+  intel: { label: "Intel® Core™", color: "#0068b5" },
+  xeon: { label: "Intel® Xeon®", color: "#1f4e79" },
+};
+
 export const ProductCard = ({
   m,
   category,
@@ -75,6 +93,7 @@ export const ProductCard = ({
 }) => {
   const to = `/${category || m.category}/${m.slug}`;
   const specs = summarise(m);
+  const badge = VENDOR_BADGE[getProcessorFamily(m)];
 
   return (
     <div
@@ -116,7 +135,15 @@ export const ProductCard = ({
         )}
 
         <div className="flex items-center gap-2 flex-wrap">
-          <span className="text-[9px] uppercase tracking-[0.3em] text-zinc-500">{m.tag}</span>
+          {badge && (
+            <span
+              data-testid={`vendor-badge-${m.slug}`}
+              className="text-[10px] font-semibold uppercase tracking-[0.12em] rounded px-2 py-1"
+              style={{ background: badge.color, color: "#fff" }}
+            >
+              {badge.label}
+            </span>
+          )}
           {m.aiReady && (
             <span
               data-testid={`ai-badge-${m.slug}`}
@@ -132,35 +159,52 @@ export const ProductCard = ({
           {m.name}
         </h3>
 
-        {/* The specification as RULED ROWS, which is the reference's own shape:
-            one fact per line with a hairline between, so four of them scan as a
-            block rather than as a paragraph. It replaced an icon list that read
-            as prose at this width, and it is the reason the card fits a
-            three-across grid at all. */}
+        {/* The specification as a CHECKLIST, which is the reference listing's
+            own shape -- a tick per fact rather than a table rule. Four of them,
+            not five: at three cards across a fifth pushes the pricing line off
+            the bottom of the card. */}
         {!!specs.length && (
-          <dl
-            className="mt-4 border-t border-white/10"
-            data-testid={testid ? `${testid}-specs` : undefined}
-          >
-            {specs.map(({ icon: Icon, label }) => (
-              <div key={label} className="flex items-center gap-2.5 border-b border-white/10 py-2">
-                <Icon className="w-3 h-3 shrink-0 text-zinc-600" aria-hidden="true" />
-                <dd className="text-xs leading-snug text-zinc-300 truncate" title={label}>
-                  {label}
-                </dd>
-              </div>
+          <ul className="mt-4 space-y-2" data-testid={testid ? `${testid}-specs` : undefined}>
+            {specs.slice(0, 4).map(({ label }) => (
+              <li key={label} className="flex gap-2.5 text-[13px] leading-snug text-zinc-400">
+                <Check className="w-3.5 h-3.5 mt-0.5 shrink-0 text-[#1a56e8]" strokeWidth={2.5} aria-hidden="true" />
+                <span>{label}</span>
+              </li>
             ))}
-          </dl>
+          </ul>
         )}
 
         <div className="flex-1" />
 
-        <span
-          data-testid={`model-explore-${m.slug}`}
-          className="mt-5 inline-flex items-center gap-1.5 self-start text-[10px] uppercase tracking-[0.25em] text-white border-b border-white/30 pb-1 group-hover:border-white transition-colors duration-300"
-        >
-          Explore model
-          <ArrowUpRight className="w-3 h-3" />
+        {/* Where the reference puts a price. Latios has no price, stock or SKU
+            field anywhere -- the backend routes a pricing question to a lead
+            form -- so this says what is true instead of inventing a number, and
+            GeM is the procurement route most of these buyers are actually on. */}
+        <div className="mt-5 pt-4 border-t border-white/10">
+          <p className="text-[10px] uppercase tracking-[0.14em] text-zinc-500">
+            Enterprise &amp; GeM pricing
+          </p>
+          <p className="mt-0.5 text-[13px] font-semibold text-white">
+            On request &middot; volume &amp; public-sector rates
+          </p>
+        </div>
+
+        {/* The footer pair from the reference listing: a filled primary and a
+            quiet secondary. Both are plain spans, because the whole card is
+            already one <Link> and nesting an anchor inside an anchor is invalid
+            -- the Compare span is made a real control by the checkbox above,
+            which sits outside the Link for the same reason. */}
+        <span className="mt-4 flex items-center gap-3">
+          <span
+            data-testid={`model-explore-${m.slug}`}
+            className="flex-1 inline-flex items-center justify-center gap-2 btn-blue px-5 py-3 text-[10px] uppercase tracking-[0.22em] transition-colors duration-300"
+          >
+            Explore model
+            <ArrowUpRight className="w-3.5 h-3.5" />
+          </span>
+          <span className="inline-flex items-center justify-center rounded-md border border-white/15 px-4 py-3 text-[10px] uppercase tracking-[0.2em] text-zinc-300 group-hover:border-white/40 transition-colors duration-300">
+            Compare
+          </span>
         </span>
       </Link>
     </div>

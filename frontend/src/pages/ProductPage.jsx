@@ -110,6 +110,50 @@ const FamilyAccordion = ({ families }) => {
  */
 const SHOW = ["bucket", "cpu", "memory", "ai"];
 
+/**
+ * "Shop by processor": two links out to the Latios Intel and AMD campaign
+ * pages, in the reference listing's own idiom.
+ *
+ * The vendor chips are SET TYPE on the vendor's colour, not their logos. The
+ * rule is the one the partner strip and the platform bands already follow --
+ * this project composites real artwork or sets the name, and never draws a
+ * mark it does not hold.
+ *
+ * Desktops only. The campaign pages are about Intel Core and AMD Ryzen
+ * desktops, so offering them from the AV or display listings would promise a
+ * page that does not talk about those products.
+ */
+const ProcessorCallout = () => (
+  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12" data-testid="processor-callout">
+    {[
+      { to: "/processors/intel", testid: "learn-more-intel", name: "Intel® Core™ Processors", cta: "Learn more about Intel", chip: "intel", color: "#0068b5" },
+      { to: "/processors/amd", testid: "learn-more-amd", name: "AMD® Processors", cta: "Learn more about AMD", chip: "AMD", color: "#ed1c24" },
+    ].map((v) => (
+      <Link
+        key={v.to}
+        to={v.to}
+        data-testid={v.testid}
+        className="group flex items-center justify-between gap-4 pdp-card border border-white/10 rounded-xl px-6 py-5 transition-colors duration-300"
+        style={{ borderColor: undefined }}
+      >
+        <span>
+          <span className="block text-sm font-semibold text-white">{v.name}</span>
+          <span className="mt-1 inline-flex items-center gap-1.5 text-[13px]" style={{ color: v.color }}>
+            {v.cta}
+            <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
+          </span>
+        </span>
+        <span
+          className="shrink-0 rounded px-3 py-1.5 font-bold tracking-tight text-white"
+          style={{ background: v.color }}
+        >
+          {v.chip}
+        </span>
+      </Link>
+    ))}
+  </div>
+);
+
 export default function ProductPage() {
   const { category } = useParams();
   const data = getCategory(category);
@@ -370,6 +414,7 @@ export default function ProductPage() {
           {data.families.length > 1 && !deepLinked && (
             <FamilyAccordion families={data.families} />
           )}
+          {data.slug === "desktops" && <ProcessorCallout />}
           <div className="grid grid-cols-1 lg:grid-cols-[240px_1fr] gap-x-12 xl:gap-x-16">
             <FilterRail
               groups={facetGroups}
