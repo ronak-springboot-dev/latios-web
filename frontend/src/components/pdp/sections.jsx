@@ -818,3 +818,104 @@ export const PdpSpecTeaser = ({ theme, onViewSpecs, heading, body }) => (
     </div>
   </Band>
 );
+
+/* --------------------------------------------------- capability tabs -- */
+
+/**
+ * One block, three arguments, switched by a pill.
+ *
+ * Ported from the conflict_300926_1315 branch, which is where it was written
+ * and verified. It is the reference storefront's own device: rather than three
+ * more stacked bands saying processor, memory, serviceability, one band holds
+ * all three and the reader picks. On a page that already runs long that is
+ * three sections of height for one section of space.
+ *
+ * Adapted in two ways, both because the branch's stylesheet did not come with
+ * it: `pdp-display` and `pdp-lead` are that branch's type classes and become
+ * this one's `font-display` and standard lead paragraph, and the decorative
+ * `pdp-glow` behind the image is dropped rather than carried over as a fourth
+ * class nothing else would use.
+ *
+ * The image panel keeps `keep-dark`. These are /bands/ assets with their
+ * headline baked into the pixels for a dark ground, so the panel has to stay
+ * dark in both themes or the type inverts against its own background.
+ */
+export const PdpCapabilityTabs = ({ theme, heading, body, tabs = [] }) => {
+  const [n, setN] = useState(0);
+  const t = tabs[n];
+  if (!tabs.length || !t) return null;
+  return (
+    <Band theme={theme} data-testid="pdp-capability-tabs">
+      <div className="max-w-3xl">
+        <Reveal>
+          <BandHeading>{heading ?? "Core capability upgrades."}</BandHeading>
+        </Reveal>
+        {body && (
+          <Reveal delay={0.05}>
+            <p className="mt-5 text-zinc-400 leading-relaxed">{body}</p>
+          </Reveal>
+        )}
+      </div>
+
+      <div className="mt-10 flex flex-wrap gap-2.5" data-testid="capability-tabs">
+        {tabs.map((tb, k) => (
+          <button
+            key={tb.label}
+            onClick={() => setN(k)}
+            data-testid={`capability-tab-${k}`}
+            aria-pressed={k === n}
+            style={k === n ? { background: ACCENT, borderColor: "transparent", color: "#fff" } : undefined}
+            className={`rounded-full px-6 py-2.5 text-[10px] uppercase tracking-[0.25em] border transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-white/30 ${
+              k === n ? "" : "border-white/15 text-zinc-400 hover:text-white hover:border-white/40"
+            }`}
+          >
+            {tb.label}
+          </button>
+        ))}
+      </div>
+
+      <div className="mt-9 grid md:grid-cols-3 gap-10 md:gap-14 items-center">
+        <div className="md:col-span-2 relative">
+          <div className="relative keep-dark rounded-xl overflow-hidden border border-white/10 bg-[#0A0A0A]">
+            <AnimatePresence mode="wait">
+              <motion.img
+                key={t.image}
+                src={t.image}
+                alt={t.title}
+                loading="lazy"
+                data-testid="capability-image"
+                initial={{ opacity: 0, scale: 1.01 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4, ease: EASE }}
+                className="w-full aspect-[16/10] object-contain bg-[#0A0A0A] p-6"
+              />
+            </AnimatePresence>
+          </div>
+        </div>
+        <div>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={t.label}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.35, ease: EASE }}
+              data-testid="capability-caption"
+            >
+              {t.spec && (
+                <p className="text-[11px] uppercase tracking-[0.22em] mb-3" style={{ color: ACCENT_SOFT }}>
+                  {t.spec}
+                </p>
+              )}
+              <h3 className="font-display text-2xl md:text-3xl font-extrabold tracking-tight text-white leading-[1.08]">
+                {t.title}
+              </h3>
+              <p className="mt-4 text-zinc-400 leading-relaxed">{t.text}</p>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+    </Band>
+  );
+};

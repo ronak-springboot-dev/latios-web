@@ -13,6 +13,7 @@ import { ProductVideo } from "@/components/ProductVideo";
 import {
   PdpHero, PdpBanner, PdpStatWall, PdpMarquee, PdpFeatureGrid, PdpAudiences,
   PdpBleed, PdpStickySplit, PdpCompare, PdpIoMap, PdpExploded, PdpSpecTeaser,
+  PdpCapabilityTabs,
 } from "./sections";
 import { PdpBand } from "./PdpBand";
 import { PdpSpotlight } from "./PdpSpotlight";
@@ -42,6 +43,7 @@ const REGISTRY = {
   reveal: PdpReveal,
   walkthrough: PdpWalkthrough,
   specTeaser: PdpSpecTeaser,
+  capabilityTabs: PdpCapabilityTabs,
   specTable: PdpSpecTable,
   video: ProductVideo,
 };

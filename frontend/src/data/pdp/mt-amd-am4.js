@@ -211,6 +211,34 @@ export default {
         ]
       },
       {
+        "type": "capabilityTabs",
+        "heading": "Core capability upgrades.",
+        "body": "Three decisions define this build. Switch between them to see what each one buys — the cores, the memory, and the panel that comes off by hand.",
+        "tabs": [
+          {
+            "label": "Processor",
+            "image": "/bands/mt-amd-am4-0.webp",
+            "spec": "Up to Ryzen 7 5700G · 8C/16T",
+            "title": "Eight cores, graphics on the die.",
+            "text": "The Ryzen 7 5700G tops a Socket AM4 line-up that runs down to the Ryzen 3 5305G — with Radeon graphics built in, so most desks never need a discrete card."
+          },
+          {
+            "label": "Memory",
+            "image": "/bands/mt-amd-am4-1.webp",
+            "spec": "Dual-channel DDR4-3200",
+            "title": "64GB across two slots.",
+            "text": "Two U-DIMM slots ship at 16GB and finish at 64GB of dual-channel DDR4-3200 — enough headroom to keep heavy multitasking instant for years."
+          },
+          {
+            "label": "Serviceability",
+            "image": "/bands/mt-amd-am4-2.webp",
+            "spec": "Tool-free side panel",
+            "title": "Opens by hand, in seconds.",
+            "text": "One hand-removable panel, standard parts inside and spares that ship for a decade. Built to be worked on rather than replaced."
+          }
+        ]
+      },
+      {
         "type": "stickySplit",
         "kicker": "Inside",
         "heading": "Opens by hand,",

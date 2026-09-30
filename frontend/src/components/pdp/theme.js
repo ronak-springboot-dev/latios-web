@@ -67,37 +67,37 @@ const SHAPE = {
 const THEMES = {
   // --- MT micro-tower ------------------------------------------------------
   "mt-amd-am4": {
-    accent: "#d98324", accentSoft: "#f0b46a",
+    accent: "#2f6bff", accentSoft: "#8fb4ff",
     density: "normal", surface: "#0b0a09",
     kicker: "The everyday workhorse",
     shape: "sharp",
   },
   "mt-h610-ddr4": {
-    accent: "#e2571f", accentSoft: "#f5926a",
+    accent: "#2f6bff", accentSoft: "#8fb4ff",
     density: "tight", surface: "#0a0a0a",
     kicker: "Cores where the budget goes",
     shape: "sharp",
   },
   "mt-h610-ddr5": {
-    accent: "#2f7bff", accentSoft: "#83aeff",
+    accent: "#2f6bff", accentSoft: "#8fb4ff",
     density: "normal", surface: "#07090d",
     kicker: "Built around the bus",
     shape: "sharp",
   },
   "mt-pro-h610-ddr5": {
-    accent: "#8fa3b8", accentSoft: "#c3d0dc",
+    accent: "#2f6bff", accentSoft: "#8fb4ff",
     density: "airy", surface: "#0a0b0c",
     kicker: "The Pro build",
     shape: "sharp",
   },
   "mt-q670-ddr5": {
-    accent: "#3d6ea8", accentSoft: "#8fb3d6",
+    accent: "#2f6bff", accentSoft: "#8fb4ff",
     density: "normal", surface: "#080a0c",
     kicker: "Specified for managed fleets",
     shape: "sharp",
   },
   "mt-am5-pro-ai": {
-    accent: "#8b5cf6", accentSoft: "#c4aefc",
+    accent: "#2f6bff", accentSoft: "#8fb4ff",
     density: "normal", surface: "#0a080f",
     kicker: "Ryzen AI, on the die",
     shape: "sharp",
