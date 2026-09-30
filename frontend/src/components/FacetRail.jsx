@@ -532,5 +532,34 @@ export const MobileFilterBar = (props) => {
 
 };
 
-
-
+/**
+ * What a filtered grid shows when nothing matches.
+ *
+ * This was defined in ProductPage and deleted when the rail moved here, but its
+ * two call sites came along and were left pointing at nothing -- so any category
+ * page filtered down to zero results threw "EmptyResults is not defined" and
+ * rendered a blank page. It shipped, because the reference is only reached once
+ * a facet excludes everything, and the build reports an undefined component as a
+ * warning rather than an error.
+ *
+ * That is the third casualty of the same refactor -- `useEffect` and `Check`
+ * were the first two -- and all three hid in the same place: code that only runs
+ * after a click.
+ */
+export const EmptyResults = ({ onClear }) => (
+  <div className="border border-white/10 bg-[#0A0A0A] p-12 text-center" data-testid="facet-empty">
+    <p className="font-display text-2xl font-black tracking-tighter text-white">
+      Nothing matches those filters.
+    </p>
+    <p className="mt-3 text-sm text-zinc-400">
+      Try removing one, or clear them and start again.
+    </p>
+    <button
+      onClick={onClear}
+      data-testid="facet-empty-clear"
+      className="mt-7 btn-blue px-6 py-3 text-[10px] uppercase tracking-[0.25em] focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/50"
+    >
+      Clear all filters
+    </button>
+  </div>
+);

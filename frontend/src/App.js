@@ -16,6 +16,7 @@ import NewsIndexPage from "@/pages/NewsIndexPage";
 import ApplicationPage from "@/pages/ApplicationPage";
 import ComparePage from "@/pages/ComparePage";
 import MachinesPage from "@/pages/MachinesPage";
+import ProcessorPage from "@/pages/ProcessorPage";
 import AdminPage from "@/pages/AdminPage";
 import AboutPage from "@/pages/AboutPage";
 import SupportPage from "@/pages/SupportPage";
@@ -99,6 +100,10 @@ const AnimatedRoutes = () => {
         {/* Above /:category, which is a catch-all that Navigates home on an
             unknown slug -- registered after it, /machines would never render. */}
         <Route path="/machines" element={<MachinesPage />} />
+        {/* Both of these MUST stay above the "/:category" catch-all
+            below, which Navigates home on an unknown slug -- registered
+            after it, neither would ever render. */}
+        <Route path="/processors/:vendor" element={<ProcessorPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/news" element={<NewsIndexPage />} />
         <Route path="/news/:slug" element={<NewsPage />} />

@@ -20,6 +20,61 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-09-29, update 40 — full campaign layout for /processors/:vendor)
+- Rebuilt the Intel/AMD processor pages to follow a full processor-campaign section flow (hero → sticky anchor nav → on-device-AI/manageability split → 3 benefit blocks → "Built by Latios" showcase → "Across the Latios range" 3-card tiers → spec comparison TABLE → shop-by-processor tiers → feature grid → CTA band). All original Latios copy + Latios product imagery (no third-party marketing text/logos copied); rendered dark in both themes via keep-dark.
+- Data-driven via data/processors.js (anchors, aiSplit, benefits[3], gallery[3], range[3] linking into the filtered /towers listing, compare{cols,rows} with per-row Explore links, tiers, features). Both intel and amd populated.
+- Testing agent: all pass on /processors/amd and /processors/intel — every section present, 16 images each all load (no broken), anchor scroll + range-card navigation work, keep-dark keeps it readable in light mode, no console errors.
+
+
+## Implemented (2026-09-29, update 39 — light-mode readability fix + PDP processor chip + richer processor pages)
+- BUG FIX (reported): Dell-style listing cards + Intel/AMD callout were dark-on-dark (invisible) in LIGHT mode. Root cause: the theme remaps `html.light .bg-white -> #0a0a0a` while `text-zinc-900` was NOT remapped. Fix: rebuilt ModelCard + ProcessorCallout with the site's theme-adaptive classes (bg-[#0A0A0A] -> white in light mode; text-white/text-zinc-400 flip automatically; borders border-white/10) and put inline colours on the coloured processor badges/chips so they don't invert. Testing agent verified: light-mode card title rgb(10,10,10) on white rgb(255,255,255), 245 contrast.
+- PDP PROCESSOR CHIP: every product page now shows a chip at the top-right of the tab bar (data-testid="pdp-processor-link") — red "AMD" -> /processors/amd on AMD models, blue "Intel" -> /processors/intel on Intel/Xeon models (via getProcessorFamily).
+- PROCESSOR PAGES rebuilt as bold, cinematic, Dell-AMD-style campaign pages that render DARK in both themes (wrapped in keep-dark, so immune to light-mode inversion and always readable). Added real Latios product imagery: a floating Latios MT in the hero with an accent glow + a "Built by Latios" 3-image showcase (fronts/mt, fronts/sff or bands chip render, details/mt-interior). Vendor accent (Intel #0068b5 / AMD #ed1c24) drives glows, chips, tier bars and the CTA band.
+- Testing agent 5/5 pass in BOTH light and dark: listing readable, chip navigates correctly on Intel + AMD PDPs, processor pages render with all images (no broken), stay dark/readable in light mode, no console errors.
+
+
+## Implemented (2026-09-29, update 38 — Dell-style listing + Intel/AMD campaign pages)
+- LISTING /towers restyled to the Dell laptops-listing idiom: ModelCard is now a light/white Dell-style card (product on a light stage, coloured processor badge Intel #0068b5 / AMD #ed1c24 / Xeon, star rating, 5-item spec checklist, "Enterprise & GeM pricing" line, Explore model + Compare buttons). Existing testids preserved (model-explore-<slug>, ai-badge-<slug>). Facet rail/sort untouched.
+- PROCESSOR CALLOUT: new ProcessorCallout strip above the grid with "Learn more about Intel" (→ /processors/intel) and "Learn more about AMD" (→ /processors/amd), mirroring Dell's Intel/AMD processor callouts.
+- NEW CAMPAIGN PAGES: /processors/:vendor (intel, amd) via new ProcessorPage.jsx + data/processors.js — Latios-branded equivalents of Dell's Intel/AMD campaign LPs: cinematic dark hero with vendor wordmark chip + accent glow, two-tone headline, light body with 4 feature cards + 4 processor-tier cards + accent CTA band. Hero/tier CTAs deep-link to the filtered listing (/towers?cpu=intel|amd). Route added in App.js BEFORE /:category/:modelSlug.
+- Testing agent: all pass — callout + 15 Dell-style cards render (no broken images), Intel/AMD "Learn more" redirect correctly to the campaign pages, feature/tier cards present, hero CTA filters listing, no console errors on /towers, /processors/intel, /processors/amd.
+- NOTE: the earlier "generate new images" question is set aside pending the user's model choice (gpt-image-1 vs Gemini Nano Banana) + Emergent key.
+
+
+## Implemented (2026-09-29, update 37 — capability tabs, sibling rollout, cleaner persona photos)
+- CAPABILITY IMAGE-SWAP TABS: new shared section type `capabilityTabs` (PdpCapabilityTabs in sections.jsx, registered in PdpRenderer) — a Minisforum "Core Capability Upgrades" style block: tab row (Processor / Memory / Serviceability) crossfades a big product still (data-testid capability-image) + caption (spec/title/text). Tab clicks are user interaction, so the crossfade is intentional (scroll animations still off). Added to mt-amd-am4, reusing the three freed /bands/mt-amd-am4-*.webp renders.
+- SIBLING ROLLOUT (5 MT pages: mt-h610-ddr4/-ddr5, mt-pro-h610-ddr5, mt-q670-ddr5, mt-am5-pro-ai): theme.js accents unified to the Minisforum blue (#2f6bff / #8fb4ff, density normal, surface #06080f); decluttered by removing every marquee + band section from their data files (balanced-brace script). All verified rgb(47,107,255), no marquee/band, HTTP 200, no console errors.
+- CLEANER PERSONA PHOTOS: audiences on mt-amd-am4 now use 4 bright, brand-neutral lifestyle shots sourced via vision_expert and hosted locally at /images/personas/{enterprise,education,government,frontoffice}.jpg (replacing the grittier ops/factory + product-desk shots). All load at 1600px.
+- Testing agent: A/B/C all pass — capability tabs swap 3 distinct images + captions with blue active state; 4 persona images load from /images/personas/; 5 sibling pages blue + decluttered with no errors.
+
+
+## Implemented (2026-09-29, update 36 — mt-amd-am4 recoloured to Minisforum blue + decluttered)
+- User still felt the page didn't match the reference's cleanliness/colour. Scoped to mt-amd-am4 ONLY (theme.js entry + data/pdp/mt-amd-am4.js):
+  - COLOUR COMBINATION: accent amber (#d98324) → Minisforum blue (#2f6bff, soft #8fb4ff); surface cooled to #06080f; density tight → normal (more whitespace). Now every glow/button/kicker/stat/spec-line reads blue (verified button rgb(47,107,255)).
+  - CLEANLINESS: removed the scrolling text marquee and the 3-image stacked band; leaner flow = hero → cinematic banner → stat wall → three-tier features → static serviceability → video loop → audience tabs → I/O map → compare → spec teaser.
+  - IMAGERY: I/O map now uses the clean studio rear-panel shot details/mt-rear.webp (was the gritty macro mt-rear-close). Banner keeps the dramatic dark chassis still with a BLUE floor-glow.
+- Testing agent 7/7 pass: blue accent everywhere, blue-glow cinematic banner, no marquee/band, clean rear image loads, 8 blue-spec feature tiles, static serviceability, all audience images load, tabs work, no scroll animations, no console errors, no broken images.
+
+
+## Implemented (2026-09-29, update 35 — Minisforum AI-X1-Pro cinematic design language)
+- User: "copy the same design language/typography/look/feel but for Latios — it's not eye-catching enough." Adopted the AI-X1-Pro signature patterns into the SHARED PDP so they roll out to every model page:
+  - BIG TWO-TONE HEADINGS: BandHeading now splits a "muted lead | bold white tail" string (e.g. "The numbers | that decide a fleet."); banner + spec-teaser support it too. mt-amd-am4 headings converted to two-tone.
+  - CINEMATIC BANNER: PdpBanner rebuilt as a 72–84vh full-bleed dark stage (.pdp-cine) with an accent floor-glow + vignette and a large two-tone headline. mt-amd-am4 opens with a dramatic dark chassis still (/reveal frame) headed "Built to be opened. | Built to last."
+  - THREE-TIER FEATURE STRIP: feature tiles gained an accent UPPERCASE spec line between the benefit title and description (Ryzen 7 5700G · 8C/16T, DUAL-CHANNEL DDR4-3200, etc.).
+  - GLOW LANGUAGE: .pdp-glow (accent bloom) behind the hero product and inside the banner; .pdp-cine vignette; .pdp-blend helper for white-ground catalogue shots.
+- Section order reworked to a rich Minisforum flow: hero → cinematic banner → marquee → stat wall → three-tier features → image band → static serviceability → video loop → audience tabs → I/O map → compare → spec teaser. All two-tone.
+- Testing agent 9/9 pass: banner + glow render, two-tone headings show NO literal "|", 8 three-tier feature tiles, hero glow, static serviceability (no canvas/no "Scroll to open"), all 4 audience images load, no scroll entrance animations, no console errors. (dp180-1.webp flagged naturalWidth 0 is a transient off-screen lazy-load in the range strip; file is a valid 483KB image.)
+- ROLL-OUT: the shared upgrades apply to all PDP pages automatically; per-model work remaining = convert each model's headings to two-tone, add feature `spec` lines, and set a cinematic banner image.
+
+
+## Implemented (2026-09-29, update 34 — PDP visual polish + scroll animations removed)
+- Reference shifted to Minisforum MS-02-Ultra / AI-X1-Pro. Reworked the SHARED PDP band system (rolls out to every product page): new typography language (.pdp-display calmer tracking + balanced wraps, .pdp-lead editorial intros, accent-tinted eyebrows), soft-lit product stage (.pdp-stage), accent icon-chip feature tiles with hover lift (.pdp-tile/.pdp-icon-chip), refined banner overlay gradient
+- Fixed wrong/off-product imagery on mt-amd-am4 with the real Latios MT photos already in the repo: I/O map → details/mt-rear-close.webp (was dp180-2, a different product); audiences education → home-setup.webp (was av-ifp panel), frontoffice → office.webp (was av-monitor)
+- USER ASK: removed all scroll-driven animations. Reveal is now a static passthrough (no whileInView fade/translate); ParallaxImage is a static framed image (no scroll drift, hover spotlight kept); PdpReveal's tall sticky scroll-scrubbed canvas ("Scroll to open") is now a STATIC two-column band (heading + numbered service steps + one open-chassis still, onError → details/mt-interior.webp); ModelPage standard hero parallax (imgY/fade) removed
+- Testing agent verified /desktops/mt-amd-am4: HTTP 200, no console errors, sections at opacity 1 with no entrance animation, Serviceability band static (no canvas, no "Scroll to open"), 8 feature tiles, all I/O + 4 audience images load, tabs work
+- ROLL-OUT: because the PDP components are shared, the other model pages inherit the typography + no-scroll-animation changes automatically; per-model imagery fixes (like the I/O/audience swaps) still need doing page by page
+
+
 ## Implemented (2026-08-23, update 33 — Minisforum-style product showcase for mt-amd-am4)
 - /towers/mt-amd-am4 rebuilt as a Minisforum MS-02-Ultra-style PDP (this model only, per user): PDP hero with breadcrumb + image gallery (4 thumbs + 360° turntable thumb with drag) + buy box (title, chips, intro, 3 stats, Enquire/Datasheet/Full-specification CTAs, Made-in-India assurance line) → Overview/Specification tabs → full-bleed banner with headline → 8-card feature icon grid → "One platform. Every team." audience tab switcher (Enterprise IT / Education / Government / Front Office & SMB, animated panel swap) → 2 full-bleed split story sections → spec teaser → existing range strip + CTA
 - New files: /data/showcase.js (SHOWCASE content map — add per-model entries to roll out), /components/ModelShowcase.jsx; ModelPage branches on SHOWCASE[slug]

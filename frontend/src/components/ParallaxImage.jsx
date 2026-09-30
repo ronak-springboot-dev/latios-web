@@ -1,23 +1,20 @@
-import { useRef } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
-
-export const ParallaxImage = ({ src, alt, aspect = "aspect-[4/3]" }) => {
-  const ref = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: ref,
-    offset: ["start end", "end start"],
-  });
-  const y = useTransform(scrollYProgress, [0, 1], ["-9%", "9%"]);
-
-  return (
-    <div ref={ref} className="group overflow-hidden border border-white/10">
-      <motion.img
-        src={src}
-        alt={alt}
-        loading="lazy"
-        style={{ y }}
-        className={`spotlight-img w-full ${aspect} object-cover scale-[1.2] will-change-transform`}
-      />
-    </div>
-  );
-};
+/**
+ * ParallaxImage — now a static framed image.
+ *
+ * Previously the image drifted on scroll (a framer-motion `useScroll` /
+ * `useTransform` y-offset, with the picture pre-scaled to 1.2 to hide the
+ * edges as it moved). Scroll animation has been removed from the product
+ * pages, so the picture now sits still at its natural scale. The `.spotlight-img`
+ * hover treatment (grayscale → colour, subtle zoom) is kept — that is a hover
+ * effect, not a scroll one.
+ */
+export const ParallaxImage = ({ src, alt, aspect = "aspect-[4/3]" }) => (
+  <div className="group overflow-hidden border border-white/10">
+    <img
+      src={src}
+      alt={alt}
+      loading="lazy"
+      className={`spotlight-img w-full ${aspect} object-cover`}
+    />
+  </div>
+);
