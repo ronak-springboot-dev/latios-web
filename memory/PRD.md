@@ -20,6 +20,12 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-09-29, update 40 — full campaign layout for /processors/:vendor)
+- Rebuilt the Intel/AMD processor pages to follow a full processor-campaign section flow (hero → sticky anchor nav → on-device-AI/manageability split → 3 benefit blocks → "Built by Latios" showcase → "Across the Latios range" 3-card tiers → spec comparison TABLE → shop-by-processor tiers → feature grid → CTA band). All original Latios copy + Latios product imagery (no third-party marketing text/logos copied); rendered dark in both themes via keep-dark.
+- Data-driven via data/processors.js (anchors, aiSplit, benefits[3], gallery[3], range[3] linking into the filtered /towers listing, compare{cols,rows} with per-row Explore links, tiers, features). Both intel and amd populated.
+- Testing agent: all pass on /processors/amd and /processors/intel — every section present, 16 images each all load (no broken), anchor scroll + range-card navigation work, keep-dark keeps it readable in light mode, no console errors.
+
+
 ## Implemented (2026-09-29, update 39 — light-mode readability fix + PDP processor chip + richer processor pages)
 - BUG FIX (reported): Dell-style listing cards + Intel/AMD callout were dark-on-dark (invisible) in LIGHT mode. Root cause: the theme remaps `html.light .bg-white -> #0a0a0a` while `text-zinc-900` was NOT remapped. Fix: rebuilt ModelCard + ProcessorCallout with the site's theme-adaptive classes (bg-[#0A0A0A] -> white in light mode; text-white/text-zinc-400 flip automatically; borders border-white/10) and put inline colours on the coloured processor badges/chips so they don't invert. Testing agent verified: light-mode card title rgb(10,10,10) on white rgb(255,255,255), 245 contrast.
 - PDP PROCESSOR CHIP: every product page now shows a chip at the top-right of the tab bar (data-testid="pdp-processor-link") — red "AMD" -> /processors/amd on AMD models, blue "Intel" -> /processors/intel on Intel/Xeon models (via getProcessorFamily).
