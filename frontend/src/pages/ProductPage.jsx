@@ -293,7 +293,7 @@ const ModelCard = ({ m, category, testid }) => {
   const r = ratingFor(m.slug);
   return (
     <div
-      className="group bg-white text-zinc-900 border border-black/10 rounded-xl overflow-hidden flex flex-col h-full hover:shadow-xl hover:shadow-black/20 transition-shadow duration-500"
+      className="group bg-[#0A0A0A] border border-white/10 rounded-xl overflow-hidden flex flex-col h-full hover:border-white/25 hover:shadow-2xl hover:shadow-black/40 transition-all duration-500"
       data-testid={testid}
     >
       <Link
@@ -315,8 +315,8 @@ const ModelCard = ({ m, category, testid }) => {
         <div className="flex items-center gap-2 flex-wrap">
           {badge && (
             <span
-              className="text-[10px] font-semibold uppercase tracking-[0.12em] rounded px-2 py-1 text-white"
-              style={{ background: badge.color }}
+              className="text-[10px] font-semibold uppercase tracking-[0.12em] rounded px-2 py-1"
+              style={{ background: badge.color, color: "#fff" }}
             >
               {badge.label}
             </span>
@@ -333,7 +333,7 @@ const ModelCard = ({ m, category, testid }) => {
         </div>
 
         <Link to={`/${category}/${m.slug}`} className="focus:outline-none">
-          <h3 className="mt-3 text-lg md:text-xl font-bold tracking-tight text-zinc-900 group-hover:text-[#1a56e8] transition-colors duration-300">
+          <h3 className="mt-3 text-lg md:text-xl font-bold tracking-tight text-white group-hover:text-[#6f93f2] transition-colors duration-300">
             {m.name}
           </h3>
         </Link>
@@ -349,16 +349,16 @@ const ModelCard = ({ m, category, testid }) => {
 
         <ul className="mt-4 space-y-2 flex-1">
           {m.highlights.slice(0, 5).map((h) => (
-            <li key={h} className="text-[13px] text-zinc-600 flex gap-2.5 leading-snug">
+            <li key={h} className="text-[13px] text-zinc-400 flex gap-2.5 leading-snug">
               <Check className="w-3.5 h-3.5 mt-0.5 shrink-0 text-[#1a56e8]" strokeWidth={2.5} />
               <span>{h}</span>
             </li>
           ))}
         </ul>
 
-        <div className="mt-5 pt-4 border-t border-black/10">
+        <div className="mt-5 pt-4 border-t border-white/10">
           <p className="text-[11px] uppercase tracking-[0.14em] text-zinc-500">Enterprise & GeM pricing</p>
-          <p className="text-sm font-semibold text-zinc-900">On request &middot; volume &amp; public-sector rates</p>
+          <p className="text-sm font-semibold text-white">On request &middot; volume &amp; public-sector rates</p>
         </div>
 
         <div className="mt-4 flex items-center gap-3">
@@ -372,7 +372,7 @@ const ModelCard = ({ m, category, testid }) => {
           </Link>
           <Link
             to="/compare"
-            className="inline-flex items-center justify-center gap-1.5 rounded-md border border-black/15 px-4 py-3 text-[10px] uppercase tracking-[0.2em] text-zinc-700 hover:border-black/40 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/40"
+            className="inline-flex items-center justify-center gap-1.5 rounded-md border border-white/15 px-4 py-3 text-[10px] uppercase tracking-[0.2em] text-zinc-300 hover:border-white/40 transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-[#1a56e8]/40"
           >
             Compare
           </Link>
@@ -392,32 +392,32 @@ const ProcessorCallout = () => (
     <Link
       to="/processors/intel"
       data-testid="learn-more-intel"
-      className="group flex items-center justify-between gap-4 bg-white border border-black/10 rounded-xl px-6 py-5 hover:border-[#0068b5]/60 transition-colors duration-300"
+      className="group flex items-center justify-between gap-4 bg-[#0A0A0A] border border-white/10 rounded-xl px-6 py-5 hover:border-[#0068b5]/60 transition-colors duration-300"
     >
       <div>
-        <p className="text-sm font-semibold text-zinc-900">Intel&reg; Core&trade; Processors</p>
+        <p className="text-sm font-semibold text-white">Intel&reg; Core&trade; Processors</p>
         <span className="mt-1 inline-flex items-center gap-1.5 text-[13px] text-[#0068b5]">
           Learn more about Intel
           <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
         </span>
       </div>
-      <span className="shrink-0 rounded px-3 py-1.5 text-white font-bold tracking-tight" style={{ background: "#0068b5" }}>
+      <span className="shrink-0 rounded px-3 py-1.5 font-bold tracking-tight" style={{ background: "#0068b5", color: "#fff" }}>
         intel
       </span>
     </Link>
     <Link
       to="/processors/amd"
       data-testid="learn-more-amd"
-      className="group flex items-center justify-between gap-4 bg-white border border-black/10 rounded-xl px-6 py-5 hover:border-[#ed1c24]/60 transition-colors duration-300"
+      className="group flex items-center justify-between gap-4 bg-[#0A0A0A] border border-white/10 rounded-xl px-6 py-5 hover:border-[#ed1c24]/60 transition-colors duration-300"
     >
       <div>
-        <p className="text-sm font-semibold text-zinc-900">AMD&reg; Processors</p>
+        <p className="text-sm font-semibold text-white">AMD&reg; Processors</p>
         <span className="mt-1 inline-flex items-center gap-1.5 text-[13px] text-[#ed1c24]">
           Learn more about AMD
           <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover:translate-x-1" />
         </span>
       </div>
-      <span className="shrink-0 rounded px-3 py-1.5 text-white font-bold tracking-tight" style={{ background: "#ed1c24" }}>
+      <span className="shrink-0 rounded px-3 py-1.5 font-bold tracking-tight" style={{ background: "#ed1c24", color: "#fff" }}>
         AMD
       </span>
     </Link>

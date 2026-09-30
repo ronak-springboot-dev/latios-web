@@ -8,7 +8,7 @@ import { ParallaxImage } from "@/components/ParallaxImage";
 import { ModelTurntable } from "@/components/ModelTurntable";
 import { PdpRenderer } from "@/components/pdp/PdpRenderer";
 import { ProductVideo } from "@/components/ProductVideo";
-import { getModel, getCategoryModels, DATASHEETS, ALL_MODELS, getVideo, familyKey } from "@/data/models";
+import { getModel, getCategoryModels, DATASHEETS, ALL_MODELS, getVideo, familyKey, getProcessorFamily } from "@/data/models";
 import { getPdp } from "@/data/pdp";
 import { usePageMeta } from "@/hooks/usePageMeta";
 
@@ -101,6 +101,23 @@ export default function ModelPage() {
             <FileDown className="w-4 h-4" /> Datasheet (PDF)
           </a>
         )}
+        {(() => {
+          const pv = getProcessorFamily(model) === "amd" ? "amd" : "intel";
+          const c = pv === "amd" ? "#ed1c24" : "#0068b5";
+          const lbl = pv === "amd" ? "AMD" : "Intel";
+          return (
+            <Link
+              to={`/processors/${pv}`}
+              data-testid="pdp-processor-link"
+              title={`Learn more about ${lbl}`}
+              className={`${datasheet ? "ml-4" : "ml-auto"} inline-flex items-center gap-2 py-2 text-[10px] uppercase tracking-[0.2em] text-zinc-400 hover:text-white transition-colors duration-300`}
+            >
+              <span className="rounded px-2 py-1 font-bold tracking-tight" style={{ background: c, color: "#fff" }}>{lbl}</span>
+              <span className="hidden sm:inline">Learn more</span>
+              <ArrowUpRight className="w-3.5 h-3.5" />
+            </Link>
+          );
+        })()}
       </div>
     </section>
   );

@@ -20,6 +20,13 @@ User wants an online enterprise web app for laptop/towers/audio/video and other 
 - Enquiry form in footer persisting to MongoDB
 - All interactive elements carry data-testid
 
+## Implemented (2026-09-29, update 39 — light-mode readability fix + PDP processor chip + richer processor pages)
+- BUG FIX (reported): Dell-style listing cards + Intel/AMD callout were dark-on-dark (invisible) in LIGHT mode. Root cause: the theme remaps `html.light .bg-white -> #0a0a0a` while `text-zinc-900` was NOT remapped. Fix: rebuilt ModelCard + ProcessorCallout with the site's theme-adaptive classes (bg-[#0A0A0A] -> white in light mode; text-white/text-zinc-400 flip automatically; borders border-white/10) and put inline colours on the coloured processor badges/chips so they don't invert. Testing agent verified: light-mode card title rgb(10,10,10) on white rgb(255,255,255), 245 contrast.
+- PDP PROCESSOR CHIP: every product page now shows a chip at the top-right of the tab bar (data-testid="pdp-processor-link") — red "AMD" -> /processors/amd on AMD models, blue "Intel" -> /processors/intel on Intel/Xeon models (via getProcessorFamily).
+- PROCESSOR PAGES rebuilt as bold, cinematic, Dell-AMD-style campaign pages that render DARK in both themes (wrapped in keep-dark, so immune to light-mode inversion and always readable). Added real Latios product imagery: a floating Latios MT in the hero with an accent glow + a "Built by Latios" 3-image showcase (fronts/mt, fronts/sff or bands chip render, details/mt-interior). Vendor accent (Intel #0068b5 / AMD #ed1c24) drives glows, chips, tier bars and the CTA band.
+- Testing agent 5/5 pass in BOTH light and dark: listing readable, chip navigates correctly on Intel + AMD PDPs, processor pages render with all images (no broken), stay dark/readable in light mode, no console errors.
+
+
 ## Implemented (2026-09-29, update 38 — Dell-style listing + Intel/AMD campaign pages)
 - LISTING /towers restyled to the Dell laptops-listing idiom: ModelCard is now a light/white Dell-style card (product on a light stage, coloured processor badge Intel #0068b5 / AMD #ed1c24 / Xeon, star rating, 5-item spec checklist, "Enterprise & GeM pricing" line, Explore model + Compare buttons). Existing testids preserved (model-explore-<slug>, ai-badge-<slug>). Facet rail/sort untouched.
 - PROCESSOR CALLOUT: new ProcessorCallout strip above the grid with "Learn more about Intel" (→ /processors/intel) and "Learn more about AMD" (→ /processors/amd), mirroring Dell's Intel/AMD processor callouts.
